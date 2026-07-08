@@ -518,6 +518,20 @@ body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [oncl
     </div>
   </div>
 
+  <!-- PANEL PART MODELE (Noctra) -->
+  <div class="panel" style="margin-bottom:12px" id="model-share-panel">
+    <div class="panel-title">👑 Part modèle (50%)</div>
+    <div class="panel-sub">la moitié de ton bénéfice lui revient</div>
+    <div id="model-share" style="margin-top:12px"><div class="emsg">Ajoute une entrée pour voir la part</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:14px;padding-top:12px;border-top:0.5px solid #222">
+      <div><div class="ilbl">Date</div><input class="ifield" type="date" id="mp-date" style="width:140px"></div>
+      <div><div class="ilbl">Montant envoyé ($)</div><input class="ifield" type="number" id="mp-amount" placeholder="ex: 500" style="width:130px" onkeydown="if(event.key==='Enter')addModelPayment()"></div>
+      <div style="flex:1;min-width:130px"><div class="ilbl">Note</div><input class="ifield" type="text" id="mp-note" placeholder="ex: paiement juin" onkeydown="if(event.key==='Enter')addModelPayment()"></div>
+      <button class="sbtn" style="width:auto;padding:9px 18px;margin:0" onclick="addModelPayment()">+ Envoyé</button>
+    </div>
+    <div id="mp-msg" style="font-size:12px;text-align:center;min-height:16px;margin-top:6px"></div>
+  </div>
+
   <!-- PANEL VIREMENTS -->
   <div class="panel" style="margin-bottom:12px" id="virements-panel">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px">
@@ -1690,6 +1704,7 @@ function deleteEntry(idx){
 function rh(){
   let f=gf();
   try{renderExpenseRecap();}catch(_){}
+  try{renderModelShare();}catch(_){}
   const q=(document.getElementById('hist-search')?.value||'').toLowerCase().trim();
   if(q) f=f.filter(e=>e.date.includes(q)||String(e.brut).includes(q)||String(Math.round(e.profit)).includes(q)||(e.notes||'').toLowerCase().includes(q));
   if(_histPayerFilter==='moi') f=f.filter(e=>{const pb=e.paidBy||{};return ['va','mo','ci','ch'].some(k=>(pb[k]||'moi')==='moi'&&(e[k]||0)>0)||(e.alI||[]).some(ai=>(ai.paidBy||'moi')==='moi'&&ai.val>0);});
@@ -2487,7 +2502,7 @@ async function loadData() {
   const virDateEl=document.getElementById('vir-date');if(virDateEl)virDateEl.value=ts();
   const modStartEl=document.getElementById('mod-start');if(modStartEl)modStartEl.value=ts();
   if (ents.length || vas.length) { rh(); rc(); uk(); rv(); }
-  renderVirements(); renderModeles();
+  renderVirements(); renderModeles(); try{renderModelShare();}catch(e){}
 }
 
 async function loadLocal() {
@@ -3082,6 +3097,39 @@ function renderExpenseRecap(){
   const cell=(v,col)=>v>0?`<span style="color:${col}">${fmtR(v)}</span>`:'<span style="color:#333">-</span>';
   const table=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="font-size:10px;text-transform:uppercase;letter-spacing:.04em"><th style="text-align:left;padding:4px 0;color:#666;font-weight:600">Dépense</th><th style="text-align:right;padding:4px 0;color:#888;font-weight:600">Total</th></tr></thead><tbody>${rows.map(r=>`<tr style="border-top:0.5px solid #191919"><td style="text-align:left;padding:5px 0;color:#ccc;white-space:nowrap">${r.name}</td><td style="text-align:right;padding:5px 0;color:#eee;font-weight:600">${fmtR(r.total)}</td></tr>`).join('')}</tbody></table></div>`;
   el.innerHTML=`<div style="display:flex;gap:9px;margin-bottom:11px;flex-wrap:wrap">${kpi('Total dépenses',grand,'#f87171','#2a1e1e')}</div><button type="button" onclick="var d=document.getElementById('exp-recap-detail');var o=d.style.display==='none';d.style.display=o?'block':'none';this.querySelector('.cv').textContent=o?'▴':'▾';this.querySelector('.tx').textContent=o?'Masquer le détail':'Voir le détail par dépense'" style="background:#141416;border:1px solid #26262c;border-radius:8px;padding:7px 12px;color:#bbb;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;gap:7px"><span class="tx">Voir le détail par dépense</span> <b style="color:#ddd">(${rows.length})</b> <span class="cv" style="color:#666;font-size:10px">▾</span></button><div id="exp-recap-detail" style="display:none;margin-top:11px">${table}</div>`;
+}
+function renderModelShare(){
+  const el=document.getElementById('model-share');if(!el)return;
+  const totalProfit=(ents||[]).reduce((s,e)=>s+(e.profit||0),0);
+  const share=totalProfit*0.5;
+  const paid=(virements||[]).reduce((s,v)=>s+(v.amount||0),0);
+  const reste=share-paid;
+  const box=(lbl,val,col)=>`<div style="flex:1;min-width:125px;background:#0e0e0f;border:1px solid #1e1e22;border-radius:9px;padding:10px 13px"><div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.05em">${lbl}</div><div style="font-size:18px;font-weight:700;color:${col};margin-top:3px">${fmtR(val)}</div></div>`;
+  const rc=reste>0.5?'#f87171':(reste<-0.5?'#a855f7':'#6b7280');
+  const rl=reste>0.5?'Reste à envoyer':(reste<-0.5?'Trop envoyé':'À jour ✓');
+  let html=`<div style="display:flex;gap:9px;flex-wrap:wrap">${box('Bénéfice total',totalProfit,'#ccc')}${box('Part modèle (50%)',share,'#a855f7')}${box('Déjà envoyé',paid,'#888')}${box(rl,Math.abs(reste),rc)}</div>`;
+  if((virements||[]).length){
+    html+=`<div style="margin-top:12px"><div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Paiements envoyés (${virements.length})</div>`+virements.map((v,i)=>({v,i})).reverse().map(o=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:5px 0;border-bottom:0.5px solid #171719"><span style="color:#999">${dl(o.v.date)}${o.v.note?` · <span style="color:#666">${o.v.note}</span>`:''}</span><span style="display:inline-flex;align-items:center;gap:10px"><b style="color:#a855f7">${fmtR(o.v.amount)}</b><button onclick="deleteModelPayment(${o.i})" title="Supprimer" style="background:none;border:none;color:#555;cursor:pointer;font-size:13px">✕</button></span></div>`).join('')+`</div>`;
+  }
+  el.innerHTML=html;
+}
+function addModelPayment(){
+  const amount=parseFloat(document.getElementById('mp-amount').value)||0;
+  if(!amount){flashMsg('mp-msg','⚠ Entre un montant','#f87171');return;}
+  const date=document.getElementById('mp-date').value||ts();
+  const note=(document.getElementById('mp-note').value||'').trim();
+  virements.push({date,amount,note});
+  apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key:'virements',value:JSON.stringify(virements)})}).catch(()=>{});
+  try{saveData();}catch(e){}
+  document.getElementById('mp-amount').value='';document.getElementById('mp-note').value='';
+  renderModelShare();flashMsg('mp-msg','✓ Paiement enregistré');
+}
+function deleteModelPayment(i){
+  if(!virements[i])return;
+  virements.splice(i,1);
+  apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key:'virements',value:JSON.stringify(virements)})}).catch(()=>{});
+  try{saveData();}catch(e){}
+  renderModelShare();
 }
 function renderEditLog(){
   renderActivity();
