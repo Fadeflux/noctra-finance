@@ -378,12 +378,16 @@ body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [oncl
   <div id="quickadd-box">
     <h3>⚡ Ajout rapide <span style="font-size:11px;color:#333;float:right">Ctrl+K · Échap pour fermer</span></h3>
     <div class="qa-row">
-      <div><label class="ilbl">CA Brut ($)</label><input class="ifield" id="qa-brut" type="number" placeholder="0" oninput="qaCalc()"></div>
-      <div><label class="ilbl">VA ($)</label><input class="ifield" id="qa-va" type="number" placeholder="0" oninput="qaCalc()"></div>
+      <div><label class="ilbl">CA Brut OF ($)</label><input class="ifield" id="qa-brut" type="number" placeholder="0" oninput="qaCalc()"></div>
+      <div><label class="ilbl" style="color:#38bdf8">Net Telegram ($)</label><input class="ifield" id="qa-tg" type="number" placeholder="0" oninput="qaCalc()"></div>
     </div>
     <div class="qa-row">
+      <div><label class="ilbl">VA ($)</label><input class="ifield" id="qa-va" type="number" placeholder="0" oninput="qaCalc()"></div>
       <div><label class="ilbl">Modèle ($)</label><input class="ifield" id="qa-mo" type="number" placeholder="0" oninput="qaCalc()"></div>
+    </div>
+    <div class="qa-row">
       <div><label class="ilbl">Autres ($)</label><input class="ifield" id="qa-al" type="number" placeholder="0" oninput="qaCalc()"></div>
+      <div></div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
       <div style="flex:1"><label class="ilbl">Date</label><input class="ifield" id="qa-date" type="date"></div>
@@ -478,7 +482,7 @@ body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [oncl
   <div class="kpi-hero-grid">
     <div class="kpi kpi-hero" style="border-top-color:#a855f7"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Profit<i class="tip-icon">i</i><span class="tip-box">Net − toutes dépenses. Ce que tu gardes réellement.</span></span></div><div class="kpi-value" style="color:#a855f7" id="vpr">—</div><span class="kpi-delta" id="dvpr" title="vs période précédente"></span><div class="kpi-pct" id="ppr">–</div></div>
     <div class="kpi" style="border-top-color:#fff"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="tip">CA Brut<i class="tip-icon">i</i><span class="tip-box">Chiffre d'affaires total avant toute déduction</span></span></div><div class="kpi-value" style="color:#a855f7" id="vb">—</div><span class="kpi-delta" id="dvb" title="vs période précédente"></span><div class="kpi-pct" id="de">–</div></div>
-    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg><span class="tip">Net<i class="tip-icon">i</i><span class="tip-box">CA Brut × 78% — ce que tu touches réellement</span></span></div><div class="kpi-value" style="color:#a855f7" id="vn">—</div><span class="kpi-delta" id="dvn" title="vs période précédente"></span><div class="kpi-pct" id="pn">–</div></div>
+    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg><span class="tip">Net<i class="tip-icon">i</i><span class="tip-box">CA Brut OF × 78% + Net Telegram — ce que tu touches réellement</span></span></div><div class="kpi-value" style="color:#a855f7" id="vn">—</div><span class="kpi-delta" id="dvn" title="vs période précédente"></span><div class="kpi-pct" id="pn">–</div></div>
   </div>
   <div class="kpi-sec">Dépenses &amp; commission</div>
   <div class="kpi-dep-grid">
@@ -643,7 +647,10 @@ body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [oncl
     </div>
     <div style="margin-bottom:10px"><div class="ilbl">Date</div><input class="ifield" type="date" id="entry-date-input" style="width:160px"></div>
     <div class="sdiv">Revenus</div>
-    <div><div class="ilbl">CA Brut ($)</div><input class="ifield" type="number" id="ib" placeholder="ex: 3000" oninput="uk()"></div>
+    <div class="ig2" style="margin-bottom:10px">
+      <div><div class="ilbl"><span class="tip">CA Brut OF ($)<i class="tip-icon">i</i><span class="tip-box">Avant commissions — le site applique −22% (OF 20% + Skrill 2%)</span></span></div><input class="ifield" type="number" id="ib" placeholder="ex: 3000" oninput="uk()"></div>
+      <div><div class="ilbl"><span class="tip">Net Telegram ($)<i class="tip-icon">i</i><span class="tip-box">Déjà net — ajouté tel quel, sans aucune déduction</span></span></div><input class="ifield" type="number" id="itg" placeholder="ex: 500" oninput="uk()"></div>
+    </div>
     <div class="sdiv"><span class="sdot" style="background:#facc15"></span><span style="color:#facc15">VA</span>&nbsp;&nbsp;<span class="sdot" style="background:#a78bfa"></span><span style="color:#a78bfa">Modèle</span>&nbsp;&nbsp;<span class="sdot" style="background:#22d3ee"></span><span style="color:#22d3ee">Chat IA</span>&nbsp;&nbsp;<span class="sdot" style="background:#fb923c"></span><span style="color:#fb923c">Chat Humain</span></div>
     <div class="ig2" style="margin-bottom:10px">
       <div><div class="ilbl"><span class="idot" style="background:#facc15"></span>Paiement VA ($)</div><div style="display:flex;gap:6px"><input class="ifield" style="flex:1" type="number" id="iv" placeholder="ex: 300" oninput="uk()"><button class="pb-btn" id="pb-iv" data-pb="moi" onclick="tpb(this);uk()" type="button">Moi</button></div></div>
@@ -1002,7 +1009,7 @@ function rmModelePayment(modelId,idx){
   renderModeles();saveData();
 }
 function renderModeles(){
-  const totalNet=ents.reduce((s,e)=>s+e.brut*0.78,0);
+  const totalNet=ents.reduce((s,e)=>s+e.brut*0.78+(e.tgNet||0),0);
   const totalDu=modeles.reduce((s,m)=>s+totalNet*(m.split_pct/100),0);
   const totalPaid=modeles.reduce((s,m)=>s+(m.payments||[]).reduce((x,p)=>x+p.amount,0),0);
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
@@ -1557,7 +1564,7 @@ function periodDelta(){
   else if(acd||acdEnd){ start=acd||acdEnd; end=acdEnd||acd; days=Math.max(1,Math.round((new Date(end+'T00:00:00')-new Date(start+'T00:00:00'))/864e5)+1); }
   else return null;
   const pEnd=addD(start,-1), pStart=addD(pEnd,-(days-1));
-  const sums=(a,b)=>{let br=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.78,dep=va+mo+ci+ch+al;return{br,net,dep,pr:net-dep};};
+  const sums=(a,b)=>{let br=0,tg=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;tg+=e.tgNet||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.78+tg,dep=va+mo+ci+ch+al;return{br,net,dep,pr:net-dep};};
   return {curr:sums(start,end),prev:sums(pStart,pEnd)};
 }
 function setDelta(id,curr,prev,inverse){
@@ -1575,20 +1582,22 @@ function renderInsights(){
   const el=document.getElementById('insights-banner');if(!el)return;
   const f=gf();
   const br=f.reduce((s,e)=>s+(e.brut||0),0);
-  if(!f.length||br<=0){el.style.display='none';return;}
+  const tg=f.reduce((s,e)=>s+(e.tgNet||0),0);
+  const brTot=br+tg;
+  if(!f.length||brTot<=0){el.style.display='none';return;}
   const va=f.reduce((s,e)=>s+(e.va||0),0),mo=f.reduce((s,e)=>s+(e.mo||0),0),ci=f.reduce((s,e)=>s+(e.ci||0),0),ch=f.reduce((s,e)=>s+(e.ch||0),0),al=f.reduce((s,e)=>s+(e.alT||0),0);
-  const net=br*.78,dep=va+mo+ci+ch+al,pr=net-dep;
+  const net=br*.78+tg,dep=va+mo+ci+ch+al,pr=net-dep;
   const items=[];
-  items.push({ic:'💰',c:pr>=0?'#a855f7':'#f87171',t:'Profit <b>'+fmtR(pr)+'</b> · marge <b>'+Math.round(pr/br*100)+'%</b>'});
+  items.push({ic:'💰',c:pr>=0?'#a855f7':'#f87171',t:'Profit <b>'+fmtR(pr)+'</b> · marge <b>'+Math.round(pr/brTot*100)+'%</b>'});
   const postes=[['Paiement VA',va],['Modèle',mo],['Chat IA',ci],['Chat Humain',ch],['Dép. diverses',al]];
   const mx=postes.reduce((a,b)=>b[1]>a[1]?b:a,['',0]);
-  if(mx[1]>0)items.push({ic:'🎯',c:'#facc15',t:'Plus gros poste : <b>'+mx[0]+'</b> ('+fmtR(mx[1])+', '+Math.round(mx[1]/br*100)+'%)'});
+  if(mx[1]>0)items.push({ic:'🎯',c:'#facc15',t:'Plus gros poste : <b>'+mx[0]+'</b> ('+fmtR(mx[1])+', '+Math.round(mx[1]/brTot*100)+'%)'});
   const pd=periodDelta();
   if(pd&&pd.prev.pr){
     const evo=Math.round((pd.curr.pr-pd.prev.pr)/Math.abs(pd.prev.pr)*100);
     items.push({ic:evo>=0?'📈':'📉',c:evo>=0?'#a855f7':'#f87171',t:'Profit <b>'+(evo>=0?'+':'')+evo+'%</b> vs période précédente'});
   } else {
-    items.push({ic:'📊',c:'#60a5fa',t:'<b>'+f.length+'</b> entrée(s) · CA <b>'+fmtR(br)+'</b>'});
+    items.push({ic:'📊',c:'#60a5fa',t:'<b>'+f.length+'</b> entrée(s) · CA <b>'+fmtR(brTot)+'</b>'});
   }
   el.style.display='flex';
   el.innerHTML=items.map(i=>'<span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#c8c8cc"><span style="font-size:15px">'+i.ic+'</span><span style="border-left:2px solid '+i.c+';padding-left:9px">'+i.t+'</span></span>').join('');
@@ -1599,17 +1608,18 @@ function uk(){
   const _es=document.getElementById('empty-state');if(_es)_es.style.display=_empty?'block':'none';
   document.querySelectorAll('#page-ca .kpi-sec,#page-ca .kpi-hero-grid,#page-ca .kpi-dep-grid').forEach(x=>{x.style.display=_empty?'none':'';});
   const br=f.reduce((s,e)=>s+e.brut,0)+gv('ib');
+  const tg=f.reduce((s,e)=>s+(e.tgNet||0),0)+gv('itg');
   const va=f.reduce((s,e)=>s+e.va,0)+gv('iv');
   const mo=f.reduce((s,e)=>s+e.mo,0)+gv('im');
   const ci=f.reduce((s,e)=>s+e.ci,0)+gv('ici');
   const ch=f.reduce((s,e)=>s+e.ch,0)+gv('ich');
   const al=f.reduce((s,e)=>s+(e.alT||0),0)+gat();
   const ac=f.reduce((s,e)=>s+(e.alI?e.alI.length:0),0)+gai().length;
-  const of=br*.22,net=br*.78,dep=va+mo+ci+ch+al,pr=net-dep;
+  const of=br*.22,net=br*.78+tg,dep=va+mo+ci+ch+al,pr=net-dep,brTot=br+tg;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  set('vb',br?fmtR(br):'—');set('vof',br?'−'+fmtR(of):'—');set('vn',br?fmtR(net):'—');
-  set('vva',va?'−'+fmtR(va):'—');set('vmo',mo?'−'+fmtR(mo):'—');set('vci',ci?'−'+fmtR(ci):'—');set('vch',ch?'−'+fmtR(ch):'—');set('val',al?'−'+fmtR(al):'—');set('vdep',dep?'−'+fmtR(dep):'—');set('vpr',br?fmtR(pr):'—');
-  set('de',f.length?f.length+' entrée(s)':'données saisies');set('pn',pct(net,br));set('pva',pct(va,br));set('pmo',pct(mo,br));set('pci',pct(ci,br));set('pch',pct(ch,br));
+  set('vb',br?fmtR(br):'—');set('vof',br?'−'+fmtR(of):'—');set('vn',brTot?fmtR(net):'—');
+  set('vva',va?'−'+fmtR(va):'—');set('vmo',mo?'−'+fmtR(mo):'—');set('vci',ci?'−'+fmtR(ci):'—');set('vch',ch?'−'+fmtR(ch):'—');set('val',al?'−'+fmtR(al):'—');set('vdep',dep?'−'+fmtR(dep):'—');set('vpr',brTot?fmtR(pr):'—');
+  set('de',f.length?f.length+' entrée(s)':'données saisies');set('pn',tg?'dont Telegram '+fmtR(tg):pct(net,br));set('pva',pct(va,br));set('pmo',pct(mo,br));set('pci',pct(ci,br));set('pch',pct(ch,br));
   set('pal',al&&br?Math.round(al/br*100)+'% · '+ac+' dép.':'–');set('pdep',pct(dep,br));set('ppr',br?Math.round(pr/br*100)+'% du CA':'–');
   const _pd=periodDelta();
   if(_pd){setDelta('dvb',_pd.curr.br,_pd.prev.br);setDelta('dvn',_pd.curr.net,_pd.prev.net);setDelta('dvdep',_pd.curr.dep,_pd.prev.dep,true);setDelta('dvpr',_pd.curr.pr,_pd.prev.pr);}
@@ -1701,7 +1711,7 @@ function se(){
   const date=acd||ts();
   const profit=Math.round(br*.78-va-mo-ci-ch-alT);
   ents.unshift({date,brut:br,va,mo,ci,ch,alI,alT,profit});
-  ['ib','iv','im','ici','ich'].forEach(id=>document.getElementById(id).value='');
+  ['ib','itg','iv','im','ici','ich'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('ainps').innerHTML='';afs=[];afc=0;
   rh();rc();uk();
 }
@@ -1726,7 +1736,8 @@ function rh(){
   if(!total){document.getElementById('txlist').innerHTML='<div class="emsg">Aucune entrée pour cette période</div>';document.getElementById('hist-pagination').innerHTML='';return;}
   document.getElementById('txlist').innerHTML=page.map((e,i)=>{
     const ri=start+i;
-    const mg=e.brut>0?Math.round(e.profit/e.brut*100):0;
+    const _tot=e.brut+(e.tgNet||0);
+    const mg=_tot>0?Math.round(e.profit/_tot*100):0;
     const pb=e.paidBy||{};
     const pbTag=(v,key)=>'';
     const alL=e.alI&&e.alI.length?e.alI:[];
@@ -1736,7 +1747,7 @@ function rh(){
     const grp=(ttl,arr,tot,col)=>arr.length?`<div style="flex:1;min-width:150px"><div style="font-size:10px;font-weight:700;color:${col};text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;display:flex;justify-content:space-between"><span>${ttl}</span><span>${fmtR(tot)}</span></div>${arr.slice().sort((a,b)=>(b.val||0)-(a.val||0)).map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#9a9aa0;padding:2px 0;border-bottom:0.5px solid #171719"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.name}</span><b style="color:#ccc;white-space:nowrap">${fmtR(x.val)}</b></div>`).join('')}</div>`:'';
     const miscHtml=alL.length?`<div style="margin-top:6px"><button type="button" onclick="var d=document.getElementById('misc-${ri}');var o=d.style.display==='none';d.style.display=o?'block':'none';this.querySelector('.cv').textContent=o?'▴':'▾'" style="background:#161619;border:1px solid #26262c;border-radius:7px;padding:5px 11px;color:#aaa;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;gap:8px">🧾 <b style="color:#ddd">${alL.length} dépense${alL.length>1?'s':''} diverse${alL.length>1?'s':''}</b> · <b style="color:#ddd">${fmtR(alTot)}</b> <span class="cv" style="color:#666;font-size:10px">▾</span></button><div id="misc-${ri}" style="display:none;background:#0e0e0f;border:1px solid #1e1e22;border-radius:8px;padding:11px 14px;margin-top:5px">${alL.slice().sort((a,b)=>(b.val||0)-(a.val||0)).map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#9a9aa0;padding:3px 0;border-bottom:0.5px solid #171719"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.name}</span><b style="color:#ccc;white-space:nowrap">${fmtR(x.val)}</b></div>`).join('')}</div></div>`:'';
     const notesHtml=e.notes?`<div style="font-size:10px;color:#555;margin-top:3px;font-style:italic">💬 ${e.notes}</div>`:'';
-    return `<div class="txrow"><div style="display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0"><span class="txdb">${dl(e.date)}</span>${e.author?`<span style="font-size:9px;padding:1px 6px;border-radius:4px;background:#1a1a1e;color:#8a8a90;border:0.5px solid #2a2a2a;margin-left:4px">${e.author}</span>`:''}<div><div style="font-size:13px;color:#bbb">CA ${fmtR(e.brut)}</div><div style="font-size:11px;color:#444;margin-top:2px;line-height:1.7"><span style="color:#facc15">VA ${fmtR(e.va)}${pbTag(e.va,'va')}</span> · <span style="color:#a78bfa">Modèle ${fmtR(e.mo)}${pbTag(e.mo,'mo')}</span> · <span style="color:#22d3ee">Chat IA ${fmtR(e.ci)}${pbTag(e.ci,'ci')}</span> · <span style="color:#fb923c">Chat Hum. ${fmtR(e.ch)}${pbTag(e.ch,'ch')}</span></div>${miscHtml}${notesHtml}</div></div><div style="display:flex;align-items:center;gap:8px"><div style="text-align:right"><div style="font-size:13px;font-weight:500;color:${e.profit>=0?'#a855f7':'#f87171'}">${e.profit>=0?'+':''}${fmtR(e.profit)}</div><div style="font-size:10px;color:#444;margin-top:2px">${mg}% marge</div></div><div class="row-actions"><button onclick="window.quickNote(${ri})" title="${e.notes?'Note (cliquer pour éditer)':'Ajouter une note partagée'}" style="color:${e.notes?'#a855f7':'#444'}">💬</button><button onclick="window.editEntry(${ri})" title="Modifier" style="color:#facc15">✏</button><button onclick="window.duplicateEntry(${ri})" title="Dupliquer" style="color:#60a5fa">⎘</button><button onclick="deleteEntry(${ri})" title="Supprimer" style="color:#444">✕</button></div></div></div>`;
+    return `<div class="txrow"><div style="display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0"><span class="txdb">${dl(e.date)}</span>${e.author?`<span style="font-size:9px;padding:1px 6px;border-radius:4px;background:#1a1a1e;color:#8a8a90;border:0.5px solid #2a2a2a;margin-left:4px">${e.author}</span>`:''}<div><div style="font-size:13px;color:#bbb">CA ${fmtR(e.brut)}${e.tgNet?` <span style="color:#38bdf8">· Telegram ${fmtR(e.tgNet)}</span>`:''}</div><div style="font-size:11px;color:#444;margin-top:2px;line-height:1.7"><span style="color:#facc15">VA ${fmtR(e.va)}${pbTag(e.va,'va')}</span> · <span style="color:#a78bfa">Modèle ${fmtR(e.mo)}${pbTag(e.mo,'mo')}</span> · <span style="color:#22d3ee">Chat IA ${fmtR(e.ci)}${pbTag(e.ci,'ci')}</span> · <span style="color:#fb923c">Chat Hum. ${fmtR(e.ch)}${pbTag(e.ch,'ch')}</span></div>${miscHtml}${notesHtml}</div></div><div style="display:flex;align-items:center;gap:8px"><div style="text-align:right"><div style="font-size:13px;font-weight:500;color:${e.profit>=0?'#a855f7':'#f87171'}">${e.profit>=0?'+':''}${fmtR(e.profit)}</div><div style="font-size:10px;color:#444;margin-top:2px">${mg}% marge</div></div><div class="row-actions"><button onclick="window.quickNote(${ri})" title="${e.notes?'Note (cliquer pour éditer)':'Ajouter une note partagée'}" style="color:${e.notes?'#a855f7':'#444'}">💬</button><button onclick="window.editEntry(${ri})" title="Modifier" style="color:#facc15">✏</button><button onclick="window.duplicateEntry(${ri})" title="Dupliquer" style="color:#60a5fa">⎘</button><button onclick="deleteEntry(${ri})" title="Supprimer" style="color:#444">✕</button></div></div></div>`;
   }).join('');
   const pg=document.getElementById('hist-pagination');
   pg.innerHTML=totalPages>1?`<button onclick="_histPage=Math.max(0,_histPage-1);rh()" ${_histPage===0?'disabled':''}>‹ Préc.</button><span>${_histPage+1} / ${totalPages}</span><button onclick="_histPage=Math.min(${totalPages-1},_histPage+1);rh()" ${_histPage>=totalPages-1?'disabled':''}>Suiv. ›</button>`:'';
@@ -2355,8 +2366,8 @@ const SUPABASE_URL = 'https://iikqbqxwvccenxmzlmyk.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlpa3FicXh3dmNjZW54bXpsbXlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0NjA4OTUsImV4cCI6MjA5OTAzNjg5NX0.tQUFEnjvcgvTjSq2wEkJNAcVwGIVwTaZmKJzJHGer-c';
 const SUPA_EMAIL = 'fadefluxagency@gmail.com';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-function entryFromDb(r){ return { id:r.id, date:r.date, brut:+r.brut, va:+r.va, mo:+r.mo, ci:+r.ci, ch:+r.ch, alT:+r.al_total, alI:r.al_items||[], profit:+r.profit, paidBy:r.paid_by||{}, notes:r.notes||'', author:r.author||'' }; }
-function entryToDb(e){ return { date:e.date, brut:e.brut||0, va:e.va||0, mo:e.mo||0, ci:e.ci||0, ch:e.ch||0, al_total:(e.alT!=null?e.alT:0), al_items:e.alI||[], profit:e.profit||0, paid_by:e.paidBy||{}, notes:e.notes||null, author:e.author||null }; }
+function entryFromDb(r){ return { id:r.id, date:r.date, brut:+r.brut, va:+r.va, mo:+r.mo, ci:+r.ci, ch:+r.ch, alT:+r.al_total, alI:r.al_items||[], profit:+r.profit, paidBy:r.paid_by||{}, notes:r.notes||'', author:r.author||'', tgNet:+(r.tg_net||0) }; }
+function entryToDb(e){ return { date:e.date, brut:e.brut||0, va:e.va||0, mo:e.mo||0, ci:e.ci||0, ch:e.ch||0, al_total:(e.alT!=null?e.alT:0), al_items:e.alI||[], profit:e.profit||0, paid_by:e.paidBy||{}, notes:e.notes||null, author:e.author||null, tg_net:e.tgNet||0 }; }
 function vaFromDb(v){ return { _db_id:v.id, name:v.name, cat:v.cat, subs:v.subs, ca:+v.ca, net:+v.net, rate:+v.rate, bon:+v.bon, mal:+v.mal, pay:+v.pay, ltv:+v.ltv, ltvNet:+v.ltv_net, profit:+v.profit, pps:+v.pps, currentPeriod:v.current_period, wallet_address:v.wallet_address, last_paid_amount:v.last_paid_amount!=null?+v.last_paid_amount:0, last_paid_date:v.last_paid_date, total_paid:v.total_paid!=null?+v.total_paid:0, history:[], periods:[] }; }
 function vaToDb(v){ return { name:v.name, cat:v.cat||'Autre', subs:v.subs||0, ca:v.ca||0, net:v.net||0, rate:(v.rate!=null?v.rate:0.5), bon:v.bon||0, mal:v.mal||0, pay:v.pay||0, ltv:v.ltv||0, ltv_net:v.ltvNet||0, profit:v.profit||0, pps:v.pps||0, current_period:v.currentPeriod||null }; }
 
@@ -2619,8 +2630,8 @@ function getMonthlyRecap() {
     const d = new Date(e.date);
     const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
     const label = `${months[d.getMonth()]} ${d.getFullYear()}`;
-    if (!map[key]) map[key] = { key, label, brut:0, net:0, va:0, mo:0, ci:0, ch:0, al:0, profit:0, count:0, myAdv:0, assocAdv:0, margin:0 };
-    map[key].brut += e.brut; map[key].net += e.brut*0.78;
+    if (!map[key]) map[key] = { key, label, brut:0, tg:0, net:0, va:0, mo:0, ci:0, ch:0, al:0, profit:0, count:0, myAdv:0, assocAdv:0, margin:0 };
+    map[key].brut += e.brut; map[key].tg += (e.tgNet||0); map[key].net += e.brut*0.78+(e.tgNet||0);
     map[key].va += e.va; map[key].mo += e.mo; map[key].ci += e.ci;
     map[key].ch += e.ch; map[key].al += e.alT; map[key].profit += e.profit;
     map[key].count++;
@@ -2655,21 +2666,21 @@ function renderRecap() {
   });
   const R = v => '$'+Math.round(Math.abs(v)).toLocaleString('en-US');
   const totals = data.reduce((t,r) => {
-    t.brut+=r.brut; t.net+=r.net; t.va+=r.va; t.mo+=r.mo;
+    t.brut+=r.brut; t.tg+=(r.tg||0); t.net+=r.net; t.va+=r.va; t.mo+=r.mo;
     t.ci+=r.ci; t.ch+=r.ch; t.al+=r.al; t.profit+=r.profit; t.myAdv+=r.myAdv; t.assocAdv+=r.assocAdv; return t;
-  }, {brut:0,net:0,va:0,mo:0,ci:0,ch:0,al:0,profit:0,myAdv:0,assocAdv:0});
+  }, {brut:0,tg:0,net:0,va:0,mo:0,ci:0,ch:0,al:0,profit:0,myAdv:0,assocAdv:0});
   const sorted=[...data].sort((a,b)=>a.key.localeCompare(b.key));
   const marginTrend=r=>{const idx=sorted.findIndex(x=>x.key===r.key);if(idx<1)return '';const prev=sorted[idx-1];const diff=r.margin-prev.margin;if(Math.abs(diff)<1)return '<span style="color:#555"> →</span>';return diff>0?'<span style="color:#a855f7"> ↑</span>':'<span style="color:#f87171"> ↓</span>';};
   el.innerHTML = `<div style="overflow-x:auto"><table class="recap-table">
     <thead><tr>
-      <th>Mois</th><th>CA Brut</th><th>Net</th>
+      <th>Mois</th><th>CA Brut</th><th style="color:#38bdf8">Telegram</th><th>Net</th>
       <th>VA</th><th>Modèle</th><th>Chat IA</th><th>Chat Hum.</th><th>Dépenses</th>
       <th>Profit</th><th>Taux marge</th><th style="color:#60a5fa">Avancé Moi</th><th style="color:#e879f9">Avancé Asso.</th>
     </tr></thead>
     <tbody>
       ${data.map(r => {const m=r.net>0?r.profit/r.net*100:0;return `<tr>
         <td>${r.label} <span style="color:#444;font-size:10px">(${r.count})</span></td>
-        <td>${R(r.brut)}</td><td style="color:#60a5fa">${R(r.net)}</td>
+        <td>${R(r.brut)}</td><td style="color:#38bdf8">${R(r.tg||0)}</td><td style="color:#60a5fa">${R(r.net)}</td>
         <td>${R(r.va)}</td><td>${R(r.mo)}</td><td>${R(r.ci)}</td><td>${R(r.ch)}</td><td>${R(r.al)}</td>
         <td style="color:${r.profit>=0?'#a855f7':'#f87171'}">${r.profit>=0?'+':''}${R(r.profit)}</td>
         <td style="color:${m>=50?'#a855f7':m>=20?'#facc15':'#f87171'};font-weight:500">${Math.round(m)}%${marginTrend(r)}</td>
@@ -2677,7 +2688,7 @@ function renderRecap() {
       </tr>`}).join('')}
       <tr style="border-top:0.5px solid #333">
         <td>TOTAL</td>
-        <td>${R(totals.brut)}</td><td style="color:#60a5fa">${R(totals.net)}</td>
+        <td>${R(totals.brut)}</td><td style="color:#38bdf8">${R(totals.tg)}</td><td style="color:#60a5fa">${R(totals.net)}</td>
         <td>${R(totals.va)}</td><td>${R(totals.mo)}</td><td>${R(totals.ci)}</td><td>${R(totals.ch)}</td><td>${R(totals.al)}</td>
         <td style="color:${totals.profit>=0?'#a855f7':'#f87171'}">${totals.profit>=0?'+':''}${R(totals.profit)}</td>
         <td style="color:${totals.net>0&&totals.profit/totals.net*100>=50?'#a855f7':totals.net>0&&totals.profit/totals.net*100>=20?'#facc15':'#f87171'};font-weight:500">${totals.net>0?Math.round(totals.profit/totals.net*100):0}%</td>
@@ -2689,8 +2700,8 @@ function renderRecap() {
 
 function exportRecapCSV() {
   const data = getMonthlyRecap();
-  const headers = ['Mois','Entrées','CA Brut','Net','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Profit','Avancé Moi','Avancé Associé'];
-  const rows = data.map(r => [r.label, r.count, r.brut.toFixed(2), r.net.toFixed(2), r.va.toFixed(2), r.mo.toFixed(2), r.ci.toFixed(2), r.ch.toFixed(2), r.al.toFixed(2), r.profit.toFixed(2), (r.myAdv||0).toFixed(2), (r.assocAdv||0).toFixed(2)]);
+  const headers = ['Mois','Entrées','CA Brut','Telegram','Net','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Profit','Avancé Moi','Avancé Associé'];
+  const rows = data.map(r => [r.label, r.count, r.brut.toFixed(2), (r.tg||0).toFixed(2), r.net.toFixed(2), r.va.toFixed(2), r.mo.toFixed(2), r.ci.toFixed(2), r.ch.toFixed(2), r.al.toFixed(2), r.profit.toFixed(2), (r.myAdv||0).toFixed(2), (r.assocAdv||0).toFixed(2)]);
   const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
   const b = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
@@ -2791,8 +2802,8 @@ function exportData() {
 }
 
 function exportCSV() {
-  const headers = ['Date','CA Brut','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Profit'];
-  const rows = ents.map(e => [e.date, e.brut, e.va, e.mo, e.ci, e.ch, e.alT, e.profit]);
+  const headers = ['Date','CA Brut','Telegram','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Profit'];
+  const rows = ents.map(e => [e.date, e.brut, e.tgNet||0, e.va, e.mo, e.ci, e.ch, e.alT, e.profit]);
   const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
   const b = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
@@ -2846,17 +2857,17 @@ function countUpKPI(id,from){
   requestAnimationFrame(step);
 }
 function se() {
-  const br=gv('ib'); if(!br){flashMsg('se-msg','⚠ Entre au moins un CA Brut','#f87171');const _ib=document.getElementById('ib');if(_ib)_ib.focus();return;}
+  const br=gv('ib'), tg=gv('itg'); if(!br&&!tg){flashMsg('se-msg','⚠ Entre au moins un CA Brut OF ou un Net Telegram','#f87171');const _ib=document.getElementById('ib');if(_ib)_ib.focus();return;}
   const wasEdit=!!_editingId;
   const _oldK={vpr:_kpiNum('vpr'),vb:_kpiNum('vb'),vn:_kpiNum('vn')};
   const va=gv('iv'),mo=gv('im'),ci=gv('ici'),ch=gv('ich');
   const alI=gai(),alT=alI.reduce((s,i)=>s+i.val,0);
   const dateInput=document.getElementById('entry-date-input')?.value;
   const date=dateInput||acd||ts();
-  const profit=Math.round(br*.78-va-mo-ci-ch-alT);
+  const profit=Math.round(br*.78+tg-va-mo-ci-ch-alT);
   const paidBy={va:gpb('pb-iv'),mo:gpb('pb-im'),ci:gpb('pb-ici'),ch:gpb('pb-ich')};
   const notes=document.getElementById('entry-notes')?.value.trim()||'';
-  const entry={date,brut:br,va,mo,ci,ch,alI,alT,profit,paidBy,notes,author:_currentUser};
+  const entry={date,brut:br,tgNet:tg,va,mo,ci,ch,alI,alT,profit,paidBy,notes,author:_currentUser};
   const goal=parseFloat(document.getElementById('monthly-goal')?.value)||0;
   const now=ts().slice(0,7);
   const profitBefore=ents.filter(e=>e.date.slice(0,7)===now).reduce((s,e)=>s+e.profit,0);
@@ -2876,7 +2887,7 @@ function se() {
   }
   const profitAfter=ents.filter(e=>e.date.slice(0,7)===now).reduce((s,e)=>s+e.profit,0);
   checkGoalReached(profitBefore, profitAfter, goal);
-  ['ib','iv','im','ici','ich'].forEach(id=>document.getElementById(id).value='');
+  ['ib','itg','iv','im','ici','ich'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('entry-date-input').value=ts();
   document.getElementById('edlbl').textContent="Entrée pour aujourd'hui — change la date si besoin";
   document.getElementById('ainps').innerHTML='';afs=[];afc=0;
@@ -2899,7 +2910,7 @@ function cancelEdit(){
   document.getElementById('edit-banner').style.display='none';
   document.getElementById('sbtn-text').textContent='+ Enregistrer cette entrée';
   document.getElementById('entry-date-input').value=ts();
-  ['ib','iv','im','ici','ich'].forEach(id=>document.getElementById(id).value='');
+  ['ib','itg','iv','im','ici','ich'].forEach(id=>document.getElementById(id).value='');
   ['pb-iv','pb-im','pb-ici','pb-ich'].forEach(id=>spb(id,'moi'));
   document.getElementById('ainps').innerHTML='';afs=[];afc=0;
   const en=document.getElementById('entry-notes');if(en)en.value='';
@@ -2910,6 +2921,7 @@ window.editEntry = function(idx){
   const entry=gf()[idx]; if(!entry) return;
   _editingId=entry.id;
   document.getElementById('ib').value=entry.brut;
+  document.getElementById('itg').value=entry.tgNet||'';
   document.getElementById('iv').value=entry.va;
   document.getElementById('im').value=entry.mo;
   document.getElementById('ici').value=entry.ci;
@@ -2932,6 +2944,7 @@ window.duplicateEntry = function(idx){
   const entry=gf()[idx]; if(!entry) return;
   _editingId=null;
   document.getElementById('ib').value=entry.brut;
+  document.getElementById('itg').value=entry.tgNet||'';
   document.getElementById('iv').value=entry.va;
   document.getElementById('im').value=entry.mo;
   document.getElementById('ici').value=entry.ci;
@@ -3020,27 +3033,29 @@ function openQuickAdd(){
 }
 function closeQuickAdd(){
   document.getElementById('quickadd-overlay').classList.remove('open');
-  ['qa-brut','qa-va','qa-mo','qa-al'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['qa-brut','qa-tg','qa-va','qa-mo','qa-al'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   const p=document.getElementById('qa-profit');if(p)p.textContent='$0';
 }
 function qaCalc(){
   const br=parseFloat(document.getElementById('qa-brut')?.value)||0;
+  const tg=parseFloat(document.getElementById('qa-tg')?.value)||0;
   const va=parseFloat(document.getElementById('qa-va')?.value)||0;
   const mo=parseFloat(document.getElementById('qa-mo')?.value)||0;
   const al=parseFloat(document.getElementById('qa-al')?.value)||0;
-  const profit=Math.round(br*0.78-va-mo-al);
+  const profit=Math.round(br*0.78+tg-va-mo-al);
   const p=document.getElementById('qa-profit');
   if(p){p.textContent=(profit>=0?'+':'')+fmt(profit);p.style.color=profit>=0?'#a855f7':'#f87171';}
 }
 function quickAddSave(){
   const br=parseFloat(document.getElementById('qa-brut')?.value)||0;
-  if(!br){flashMsg('qa-msg','⚠ Entre au moins un CA Brut','#f87171');const _qb=document.getElementById('qa-brut');if(_qb)_qb.focus();return;}
+  const tg=parseFloat(document.getElementById('qa-tg')?.value)||0;
+  if(!br&&!tg){flashMsg('qa-msg','⚠ Entre au moins un CA Brut OF ou un Net Telegram','#f87171');const _qb=document.getElementById('qa-brut');if(_qb)_qb.focus();return;}
   const va=parseFloat(document.getElementById('qa-va')?.value)||0;
   const mo=parseFloat(document.getElementById('qa-mo')?.value)||0;
   const al=parseFloat(document.getElementById('qa-al')?.value)||0;
   const date=document.getElementById('qa-date')?.value||ts();
-  const profit=Math.round(br*0.78-va-mo-al);
-  const entry={date,brut:br,va,mo,ci:0,ch:0,alI:[],alT:al,profit,paidBy:{},notes:'[ajout rapide]'};
+  const profit=Math.round(br*0.78+tg-va-mo-al);
+  const entry={date,brut:br,tgNet:tg,va,mo,ci:0,ch:0,alI:[],alT:al,profit,paidBy:{},notes:'[ajout rapide]'};
   ents.unshift(entry);
   saveEntry(entry);
   logEdit('Ajout rapide', `${dl(date)} · CA ${fmt(br)} · profit ${fmt(profit)}`);
