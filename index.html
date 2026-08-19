@@ -482,11 +482,11 @@ body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [oncl
   <div class="kpi-hero-grid">
     <div class="kpi kpi-hero" style="border-top-color:#a855f7"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Profit<i class="tip-icon">i</i><span class="tip-box">Net − toutes dépenses. Ce que tu gardes réellement.</span></span></div><div class="kpi-value" style="color:#a855f7" id="vpr">—</div><span class="kpi-delta" id="dvpr" title="vs période précédente"></span><div class="kpi-pct" id="ppr">–</div></div>
     <div class="kpi" style="border-top-color:#fff"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="tip">CA Brut<i class="tip-icon">i</i><span class="tip-box">Chiffre d'affaires total avant toute déduction</span></span></div><div class="kpi-value" style="color:#a855f7" id="vb">—</div><span class="kpi-delta" id="dvb" title="vs période précédente"></span><div class="kpi-pct" id="de">–</div></div>
-    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg><span class="tip">Net<i class="tip-icon">i</i><span class="tip-box">CA Brut OF × 78% + Net Telegram — ce que tu touches réellement</span></span></div><div class="kpi-value" style="color:#a855f7" id="vn">—</div><span class="kpi-delta" id="dvn" title="vs période précédente"></span><div class="kpi-pct" id="pn">–</div></div>
+    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg><span class="tip">Net<i class="tip-icon">i</i><span class="tip-box">CA Brut OF × 80% + Net Telegram — ce que tu touches réellement</span></span></div><div class="kpi-value" style="color:#a855f7" id="vn">—</div><span class="kpi-delta" id="dvn" title="vs période précédente"></span><div class="kpi-pct" id="pn">–</div></div>
   </div>
   <div class="kpi-sec">Dépenses &amp; commission</div>
   <div class="kpi-dep-grid">
-    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label"><span class="tip">Commission<i class="tip-icon">i</i><span class="tip-box">OnlyFans prélève 20% + Skrill 2% = 22% du CA brut</span></span></div><div class="kpi-value" style="color:#eee" id="vof">—</div><div class="kpi-pct">−22% du CA</div></div>
+    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label"><span class="tip">Commission<i class="tip-icon">i</i><span class="tip-box">OnlyFans prélève 20% du CA brut</span></span></div><div class="kpi-value" style="color:#eee" id="vof">—</div><div class="kpi-pct">−20% du CA</div></div>
     <div class="kpi" style="border-top-color:#facc15"><div class="kpi-label"><span class="tip">VA<i class="tip-icon">i</i><span class="tip-box">Paiements versés aux Virtual Assistants</span></span></div><div class="kpi-value" style="color:#eee" id="vva">—</div><div class="kpi-pct" id="pva">–</div></div>
     <div class="kpi" style="border-top-color:#a78bfa"><div class="kpi-label"><span class="tip">Modèle<i class="tip-icon">i</i><span class="tip-box">Paiements versés au/à la modèle</span></span></div><div class="kpi-value" style="color:#eee" id="vmo">—</div><div class="kpi-pct" id="pmo">–</div></div>
     <div class="kpi" style="border-top-color:#22d3ee"><div class="kpi-label"><span class="tip">Chat IA<i class="tip-icon">i</i><span class="tip-box">Coût du chatting automatisé par IA</span></span></div><div class="kpi-value" style="color:#eee" id="vci">—</div><div class="kpi-pct" id="pci">–</div></div>
@@ -648,7 +648,7 @@ body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [oncl
     <div style="margin-bottom:10px"><div class="ilbl">Date</div><input class="ifield" type="date" id="entry-date-input" style="width:160px"></div>
     <div class="sdiv">Revenus</div>
     <div class="ig2" style="margin-bottom:10px">
-      <div><div class="ilbl"><span class="tip">CA Brut OF ($)<i class="tip-icon">i</i><span class="tip-box">Avant commissions — le site applique −22% (OF 20% + Skrill 2%)</span></span></div><input class="ifield" type="number" id="ib" placeholder="ex: 3000" oninput="uk()"></div>
+      <div><div class="ilbl"><span class="tip">CA Brut OF ($)<i class="tip-icon">i</i><span class="tip-box">Avant commissions — le site applique −20% (commission OnlyFans)</span></span></div><input class="ifield" type="number" id="ib" placeholder="ex: 3000" oninput="uk()"></div>
       <div><div class="ilbl"><span class="tip">Net Telegram ($)<i class="tip-icon">i</i><span class="tip-box">Déjà net — ajouté tel quel, sans aucune déduction</span></span></div><input class="ifield" type="number" id="itg" placeholder="ex: 500" oninput="uk()"></div>
     </div>
     <div class="sdiv"><span class="sdot" style="background:#facc15"></span><span style="color:#facc15">VA</span>&nbsp;&nbsp;<span class="sdot" style="background:#a78bfa"></span><span style="color:#a78bfa">Modèle</span>&nbsp;&nbsp;<span class="sdot" style="background:#22d3ee"></span><span style="color:#22d3ee">Chat IA</span>&nbsp;&nbsp;<span class="sdot" style="background:#fb923c"></span><span style="color:#fb923c">Chat Humain</span></div>
@@ -722,11 +722,11 @@ body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [oncl
     <div class="kpi" style="border-top-color:#facc15"><div class="kpi-label"><span class="tip">VA actifs<i class="tip-icon">i</i><span class="tip-box">Nombre de VA enregistrés · TOP / MOY / MAU selon profit/sub</span></span></div><div class="kpi-value" style="color:#facc15" id="vsc">0</div><div class="kpi-pct" id="vslvl">–</div></div>
     <div class="kpi" style="border-top-color:#fff"><div class="kpi-label"><span class="tip">Total subs<i class="tip-icon">i</i><span class="tip-box">Cumul de tous les subs gérés par tes VA</span></span></div><div class="kpi-value" style="color:#fff" id="vss">0</div><div class="kpi-pct">–</div></div>
     <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><span class="tip">CA Brut VA<i class="tip-icon">i</i><span class="tip-box">CA total généré par les VA avant commissions OF</span></span></div><div class="kpi-value" style="color:#60a5fa" id="vsca">$0</div><div class="kpi-pct">avant commissions</div></div>
-    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label"><span class="tip">CA Net VA<i class="tip-icon">i</i><span class="tip-box">CA Brut VA × 78% — après prélèvement OF + Skrill</span></span></div><div class="kpi-value" style="color:#f87171" id="vsnet">$0</div><div class="kpi-pct">−22% fees</div></div>
+    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label"><span class="tip">CA Net VA<i class="tip-icon">i</i><span class="tip-box">CA Brut VA × 80% — après commission OnlyFans</span></span></div><div class="kpi-value" style="color:#f87171" id="vsnet">$0</div><div class="kpi-pct">−20% fees</div></div>
     <div class="kpi" style="border-top-color:#fb923c"><div class="kpi-label"><span class="tip">Total paiements<i class="tip-icon">i</i><span class="tip-box">Somme de tous les paiements versés aux VA</span></span></div><div class="kpi-value" style="color:#fb923c" id="vspa">$0</div><div class="kpi-pct" id="vspap">–</div></div>
     <div class="kpi" style="border-top-color:#a855f7"><div class="kpi-label"><span class="tip">Profit VA<i class="tip-icon">i</i><span class="tip-box">CA Net VA − Total paiements. Marge nette sur tes VA.</span></span></div><div class="kpi-value" style="color:#a855f7" id="vspr">$0</div><div class="kpi-pct" id="vsprp">–</div></div>
     <div class="kpi" style="border-top-color:#e879f9"><div class="kpi-label"><span class="tip">LTV brut<i class="tip-icon">i</i><span class="tip-box">CA brut moyen généré par sub, tous VA confondus</span></span></div><div class="kpi-value" style="color:#e879f9" id="vsltv">$0</div><div class="kpi-pct">CA / sub</div></div>
-    <div class="kpi" style="border-top-color:#a78bfa"><div class="kpi-label"><span class="tip">LTV net<i class="tip-icon">i</i><span class="tip-box">CA net moyen par sub après fees OF+Skrill</span></span></div><div class="kpi-value" style="color:#a78bfa" id="vsltvnet">$0</div><div class="kpi-pct">net / sub</div></div>
+    <div class="kpi" style="border-top-color:#a78bfa"><div class="kpi-label"><span class="tip">LTV net<i class="tip-icon">i</i><span class="tip-box">CA net moyen par sub après commission OnlyFans</span></span></div><div class="kpi-value" style="color:#a78bfa" id="vsltvnet">$0</div><div class="kpi-pct">net / sub</div></div>
   </div>
   <div class="panel" style="margin-bottom:12px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
@@ -1009,7 +1009,7 @@ function rmModelePayment(modelId,idx){
   renderModeles();saveData();
 }
 function renderModeles(){
-  const totalNet=ents.reduce((s,e)=>s+e.brut*0.78+(e.tgNet||0),0);
+  const totalNet=ents.reduce((s,e)=>s+e.brut*0.80+(e.tgNet||0),0);
   const totalDu=modeles.reduce((s,m)=>s+totalNet*(m.split_pct/100),0);
   const totalPaid=modeles.reduce((s,m)=>s+(m.payments||[]).reduce((x,p)=>x+p.amount,0),0);
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
@@ -1564,7 +1564,7 @@ function periodDelta(){
   else if(acd||acdEnd){ start=acd||acdEnd; end=acdEnd||acd; days=Math.max(1,Math.round((new Date(end+'T00:00:00')-new Date(start+'T00:00:00'))/864e5)+1); }
   else return null;
   const pEnd=addD(start,-1), pStart=addD(pEnd,-(days-1));
-  const sums=(a,b)=>{let br=0,tg=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;tg+=e.tgNet||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.78+tg,dep=va+mo+ci+ch+al;return{br,net,dep,pr:net-dep};};
+  const sums=(a,b)=>{let br=0,tg=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;tg+=e.tgNet||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.80+tg,dep=va+mo+ci+ch+al;return{br,net,dep,pr:net-dep};};
   return {curr:sums(start,end),prev:sums(pStart,pEnd)};
 }
 function setDelta(id,curr,prev,inverse){
@@ -1586,7 +1586,7 @@ function renderInsights(){
   const brTot=br+tg;
   if(!f.length||brTot<=0){el.style.display='none';return;}
   const va=f.reduce((s,e)=>s+(e.va||0),0),mo=f.reduce((s,e)=>s+(e.mo||0),0),ci=f.reduce((s,e)=>s+(e.ci||0),0),ch=f.reduce((s,e)=>s+(e.ch||0),0),al=f.reduce((s,e)=>s+(e.alT||0),0);
-  const net=br*.78+tg,dep=va+mo+ci+ch+al,pr=net-dep;
+  const net=br*.80+tg,dep=va+mo+ci+ch+al,pr=net-dep;
   const items=[];
   items.push({ic:'💰',c:pr>=0?'#a855f7':'#f87171',t:'Profit <b>'+fmtR(pr)+'</b> · marge <b>'+Math.round(pr/brTot*100)+'%</b>'});
   const postes=[['Paiement VA',va],['Modèle',mo],['Chat IA',ci],['Chat Humain',ch],['Dép. diverses',al]];
@@ -1615,7 +1615,7 @@ function uk(){
   const ch=f.reduce((s,e)=>s+e.ch,0)+gv('ich');
   const al=f.reduce((s,e)=>s+(e.alT||0),0)+gat();
   const ac=f.reduce((s,e)=>s+(e.alI?e.alI.length:0),0)+gai().length;
-  const of=br*.22,net=br*.78+tg,dep=va+mo+ci+ch+al,pr=net-dep,brTot=br+tg;
+  const of=br*.20,net=br*.80+tg,dep=va+mo+ci+ch+al,pr=net-dep,brTot=br+tg;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
   set('vb',br?fmtR(br):'—');set('vof',br?'−'+fmtR(of):'—');set('vn',brTot?fmtR(net):'—');
   set('vva',va?'−'+fmtR(va):'—');set('vmo',mo?'−'+fmtR(mo):'—');set('vci',ci?'−'+fmtR(ci):'—');set('vch',ch?'−'+fmtR(ch):'—');set('val',al?'−'+fmtR(al):'—');set('vdep',dep?'−'+fmtR(dep):'—');set('vpr',brTot?fmtR(pr):'—');
@@ -1687,7 +1687,7 @@ function uk(){
     });
   }else if(pieWrap){pieWrap.style.display='none';}
   if(net>0){
-    // Base = net (ce que tu touches après OF+Skrill)
+    // Base = net (ce que tu touches après commission OnlyFans)
     const marge = Math.max(0, pr);
     const its=[
       {l:'VA',         v:va,              p:va/net,              c:'#facc15'},
@@ -1698,7 +1698,7 @@ function uk(){
       {l:'Marge nette',v:marge,           p:marge/net,           c:'#a855f7'},
     ].filter(i=>i.v>0||i.l==='Marge nette');
     document.getElementById('bars').innerHTML=
-      `<div style="font-size:9px;color:#444;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">Base : ${fmtR(net)} net (après OF+Skrill)</div>`+
+      `<div style="font-size:9px;color:#444;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">Base : ${fmtR(net)} net (après commission OnlyFans)</div>`+
       its.map(i=>`<div class="brow"><div class="blbl"><span style="width:7px;height:7px;border-radius:50%;background:${i.c};display:inline-block;flex-shrink:0"></span>${i.l}</div><div class="btrk"><div class="bfil" style="width:${Math.min(100,Math.round(i.p*100))}%;background:${i.c}"></div></div><div class="bval">${fmtR(i.v)} · ${Math.round(i.p*100)}%</div></div>`).join('');
   } else {document.getElementById('bars').innerHTML='<div class="emsg">Entre des données ci-dessus</div>';}
   renderDayEvolution();
@@ -1709,7 +1709,7 @@ function se(){
   const va=gv('iv'),mo=gv('im'),ci=gv('ici'),ch=gv('ich');
   const alI=gai(),alT=alI.reduce((s,i)=>s+i.val,0);
   const date=acd||ts();
-  const profit=Math.round(br*.78-va-mo-ci-ch-alT);
+  const profit=Math.round(br*.80-va-mo-ci-ch-alT);
   ents.unshift({date,brut:br,va,mo,ci,ch,alI,alT,profit});
   ['ib','itg','iv','im','ici','ich'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('ainps').innerHTML='';afs=[];afc=0;
@@ -1807,7 +1807,7 @@ function addVA(){
   const bon=parseFloat(document.getElementById('vabon').value)||0;
   const mal=parseFloat(document.getElementById('vamal').value)||0;
   const pay=Math.max(0,subs*rate+bon-mal);
-  const net=parseFloat((ca*0.78).toFixed(2));
+  const net=parseFloat((ca*0.80).toFixed(2));
   const ltv=subs>0?ca/subs:0;
   const ltvNet=subs>0?net/subs:0;
   const profit=parseFloat((net-pay).toFixed(2));
@@ -2053,7 +2053,7 @@ function renderSourceAnalytics(pool){
     <div style="display:grid;grid-template-columns:100px 1fr 1fr 1fr 1fr 55px 55px 1fr;gap:0;font-size:10px;color:#444;text-transform:uppercase;letter-spacing:.05em;padding:0 4px 6px;border-bottom:0.5px solid #222;margin-bottom:4px">
       <span>Source</span>
       <span style="text-align:right"><span class="tip">CA Brut<i class="tip-icon">i</i><span class="tip-box">CA total généré par cette source avant fees</span></span></span>
-      <span style="text-align:right"><span class="tip">Net<i class="tip-icon">i</i><span class="tip-box">CA Brut × 78% après OF 20% + Skrill 2%</span></span></span>
+      <span style="text-align:right"><span class="tip">Net<i class="tip-icon">i</i><span class="tip-box">CA Brut × 80% après commission OnlyFans 20%</span></span></span>
       <span style="text-align:right"><span class="tip">Profit<i class="tip-icon">i</i><span class="tip-box">Net − paiements VA de cette source</span></span></span>
       <span style="text-align:right"><span class="tip">LTV/sub<i class="tip-icon">i</i><span class="tip-box">Revenu moyen généré par sub</span></span></span>
       <span style="text-align:right">Subs</span>
@@ -2311,9 +2311,9 @@ function renderVA(filteredVas, flt){
       <div class="vsr"><span class="vsrl">Prix par sub</span><span class="vsrv" style="color:#fff">$${v.rate.toFixed(2)}</span></div>
       <div class="vsr"><span class="vsrl">Subs gérés</span><span class="vsrv" style="color:#fff">${v.subs.toLocaleString('en-US')}</span></div>
       <div class="vsr"><span class="vsrl">CA Brut</span><span class="vsrv" style="color:#fff">${fmt(v.ca)}</span></div>
-      <div class="vsr"><span class="vsrl">Net après OF+Skrill</span><span class="vsrv" style="color:#60a5fa">${fmt(v.net)} <span style="font-size:10px;color:#444">78%</span></span></div>
+      <div class="vsr"><span class="vsrl">Net après commission OF</span><span class="vsrv" style="color:#60a5fa">${fmt(v.net)} <span style="font-size:10px;color:#444">80%</span></span></div>
       <div class="vsr"><span class="vsrl"><span class="tip">LTV brut / sub<i class="tip-icon">i</i><span class="tip-box">Revenu moyen brut généré par sub</span></span></span><span class="vsrv" style="color:#e879f9">${fmt(v.ltv)}</span></div>
-      <div class="vsr"><span class="vsrl"><span class="tip">LTV net / sub<i class="tip-icon">i</i><span class="tip-box">Revenu net après OF+Skrill par sub</span></span></span><span class="vsrv" style="color:#a78bfa">${fmt(v.ltvNet)} <span style="font-size:10px;color:#444">78%</span></span></div>
+      <div class="vsr"><span class="vsrl"><span class="tip">LTV net / sub<i class="tip-icon">i</i><span class="tip-box">Revenu net après commission OF par sub</span></span></span><span class="vsrv" style="color:#a78bfa">${fmt(v.ltvNet)} <span style="font-size:10px;color:#444">80%</span></span></div>
       <div class="vsr"><span class="vsrl"><span class="tip">Coût % du net<i class="tip-icon">i</i><span class="tip-box">% du net utilisé pour payer ce VA</span></span></span><span class="vsrv ${ccl}">${cps}</span></div>
       <div class="vsr"><span class="vsrl">Base (${fmt(v.rate)} × ${v.subs})</span><span class="vsrv" style="color:#888">${fmt(v.subs*v.rate)}</span></div>
       <div class="vsr"><span class="vsrl">Bonus</span><span class="vsrv" style="color:#a855f7">+${fmt(v.bon)}</span></div>
@@ -2631,7 +2631,7 @@ function getMonthlyRecap() {
     const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
     const label = `${months[d.getMonth()]} ${d.getFullYear()}`;
     if (!map[key]) map[key] = { key, label, brut:0, tg:0, net:0, va:0, mo:0, ci:0, ch:0, al:0, profit:0, count:0, myAdv:0, assocAdv:0, margin:0 };
-    map[key].brut += e.brut; map[key].tg += (e.tgNet||0); map[key].net += e.brut*0.78+(e.tgNet||0);
+    map[key].brut += e.brut; map[key].tg += (e.tgNet||0); map[key].net += e.brut*0.80+(e.tgNet||0);
     map[key].va += e.va; map[key].mo += e.mo; map[key].ci += e.ci;
     map[key].ch += e.ch; map[key].al += e.alT; map[key].profit += e.profit;
     map[key].count++;
@@ -2864,7 +2864,7 @@ function se() {
   const alI=gai(),alT=alI.reduce((s,i)=>s+i.val,0);
   const dateInput=document.getElementById('entry-date-input')?.value;
   const date=dateInput||acd||ts();
-  const profit=Math.round(br*.78+tg-va-mo-ci-ch-alT);
+  const profit=Math.round(br*.80+tg-va-mo-ci-ch-alT);
   const paidBy={va:gpb('pb-iv'),mo:gpb('pb-im'),ci:gpb('pb-ici'),ch:gpb('pb-ich')};
   const notes=document.getElementById('entry-notes')?.value.trim()||'';
   const entry={date,brut:br,tgNet:tg,va,mo,ci,ch,alI,alT,profit,paidBy,notes,author:_currentUser};
@@ -2968,7 +2968,7 @@ window.addVA = function() {
   const bon=parseFloat(document.getElementById('vabon').value)||0;
   const mal=parseFloat(document.getElementById('vamal').value)||0;
   const pay=Math.max(0,subs*rate+bon-mal);
-  const net=parseFloat((ca*0.78).toFixed(2));
+  const net=parseFloat((ca*0.80).toFixed(2));
   const ltv=subs>0?ca/subs:0;
   const ltvNet=subs>0?net/subs:0;
   const profit=parseFloat((net-pay).toFixed(2));
@@ -3042,7 +3042,7 @@ function qaCalc(){
   const va=parseFloat(document.getElementById('qa-va')?.value)||0;
   const mo=parseFloat(document.getElementById('qa-mo')?.value)||0;
   const al=parseFloat(document.getElementById('qa-al')?.value)||0;
-  const profit=Math.round(br*0.78+tg-va-mo-al);
+  const profit=Math.round(br*0.80+tg-va-mo-al);
   const p=document.getElementById('qa-profit');
   if(p){p.textContent=(profit>=0?'+':'')+fmt(profit);p.style.color=profit>=0?'#a855f7':'#f87171';}
 }
@@ -3054,7 +3054,7 @@ function quickAddSave(){
   const mo=parseFloat(document.getElementById('qa-mo')?.value)||0;
   const al=parseFloat(document.getElementById('qa-al')?.value)||0;
   const date=document.getElementById('qa-date')?.value||ts();
-  const profit=Math.round(br*0.78+tg-va-mo-al);
+  const profit=Math.round(br*0.80+tg-va-mo-al);
   const entry={date,brut:br,tgNet:tg,va,mo,ci:0,ch:0,alI:[],alT:al,profit,paidBy:{},notes:'[ajout rapide]'};
   ents.unshift(entry);
   saveEntry(entry);
