@@ -3012,11 +3012,31 @@ async function deleteVAAPI(name) {
   catch (e) { console.warn('Delete VA failed', e); }
 }
 
+// ⚠️ UN AVERTISSEMENT D'ÉCHEC ÉTAIT EFFACÉ PAR UN « ✓ Sauvegardé » DANS LE
+// MÊME BATTEMENT. Séquence réelle de `se()` : `saveEntry` affiche en rouge
+// « ⚠ NON SAUVEGARDÉ — hors ligne », puis `logEdit` → `saveData()` affiche
+// « ✓ Sauvegardé » SANS CONDITION, puis `saveData()` encore, puis « ✓ Entrée
+// enregistrée ». Le rouge n'était donc JAMAIS visible : écrasé avant le moindre
+// rafraîchissement d'écran. Tu fermes, et la journée n'existe pas.
+// Le garde-fou existait bien (« Un échec doit se VOIR ») — il était neutralisé
+// par l'appel suivant.
+// Désormais : un message d'ÉCHEC tient 20 secondes et ne peut pas être remplacé
+// par un message de succès. Seul un autre échec, ou l'expiration, le libère.
+let _echecAffiche = 0;
 function showSaveStatus(msg, color='#a855f7') {
   const el = document.getElementById('save-status');
   if (!el) return;
+  const estEchec = /⚠|NON SAUVEGARD|échec|erreur|hors ligne/i.test(String(msg));
+  const maintenant = Date.now();
+  // Un succès ne recouvre pas un échec récent : c'est tout le problème.
+  if(!estEchec && _echecAffiche && (maintenant - _echecAffiche) < 20000) return;
+  _echecAffiche = estEchec ? maintenant : 0;
   el.textContent = msg; el.style.color = color; el.style.opacity = '1';
-  setTimeout(() => { el.style.opacity = '0'; }, 2500);
+  const duree = estEchec ? 20000 : 2500;   // un échec doit rester lisible
+  setTimeout(() => {
+    // On n'efface que SON propre message (un autre a pu passer entre-temps).
+    if(el.textContent === msg) el.style.opacity = '0';
+  }, duree);
 }
 
 // Message inline (sous un bouton) — remplace les popups alert() et confirme les saisies
