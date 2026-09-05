@@ -1407,7 +1407,55 @@ function gf(){
   const end=new Date((acdEnd||acd)+'T00:00:00');end.setHours(23,59,59,999);
   return ents.filter(e=>{const d=new Date(e.date+'T00:00:00');return d>=start&&d<=end;});
 }
-function gv(id){return parseFloat(document.getElementById(id).value)||0;}
+// 💵 LIRE UN MONTANT TAPÉ À LA MAIN — une seule règle, partout.
+//
+// ⚠️ MESURÉ DANS UN VRAI NAVIGATEUR EN FRANÇAIS (navigator.language = "fr") :
+// dans un champ `type="number"`, taper « 1,000 » en pensant « mille » donne
+// `.value === "1.000"`, donc **1 dollar**. Et « 10,000 » donne **10**.
+// La virgule est lue comme une virgule DÉCIMALE, pas comme un séparateur de
+// milliers — et le navigateur normalise avant que le code ne voie quoi que ce
+// soit : « 1,000 » et « 1.000 » arrivent identiques. Impossible de deviner.
+//
+// Ce qu'on peut savoir avec certitude : **de l'argent n'a jamais 3 décimales**.
+// Donc « 1.000 », « 1.500 », « 10.000 » sont des séparateurs de milliers mal
+// lus. On REFUSE au lieu de deviner — un refus lisible vaut mieux qu'un facteur
+// 1000 sur un virement. Un montant négatif est refusé aussi : `fmtR` l'affiche
+// avec `Math.abs`, donc −500 se lisait « $500 » dans la liste tout en retirant
+// 500 du total.
+function lireMontant(brut){
+  const t = String(brut == null ? "" : brut).trim();
+  if(!t) return { ok:true, valeur:0 };
+  const dec = t.split(".")[1] || "";
+  if(dec.length >= 3){
+    const sans = t.replace(".", "");
+    return { ok:false, valeur:null,
+      erreur:"« "+t.replace(".", ",")+" » : de l'argent n'a jamais 3 décimales. Tu voulais "
+        +"probablement **"+Number(sans).toLocaleString("fr-FR")+" $** — réécris-le sans "
+        +"séparateur de milliers ("+sans+"). Rien n'a été enregistré." };
+  }
+  const v = parseFloat(t);
+  if(!isFinite(v)) return { ok:false, valeur:null, erreur:"Montant illisible : « "+t+" »." };
+  if(v < 0) return { ok:false, valeur:null,
+    erreur:"Montant négatif ("+v+"). La liste l'afficherait en positif tout en le retirant du total. "
+      +"Rien n'a été enregistré." };
+  return { ok:true, valeur:v };
+}
+// Renvoie le montant OU lance : les appelants qui n'ont pas de place pour un
+// message d'erreur (calculs d'aperçu) gardent l'ancien comportement tolérant.
+function gv(id){const e=document.getElementById(id); const r=lireMontant(e&&e.value); return r.ok?r.valeur:0;}
+// Version STRICTE : à utiliser partout où l'argent est ENREGISTRÉ. Rend
+// {ok, valeur, erreur} — l'appelant doit s'arrêter si `ok` est faux.
+function gvStrict(id){const e=document.getElementById(id); return lireMontant(e&&e.value);}
+// Contrôle TOUTES les cases d'argent d'un formulaire avant d'enregistrer.
+// Rend "" si tout va bien, sinon le message à afficher.
+function verifierMontants(ids){
+  for(const id of ids){
+    const e=document.getElementById(id); if(!e) continue;
+    const r=lireMontant(e.value);
+    if(!r.ok) return r.erreur;
+  }
+  return "";
+}
 function addAF(n='',v='',pb='moi'){const id=++afc;afs.push(id);const d=document.createElement('div');d.className='arow';d.id='ar-'+id;const cls=pb==='associe'?'pb-btn assoc':'pb-btn';const txt=pb==='associe'?'Asso.':'Moi';d.innerHTML=`<input class="ifield" style="flex:1" type="text" id="an-${id}" placeholder="Nom (ex: pub Meta)" value="${esc(n)}" list="dep-names" autocomplete="off" oninput="uk()"><input class="ifield" style="width:90px;flex-shrink:0" type="number" id="av-${id}" placeholder="$" value="${v}" oninput="uk()"><button class="${cls}" data-pb="${pb}" onclick="tpb(this);uk()" type="button">${txt}</button><button class="arm" onclick="ra(${id})">×</button>`;document.getElementById('ainps').appendChild(d);}
 function ra(id){const r=document.getElementById('ar-'+id);if(r)r.remove();afs=afs.filter(f=>f!==id);uk();}
 function gat(){return afs.reduce((s,id)=>s+(parseFloat(document.getElementById('av-'+id)?.value)||0),0);}
@@ -3293,6 +3341,18 @@ function countUpKPI(id,from){
   requestAnimationFrame(step);
 }
 function se() {
+  // ⚠️ CONTRÔLE AVANT TOUT CALCUL. Dans un champ `type="number"` en français,
+  // taper « 10,000 » donne `.value === "10.000"` → **10 dollars**. Mesuré dans un
+  // vrai navigateur. Le navigateur normalise avant que le code ne voie quoi que
+  // ce soit : « 10,000 » et « 10.000 » arrivent identiques, impossible de
+  // deviner. Ce qu'on sait, c'est que de l'argent n'a jamais 3 décimales.
+  // On refuse et on propose la réécriture (voir `lireMontant`).
+  {
+    const ids = ['ib','itg','iv','im','ici','ich'].concat(
+      (typeof afs !== 'undefined' ? afs : []).map(function(i){ return 'av-'+i; }));
+    const souci = verifierMontants(ids);
+    if(souci){ flashMsg('se-msg','⚠ '+souci.replace(/\*\*/g,''),'#f87171'); return; }
+  }
   const br=gv('ib'), tg=gv('itg'); if(!br&&!tg){flashMsg('se-msg','⚠ Entre au moins un CA Brut OF ou un Net Telegram','#f87171');const _ib=document.getElementById('ib');if(_ib)_ib.focus();return;}
   const wasEdit=!!_editingId;
   const _oldK={vpr:_kpiNum('vpr'),vb:_kpiNum('vb'),vn:_kpiNum('vn')};
@@ -3612,7 +3672,11 @@ function renderModelShare(){
   el.innerHTML=html;
 }
 function addModelPayment(){
-  const amount=parseFloat(document.getElementById('mp-amount').value)||0;
+  // Même contrôle que l'entrée du jour : « 1,000 » valait 1 dollar, et le tableau
+  // « reste à envoyer » réclamait alors 999 $ de plus que la réalité.
+  const _lu = lireMontant(document.getElementById('mp-amount').value);
+  if(!_lu.ok){ flashMsg('mp-msg','⚠ '+_lu.erreur.replace(/\*\*/g,''),'#f87171'); return; }
+  const amount=_lu.valeur;
   if(!amount){flashMsg('mp-msg','⚠ Entre un montant','#f87171');return;}
   const date=document.getElementById('mp-date').value||ts();
   const note=(document.getElementById('mp-note').value||'').trim();
