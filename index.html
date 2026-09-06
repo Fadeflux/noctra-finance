@@ -350,7 +350,7 @@ input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}
 body.light .vasg .kpi .kpi-value{color:#18181b!important}
 body.light #vspr{color:#15a349!important}
 body.readonly #ro-badge{display:inline-flex!important}
-body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [onclick*="saveData"],body.readonly [onclick*="openQuickAdd"],body.readonly .abtn,body.readonly .avabtn,body.readonly .arm,body.readonly .varm,body.readonly [onclick*="addVirement"],body.readonly [onclick*="addModelePayment"],body.readonly [onclick*="rmModele"],body.readonly [onclick*="clearEditLog"]{display:none!important}
+body.readonly #ca-entry-panel,body.readonly .export-dropdown,body.readonly [onclick*="saveData"],body.readonly [onclick*="openQuickAdd"],body.readonly .abtn,body.readonly .avabtn,body.readonly .arm,body.readonly .varm,body.readonly [onclick*="addVirement"],body.readonly [onclick*="addModelePayment"],body.readonly [onclick*="addModelPayment"],body.readonly [onclick*="deleteModelPayment"],body.readonly [onclick*="rmModelePayment"],body.readonly #mp-amount,body.readonly #mp-note,body.readonly [onclick*="rmModele"],body.readonly [onclick*="clearEditLog"]{display:none!important}
 </style>
 </head>
 <body>
@@ -1251,7 +1251,30 @@ const _dirty={virements:false,modeles:false,editlog:false};
 // modèle est payée deux fois**.
 // `_pushSetting` rend désormais une promesse : l'appelant peut attendre et dire
 // la vérité. Les anciens appelants qui l'ignorent gardent le comportement d'avant.
+// ⚠️ LE MODE LECTURE SEULE N'EMPECHAIT RIEN D'ECRIRE.
+// Il ne posait qu'une classe CSS (`body.readonly`) qui CACHE des boutons. Or :
+//   • la touche Entree dans « Montant envoye » appelle addModelPayment() sans
+//     passer par un bouton — le champ, lui, restait bien visible ;
+//   • le selecteur CSS visait `addModelePayment` (avec un « e ») et laissait donc
+//     `addModelPayment` — deux fonctions differentes aux noms presque identiques ;
+//   • n'importe quelle console de navigateur appelle les fonctions directement.
+// Une garde qui se contourne au clavier n'est pas une garde. On la met LA OU
+// L'ECRITURE PART, une seule fois, pour tous les chemins d'appel.
+function ecritureInterdite(quoi){
+  if(!document.body.classList.contains('readonly')) return false;
+  try{
+    // Le « ⚠ » n'est pas decoratif : showSaveStatus s'en sert pour reconnaitre un
+    // ECHEC, le tenir 20 s a l'ecran, et empecher un « Sauvegarde » de le recouvrir.
+    if(typeof showSaveStatus==='function')
+      showSaveStatus("⚠ Lecture seule — RIEN n'a été enregistré"+(quoi?" ("+quoi+")":"")+".", '#ef4444');
+    else alert("Mode lecture seule : rien n'a été enregistré.");
+  }catch(e){}
+  return true;
+}
 function _pushSetting(key,val){
+  // Refus AVANT l'appel réseau, et on rend `false` : les appelants qui vérifient la
+  // valeur de retour annoncent alors un échec honnête au lieu d'un « Sauvegardé ».
+  if(ecritureInterdite(key)) return Promise.resolve(false);
   try{
     return apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key,value:JSON.stringify(val)})})
       .then(function(){ return true; })
@@ -1266,7 +1289,55 @@ function _pushSetting(key,val){
 async function clearEditLog(){
   if(!await showConfirm('Effacer tout l historique des modifications ? Cette action est irreversible.')) return;
   editLog=[]; _saveEditLog(); saveData(); renderEditLog();
-}function _saveVirements(){ _dirty.virements=true; return _pushSetting('virements',virements); }
+}
+// ⚠️ DEUX APPAREILS SE DÉTRUISAIENT LES PAIEMENTS L'UN L'AUTRE.
+// La liste partait ENTIÈRE, écrasant celle du serveur. Scénario vécu en une soirée :
+// le téléphone et le PC ouverts tous les deux ; le PC ajoute un virement, le
+// téléphone (chargé avant) en supprime un autre et repousse SA liste — le virement
+// du PC disparaît. Aucun message, et le tableau « reste à envoyer » se met à
+// réclamer de l'argent déjà versé : c'est comme ça qu'on paie deux fois.
+// Rien ne permettait de recoller : les paiements n'avaient AUCUN identifiant, et la
+// suppression se faisait par NUMÉRO DE LIGNE — un numéro qui ne veut plus rien dire
+// dès que l'autre appareil a inséré ou retiré quelque chose.
+// Désormais : chaque paiement porte un `id`, les suppressions laissent une trace
+// (« pierre tombale ») le temps de la session, et on RELIT le serveur avant
+// d'écrire. Le résultat = (ce qu'il y a là-bas ∪ ce qu'on a ici) − ce qu'on a
+// vraiment supprimé. Un ajout ne peut plus effacer quoi que ce soit.
+let _VIREMENTS_SUPPRIMES = new Set();
+function _cleVirement(v){
+  return (v && v.id) ? String(v.id)
+       : [v&&v.date, v&&v.amount, (v&&v.note)||''].join('|');
+}
+function _nouvelIdVirement(){
+  return 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+async function _saveVirements(){
+  _dirty.virements = true;
+  if (typeof ecritureInterdite === 'function' && ecritureInterdite('paiements')) return false;
+  try{
+    const dist = await apiFetch('/api/settings');           // ce que le serveur a MAINTENANT
+    let sv = [];
+    try{ sv = JSON.parse((dist && dist.virements) || '[]') || []; }catch(e){ sv = []; }
+    if (Array.isArray(sv) && sv.length){
+      const vus = new Set((virements||[]).map(_cleVirement));
+      const repeches = sv.filter(v => {
+        const c = _cleVirement(v);
+        return !vus.has(c) && !_VIREMENTS_SUPPRIMES.has(c);   // ni déjà là, ni supprimé par nous
+      });
+      if (repeches.length){
+        virements = (virements||[]).concat(repeches)
+          .sort((a,b) => String(a.date||'').localeCompare(String(b.date||'')));
+        console.info('[Paiements] ' + repeches.length + ' paiement(s) d un autre appareil recuperes avant ecriture');
+        try{ if(typeof renderModelShare==='function') renderModelShare(); }catch(e){}
+      }
+    }
+  }catch(e){
+    // Relecture impossible (hors ligne, serveur muet) : on N'ÉCRASE PAS à l'aveugle.
+    console.warn('[Paiements] relecture impossible, ecriture annulee pour ne rien detruire', e);
+    return false;
+  }
+  return _pushSetting('virements', virements);
+}
 // Modèles et journal : eux aussi n'étaient sauvés nulle part (perdus à chaque rechargement).
 function _saveModeles(){ _dirty.modeles=true; _pushSetting('modeles',modeles); }
 function _saveEditLog(){ _dirty.editlog=true; _pushSetting('editlog',editLog.slice(0,200)); }
@@ -1795,10 +1866,27 @@ async function snapshotSiNecessaire(){
     if (!cible) cible = tous[tous.length - 1].i;                                 // sinon le plus ancien
     const contenu = _snapContenu();
     const txt = JSON.stringify(contenu);
-    _settingsCache['snapshot_' + cible] = txt;
-    _pushSetting('snapshot_' + cible, contenu);
-    try{ window.storage.set('crm_snapshot_local', txt); }catch(e){}
-    console.info('[Sauvegarde] point de restauration ' + cible + ' écrit (' + (ents||[]).length + ' entrées)');
+    // ⚠️ ON ANNONÇAIT « POINT DE RESTAURATION ÉCRIT » SANS ATTENDRE LA RÉPONSE.
+    // L'ancien code posait le point dans `_settingsCache` AVANT l'envoi, lançait
+    // `_pushSetting` sans `await` et sans regarder son résultat, puis écrivait
+    // « écrit » dans la console. Si le serveur refusait (hors ligne, jeton expiré,
+    // 500), l'application croyait dur comme fer avoir une sauvegarde : `_snapTous()`
+    // lit ce même cache, et le garde-fou « pas plus d'un point toutes les 20 h »
+    // interdisait alors toute nouvelle tentative pendant 20 h. Le jour où il aurait
+    // fallu restaurer, il n'y avait RIEN — et rien ne l'avait jamais dit.
+    // On attend la confirmation, et on ne note le point que s'il existe vraiment.
+    const okCloud = await _pushSetting('snapshot_' + cible, contenu);
+    if (okCloud){
+      _settingsCache['snapshot_' + cible] = txt;
+      try{ window.storage.set('crm_snapshot_local', txt); }catch(e){}
+      console.info('[Sauvegarde] point de restauration ' + cible + ' écrit (' + (ents||[]).length + ' entrées)');
+    } else {
+      // On NE touche PAS au cache : le prochain passage réessaiera au lieu
+      // d'attendre 20 h derrière un point qui n'existe pas.
+      console.warn('[Sauvegarde] point de restauration ' + cible + ' REFUSÉ par le serveur — non enregistré, nouvelle tentative au prochain passage');
+      try{ if(typeof showSaveStatus==='function' && !document.body.classList.contains('readonly'))
+        showSaveStatus('⚠ Point de restauration NON enregistré (serveur injoignable)', '#ef4444'); }catch(e){}
+    }
   }catch(e){ console.warn('snapshot', e); }
 }
 
@@ -2987,6 +3075,7 @@ async function loadLocal() {
 
 // ── Sauvegarde (API + fallback local) ──
 async function saveData() {
+  if(ecritureInterdite()) return false;
   try {
     await window.storage.set('crm_ents', JSON.stringify(ents));
     await window.storage.set('crm_vas',  JSON.stringify(vas));
@@ -2996,12 +3085,26 @@ async function saveData() {
   } catch {}
   // On ne renvoie au cloud que les listes REELLEMENT modifiees dans cette session,
   // sinon une simple saisie de CA ecrasait les virements ajoutes par l autre associe.
+  // ⚠️ « ✓ Sauvegardé » S'AFFICHAIT SANS RIEN VÉRIFIER. Les trois envois n'étaient
+  // pas attendus et leur résultat n'était pas lu : serveur muet, jeton expiré, mode
+  // lecture seule — le bandeau vert s'affichait quand même. C'est exactement ce qui
+  // fait qu'on croit un chiffre enregistré alors qu'il n'existe que sur l'écran.
+  // Et `virements` passe par `_saveVirements()`, qui RELIT le serveur avant
+  // d'écrire : sans ça, une simple saisie de CA repoussait une liste de paiements
+  // périmée et effaçait ceux de l'autre appareil.
+  let _tous = true;
   try{
-    if(_dirty.virements)_pushSetting('virements',virements);
-    if(_dirty.modeles)_pushSetting('modeles',modeles);
-    if(_dirty.editlog)_pushSetting('editlog',editLog.slice(0,200));
-  }catch(e){}
-  showSaveStatus('✓ Sauvegardé');
+    const _r = await Promise.all([
+      _dirty.virements ? _saveVirements()                              : true,
+      _dirty.modeles   ? _pushSetting('modeles', modeles)              : true,
+      _dirty.editlog   ? _pushSetting('editlog', editLog.slice(0,200)) : true,
+    ]);
+    _tous = _r.every(x => x !== false);
+  }catch(e){ _tous = false; }
+  if(_tous) showSaveStatus('✓ Sauvegardé');
+  else showSaveStatus("⚠ NON SAUVEGARDÉ au cloud — tes chiffres n'existent que sur "
+                      + "cet écran. Vérifie ta connexion avant de fermer.", '#ef4444');
+  return _tous;
 }
 
 async function saveEntry(entry) {
@@ -3731,7 +3834,7 @@ function addModelPayment(){
   if(!amount){flashMsg('mp-msg','⚠ Entre un montant','#f87171');return;}
   const date=document.getElementById('mp-date').value||ts();
   const note=(document.getElementById('mp-note').value||'').trim();
-  virements.push({date,amount,note});
+  virements.push({id:_nouvelIdVirement(),date,amount,note});
   // ⚠️ TROIS DÉFAUTS CUMULÉS ICI, tous silencieux :
   //   • l'erreur partait à la poubelle (`.catch(()=>{})`) ;
   //   • aucun test de `_apiConnected` — hors ligne, la requête partait dans le vide,
@@ -3758,11 +3861,23 @@ function addModelPayment(){
 async function deleteModelPayment(i){
   const v=virements[i]; if(!v)return;
   if(!await showConfirm('Supprimer ce paiement de '+fmtR(v.amount)+' ? Cette action est irreversible.'))return;
+  // ⚠️ CE CHEMIN CONTOURNAIT TOUT. Il appelait `apiFetch` en direct :
+  //   • il ne passait pas par la garde LECTURE SEULE (un lien « ?ro=1 », censé être
+  //     consultable seulement, permettait donc de SUPPRIMER un paiement) ;
+  //   • `.catch(()=>{})` jetait l'échec : le paiement disparaissait de l'écran et
+  //     restait en base, et il réapparaissait au rechargement ;
+  //   • il écrasait la liste du serveur sans la relire.
+  // Tout passe maintenant par `_saveVirements()`.
   logEdit('Suppression paiement modele', dl(v.date)+' - '+fmtR(v.amount));
+  _VIREMENTS_SUPPRIMES.add(_cleVirement(v));   // pour que la fusion ne le ressuscite pas
   virements.splice(i,1);
-  apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key:'virements',value:JSON.stringify(virements)})}).catch(()=>{});
+  renderModelShare();
+  const ok = await _saveVirements();
   try{saveData();}catch(e){}
   renderModelShare();
+  if (ok === false && typeof showSaveStatus === 'function')
+    showSaveStatus("⚠ Suppression NON enregistrée — le paiement est toujours en base. "
+      + "Recharge la page pour voir l état réel.", '#ef4444');
 }
 function renderEditLog(){
   try{renderRecovery();}catch(e){}
