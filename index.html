@@ -1021,7 +1021,17 @@ function renderModeles(){
   set('mod-paid',fmtR(totalPaid));
   const diff=totalDu-totalPaid;
   const deltaEl=document.getElementById('mod-delta');
-  if(deltaEl){deltaEl.textContent=diff<=0?'✅ À jour':'−'+fmtR(diff)+' reste à payer';deltaEl.style.color=diff<=0?'#a855f7':'#f87171';}
+  // ⚠️ TROIS « reste à payer » CONTRADICTOIRES pour la même dette, sur la même
+  // page. Ce bandeau-ci compte les paiements des fiches **plus** ceux saisis dans
+  // la case « Paiement Modèle » des entrées (`moEntries`) ; la fiche de chaque
+  // modèle, juste en dessous, ignore `moEntries`. L'écart vaut exactement la
+  // somme déjà versée par les entrées. Exemple mesuré : bandeau 8 000 $, fiche
+  // 12 000 $ — payer d'après la fiche (le chiffre le plus gros et le plus rouge),
+  // c'est envoyer 4 000 $ de trop.
+  // On ne peut pas répartir `moEntries` par modèle : la case du jour ne dit pas
+  // à qui l'argent est allé. On dit donc lequel des deux fait foi, et la fiche
+  // porte désormais l'avertissement.
+  if(deltaEl){deltaEl.textContent=diff<=0?'✅ À jour':'−'+fmtR(diff)+' reste à payer (chiffre qui fait foi)';deltaEl.style.color=diff<=0?'#a855f7':'#f87171';}
   const el=document.getElementById('modeles-cards');if(!el)return;
   if(!modeles.length){el.innerHTML='<div class="emsg">Aucun modèle ajouté</div>';return;}
   el.innerHTML=modeles.map(m=>{
@@ -1055,6 +1065,12 @@ function renderModeles(){
           <div style="font-size:16px;font-weight:700;color:${resteColor}">${reste>0?fmtR(reste):'✅'}</div>
         </div>
       </div>
+      ${moEntries>0?`<div style="font-size:11px;color:#fbbf24;background:#1a1508;border:0.5px solid #3a2f10;border-radius:5px;padding:8px 10px;margin-bottom:10px;line-height:1.45">
+        ⚠️ <b>Ce « Reste » ne compte que les paiements loggés sur CETTE fiche.</b>
+        ${fmtR(moEntries)} ont aussi été versés via la case « Paiement Modèle » des entrées
+        du jour, sans dire à quelle modèle — impossible de les répartir ici.
+        <b>Le vrai reste global est celui du bandeau en haut</b> (${fmtR(totalDu-totalPaid)}).
+      </div>`:''}
       ${m.notes?`<div style="font-size:11px;color:#555;font-style:italic;margin-bottom:10px">💬 ${esc(m.notes)}</div>`:''}
       <!-- Log paiement -->
       <div style="background:#0e0e0e;border-radius:6px;padding:10px;border:0.5px solid #1a1a1a;margin-bottom:8px">
@@ -1227,15 +1243,30 @@ function renderRapprochement(){
 // toute la liste. On ne réécrit donc que celles réellement modifiées dans la session,
 // sinon une simple saisie de CA (via logEdit → saveData) renvoyait des listes périmées.
 const _dirty={virements:false,modeles:false,editlog:false};
+// ⚠️ TOUTES LES ERREURS ÉTAIENT AVALÉES (`.catch(()=>{})`). Virements, modèles,
+// journal, points de restauration : chaque écriture pouvait échouer sans un mot,
+// pendant que l'écran affichait « ✓ enregistré ». Le cas le plus coûteux : un
+// virement affiché mais absent de la base → au prochain chargement, « déjà
+// envoyé » redescend, « reste à envoyer » remonte du même montant, **et la
+// modèle est payée deux fois**.
+// `_pushSetting` rend désormais une promesse : l'appelant peut attendre et dire
+// la vérité. Les anciens appelants qui l'ignorent gardent le comportement d'avant.
 function _pushSetting(key,val){
-  try{ apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key,value:JSON.stringify(val)})}).catch(()=>{}); }catch(e){}
+  try{
+    return apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key,value:JSON.stringify(val)})})
+      .then(function(){ return true; })
+      .catch(function(e){
+        console.warn('ecriture cloud echouee', key, e);
+        return false;
+      });
+  }catch(e){ return Promise.resolve(false); }
 }
 // Effacer le journal detruit toute la piste d audit : une confirmation s impose,
 // comme pour la suppression d une entree ou d un VA.
 async function clearEditLog(){
   if(!await showConfirm('Effacer tout l historique des modifications ? Cette action est irreversible.')) return;
   editLog=[]; _saveEditLog(); saveData(); renderEditLog();
-}function _saveVirements(){ _dirty.virements=true; _pushSetting('virements',virements); }
+}function _saveVirements(){ _dirty.virements=true; return _pushSetting('virements',virements); }
 // Modèles et journal : eux aussi n'étaient sauvés nulle part (perdus à chaque rechargement).
 function _saveModeles(){ _dirty.modeles=true; _pushSetting('modeles',modeles); }
 function _saveEditLog(){ _dirty.editlog=true; _pushSetting('editlog',editLog.slice(0,200)); }
@@ -3701,10 +3732,28 @@ function addModelPayment(){
   const date=document.getElementById('mp-date').value||ts();
   const note=(document.getElementById('mp-note').value||'').trim();
   virements.push({date,amount,note});
-  apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key:'virements',value:JSON.stringify(virements)})}).catch(()=>{});
+  // ⚠️ TROIS DÉFAUTS CUMULÉS ICI, tous silencieux :
+  //   • l'erreur partait à la poubelle (`.catch(()=>{})`) ;
+  //   • aucun test de `_apiConnected` — hors ligne, la requête partait dans le vide,
+  //     alors que `saveEntry` teste bien ce drapeau ;
+  //   • ce chemin ne passait PAS par `_saveVirements()`, donc `_dirty.virements`
+  //     restait faux et `saveData()` ne repoussait JAMAIS la liste : cette ligne
+  //     était l'UNIQUE tentative d'écriture.
+  // Conséquence : virement à l'écran, absent de la base → au rechargement
+  // « reste à envoyer » remonte → **la modèle est payée deux fois**.
+  const _envoi = _saveVirements();        // pose aussi le drapeau `_dirty`
   try{saveData();}catch(e){}
   document.getElementById('mp-amount').value='';document.getElementById('mp-note').value='';
-  renderModelShare();flashMsg('mp-msg','✓ Paiement enregistré');
+  renderModelShare();
+  Promise.resolve(_envoi).then(function(ok){
+    if(ok === false){
+      flashMsg("mp-msg", "⚠ Paiement NON enregistré au cloud — il n’existe que "
+        + "sur cet écran. Ne le renvoie pas : vérifie ta connexion, recharge, et "
+        + "regarde s’il est là avant de recommencer.", "#f87171");
+    }else{
+      flashMsg('mp-msg','✓ Paiement enregistré');
+    }
+  });
 }
 async function deleteModelPayment(i){
   const v=virements[i]; if(!v)return;
