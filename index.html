@@ -2341,10 +2341,10 @@ function rc(){
   });
 }
 function pp(){
-  const s=parseFloat(document.getElementById('vasubs').value)||0;
+  const s=gv('vasubs');
   const r=parseFloat(document.getElementById('varate').value)||0;
-  const b=parseFloat(document.getElementById('vabon').value)||0;
-  const m=parseFloat(document.getElementById('vamal').value)||0;
+  const b=gv('vabon');
+  const m=gv('vamal');
   const p=Math.max(0,s*r+b-m);
   document.getElementById('pppv').textContent=fmt(p);
   document.getElementById('pppd').textContent=`$${r.toFixed(2)} × ${s} subs + $${b} − $${m}`;
@@ -3638,14 +3638,22 @@ window.duplicateEntry = function(idx){
 window.addVA = function() {
   const n=document.getElementById('van').value.trim(); if(!n){ flashMsg('va-msg','\u26a0 Donne un nom au VA','#f87171'); const _v=document.getElementById('van'); if(_v)_v.focus(); return; }
   const cat=document.getElementById('vac').value;
-  const subs=parseFloat(document.getElementById('vasubs').value)||0;
+  // ⚠️ Mêmes 3 décimales = séparateur de milliers mal lu (voir `lireMontant`).
+  // `varate` est EXCLU : c'est un TAUX (0,5 $/abonné), pas un montant — un taux à
+  // trois décimales est légitime et le refuser serait un faux refus. `vasubs` est
+  // un NOMBRE d'abonnés : il n'a aucune décimale, donc la règle s'y applique.
+  {
+    const souci = verifierMontants(['vasubs','vaca','vabon','vamal']);
+    if(souci){ flashMsg('va-msg','⚠ '+souci.replace(/\*\*/g,''),'#f87171'); return; }
+  }
+  const subs=gv('vasubs');
   const ca=parseFloat(document.getElementById('vaca').value)||0;
   // 0 est une valeur VALIDE : ||0.5 la transformait silencieusement en 0,50 $, ce qui
   // creait une depense fantome (300 subs x 0,50 = 150 $) alors que l apercu affichait 0.
   const _rateRaw=parseFloat(document.getElementById('varate').value);
   const rate=isNaN(_rateRaw)?0.5:_rateRaw;
-  const bon=parseFloat(document.getElementById('vabon').value)||0;
-  const mal=parseFloat(document.getElementById('vamal').value)||0;
+  const bon=gv('vabon');
+  const mal=gv('vamal');
   const pay=Math.max(0,subs*rate+bon-mal);
   const net=parseFloat((ca*0.80).toFixed(2));
   const ltv=subs>0?ca/subs:0;
@@ -3730,22 +3738,32 @@ function closeQuickAdd(){
   const p=document.getElementById('qa-profit');if(p)p.textContent='$0';
 }
 function qaCalc(){
-  const br=parseFloat(document.getElementById('qa-brut')?.value)||0;
-  const tg=parseFloat(document.getElementById('qa-tg')?.value)||0;
-  const va=parseFloat(document.getElementById('qa-va')?.value)||0;
-  const mo=parseFloat(document.getElementById('qa-mo')?.value)||0;
-  const al=parseFloat(document.getElementById('qa-al')?.value)||0;
+  const br=gv('qa-brut');
+  const tg=gv('qa-tg');
+  const va=gv('qa-va');
+  const mo=gv('qa-mo');
+  const al=gv('qa-al');
   const profit=Math.round(br*0.80+tg-va-mo-al);
   const p=document.getElementById('qa-profit');
   if(p){p.textContent=(profit>=0?'+':'')+fmt(profit);p.style.color=profit>=0?'#a855f7':'#f87171';}
 }
 function quickAddSave(){
-  const br=parseFloat(document.getElementById('qa-brut')?.value)||0;
-  const tg=parseFloat(document.getElementById('qa-tg')?.value)||0;
+  // ⚠️ MÊME PIÈGE, DEUXIÈME FORMULAIRE. Le correctif du 05/09 (« 1,000 » tapé
+  // dans une case d'argent valait 1 dollar) a été posé sur l'entrée du jour et
+  // sur le paiement modèle — PAS ici. L'ajout rapide lisait ses cinq montants au
+  // `parseFloat` brut : « 1,000 » y valait toujours 1 $, et le profit était calculé
+  // dessus puis enregistré. Une règle écrite une fois, appliquée à un formulaire
+  // sur deux. On REFUSE au lieu de deviner, comme dans `se()`.
+  {
+    const souci = verifierMontants(['qa-brut','qa-tg','qa-va','qa-mo','qa-al']);
+    if(souci){ flashMsg('qa-msg','⚠ '+souci.replace(/\*\*/g,''),'#f87171'); return; }
+  }
+  const br=gv('qa-brut');
+  const tg=gv('qa-tg');
   if(!br&&!tg){flashMsg('qa-msg','⚠ Entre au moins un CA Brut OF ou un Net Telegram','#f87171');const _qb=document.getElementById('qa-brut');if(_qb)_qb.focus();return;}
-  const va=parseFloat(document.getElementById('qa-va')?.value)||0;
-  const mo=parseFloat(document.getElementById('qa-mo')?.value)||0;
-  const al=parseFloat(document.getElementById('qa-al')?.value)||0;
+  const va=gv('qa-va');
+  const mo=gv('qa-mo');
+  const al=gv('qa-al');
   const date=document.getElementById('qa-date')?.value||ts();
   const profit=Math.round(br*0.80+tg-va-mo-al);
   // La dépense « Autres » doit exister dans alI, sinon le récap des dépenses
