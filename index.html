@@ -3636,7 +3636,7 @@ window.duplicateEntry = function(idx){
 };
 
 window.addVA = function() {
-  const n=document.getElementById('van').value.trim(); if(!n){ flashMsg('va-msg','\u26a0 Donne un nom au VA','#f87171'); const _v=document.getElementById('van'); if(_v)_v.focus(); return; }
+  const n=document.getElementById('van').value.trim(); if(!n){ showSaveStatus('\u26a0 Donne un nom au VA','#f87171'); const _v=document.getElementById('van'); if(_v)_v.focus(); return; }
   const cat=document.getElementById('vac').value;
   // ⚠️ Mêmes 3 décimales = séparateur de milliers mal lu (voir `lireMontant`).
   // `varate` est EXCLU : c'est un TAUX (0,5 $/abonné), pas un montant — un taux à
