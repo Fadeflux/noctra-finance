@@ -3644,7 +3644,7 @@ window.addVA = function() {
   // un NOMBRE d'abonnés : il n'a aucune décimale, donc la règle s'y applique.
   {
     const souci = verifierMontants(['vasubs','vaca','vabon','vamal']);
-    if(souci){ flashMsg('va-msg','⚠ '+souci.replace(/\*\*/g,''),'#f87171'); return; }
+    if(souci){ showSaveStatus('⚠ '+souci.replace(/\*\*/g,''),'#f87171'); return; }
   }
   const subs=gv('vasubs');
   const ca=parseFloat(document.getElementById('vaca').value)||0;

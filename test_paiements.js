@@ -22,7 +22,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const SRC = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+// Un chemin en argument permet de rejouer ce banc sur un AUTRE fichier (l'autre
+// site finance, ou une ancienne version) et de verifier qu'il y echoue bien.
+const CIBLE = process.argv[2] || path.join(__dirname, 'index.html');
+const SRC = fs.readFileSync(CIBLE, 'utf8');
 
 /** Découpe une fonction du fichier source par équilibrage des accolades. */
 function extraire(nom, mot) {
