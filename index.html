@@ -1893,6 +1893,7 @@ async function snapshotSiNecessaire(){
 // Restaure un point : FUSION pour les listes (on n'efface jamais), remplacement
 // des entrées uniquement si le point en contient plus que l'état actuel.
 async function restaurerSnapshot(i){
+  if (ecritureInterdite('restauration de sauvegarde')) return;
   const s = _snapLire(i);
   if (!s){ showSaveStatus('Point de restauration introuvable', '#f87171'); return; }
   const dt = new Date(s.ts);
@@ -3108,6 +3109,15 @@ async function saveData() {
 }
 
 async function saveEntry(entry) {
+  // ⚠️ LA GARDE ÉTAIT POSÉE SUR UN CHEMIN SUR DIX. Le correctif du mode lecture
+  // seule l'avait mise dans `_pushSetting` (réglages + virements) en disant :
+  // « on la met LÀ OÙ L'ÉCRITURE PART, une seule fois, pour tous les chemins
+  // d'appel ». Les écritures d'entrées, de VA, d'objectif, de webhook, d'import
+  // et de restauration n'avaient, elles, que `_apiConnected` — la classe CSS
+  // cache des boutons, mais la touche Entrée, un `onclick` resté visible ou la
+  // console du navigateur passaient tout droit. Prouvé en exécutant le vrai
+  // code : 6 chemins écrivaient, modifiaient ou SUPPRIMAIENT en lecture seule.
+  if (ecritureInterdite('entrée')) return;
   // Un échec doit se VOIR : sinon l'utilisateur lit « ✓ Entrée enregistrée »
   // alors que rien n'est parti au cloud, et la saisie disparaît au rechargement.
   if (!_apiConnected) { showSaveStatus('⚠ NON SAUVEGARDÉ — hors ligne, ne recharge pas la page', '#f87171'); return; }
@@ -3125,12 +3135,14 @@ async function saveEntry(entry) {
 }
 
 async function deleteEntryAPI(id) {
+  if (ecritureInterdite('suppression')) return;
   if (!_apiConnected || !id) return;
   try { await apiFetch(`/api/entries/${id}`, { method: 'DELETE' }); }
   catch (e) { console.warn('Delete entry failed', e); }
 }
 
 async function saveVA(va, historyEntry) {
+  if (ecritureInterdite('VA')) return;
   if (!_apiConnected) return;
   try {
     await apiFetch('/api/va/upsert', {
@@ -3141,6 +3153,7 @@ async function saveVA(va, historyEntry) {
 }
 
 async function deleteVAAPI(name) {
+  if (ecritureInterdite('suppression de VA')) return;
   if (!_apiConnected) return;
   try { await apiFetch(`/api/va/${encodeURIComponent(name)}`, { method: 'DELETE' }); }
   catch (e) { console.warn('Delete VA failed', e); }
@@ -3323,6 +3336,7 @@ function exportVACSV() {
 let _goalTimer = null, _discordTimer = null, _goalWasReached = false;
 function onGoalChange() { uk(); clearTimeout(_goalTimer); _goalTimer = setTimeout(saveMonthlyGoal, 1000); }
 async function saveMonthlyGoal() {
+  if (ecritureInterdite('objectif du mois')) return;
   if (!_apiConnected) return;
   const val = parseFloat(document.getElementById('monthly-goal')?.value) || 0;
   try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: 'monthly_goal', value: val }) }); }
@@ -3335,6 +3349,7 @@ function saveDiscordWebhook() {
   clearTimeout(_webhookTimer);
   _webhookTimer = setTimeout(async () => {
     if (!_apiConnected) return;
+    if (ecritureInterdite('webhook Discord')) return;
     const val = document.getElementById('discord-webhook')?.value.trim() || '';
     try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: 'discord_webhook', value: val }) }); }
     catch (e) { console.warn('Erreur save webhook', e); }
@@ -3426,6 +3441,7 @@ function exportCSV() {
 }
 
 function importData(e) {
+  if (ecritureInterdite('import : il ÉCRASE tout')) return;
   const file = e.target.files[0]; if (!file) return;
   const r = new FileReader();
   r.onload = async ev => {
@@ -3550,6 +3566,7 @@ function se() {
 }
 
 async function updateEntryAPI(id, entry) {
+  if (ecritureInterdite('modification')) return;
   // Échec visible : l'app affichait « ✓ Entrée modifiée » même quand la modification
   // n'était jamais partie au cloud (session expirée, coupure réseau).
   if(!_apiConnected){ showSaveStatus('⚠ MODIFICATION NON SAUVEGARDÉE — hors ligne, ne recharge pas la page','#f87171'); return; }
