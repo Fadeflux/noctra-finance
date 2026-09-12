@@ -1932,11 +1932,30 @@ async function snapshotManuel(){
   for (let i = 1; i <= _SNAP_N && !cible; i++) if (!_snapLire(i)) cible = i;
   if (!cible) cible = tous.length ? tous[tous.length-1].i : 1;
   const contenu = _snapContenu();
-  _settingsCache['snapshot_' + cible] = JSON.stringify(contenu);
-  _pushSetting('snapshot_' + cible, contenu);
-  try{ window.storage.set('crm_snapshot_local', JSON.stringify(contenu)); }catch(e){}
-  try{ renderRecovery(); }catch(e){}
-  showSaveStatus('✓ Point de restauration créé');
+  const _txt = JSON.stringify(contenu);
+  // ⚠️ ON ANNONÇAIT « POINT CRÉÉ » SANS RIEN VÉRIFIER.
+  // Le point était posé dans `_settingsCache` AVANT l'envoi, `_pushSetting`
+  // partait sans `await` et son résultat n'était pas lu, puis le bandeau vert
+  // s'affichait. Si le serveur refusait (hors ligne, jeton expiré, lecture
+  // seule, 500), l'application croyait dur comme fer avoir une sauvegarde :
+  // `_snapTous()` lit ce même cache, et le garde-fou « pas plus d'un point
+  // toutes les 20 h » interdisait alors toute nouvelle tentative. Le jour où il
+  // aurait fallu restaurer, il n'y avait RIEN -- et rien ne l'avait jamais dit.
+  // Le voisin automatique (`snapshotSiNecessaire`) avait été corrigé ; celui
+  // qu'on CLIQUE, non. On attend la confirmation, et on ne note le point que
+  // s'il existe vraiment.
+  const _ok = await _pushSetting('snapshot_' + cible, contenu);
+  if (_ok){
+    _settingsCache['snapshot_' + cible] = _txt;
+    try{ window.storage.set('crm_snapshot_local', _txt); }catch(e){}
+    try{ renderRecovery(); }catch(e){}
+    showSaveStatus('✓ Point de restauration créé');
+  } else {
+    // On NE touche PAS au cache : la prochaine tentative doit repartir de zéro
+    // au lieu d'attendre 20 h derrière un point qui n'existe pas.
+    try{ renderRecovery(); }catch(e){}
+    showSaveStatus("⚠ Point de restauration NON enregistré — rien n'a été sauvegardé.", '#ef4444');
+  }
 }
 
 function renderSnapshots(){
