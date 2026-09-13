@@ -7,10 +7,10 @@
 // 13/09 en corrigeant le centre de contrôle, rattrapé avant publication.
 //
 // Et une garde `typeof X === 'function'` sur un nom qui n'existe nulle part évite
-// l'erreur… en cachant que la fonctionnalité ne tourne JAMAIS. Vu le 13/09 : ce
-// site appelait `renderModelShare` (qui n'existe que chez la jumelle Noctra)
-// après avoir fusionné des virements — la liste n'était pas redessinée et les
-// boutons ✕ visaient de mauvaises lignes.
+// l'erreur… en cachant que la fonctionnalité ne tourne JAMAIS. Vu le 13/09 : un
+// site appelait, après avoir fusionné des virements, une fonction de dessin qu'il
+// n'avait pas — la liste n'était pas redessinée et les boutons ✕ visaient de
+// mauvaises lignes.
 //
 //     node test_page_compile.js [autre/index.html]
 
@@ -45,11 +45,9 @@ console.log('\n-- aucune garde typeof vers un nom qui n’existe nulle part --')
   const NAVIGATEUR = new Set(['window', 'document', 'navigator', 'Notification', 'structuredClone', 'requestIdleCallback',
     'IntersectionObserver', 'ResizeObserver', 'BroadcastChannel', 'AbortController', 'fetch', 'Chart', 'supabase',
     'queueMicrotask', 'crypto', 'caches', 'PushManager', 'ClipboardItem', 'matchMedia', 'requestAnimationFrame']);
-  // Gardes VOULUES, justifiées une par une.
-  const TOLERES = {
-    renderModelShare: 'code commun avec la jumelle Noctra ; ICI c’est renderVirements qui redessine, juste après (test_memoire_partagee le vérifie)',
-    renderVirements: 'code commun avec la jumelle Shinra ; ICI c’est renderModelShare qui redessine, juste avant (test_memoire_partagee le vérifie)',
-  };
+  // Gardes VOULUES, justifiées une par une (aucune aujourd'hui : les deux
+  // fonctions de dessin appelées sous garde existent toutes les deux ici).
+  const TOLERES = {};
   const morts = [];
   const re = /typeof\s+([A-Za-z_$][\w$]*)\s*===?\s*['"]function['"]/g;
   let m;
