@@ -2179,7 +2179,7 @@ function renderInsights(){
   const va=f.reduce((s,e)=>s+(e.va||0),0),mo=f.reduce((s,e)=>s+(e.mo||0),0),ci=f.reduce((s,e)=>s+(e.ci||0),0),ch=f.reduce((s,e)=>s+(e.ch||0),0),al=f.reduce((s,e)=>s+(e.alT||0),0);
   const net=br*.80+tg,dep=va+mo+ci+ch+al,pr=net-dep;
   const items=[];
-  items.push({ic:'💰',c:pr>=0?'#a855f7':'#f87171',t:'Profit <b>'+fmtR(pr)+'</b> · marge <b>'+Math.round(pr/brTot*100)+'%</b>'});
+  items.push({ic:'💰',c:pr>=0?'#a855f7':'#f87171',t:'Profit <b>'+fmtR(pr)+'</b> · marge <b>'+Math.round(pr/net*100)+'%</b>'});
   const postes=[['Paiement VA',va],['Modèle',mo],['Chat IA',ci],['Chat Humain',ch],['Dép. diverses',al]];
   const mx=postes.reduce((a,b)=>b[1]>a[1]?b:a,['',0]);
   if(mx[1]>0)items.push({ic:'🎯',c:'#facc15',t:'Plus gros poste : <b>'+mx[0]+'</b> ('+fmtR(mx[1])+', '+Math.round(mx[1]/brTot*100)+'%)'});
@@ -2335,8 +2335,11 @@ function rh(){
   if(!total){document.getElementById('txlist').innerHTML=_filtreActif?'<div class="emsg">Aucun résultat — <button onclick="document.getElementById(\'hist-search\').value=\'\';setHistPayerFilter(\'tous\',document.getElementById(\'hpf-tous\'));" style="background:none;border:none;color:var(--acc);cursor:pointer;text-decoration:underline;font-size:inherit;font-family:inherit">effacer le filtre</button></div>':'<div class="emsg">Aucune entrée pour cette période</div>';document.getElementById('hist-pagination').innerHTML='';return;}
   document.getElementById('txlist').innerHTML=page.map((e,i)=>{
     const ri=base.indexOf(e);
-    const _tot=e.brut+(e.tgNet||0);
-    const mg=_tot>0?Math.round(e.profit/_tot*100):0;
+    // Marge calculee sur le NET (ce qui arrive vraiment), PAS sur le CA brut.
+    // La commission de la plateforme est un prelevement en amont, pas une perte de
+    // marge : sans aucune depense, la marge doit afficher 100%, pas 78%/80%.
+    const _netL=(e.brut||0)*0.80+(e.tgNet||0);
+    const mg=_netL>0?Math.round(e.profit/_netL*100):0;
     const pb=e.paidBy||{};
     const pbTag=(v,key)=>'';
     const alL=e.alI&&e.alI.length?e.alI:[];
