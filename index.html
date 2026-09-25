@@ -773,8 +773,8 @@ body:not(.light) [style*=";color:#888"],body:not(.light) [style^="color:#888"]{c
   <div id="quickadd-box">
     <h3>⚡ Ajout rapide <span style="font-size:11px;color:#333;float:right">Ctrl+K · Échap pour fermer</span></h3>
     <div class="qa-row">
-      <div><label class="ilbl">CA Brut OF ($)</label><input class="ifield" id="qa-brut" type="number" placeholder="0" oninput="qaCalc()"></div>
-      <div><label class="ilbl" style="color:#38bdf8">Net Telegram ($)</label><input class="ifield" id="qa-tg" type="number" placeholder="0" oninput="qaCalc()"></div>
+      <div><label class="ilbl">CA Net OnlyFans ($)</label><input class="ifield" id="qa-brut" type="number" placeholder="0" oninput="qaCalc()"></div>
+      <div><label class="ilbl" style="color:#38bdf8">CA Net Telegram ($)</label><input class="ifield" id="qa-tg" type="number" placeholder="0" oninput="qaCalc()"></div>
     </div>
     <div class="qa-row">
       <div><label class="ilbl">VA ($)</label><input class="ifield" id="qa-va" type="number" placeholder="0" oninput="qaCalc()"></div>
@@ -871,8 +871,8 @@ body:not(.light) [style*=";color:#888"],body:not(.light) [style^="color:#888"]{c
   <div class="kpi-sec">Résultat</div>
   <div class="kpi-hero-grid">
     <div class="kpi kpi-hero" style="border-top-color:#a855f7"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Profit<i class="tip-icon">i</i><span class="tip-box">Net − toutes dépenses. Ce que tu gardes réellement.</span></span></div><div class="kpi-value" style="color:#a855f7" id="vpr">—</div><span class="kpi-delta" id="dvpr" title="vs période précédente"></span><div class="kpi-pct" id="ppr">–</div></div>
-    <div class="kpi" style="border-top-color:#fff"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="tip">CA Brut<i class="tip-icon">i</i><span class="tip-box">Chiffre d'affaires total avant toute déduction</span></span></div><div class="kpi-value" style="color:#a855f7" id="vb">—</div><span class="kpi-delta" id="dvb" title="vs période précédente"></span><div class="kpi-pct" id="de">–</div></div>
-    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg><span class="tip">Net<i class="tip-icon">i</i><span class="tip-box">CA Brut OF × 80% + Net Telegram — ce que tu touches réellement</span></span></div><div class="kpi-value" style="color:#a855f7" id="vn">—</div><span class="kpi-delta" id="dvn" title="vs période précédente"></span><div class="kpi-pct" id="pn">–</div></div>
+    <div class="kpi" style="border-top-color:#fff"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="tip">Net OnlyFans<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement d’OnlyFans, commission de 20% déjà déduite.</span></span></div><div class="kpi-value" style="color:#a855f7" id="vb">—</div><span class="kpi-delta" id="dvb" title="vs période précédente"></span><div class="kpi-pct" id="de">–</div></div>
+    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg><span class="tip">Net Telegram<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive de Telegram. Aucune commission : c’est du net direct.</span></span></div><div class="kpi-value" style="color:#a855f7" id="vn">—</div><span class="kpi-delta" id="dvn" title="vs période précédente"></span><div class="kpi-pct" id="pn">–</div></div>
   </div>
   <div id="insights-banner" style="display:none;flex-wrap:wrap;align-items:center;gap:12px 26px;background:linear-gradient(100deg,rgba(168,85,247,.06),transparent 55%);border:1px solid #1e1e24;border-radius:12px;padding:13px 18px;margin-bottom:20px"></div>
   <div class="kpi-sec">SAISIE</div>
@@ -886,8 +886,8 @@ body:not(.light) [style*=";color:#888"],body:not(.light) [style^="color:#888"]{c
     <div style="margin-bottom:10px"><div class="ilbl">Date</div><input class="ifield" type="date" id="entry-date-input" style="width:160px"></div>
     <div class="sdiv">Revenus</div>
     <div class="ig2" style="margin-bottom:10px">
-      <div><div class="ilbl"><span class="tip">CA Brut OF ($)<i class="tip-icon">i</i><span class="tip-box">Avant commissions — le site applique −20% (commission OnlyFans)</span></span></div><input class="ifield" type="number" id="ib" placeholder="ex: 3000" oninput="uk()"></div>
-      <div><div class="ilbl"><span class="tip">Net Telegram ($)<i class="tip-icon">i</i><span class="tip-box">Déjà net — ajouté tel quel, sans aucune déduction</span></span></div><input class="ifield" type="number" id="itg" placeholder="ex: 500" oninput="uk()"></div>
+      <div><div class="ilbl"><span class="tip">CA Net OnlyFans ($)<i class="tip-icon">i</i><span class="tip-box">Le montant que tu touches VRAIMENT, après les 20% déjà prélevés par OnlyFans. Le brut correspondant est calculé tout seul.</span></span></div><input class="ifield" type="number" id="ib" placeholder="ex: 3000" oninput="uk()"></div>
+      <div><div class="ilbl"><span class="tip">CA Net Telegram ($)<i class="tip-icon">i</i><span class="tip-box">Telegram n’a aucune commission : ce montant est ajouté tel quel.</span></span></div><input class="ifield" type="number" id="itg" placeholder="ex: 500" oninput="uk()"></div>
     </div>
     <div class="sdiv"><span class="sdot" style="background:#facc15"></span><span style="color:#facc15">VA</span>&nbsp;&nbsp;<span class="sdot" style="background:#a78bfa"></span><span style="color:#a78bfa">Modèle</span>&nbsp;&nbsp;<span class="sdot" style="background:#22d3ee"></span><span style="color:#22d3ee">Chat IA</span>&nbsp;&nbsp;<span class="sdot" style="background:#fb923c"></span><span style="color:#fb923c">Chat Humain</span></div>
     <div style="margin-bottom:10px">
@@ -2112,7 +2112,7 @@ function ajouterChargesHabituelles(){
 function renderEntryWarnings(){
   const box=document.getElementById('entry-warnings'); if(!box) return;
   const w=[];
-  const br=gv('ib'), tg=(typeof gv==='function'&&document.getElementById('itg'))?gv('itg'):0;
+  const br=gv('ib')>0?gv('ib')/_TAUX:0, tg=(typeof gv==='function'&&document.getElementById('itg'))?gv('itg'):0;
   const va=totLP('va'), mo=totLP('mo'), ci=totLP('ci'), ch=totLP('ch');
   const items=gai(), alT=gat();
   const date=document.getElementById('entry-date-input')?.value||'';
@@ -2679,7 +2679,9 @@ function uk(){
   ).forEach(x=>{ if(x) x.style.display=_empty?'none':''; });
   // le titre SAISIE doit rester, il annonce le formulaire
   document.querySelectorAll('#page-ca .kpi-sec').forEach(x=>{ if(x.textContent.trim()==='SAISIE') x.style.display=''; });
-  const br=f.reduce((s,e)=>s+(e.brut||0),0)+gv('ib');
+  // gv('ib') est maintenant du NET : on le reconvertit en brut pour rester
+  // coherent avec e.brut des entrees deja enregistrees.
+  const br=f.reduce((s,e)=>s+(e.brut||0),0)+(gv('ib')>0?gv('ib')/_TAUX:0);
   const tg=f.reduce((s,e)=>s+(e.tgNet||0),0)+gv('itg');
   const va=f.reduce((s,e)=>s+(e.va||0),0)+totLP('va');
   const mo=f.reduce((s,e)=>s+(e.mo||0),0)+totLP('mo');
@@ -2689,19 +2691,18 @@ function uk(){
   const ac=f.reduce((s,e)=>s+(e.alI?e.alI.length:0),0)+gai().length;
   const of=br*.20,net=br*.80+tg,dep=va+mo+ci+ch+al,pr=net-dep,brTot=br+tg;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  set('vb',br?fmtR(br):'—');set('vof',br?'−'+fmtR(of):'—');set('vn',brTot?fmtR(net):'—');
+  // Deux sources de revenu clairement separees, toutes les deux en NET.
+  set('vb',(br*_TAUX)?fmtC(br*_TAUX):'—');set('vof',br?'−'+fmtR(of):'—');set('vn',tg?fmtC(tg):'—');
   set('vva',va?'−'+fmtR(va):'—');set('vmo',mo?'−'+fmtR(mo):'—');set('vci',ci?'−'+fmtR(ci):'—');set('vch',ch?'−'+fmtR(ch):'—');set('val',al?'−'+fmtR(al):'—');set('vdep',dep?'−'+fmtR(dep):'—');
   // Une PERTE doit se voir : fmtR() supprime le signe (Math.abs), et la couleur de la
   // carte Profit était figée en violet dans le HTML -> une perte s'affichait comme un gain.
   set('vpr',brTot?fmtS(pr):'—');
   const _vprEl=document.getElementById('vpr');
   if(_vprEl)_vprEl.style.color = pr<0 ? '#f87171' : 'var(--acc)';
-  // La carte « CA Brut » doit inclure le Telegram, sinon un CA 100% Telegram affichait « — ».
-  set('vb',brTot?fmtR(brTot):'—');
   // Les % se calculent sur le CA TOTAL (OF + Telegram), sinon avec du Telegram
   // les cartes affichaient une marge différente du bandeau d'analyses, et tout
   // passait à « – » quand le CA venait uniquement de Telegram.
-  set('de',f.length?f.length+' entrée(s)':'données saisies');set('pn',tg?'dont Telegram '+fmtR(tg):pct(net,brTot));set('pva',pct(va,brTot));set('pmo',pct(mo,brTot));set('pci',pct(ci,brTot));set('pch',pct(ch,brTot));
+  set('de',f.length?f.length+' entrée(s)':'données saisies');set('pn',net?'soit '+fmtC(net)+' de net au total':'–');set('pva',pct(va,brTot));set('pmo',pct(mo,brTot));set('pci',pct(ci,brTot));set('pch',pct(ch,brTot));
   set('pal',al&&brTot?Math.round(al/brTot*100)+'% · '+ac+' dép.':'–');set('pdep',pct(dep,brTot));set('ppr',brTot?Math.round(pr/brTot*100)+'% du CA':'–');
   const _pd=periodDelta();
   if(_pd){setDelta('dvb',_pd.curr.br,_pd.prev.br);setDelta('dvn',_pd.curr.net,_pd.prev.net);setDelta('dvdep',_pd.curr.dep,_pd.prev.dep,true);setDelta('dvpr',_pd.curr.pr,_pd.prev.pr);}
@@ -3439,8 +3440,8 @@ if (typeof window.Chart === 'undefined') {
   window.Chart = function(){ return { destroy:function(){}, update:function(){}, resize:function(){}, data:{}, options:{} }; };
   window.Chart.defaults = { font:{}, plugins:{} };
 }
-function entryFromDb(r){ return { id:r.id, date:r.date, brut:+r.brut, va:+r.va, mo:+r.mo, ci:+r.ci, ch:+r.ch, alT:+r.al_total, alI:r.al_items||[], vaI:r.va_items||[], moI:r.mo_items||[], ciI:r.ci_items||[], chI:r.ch_items||[], profit:+r.profit, paidBy:r.paid_by||{}, notes:r.notes||'', author:r.author||'', tgNet:+(r.tg_net||0) }; }
-function entryToDb(e){ return { date:e.date, brut:e.brut||0, va:e.va||0, mo:e.mo||0, ci:e.ci||0, ch:e.ch||0, al_total:(e.alT!=null?e.alT:0), al_items:e.alI||[], va_items:e.vaI||[], mo_items:e.moI||[], ci_items:e.ciI||[], ch_items:e.chI||[], profit:e.profit||0, paid_by:e.paidBy||{}, notes:e.notes||null, author:e.author||null, tg_net:e.tgNet||0 }; }
+function entryFromDb(r){ return { id:r.id, date:r.date, brut:+r.brut, va:+r.va, mo:+r.mo, ci:+r.ci, ch:+r.ch, alT:+r.al_total, alI:r.al_items||[], vaI:r.va_items||[], moI:r.mo_items||[], ciI:r.ci_items||[], chI:r.ch_items||[], profit:+r.profit, paidBy:r.paid_by||{}, notes:r.notes||'', author:r.author||'', tgNet:+(r.tg_net||0), ofNet:+(r.of_net||0) }; }
+function entryToDb(e){ return { date:e.date, brut:e.brut||0, va:e.va||0, mo:e.mo||0, ci:e.ci||0, ch:e.ch||0, al_total:(e.alT!=null?e.alT:0), al_items:e.alI||[], va_items:e.vaI||[], mo_items:e.moI||[], ci_items:e.ciI||[], ch_items:e.chI||[], profit:e.profit||0, paid_by:e.paidBy||{}, notes:e.notes||null, author:e.author||null, tg_net:e.tgNet||0, of_net:e.ofNet||0 }; }
 function vaFromDb(v){ return { _db_id:v.id, name:v.name, cat:v.cat, subs:v.subs, ca:+v.ca, net:+v.net, rate:+v.rate, bon:+v.bon, mal:+v.mal, pay:+v.pay, ltv:+v.ltv, ltvNet:+v.ltv_net, profit:+v.profit, pps:+v.pps, currentPeriod:v.current_period, wallet_address:v.wallet_address, last_paid_amount:v.last_paid_amount!=null?+v.last_paid_amount:0, last_paid_date:v.last_paid_date, total_paid:v.total_paid!=null?+v.total_paid:0, history:[], periods:[] }; }
 function vaToDb(v){ return { name:v.name, cat:v.cat||'Autre', subs:v.subs||0, ca:v.ca||0, net:v.net||0, rate:(v.rate!=null?v.rate:0.5), bon:v.bon||0, mal:v.mal||0, pay:v.pay||0, ltv:v.ltv||0, ltv_net:v.ltvNet||0, profit:v.profit||0, pps:v.pps||0, current_period:v.currentPeriod||null }; }
 
@@ -4104,7 +4105,12 @@ function se() {
     const souci = verifierMontants(ids);
     if(souci){ flashMsg('se-msg','⚠ '+souci.replace(/\*\*/g,''),'#f87171'); return; }
   }
-  const br=gv('ib'), tg=gv('itg'); if(!br&&!tg){flashMsg('se-msg','⚠ Entre au moins un CA Brut OF ou un Net Telegram','#f87171');const _ib=document.getElementById('ib');if(_ib)_ib.focus();return;}
+  // On saisit desormais du NET des deux cotes. Le brut OF est DEDUIT (net / 0,80)
+  // et reste stocke : toutes les formules existantes font brut*0,80 et retrouvent
+  // donc exactement le net saisi. of_net garde la valeur tapee comme reference.
+  const _ofNet=gv('ib'), tg=gv('itg');
+  const br=_ofNet>0?_ofNet/_TAUX:0;
+  if(!_ofNet&&!tg){flashMsg('se-msg','⚠ Entre au moins un CA Net OnlyFans ou un CA Net Telegram','#f87171');const _ib=document.getElementById('ib');if(_ib)_ib.focus();return;}
   const wasEdit=!!_editingId;
   const _oldK={vpr:_kpiNum('vpr'),vb:_kpiNum('vb'),vn:_kpiNum('vn')};
   const va=totLP('va'),mo=totLP('mo'),ci=totLP('ci'),ch=totLP('ch');
@@ -4118,7 +4124,7 @@ function se() {
   const _domin=(l)=>{let m=0,a=0;l.forEach(x=>{if(x.paidBy==='associe')a+=x.val;else m+=x.val;});return a>m?'associe':'moi';};
   const paidBy={va:_domin(_vaI),mo:_domin(_moI),ci:_domin(_ciI),ch:_domin(_chI)};
   const notes=document.getElementById('entry-notes')?.value.trim()||'';
-  const entry={date,brut:br,tgNet:tg,va,mo,ci,ch,alI,alT,vaI:_vaI,moI:_moI,ciI:_ciI,chI:_chI,profit,paidBy,notes,author:_currentUser};
+  const entry={date,brut:br,tgNet:tg,va,mo,ci,ch,alI,alT,vaI:_vaI,moI:_moI,ciI:_ciI,chI:_chI,ofNet:_ofNet,profit,paidBy,notes,author:_currentUser};
   const goal=parseFloat(document.getElementById('monthly-goal')?.value)||0;
   const now=ts().slice(0,7);
   const profitBefore=ents.filter(e=>e.date.slice(0,7)===now).reduce((s,e)=>s+e.profit,0);
@@ -4178,6 +4184,9 @@ window.editEntry = function(idx){
   if(!entry.id){ showSaveStatus('\u26a0 Entr\u00e9e pas encore enregistr\u00e9e \u2014 recharge la page avant de la modifier','#f87171'); return; }
   _editingId=entry.id;
   document.getElementById('ib').value=entry.brut;
+  // On reaffiche du NET : soit la valeur saisie, soit le net deduit du brut
+  // pour les anciennes entrees (rien n est perdu).
+  document.getElementById('ib').value = (entry.ofNet>0?entry.ofNet:((entry.brut||0)*_TAUX))||'';
   document.getElementById('itg').value=entry.tgNet||'';
   const _pbE=entry.paidBy||{};
   chargeLP('va', entry.vaI, entry.va, _pbE.va, entry.date);
@@ -4202,6 +4211,9 @@ window.duplicateEntry = function(idx){
   const entry=gf()[idx]; if(!entry) return;
   _editingId=null;
   document.getElementById('ib').value=entry.brut;
+  // On reaffiche du NET : soit la valeur saisie, soit le net deduit du brut
+  // pour les anciennes entrees (rien n est perdu).
+  document.getElementById('ib').value = (entry.ofNet>0?entry.ofNet:((entry.brut||0)*_TAUX))||'';
   document.getElementById('itg').value=entry.tgNet||'';
   const _pbE=entry.paidBy||{};
   chargeLP('va', entry.vaI, entry.va, _pbE.va, entry.date);
@@ -4324,7 +4336,8 @@ function closeQuickAdd(){
   const p=document.getElementById('qa-profit');if(p)p.textContent='$0';
 }
 function qaCalc(){
-  const br=gv('qa-brut');
+  const _ofNetQ=gv('qa-brut');
+  const br=_ofNetQ>0?_ofNetQ/_TAUX:0;
   const tg=gv('qa-tg');
   const va=gv('qa-va');
   const mo=gv('qa-mo');
@@ -4344,7 +4357,8 @@ async function quickAddSave(){
     const souci = verifierMontants(['qa-brut','qa-tg','qa-va','qa-mo','qa-al']);
     if(souci){ flashMsg('qa-msg','⚠ '+souci.replace(/\*\*/g,''),'#f87171'); return; }
   }
-  const br=gv('qa-brut');
+  const _ofNetQ=gv('qa-brut');
+  const br=_ofNetQ>0?_ofNetQ/_TAUX:0;
   const tg=gv('qa-tg');
   if(!br&&!tg){flashMsg('qa-msg','⚠ Entre au moins un CA Brut OF ou un Net Telegram','#f87171');const _qb=document.getElementById('qa-brut');if(_qb)_qb.focus();return;}
   const va=gv('qa-va');
@@ -4357,7 +4371,7 @@ async function quickAddSave(){
   const alIQ = al>0 ? [{name:'Ajout rapide', val:al, paidBy:'moi'}] : [];
   const _vaQ = va>0 ? [{name:'Paiement VA',val:va,paidBy:'moi'}] : [];
   const _moQ = mo>0 ? [{name:'Paiement Modele',val:mo,paidBy:'moi'}] : [];
-  const entry={date,brut:br,tgNet:tg,va,mo,ci:0,ch:0,alI:alIQ,alT:al,vaI:_vaQ,moI:_moQ,profit,paidBy:{},notes:'[ajout rapide]'};
+  const entry={date,brut:br,tgNet:tg,ofNet:_ofNetQ,va,mo,ci:0,ch:0,alI:alIQ,alT:al,vaI:_vaQ,moI:_moQ,profit,paidBy:{},notes:'[ajout rapide]',author:_currentUser};
   ents.unshift(entry);
   // ⚠️ « ✓ ENTRÉE AJOUTÉE » S'AFFICHAIT AVANT DE SAVOIR.
   // `saveEntry` et `saveData` partaient SANS être attendus, et le bandeau vert
