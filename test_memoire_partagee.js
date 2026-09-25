@@ -119,6 +119,19 @@ const AUTRE = 'autresite';   // n'importe quel autre site servi à la même adre
     }
   }
 
+  console.log('\n-- 4bis. aucune cle de stockage partagee avec un AUTRE site --');
+  {
+    // ⚠️ Tous les sites fadeflux.github.io partagent UN SEUL localStorage (meme
+    // origine) : une cle sans prefixe de site est lue et ecrite par les autres. Le
+    // 25/09, cinq cles `crm_*` etaient communes a cette page, a la page finance de
+    // l'autre agence et au CRM — dont `crm_user`, le nom tamponne sur chaque entree.
+    const cles = [...new Set((SRC.match(/localStorage\.[a-zA-Z]+Item\(\s*'[^']+'/g) || [])
+      .map((m) => m.replace(/.*'([^']+)'.*/, '$1')))];
+    V('des cles de stockage sont bien trouvees', cles.length > 0, String(cles.length));
+    const etrangeres = cles.filter((c) => !/^(ccn_|fin_noctra_|sb-)/.test(c));
+    V('toutes les cles portent le prefixe de CE site', etrangeres.length === 0, etrangeres.join(', '));
+  }
+
   console.log('\n-- 5. aucun autre site ni aucune autre agence nommés dans ce dépôt public --');
   {
     // Liste rangée sous forme d'EMPREINTES (sha256 tronqué) : ce banc n'en contient aucun.
