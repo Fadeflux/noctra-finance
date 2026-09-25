@@ -20,7 +20,7 @@ const path = require('path');
 const { Script } = require('vm');
 
 const PAGE = process.argv[2] || path.join(__dirname, 'index.html');
-const SRC = fs.readFileSync(PAGE, 'utf8');
+const SRC = fs.readFileSync(PAGE, 'utf8').replace(/\r\n/g, '\n');
 
 let ko = 0;
 function V(titre, cond, detail = '') {

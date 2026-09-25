@@ -24,7 +24,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CIBLE = process.argv[2] || path.join(__dirname, 'index.html');
-const SRC = fs.readFileSync(CIBLE, 'utf8');
+const SRC = fs.readFileSync(CIBLE, 'utf8').replace(/\r\n/g, '\n');
 
 function extraire(nom) {
   for (const tete of ['async function ' + nom + '(', 'function ' + nom + '(',
@@ -62,8 +62,17 @@ global.dl = (d) => String(d);
 global.closeQuickAdd = () => {};
 global.ents = [];
 global.vas = [];
+// ⚠️ (25/09) LE FAUX MONDE AVAIT PRIS DU RETARD SUR LA PAGE. Depuis « on saisit le
+// NET des deux cotes », `quickAddSave` utilise la constante `_TAUX` : sans elle, l'appel
+// levait un ReferenceError avale par le `try` du banc -> le TEMOIN echouait, donc les
+// deux verifications suivantes ne prouvaient plus rien. On prend le taux DANS la page
+// (pas une copie : une valeur recopiee derive).
+const _mTaux = SRC.match(/const\s+_TAUX\s*=\s*([0-9.]+)/);
+if (!_mTaux) throw new Error('_TAUX introuvable dans la page');
+global._TAUX = Number(_mTaux[1]);
+global._currentUser = 'banc';   // la page tamponne l'auteur de chaque entree
 for (const n of ['rh', 'rc', 'uk', 'rv', 'renderVirements', 'renderModeles', 'renderVA',
-                 'renderVaList', 'renderAll', 'saveVA', 'pp']) {
+                 'renderVaList', 'renderAll', 'saveVA', 'pp', 'showSaveStatus']) {
   if (typeof global[n] !== 'function') global[n] = () => {};
 }
 
@@ -87,29 +96,45 @@ V(global.lireMontant('12.50').ok === true, '... et accepte « 12.50 » (2 decima
 V(global.lireMontant('-500').ok === false, '... et refuse un montant negatif');
 
 // --- 2) L'AJOUT RAPIDE : le formulaire oublie ---
-// TEMOIN : un montant propre doit bien s'enregistrer, sinon ce banc ne prouve rien.
-CHAMPS = { 'qa-brut': '1000', 'qa-tg': '', 'qa-va': '', 'qa-mo': '', 'qa-al': '', 'qa-date': '2026-09-11' };
-ENREGISTRE = []; MESSAGES = [];
-try { global.quickAddSave(); } catch (e) { }
-const temoin = ENREGISTRE.slice();
-V(temoin.length === 1 && temoin[0].brut === 1000,
-  'ajout rapide : « 1000 » enregistre bien 1000 $ (temoin)',
-  'le temoin ne marche pas — le verdict suivant ne vaudrait rien : ' + JSON.stringify(temoin));
+// ⚠️ (25/09) `quickAddSave` est ASYNCHRONE : un `try { } catch {}` synchrone n'attrape
+// RIEN (l'erreur part en promesse rejetee). C'est ce qui a rendu ce banc ROUGE ET MUET
+// pendant que la page evoluait — le temoin echouait sans jamais dire pourquoi. On attend
+// l'appel, et on NOMME l'erreur.
+async function appelAjoutRapide() {
+  try { await global.quickAddSave(); return null; }
+  catch (e) { return String((e && e.message) || e); }
+}
 
-// LE CONTROLE : « 1,000 » (que le navigateur rend « 1.000 ») ne doit RIEN enregistrer.
-CHAMPS['qa-brut'] = '1.000';
-ENREGISTRE = []; MESSAGES = [];
-try { global.quickAddSave(); } catch (e) { }
-V(ENREGISTRE.length === 0,
-  'ajout rapide : « 1,000 » n’enregistre RIEN',
-  'a enregistre ' + JSON.stringify(ENREGISTRE.map((e) => e.brut)) + ' $ au lieu de refuser');
-V(MESSAGES.some((m) => /3 d[ée]cimales/.test(String(m))),
-  '... et l’operateur voit pourquoi',
-  'refus muet : ' + JSON.stringify(MESSAGES));
+(async () => {
+  // TEMOIN : un montant propre doit bien s'enregistrer, sinon ce banc ne prouve rien.
+  CHAMPS = { 'qa-brut': '1000', 'qa-tg': '', 'qa-va': '', 'qa-mo': '', 'qa-al': '', 'qa-date': '2026-09-11' };
+  ENREGISTRE = []; MESSAGES = [];
+  const err1 = await appelAjoutRapide();
+  V(!err1, "ajout rapide : l'appel ne leve aucune erreur", err1);
+  const temoin = ENREGISTRE.slice();
+  // La case « qa-brut » porte desormais le NET encaisse cote OnlyFans ; le brut est
+  // recalcule (net / taux). On verifie les DEUX, sinon un jour l'un des deux partirait
+  // a zero sans que le banc bronche.
+  V(temoin.length === 1 && temoin[0].ofNet === 1000
+      && Math.round(temoin[0].brut) === Math.round(1000 / global._TAUX),
+    'ajout rapide : « 1000 » enregistre 1000 $ nets (et ' + Math.round(1000 / global._TAUX) + ' $ bruts) (temoin)',
+    'le temoin ne marche pas : ' + JSON.stringify(temoin));
 
-// --- 3) `gv` ne fabrique plus un montant a partir d'une saisie refusee ---
-CHAMPS = { 'qa-va': '10.000' };
-V(global.gv('qa-va') !== 10, 'gv() ne rend plus 10 pour « 10,000 »', 'il rend ' + global.gv('qa-va'));
+  // LE CONTROLE : « 1,000 » (que le navigateur rend « 1.000 ») ne doit RIEN enregistrer.
+  CHAMPS['qa-brut'] = '1.000';
+  ENREGISTRE = []; MESSAGES = [];
+  await appelAjoutRapide();
+  V(ENREGISTRE.length === 0,
+    'ajout rapide : « 1,000 » n’enregistre RIEN',
+    'a enregistre ' + JSON.stringify(ENREGISTRE.map((e) => e.brut)) + ' $ au lieu de refuser');
+  V(MESSAGES.some((m) => /3 d[ée]cimales/.test(String(m))),
+    '... et l’operateur voit pourquoi',
+    'refus muet : ' + JSON.stringify(MESSAGES));
 
-console.log('\n' + (ko === 0 ? 'TOUT PASSE' : ko + ' ECHEC(S)'));
-process.exit(ko ? 1 : 0);
+  // --- 3) `gv` ne fabrique plus un montant a partir d'une saisie refusee ---
+  CHAMPS = { 'qa-va': '10.000' };
+  V(global.gv('qa-va') !== 10, 'gv() ne rend plus 10 pour « 10,000 »', 'il rend ' + global.gv('qa-va'));
+
+    console.log('\n' + (ko === 0 ? 'TOUT PASSE' : ko + ' ECHEC(S)'));
+  process.exit(ko ? 1 : 0);
+})();

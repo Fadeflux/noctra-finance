@@ -23,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PAGE = process.argv[2] || path.join(__dirname, 'index.html');
-const SRC = fs.readFileSync(PAGE, 'utf8');
+const SRC = fs.readFileSync(PAGE, 'utf8').replace(/\r\n/g, '\n');
 
 let ko = 0;
 function V(titre, cond, detail = '') {
@@ -156,7 +156,7 @@ const AUTRE = 'autresite';   // n'importe quel autre site servi à la même adre
     for (const f of fichiers) {
       const chemin = f === 'index.html' ? PAGE : path.join(__dirname, f);
       if (!fs.existsSync(chemin)) continue;
-      fs.readFileSync(chemin, 'utf8').split('\n').forEach((l, n) => { if (interdits(l).length) trouves.push(f + ':' + (n + 1)); });
+      fs.readFileSync(chemin, 'utf8').replace(/\r\n/g, '\n').split('\n').forEach((l, n) => { if (interdits(l).length) trouves.push(f + ':' + (n + 1)); });
     }
     V(fichiers.length + ' fichiers relus : aucun nom d’ailleurs', fichiers.length > 0 && trouves.length === 0, trouves.join(', '));
   }
