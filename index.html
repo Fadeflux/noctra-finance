@@ -820,6 +820,18 @@ details.hl-sos>summary:hover{color:#ccc}
 details.hl-sos>summary::before{content:'\25B8';color:#555;font-size:10px;transition:transform .18s}
 details.hl-sos[open]>summary::before{transform:rotate(90deg)}
 details.hl-sos .hl-sosb{padding:0 16px 16px}
+
+/* ── Connexion par identifiant ────────────────────────────────────────── */
+#login-ident{width:100%;background:#141414;border:1px solid #222;border-radius:8px;
+  padding:10px 14px;color:#fff;font-size:14px;outline:none;margin-bottom:10px;
+  text-align:center;letter-spacing:.02em;transition:border-color .15s;
+  font-family:'Inter',system-ui,sans-serif}
+#login-ident::placeholder{letter-spacing:.06em}
+#login-ident:focus{border-color:var(--acc)}
+#login-box{--surf-2-f:var(--surf-2,#141414)}
+#login-ident{background:var(--surf-2,#141414);border-color:var(--line-2,#222);color:var(--ink-1,#fff);border-radius:var(--r-md,8px)}
+body.light #login-ident{background:#f5f5f5;border-color:#ddd;color:#111}
+#login-aide{font-size:10.5px;color:#5a5a62;line-height:1.5;margin:-2px 0 10px}
 </style>
 </head>
 <body>
@@ -828,8 +840,9 @@ details.hl-sos .hl-sosb{padding:0 16px 16px}
     <div class="login-logo">⚡</div>
     <h2>Noctra Finance</h2>
     <p>Ton tableau de bord financier</p>
-    <input id="login-mail" type="email" placeholder="Adresse e-mail" autocomplete="username" style="display:none" onkeydown="if(event.key==='Enter')doLogin()">
+    <input id="login-ident" type="text" placeholder="Identifiant" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter'){document.getElementById('login-input').focus();}">
     <input id="login-input" type="password" placeholder="Mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <div id="login-aide">Ton pr&#233;nom en minuscules. Une ancienne adresse e-mail marche aussi.</div>
     <button id="login-btn" onclick="doLogin()">Accéder →</button>
     <div id="login-error"></div>
   </div>
@@ -3322,6 +3335,53 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 // Rien n'est plus publié, et l'usage quotidien ne change pas.
 function mailRetenu(){ try{ return localStorage.getItem('ccn_mail') || ''; }catch(e){ return ''; } }
 function retenirMail(m){ try{ localStorage.setItem('ccn_mail', m); }catch(e){} }
+// ─────────────────────────────────────────────────────────────────────────
+// CONNEXION PAR IDENTIFIANT (30/09) — « andre » / « manon », plus d'e-mail.
+// GoTrue, l'authentification de Supabase, ne sait se connecter qu'avec une
+// ADRESSE. On en garde donc une cote base, mais personne ne la tape : elle
+// est DERIVEE de l'identifiant.
+// Le domaine `.invalid` est reserve par la norme (RFC 2606) et ne peut
+// appartenir a personne. Ce n'est pas un detail : avec un vrai domaine, une
+// demande de reinitialisation de mot de passe partirait vers une boite que
+// quelqu'un d'autre pourrait posseder -- et ce quelqu'un prendrait le compte.
+// Une adresse complete reste acceptee telle quelle : ceux qui se connectaient
+// deja avant ne sont jamais bloques dehors.
+// ─────────────────────────────────────────────────────────────────────────
+const DOMAINE_IDENT = 'noctra.invalid';
+function identVersMail(v){
+  const s = String(v || '').trim().toLowerCase().replace(/\s+/g, '');
+  if (!s) return '';
+  return s.includes('@') ? s : (s + '@' + DOMAINE_IDENT);
+}
+function identRetenu(){
+  try{ return localStorage.getItem('ccn_ident') || localStorage.getItem('ccn_mail') || ''; }
+  catch(e){ return ''; }
+}
+function retenirIdent(v){ try{ localStorage.setItem('ccn_ident', String(v||'').toLowerCase()); }catch(e){} }
+// Nom affiche et SIGNATURE des entrees : la base savait « Moi », elle saura
+// maintenant qui a saisi.
+function nomAffiche(ident){
+  const s = String(ident || '').split('@')[0].toLowerCase();
+  // Un prenom, pas n'importe quoi : une ancienne adresse complete donnait
+  // « Fadefluxagency » comme signature d'entree. Tout ce qui n'est pas un
+  // prenom simple retombe sur l'ancien comportement.
+  if (!/^[a-z\u00e0-\u00ff-]{2,12}$/.test(s)) return 'Moi';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+function majBadgeIdentite(){
+  const b = document.getElementById('role-badge');
+  if (!b || !_currentUser || _currentUser === 'Moi') return;
+  b.style.display = 'inline-flex';
+  b.textContent = '\ud83d\udc64 ' + _currentUser;
+  b.style.background = 'color-mix(in srgb, var(--acc) 12%, transparent)';
+  b.style.color = 'var(--acc)';
+  b.style.border = '0.5px solid color-mix(in srgb, var(--acc) 45%, transparent)';
+}
+function prefillIdent(){
+  const c = document.getElementById('login-ident');
+  if (c && !c.value) c.value = identRetenu();
+  if (c && !c.value) c.focus(); else { const p = document.getElementById('login-input'); if (p) p.focus(); }
+}
 // Garde CDN : si cdn.jsdelivr est bloque (bloqueur de pub, coupure, panne), window.supabase
 // est absent. Sans cette garde, l exception ici stoppait TOUT le script racine :
 // window.editEntry / duplicateEntry / deleteEntry / addVA n etaient jamais definis et
@@ -3345,35 +3405,37 @@ let _apiConnected = false;
 function getToken() { return localStorage.getItem('ccn_token') || ''; }
 
 async function doLogin() {
+  const champId = document.getElementById('login-ident');
+  const err = document.getElementById('login-error');
+  const ident = champId ? champId.value.trim() : '';
   const val = document.getElementById('login-input').value.trim();
-  if (!val) return;
-  if (!sb) { document.getElementById('login-error').textContent = 'Connexion au service impossible. Vérifie ta connexion internet (ou désactive un bloqueur de pub), puis recharge la page.'; return; }
-  document.getElementById('login-error').textContent = 'Connexion…';
+  if (!ident) { err.textContent = 'Entre ton identifiant.'; if (champId) champId.focus(); return; }
+  if (!val) { err.textContent = 'Entre ton mot de passe.'; return; }
+  if (!sb) { err.textContent = 'Connexion au service impossible. V\u00e9rifie ta connexion internet (ou d\u00e9sactive un bloqueur de pub), puis recharge la page.'; return; }
+  err.textContent = 'Connexion\u2026';
+  const mail = identVersMail(ident);
   let error;
-  // L'adresse vient du navigateur ; à la première connexion, du champ prévu.
-  const _champMail = document.getElementById('login-mail');
-  const _mail = (mailRetenu() || (_champMail ? _champMail.value.trim() : '')).toLowerCase();
-  if (!_mail) {
-    // On ne devine pas : on MONTRE le champ et on dit pourquoi.
-    if (_champMail) { _champMail.style.display = ''; _champMail.focus(); }
-    document.getElementById('login-error').textContent =
-      'Première connexion sur cet appareil : entre aussi ton adresse e-mail.';
-    return;
-  }
-  try { ({ error } = await sb.auth.signInWithPassword({ email: _mail, password: val })); }
+  try { ({ error } = await sb.auth.signInWithPassword({ email: mail, password: val })); }
   catch (e) { error = e; }
   if (error) {
     document.getElementById('login-input').value = '';
-    const _m=String((error&&(error.message||error))||'');
-    const _reseau=/fetch|network|Failed to fetch|NetworkError|timeout/i.test(_m);
-    document.getElementById('login-error').textContent = _reseau ? 'Connexion impossible \u2014 v\u00e9rifie ta connexion internet puis r\u00e9essaie.' : 'Mot de passe incorrect';
+    const _m = String((error && (error.message || error)) || '');
+    const _reseau = /fetch|network|Failed to fetch|NetworkError|timeout/i.test(_m);
+    // Message unique : dire « cet identifiant n'existe pas » apprendrait a un
+    // inconnu quels comptes essayer.
+    err.textContent = _reseau
+      ? 'Connexion impossible \u2014 v\u00e9rifie ta connexion internet puis r\u00e9essaie.'
+      : 'Identifiant ou mot de passe incorrect';
     return;
   }
-  retenirMail(_mail);   // connexion reussie : on retient l'adresse pour la suite
+  retenirIdent(ident);
+  retenirMail(mail);
+  try { setUser(nomAffiche(ident)); } catch(e){}
   localStorage.setItem('ccn_role', 'owner');
-  document.getElementById('login-error').textContent = '';
+  err.textContent = '';
   document.getElementById('login-overlay').style.display = 'none';
   applyRoleUI();
+  majBadgeIdentite();
   loadData().then(restoreTab);
 }
 
@@ -4734,12 +4796,18 @@ if('serviceWorker' in navigator){
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 (async () => {
+  try { prefillIdent(); } catch (e) {}
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session) {
       localStorage.setItem('ccn_role', 'owner');
       document.getElementById('login-overlay').style.display = 'none';
       applyRoleUI();
+      // Qui est connecte ? L'adresse de la session fait foi -- pas le dernier
+      // nom laisse dans ce navigateur.
+      const _mailSession = (session.user && session.user.email) || '';
+      if (_mailSession) { try { setUser(nomAffiche(_mailSession)); retenirIdent(_mailSession.split('@')[0]); } catch (e) {} }
+      majBadgeIdentite();
       await loadData();
       restoreTab();
     }
