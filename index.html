@@ -745,6 +745,81 @@ body:not(.light) [style*=";color:#888"],body:not(.light) [style^="color:#888"]{c
     padding:9px 12px;font-size:12px;box-shadow:var(--sh-3)}
 }
 
+
+/* ── RECAP : vue par mois, lisible sans scroll horizontal ────────────── */
+.rc-switch{display:inline-flex;background:#141417;border:1px solid #232329;border-radius:8px;padding:2px;gap:2px}
+.rc-sw{border:none;background:transparent;color:#777;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.rc-sw.on{background:var(--acc);color:var(--acc-ink)}
+.rc-exp{background:#141417;border:1px solid #232329;border-radius:8px;padding:6px 13px;color:#888;font-size:11px;cursor:pointer;font-family:inherit}
+.rc-exp:hover{color:#ccc;border-color:#333}
+.rc-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}
+.rc-sc{background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:13px 14px;border-top:2px solid transparent}
+.rc-sl{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.rc-sv{font-size:21px;font-weight:600;letter-spacing:-.02em;margin-top:5px;font-variant-numeric:tabular-nums}
+.rc-ss{font-size:10.5px;color:#5c5c63;margin-top:3px}
+.rc-cmp{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rc-cmpi{flex:1;min-width:120px}
+.rc-cmpl{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.05em}
+.rc-cmpv{font-size:15px;font-weight:600;margin-top:3px;font-variant-numeric:tabular-nums}
+.rc-d{font-size:11px;font-weight:600;padding:1px 6px;border-radius:20px;margin-left:5px;white-space:nowrap}
+.rc-m{background:#111;border:1px solid #1a1a1a;border-radius:10px;margin-bottom:8px;overflow:hidden;transition:border-color .15s}
+.rc-m:hover{border-color:#26262c}
+.rc-m.open{border-color:#2c2c34}
+.rc-mh{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;user-select:none}
+.rc-mh:hover{background:#131316}
+.rc-cv{width:15px;color:#555;font-size:10px;flex-shrink:0;transition:transform .18s}
+.rc-m.open .rc-cv{transform:rotate(90deg);color:var(--acc)}
+.rc-mn{font-size:13.5px;color:#ddd;font-weight:500;min-width:88px}
+.rc-me{font-size:10.5px;color:#55555c;margin-top:2px}
+.rc-mr{margin-left:auto;text-align:right;display:flex;align-items:center;gap:12px}
+.rc-mp{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.rc-badge{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;min-width:44px;text-align:center}
+.rc-bar{display:flex;height:7px;border-radius:4px;overflow:hidden;background:#17171a;margin:0 15px 13px}
+.rc-bar i{display:block;height:100%}
+.rc-det{padding:0 15px 15px;border-top:1px solid #1a1a1a;margin-top:2px}
+.rc-grp{margin-top:13px}
+.rc-gt{font-size:9.5px;color:#5a5a62;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:7px}
+.rc-l{display:flex;align-items:center;gap:9px;padding:5px 0;font-size:12px}
+.rc-l b{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.rc-ln{color:#9a9aa2}
+.rc-lp{margin-left:auto;color:#5a5a62;font-size:10.5px;font-variant-numeric:tabular-nums}
+.rc-lv{color:#cfcfd6;font-variant-numeric:tabular-nums;min-width:72px;text-align:right}
+.rc-tot{display:flex;align-items:center;gap:9px;padding:9px 0 0;margin-top:5px;border-top:1px solid #1a1a1a;font-size:12.5px;color:#ddd;font-weight:500}
+.rc-tot span:last-child{margin-left:auto;font-variant-numeric:tabular-nums}
+@media(max-width:640px){
+  .rc-mh{gap:9px;padding:12px 13px;flex-wrap:wrap}
+  .rc-mr{width:100%;margin-left:24px;justify-content:flex-start;gap:10px}
+  .rc-bar{margin:0 13px 12px}.rc-det{padding:0 13px 13px}
+  .rc-sv{font-size:19px}
+}
+/* ── HISTORIQUE : groupe par jour, filtrable ──────────────────────────── */
+.hl-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.hl-chip{background:#141417;border:1px solid #232329;border-radius:20px;padding:5px 13px;color:#888;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.hl-chip:hover{color:#ccc;border-color:#33333b}
+.hl-chip.on{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.hl-chip u{text-decoration:none;opacity:.6;margin-left:5px;font-weight:500}
+.hl-s{flex:1;min-width:150px;background:#0e0e10;border:1px solid #232329;border-radius:8px;padding:7px 12px;color:#ddd;font-size:12px;font-family:inherit;outline:none}
+.hl-s:focus{border-color:var(--acc)}
+.hl-day{display:flex;align-items:center;gap:10px;margin:18px 0 4px;font-size:10px;color:#5a5a62;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+.hl-day:first-child{margin-top:0}
+.hl-day i{flex:1;height:1px;background:#1c1c20;font-style:normal}
+.hl-day u{text-decoration:none;color:#44444b;font-weight:600;letter-spacing:.03em}
+.hl-r{display:flex;align-items:flex-start;gap:11px;padding:8px 9px;border-radius:7px;transition:background .12s}
+.hl-r:hover{background:#131316}
+.hl-t{font-size:10.5px;color:#4d4d55;min-width:38px;flex-shrink:0;margin-top:2px;font-variant-numeric:tabular-nums}
+.hl-b{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.hl-c{min-width:0;flex:1}
+.hl-a{font-size:11.5px;font-weight:600;color:#c8c8d0}
+.hl-d{font-size:11.5px;color:#7a7a83;margin-top:2px;word-break:break-word}
+.hl-more{width:100%;background:#131316;border:1px solid #232329;border-radius:8px;padding:9px;color:#888;font-size:11.5px;cursor:pointer;font-family:inherit;margin-top:12px}
+.hl-more:hover{color:#ccc;border-color:#33333b}
+details.hl-sos{background:#0f0f11;border:1px solid #1c1c22;border-radius:10px;margin-top:16px}
+details.hl-sos>summary{cursor:pointer;padding:13px 16px;font-size:12px;color:#8a8a93;list-style:none;display:flex;align-items:center;gap:8px}
+details.hl-sos>summary::-webkit-details-marker{display:none}
+details.hl-sos>summary:hover{color:#ccc}
+details.hl-sos>summary::before{content:'\25B8';color:#555;font-size:10px;transition:transform .18s}
+details.hl-sos[open]>summary::before{transform:rotate(90deg)}
+details.hl-sos .hl-sosb{padding:0 16px 16px}
 </style>
 </head>
 <body>
@@ -807,8 +882,6 @@ body:not(.light) [style*=";color:#888"],body:not(.light) [style^="color:#888"]{c
 </div>
 <nav class="sidebar" id="sidebar">
   <button class="tab active" onclick="sw('ca',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 4-6"/></svg><span>Dashboard</span></button>
-  <button class="tab" onclick="sw('va',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M17 8h4M19 6v4"/></svg><span>VA</span></button>
-  <button class="tab" onclick="sw('modeles',this);renderModeles()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Modèles</span></button>
   <button class="tab" onclick="sw('recap',this);renderRecap()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span>Récap</span></button>
   <button class="tab" onclick="sw('editlog',this);renderEditLog()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg><span>Historique</span></button>
 </nav>
@@ -831,7 +904,6 @@ body:not(.light) [style*=";color:#888"],body:not(.light) [style^="color:#888"]{c
       <button class="export-dropdown-btn">Exporter ▾</button>
       <div class="export-menu">
         <button onclick="exportCSV()">⬇ CSV Entrées</button>
-        <button onclick="exportVACSV()">⬇ CSV VAs</button>
         <button onclick="exportRecapCSV()">⬇ CSV Récap</button>
         <button onclick="exportData()">⬇ JSON (backup)</button>
         <label>⬆ Importer JSON<input type="file" accept=".json" onchange="importData(event)" style="display:none"></label>
@@ -1072,242 +1144,49 @@ body:not(.light) [style*=";color:#888"],body:not(.light) [style^="color:#888"]{c
 </div>
 
 <!-- PAGE VA -->
-<div class="page" id="page-va">
-  <div class="dash-header">
-    <div><div class="dash-title">Gestion des VA</div><div class="dash-sub" id="va-period-label">Toutes les périodes</div></div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-      <select class="ifield" id="filter-month" onchange="rv()" style="width:auto;padding:6px 10px;font-size:12px;background:#1a1a1a;border-color:#333;color:#ccc">
-        <option value="">Tous les mois</option>
-        <option value="1">Janvier</option><option value="2">Février</option><option value="3">Mars</option>
-        <option value="4">Avril</option><option value="5">Mai</option><option value="6">Juin</option>
-        <option value="7">Juillet</option><option value="8">Août</option><option value="9">Septembre</option>
-        <option value="10">Octobre</option><option value="11">Novembre</option><option value="12">Décembre</option>
-      </select>
-      <select class="ifield" id="filter-year" onchange="rv()" style="width:auto;padding:6px 10px;font-size:12px;background:#1a1a1a;border-color:#333;color:#ccc">
-        <option value="">Toutes années</option>
-        <option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
-      </select>
-      <select class="ifield" id="filter-range" onchange="rv()" style="width:auto;padding:6px 10px;font-size:12px;background:#1a1a1a;border-color:#333;color:#ccc">
-        <option value="">01-15 et 15-30</option>
-        <option value="01-15">01-15</option>
-        <option value="15-30">15-30</option>
-      </select>
-      <button onclick="resetPeriodFilter()" style="background:#1a1a1a;border:0.5px solid #333;border-radius:6px;padding:6px 10px;color:#666;font-size:12px;cursor:pointer">↺ Reset</button>
-    </div>
-  </div>
-  <div class="vasg">
-    <div class="kpi" style="border-top-color:#facc15"><div class="kpi-label"><span class="tip">VA actifs<i class="tip-icon">i</i><span class="tip-box">Nombre de VA enregistrés · TOP / MOY / MAU selon profit/sub</span></span></div><div class="kpi-value" style="color:#facc15" id="vsc">0</div><div class="kpi-pct" id="vslvl">–</div></div>
-    <div class="kpi" style="border-top-color:#fff"><div class="kpi-label"><span class="tip">Total subs<i class="tip-icon">i</i><span class="tip-box">Cumul de tous les subs gérés par tes VA</span></span></div><div class="kpi-value" style="color:#fff" id="vss">0</div><div class="kpi-pct">–</div></div>
-    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><span class="tip">CA Brut VA<i class="tip-icon">i</i><span class="tip-box">CA total généré par les VA avant commissions OF</span></span></div><div class="kpi-value" style="color:#60a5fa" id="vsca">$0</div><div class="kpi-pct">avant commissions</div></div>
-    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label"><span class="tip">CA Net VA<i class="tip-icon">i</i><span class="tip-box">CA Brut VA × 80% — après commission OnlyFans</span></span></div><div class="kpi-value" style="color:#f87171" id="vsnet">$0</div><div class="kpi-pct">−20% fees</div></div>
-    <div class="kpi" style="border-top-color:#fb923c"><div class="kpi-label"><span class="tip">Total paiements<i class="tip-icon">i</i><span class="tip-box">Somme de tous les paiements versés aux VA</span></span></div><div class="kpi-value" style="color:#fb923c" id="vspa">$0</div><div class="kpi-pct" id="vspap">–</div></div>
-    <div class="kpi" style="border-top-color:#a855f7"><div class="kpi-label"><span class="tip">Profit VA<i class="tip-icon">i</i><span class="tip-box">CA Net VA − Total paiements. Marge nette sur tes VA.</span></span></div><div class="kpi-value" style="color:#a855f7" id="vspr">$0</div><div class="kpi-pct" id="vsprp">–</div></div>
-    <div class="kpi" style="border-top-color:#e879f9"><div class="kpi-label"><span class="tip">LTV brut<i class="tip-icon">i</i><span class="tip-box">CA brut moyen généré par sub, tous VA confondus</span></span></div><div class="kpi-value" style="color:#e879f9" id="vsltv">$0</div><div class="kpi-pct">CA / sub</div></div>
-    <div class="kpi" style="border-top-color:#a78bfa"><div class="kpi-label"><span class="tip">LTV net<i class="tip-icon">i</i><span class="tip-box">CA net moyen par sub après commission OnlyFans</span></span></div><div class="kpi-value" style="color:#a78bfa" id="vsltvnet">$0</div><div class="kpi-pct">net / sub</div></div>
-  </div>
-  <div class="panel" style="margin-bottom:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-      <div>
-        <div class="panel-title">Évolution du profit VA</div>
-        <div class="panel-sub" style="margin-bottom:0">tous les VA · par période</div>
-      </div>
-      <span id="profitChartTotal" style="font-size:13px;font-weight:500;color:#a855f7"></span>
-    </div>
-    <div style="position:relative;height:180px">
-      <canvas id="profitChart" role="img" aria-label="Évolution du profit VA par période"></canvas>
-    </div>
-  </div>
-
-  <!-- CONCENTRATION DE RISQUE -->
-  <div class="panel" id="risk-panel" style="margin-bottom:12px;display:none">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px">
-      <div>
-        <div class="panel-title">⚠️ Concentration de risque</div>
-        <div class="panel-sub" style="margin-bottom:0">dépendance à certains VA · part du CA total</div>
-      </div>
-      <div id="risk-score-badge"></div>
-    </div>
-    <div id="risk-alerts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
-    <div id="risk-bars"></div>
-  </div>
-
-  <div class="panel" id="source-analytics" style="margin-bottom:12px;display:none">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px">
-      <div>
-        <div class="panel-title">Rentabilité par source</div>
-        <div class="panel-sub" style="margin-bottom:0">toutes les sources · profit · LTV · cost %</div>
-      </div>
-    </div>
-    <div id="src-kpi-cards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px"></div>
-    <div id="source-table"></div>
-  </div>
-  <div id="alert-summary" style="display:none;background:#1a1a1a;border-radius:10px;padding:14px 16px;border:0.5px solid #2a2a2a;margin-bottom:12px">
-    <div style="font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Résumé des alertes</div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px" id="alert-summary-inner"></div>
-  </div>
-  <div id="alertDetails" style="display:none;background:#1a1a1a;border-radius:10px;border:0.5px solid #2a2a2a;padding:16px;margin-bottom:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div>
-        <div id="alertDetailsTitle" style="font-size:13px;font-weight:500;color:#ccc"></div>
-        <div id="alertDetailsSub" style="font-size:11px;color:#555;margin-top:2px"></div>
-      </div>
-      <button onclick="closeAlertDetails()" style="background:none;border:0.5px solid #333;border-radius:6px;padding:4px 10px;color:#666;font-size:12px;cursor:pointer">✕ Fermer</button>
-    </div>
-    <div class="scroll-box" id="alertDetailsList"></div>
-  </div>
-  <div class="g2" id="tbs" style="display:none">
-    <div class="panel">
-      <div class="panel-title" style="color:#a855f7">Top 5 VA</div>
-      <div class="panel-sub">meilleurs profits</div>
-      <div class="srchwrap" style="margin-bottom:10px">
-        <span class="srchi">🔍</span>
-        <input type="text" id="searchTop5" placeholder="Rechercher dans le top..." oninput="renderVA()">
-      </div>
-      <div class="scroll-box" id="t5l"></div>
-    </div>
-    <div class="panel">
-      <div class="panel-title" style="color:#f87171">Bottom 5 VA</div>
-      <div class="panel-sub">profits les plus faibles</div>
-      <div class="srchwrap" style="margin-bottom:10px">
-        <span class="srchi">🔍</span>
-        <input type="text" id="searchBottom5" placeholder="Rechercher dans le bottom..." oninput="renderVA()">
-      </div>
-      <div class="scroll-box" id="b5l"></div>
-    </div>
-  </div>
-  <div class="panel" style="margin-bottom:16px">
-    <div class="panel-title">Ajouter un VA</div>
-    <div class="panel-sub">Même nom = mise à jour du VA existant · période 01-15 ou 15-30</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px">
-      <div><div class="ilbl">Nom du VA</div><input class="ifield" id="van" placeholder="ex: Alex"></div>
-      <div><div class="ilbl">Catégorie source</div>
-        <select class="ifield" id="vac">
-          <option>Manager</option><option>Twitter</option><option>ADS</option><option>SFS</option>
-          <option>Instagram</option><option>Threads</option><option>Reddit</option><option>TikTok</option><option>Autre</option>
-        </select>
-      </div>
-      <div><div class="ilbl">Période</div>
-        <select class="ifield" id="vaperiod">
-          <option value="01-15">01-15</option>
-          <option value="15-30">15-30</option>
-        </select>
-      </div>
-      <div><div class="ilbl">Mois</div>
-        <select class="ifield" id="vamonth">
-          <option value="1">Janvier</option><option value="2">Février</option><option value="3">Mars</option>
-          <option value="4">Avril</option><option value="5">Mai</option><option value="6">Juin</option>
-          <option value="7">Juillet</option><option value="8">Août</option><option value="9">Septembre</option>
-          <option value="10">Octobre</option><option value="11">Novembre</option><option value="12">Décembre</option>
-        </select>
-      </div>
-      <div><div class="ilbl">Année</div>
-        <select class="ifield" id="vayear">
-          <option value="2024">2024</option><option value="2025">2025</option><option value="2026" selected>2026</option>
-        </select>
-      </div>
-      <div><div class="ilbl">Nombre de subs</div><input class="ifield" type="number" id="vasubs" placeholder="ex: 100" oninput="pp()"></div>
-      <div><div class="ilbl">CA généré ($)</div><input class="ifield" type="number" id="vaca" placeholder="ex: 500" oninput="pp()"></div>
-      <div><div class="ilbl">Prix par sub ($)</div><input class="ifield" type="number" id="varate" placeholder="ex: 0.5" step="0.01" value="0.5" oninput="pp()"></div>
-      <div><div class="ilbl"><span class="idot" style="background:#a855f7"></span>Bonus ($)</div><input class="ifield" type="number" id="vabon" placeholder="ex: 50" oninput="pp()"></div>
-      <div><div class="ilbl"><span class="idot" style="background:#f87171"></span>Malus ($)</div><input class="ifield" type="number" id="vamal" placeholder="ex: 20" oninput="pp()"></div>
-      <div><div class="ilbl">Paiement estimé</div>
-        <div class="ppbox"><div class="ppval" id="pppv">$0.00</div><div class="ppdet" id="pppd">prix × subs + bonus − malus</div></div>
-      </div>
-    </div>
-    <button class="avabtn" onclick="addVA()">+ Ajouter ce VA</button>
-  </div>
-  <div class="panel">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-      <div><div class="panel-title">Tous les VA <span id="vacl" style="font-size:11px;color:#555;font-weight:400;margin-left:6px"></span></div>
-      <div class="panel-sub" style="margin-bottom:0">triés par profit décroissant</div></div>
-    </div>
-    <div class="srchwrap">
-      <span class="srchi">🔍</span>
-      <input type="text" id="searchVA" placeholder="Rechercher un VA..." oninput="renderVA()">
-    </div>
-    <div class="fbar">
-      <button class="fbtn fa" onclick="slf('tous',this)">Tous</button>
-      <button class="fbtn" onclick="slf('top',this)">TOP</button>
-      <button class="fbtn" onclick="slf('moyen',this)">MOYEN</button>
-      <button class="fbtn" onclick="slf('mauvais',this)">MAUVAIS</button>
-    </div>
-    <div class="fbar">
-      <button class="afbtn af-tous" onclick="saf('tous',this)">Toutes actions</button>
-      <button class="afbtn" onclick="saf('scaler',this)">🟢 SCALER</button>
-      <button class="afbtn" onclick="saf('opportunite',this)">🟣 OPPORTUNITÉ</button>
-      <button class="afbtn" onclick="saf('optimiser',this)">🟡 OPTIMISER</button>
-      <button class="afbtn" onclick="saf('virer',this)">🔴 VIRER</button>
-    </div>
-    <div class="cfbar" id="cff"><button class="cfb active" onclick="fc('Tous',this)">Tous</button></div>
-    <div class="scroll-box" id="vacards"><div class="emsg">Aucun VA ajouté pour l'instant</div></div>
-  </div>
-</div>
-
-<!-- PAGE RÉCAP MENSUEL -->
-<!-- PAGE MODÈLES -->
-<div class="page" id="page-modeles">
-  <div class="dash-header">
-    <div><div class="dash-title">🎭 Modèles</div><div class="dash-sub">contrats · splits · paiements</div></div>
-  </div>
-  <div class="kpi-grid" style="margin-bottom:16px">
-    <div class="kpi" style="border-top-color:#f472b6"><div class="kpi-label">Modèles actifs</div><div class="kpi-value" style="color:#f472b6" id="mod-count">0</div></div>
-    <div class="kpi" style="border-top-color:#60a5fa"><div class="kpi-label"><span class="tip">Net base<i class="tip-icon">i</i><span class="tip-box">Net total des entrées — base du calcul split</span></span></div><div class="kpi-value" style="color:#60a5fa" id="mod-net">$0</div></div>
-    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label">Dû selon contrats</div><div class="kpi-value" style="color:#f87171" id="mod-du">$0</div></div>
-    <div class="kpi" style="border-top-color:#a855f7"><div class="kpi-label">Déjà payé</div><div class="kpi-value" style="color:#a855f7" id="mod-paid">$0</div><div class="kpi-pct" id="mod-delta">–</div></div>
-  </div>
-  <div class="panel" style="margin-bottom:12px">
-    <div class="panel-title">Ajouter un modèle</div>
-    <div class="panel-sub">Même nom = mise à jour · le split % calcule automatiquement ce qu'on lui doit sur le net</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px">
-      <div><div class="ilbl">Nom</div><input class="ifield" id="mod-name" placeholder="ex: Sophie"></div>
-      <div><div class="ilbl">Plateforme</div>
-        <select class="ifield" id="mod-platform">
-          <option>OnlyFans</option><option>Fansly</option><option>Mym</option><option>Autre</option>
-        </select>
-      </div>
-      <div><div class="ilbl">Split % (part modèle)</div><input class="ifield" type="number" id="mod-split" placeholder="ex: 30" min="0" max="100" value="30"></div>
-      <div><div class="ilbl">Date début</div><input class="ifield" type="date" id="mod-start"></div>
-      <div><div class="ilbl">Notes</div><input class="ifield" id="mod-notes" placeholder="ex: contrat signé le..."></div>
-    </div>
-    <button class="avabtn" onclick="addModele()">+ Ajouter ce modèle</button>
-  </div>
-  <div id="modeles-cards"><div class="emsg">Aucun modèle ajouté</div></div>
-</div>
-
 <div class="page" id="page-recap">
   <div class="dash-header">
-    <div><div class="dash-title">Récap mensuel</div><div class="dash-sub">évolution mois par mois</div></div>
-    <button onclick="exportRecapCSV()" style="background:#1a1a1a;border:0.5px solid #333;border-radius:6px;padding:6px 14px;color:#888;font-size:11px;cursor:pointer">⬇ Export CSV</button>
+    <div><div class="dash-title">R&#233;cap mensuel</div><div class="dash-sub">o&#249; part l'argent, mois par mois</div></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <div class="rc-switch">
+        <button class="rc-sw on" id="rc-vc" onclick="setRecapVue('cartes')">Cartes</button>
+        <button class="rc-sw" id="rc-vt" onclick="setRecapVue('tableau')">Tableau</button>
+      </div>
+      <button class="rc-exp" onclick="exportRecapCSV()">&#11015; CSV</button>
+    </div>
   </div>
-  <div class="panel" style="margin-bottom:12px">
-    <div class="panel-title">📊 Dépenses poste par poste</div>
-    <div class="panel-sub">6 derniers mois · 🔺 dérape (+30% vs sa moyenne) · 💤 arrêtée depuis 2 mois</div>
-    <div id="dep-matrix" style="margin-top:12px"><div class="emsg">Aucune dépense sur les 6 derniers mois</div></div>
-  </div>
+  <div id="recap-bilan"></div>
+  <div id="recap-compare"></div>
   <div class="panel" style="margin-bottom:12px">
     <div class="panel-title">Profit par mois</div>
-    <div style="position:relative;height:180px"><canvas id="recap-chart"></canvas></div>
+    <div class="panel-sub">chaque barre = ce qu'il te reste une fois tout pay&#233;</div>
+    <div style="position:relative;height:180px;margin-top:10px"><canvas id="recap-chart"></canvas></div>
   </div>
-  <div class="panel">
-    <div id="recap-content"><div class="emsg">Aucune donnée</div></div>
+  <div id="recap-content"><div class="emsg">Aucune donn&#233;e</div></div>
+  <div class="panel" style="margin-top:12px">
+    <div class="panel-title">&#128202; D&#233;penses poste par poste</div>
+    <div class="panel-sub">6 derniers mois &#183; &#128314; d&#233;rape (+30% vs sa moyenne) &#183; &#128164; arr&#234;t&#233;e depuis 2 mois</div>
+    <div id="dep-matrix" style="margin-top:12px"><div class="emsg">Aucune d&#233;pense sur les 6 derniers mois</div></div>
   </div>
 </div>
 
 <div class="page" id="page-editlog">
-  <div class="panel" style="margin-bottom:12px;border-color:#2a2a3e">
-    <div class="panel-title">&#128269; R&#233;cup&#233;ration &amp; sauvegardes</div>
-    <div class="panel-sub">ce que ce navigateur contient encore &#183; et tes points de restauration</div>
-    <div id="recovery-box" style="margin-top:12px"><div class="emsg">Analyse&#8230;</div></div>
-    <div id="snapshots-box" style="margin-top:16px;padding-top:14px;border-top:1px solid #1e1e22"></div>
-  </div>
   <div class="dash-header">
-    <div><div class="dash-title">Historique des modifications</div><div class="dash-sub">journal de toutes les actions</div></div>
-    <button onclick="clearEditLog()" style="background:#1a1a1a;border:0.5px solid #333;border-radius:6px;padding:6px 14px;color:#888;font-size:11px;cursor:pointer">🗑 Effacer</button>
+    <div><div class="dash-title">Historique</div><div class="dash-sub">tout ce qui a &#233;t&#233; ajout&#233;, modifi&#233; ou supprim&#233;</div></div>
+    <button class="rc-exp" onclick="clearEditLog()">&#128465; Effacer</button>
   </div>
   <div id="activity-panel" class="panel" style="display:none;margin-bottom:12px"></div>
   <div class="panel">
-    <div id="editlog-content"><div class="emsg">Aucune modification enregistrée</div></div>
+    <div class="hl-tools" id="hl-filtres"></div>
+    <div id="editlog-content"><div class="emsg">Aucune modification enregistr&#233;e</div></div>
   </div>
+  <details class="hl-sos">
+    <summary>&#128269; R&#233;cup&#233;ration &amp; sauvegardes &#8212; si tu as perdu quelque chose, c'est ici</summary>
+    <div class="hl-sosb">
+      <div id="recovery-box"><div class="emsg">Analyse&#8230;</div></div>
+      <div id="snapshots-box" style="margin-top:16px;padding-top:14px;border-top:1px solid #1e1e22"></div>
+    </div>
+  </details>
 </div>
 </div>
 
@@ -1445,6 +1324,7 @@ async function rmModelePayment(modelId,idx){
   renderModeles();_saveModeles();saveData();
 }
 function renderModeles(){
+  if(!document.getElementById('searchVA') && !document.getElementById('modeles-cards')) return;
   const totalNet=ents.reduce((s,e)=>s+(e.brut||0)*0.80+(e.tgNet||0),0);
   // Le du de chaque modele se calcule sur le net genere DEPUIS SA DATE DE CONTRAT
   // (champ m.start, jusqu ici stocke mais jamais utilise). Avant, chaque modele
@@ -3215,7 +3095,14 @@ function renderProfitChart(){
   });
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// Onglets VA et Modeles retires de l'interface (inutiles a l'usage).
+// Le CODE et les DONNEES restent intacts : rien n'est supprime en base,
+// les fonctions d'affichage sortent simplement tout de suite puisque leur
+// page n'existe plus. Remettre l'onglet suffirait a tout retrouver.
+// ─────────────────────────────────────────────────────────────────────────
 function rv(){
+  if(!document.getElementById('searchVA') && !document.getElementById('modeles-cards')) return;
   const cp=currentPeriod();
   vas.forEach(v=>updateVAPeriod(v,cp));
   const flt=getPeriodFilter();
@@ -3276,6 +3163,7 @@ function rv(){
   renderVA(filteredVas, flt);
 }
 function renderVA(filteredVas, flt){
+  if(!document.getElementById('searchVA') && !document.getElementById('modeles-cards')) return;
   const activeFlt=flt||getPeriodFilter();
   const vaPool=filteredVas||vas.map(v=>getVAForPeriod(v,activeFlt)).filter(Boolean);
   const sortedVA=[...vaPool].sort((a,b)=>b.pps-a.pps);
@@ -3828,60 +3716,217 @@ function getMonthlyRecap() {
   return Object.values(map).sort((a,b) => b.key.localeCompare(a.key));
 }
 
-function renderRecap() {
-  try{renderDepensesParMois();}catch(e){console.warn('dep-matrix',e);}
+// ─────────────────────────────────────────────────────────────────────────
+// RECAP — refondu : un tableau de 13 colonnes qui debordait de l'ecran est
+// remplace par une carte par mois, depliable, avec une barre qui montre
+// d'un coup d'oeil ou part l'argent. Le tableau complet reste accessible
+// par le bouton « Tableau » : rien n'est perdu, c'est juste range.
+// Les colonnes propres a une agence (Telegram, Moi/Associe) n'apparaissent
+// que si les DONNEES en contiennent — aucun nom d'agence n'est ecrit ici.
+// ─────────────────────────────────────────────────────────────────────────
+const _RC_POSTES = [
+  ['va', 'VA',          '#60a5fa'],
+  ['mo', 'Modele',      '#f472b6'],
+  ['ci', 'Chat IA',     '#fbbf24'],
+  ['ch', 'Chat humain', '#fb923c'],
+  ['al', 'Diverses',    '#94a3b8'],
+];
+const _RC_LBL = {va:'VA', mo:'Mod\u00e8le', ci:'Chat IA', ch:'Chat humain', al:'D\u00e9penses diverses'};
+let _rcVue = 'cartes';
+const _rcOpen = new Set();
+try{ if(window.storage.get(cleLocale('recap_vue'))?.value === 'tableau') _rcVue = 'tableau'; }catch(e){}
+
+function setRecapVue(v){
+  _rcVue = (v === 'tableau') ? 'tableau' : 'cartes';
+  try{ window.storage.set(cleLocale('recap_vue'), _rcVue); }catch(e){}
+  renderRecap();
+}
+function rcTog(k){
+  if(_rcOpen.has(k)) _rcOpen.delete(k); else _rcOpen.add(k);
+  const el = document.getElementById('rcm-' + k);
+  const dt = document.getElementById('rcd-' + k);
+  if(el && dt){ el.classList.toggle('open'); dt.style.display = _rcOpen.has(k) ? '' : 'none'; }
+}
+function _rcPct(a, b){ return b > 0 ? Math.round(a / b * 100) : 0; }
+function _rcCoul(p){ return p >= 0 ? 'var(--acc)' : '#f87171'; }
+function _rcMargeCoul(m){ return m >= 50 ? '#4ade80' : m >= 20 ? '#facc15' : '#f87171'; }
+
+function renderRecap(){
+  try{ renderDepensesParMois(); }catch(e){ console.warn('dep-matrix', e); }
   const data = getMonthlyRecap();
   const el = document.getElementById('recap-content');
-  if (!data.length) { el.innerHTML = '<div class="emsg">Aucune donnée</div>'; return; }
-  // Bar chart
-  const chartData = [...data].reverse();
-  if(_recapChart) _recapChart.destroy();
-  _recapChart = new Chart(document.getElementById('recap-chart'),{
-    type:'bar',
-    data:{
-      labels: chartData.map(r=>r.label),
-      datasets:[{
-        label:'Profit',
-        data: chartData.map(r=>r.profit),
-        backgroundColor: chartData.map(r=>r.profit>=0?'rgba(168,85,247,0.6)':'rgba(248,113,113,0.6)'),
-        borderColor: chartData.map(r=>r.profit>=0?'#a855f7':'#f87171'),
-        borderWidth:1, borderRadius:4,
-      }]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#555',font:{size:10}}},y:{ticks:{color:'#555',font:{size:10}},grid:{color:'#1a1a1a'}}}}
-  });
-  const R = v => '$'+Math.round(Math.abs(v)).toLocaleString('en-US');
-  const totals = data.reduce((t,r) => {
-    t.brut+=r.brut; t.tg+=(r.tg||0); t.net+=r.net; t.va+=r.va; t.mo+=r.mo;
-    t.ci+=r.ci; t.ch+=r.ch; t.al+=r.al; t.profit+=r.profit; t.myAdv+=r.myAdv; t.assocAdv+=r.assocAdv; return t;
-  }, {brut:0,tg:0,net:0,va:0,mo:0,ci:0,ch:0,al:0,profit:0,myAdv:0,assocAdv:0});
-  const sorted=[...data].sort((a,b)=>a.key.localeCompare(b.key));
-  const marginTrend=r=>{const idx=sorted.findIndex(x=>x.key===r.key);if(idx<1)return '';const prev=sorted[idx-1];const diff=r.margin-prev.margin;if(Math.abs(diff)<1)return '<span style="color:#555"> →</span>';return diff>0?'<span style="color:#a855f7"> ↑</span>':'<span style="color:#f87171"> ↓</span>';};
-  el.innerHTML = `<div style="overflow-x:auto"><table class="recap-table">
-    <thead><tr>
-      <th>Mois</th><th>CA Brut</th><th style="color:#38bdf8">Telegram</th><th>Net</th>
-      <th>VA</th><th>Modèle</th><th>Chat IA</th><th>Chat Hum.</th><th>Dép. diverses</th>
-      <th>Profit</th><th>Taux marge</th><th style="color:#60a5fa">Avancé Moi</th><th style="color:#e879f9">Avancé Asso.</th>
-    </tr></thead>
-    <tbody>
-      ${data.map(r => {const m=r.net>0?r.profit/r.net*100:0;return `<tr>
-        <td>${r.label} <span style="color:#444;font-size:10px">(${r.count})</span></td>
-        <td>${R(r.brut)}</td><td style="color:#38bdf8">${R(r.tg||0)}</td><td style="color:#60a5fa">${R(r.net)}</td>
-        <td>${R(r.va)}</td><td>${R(r.mo)}</td><td>${R(r.ci)}</td><td>${R(r.ch)}</td><td>${R(r.al)}</td>
-        <td style="color:${r.profit>=0?'#a855f7':'#f87171'}">${r.profit>=0?'+':''}${R(r.profit)}</td>
-        <td style="color:${m>=50?'#a855f7':m>=20?'#facc15':'#f87171'};font-weight:500">${Math.round(m)}%${marginTrend(r)}</td>
-        <td style="color:#60a5fa">${R(r.myAdv)}</td><td style="color:#e879f9">${R(r.assocAdv)}</td>
-      </tr>`}).join('')}
-      <tr style="border-top:0.5px solid #333">
-        <td>TOTAL</td>
-        <td>${R(totals.brut)}</td><td style="color:#38bdf8">${R(totals.tg)}</td><td style="color:#60a5fa">${R(totals.net)}</td>
-        <td>${R(totals.va)}</td><td>${R(totals.mo)}</td><td>${R(totals.ci)}</td><td>${R(totals.ch)}</td><td>${R(totals.al)}</td>
-        <td style="color:${totals.profit>=0?'#a855f7':'#f87171'}">${totals.profit>=0?'+':''}${R(totals.profit)}</td>
-        <td style="color:${totals.net>0&&totals.profit/totals.net*100>=50?'#a855f7':totals.net>0&&totals.profit/totals.net*100>=20?'#facc15':'#f87171'};font-weight:500">${totals.net>0?Math.round(totals.profit/totals.net*100):0}%</td>
-        <td style="color:#60a5fa">${R(totals.myAdv)}</td><td style="color:#e879f9">${R(totals.assocAdv)}</td>
-      </tr>
-    </tbody>
-  </table></div>`;
+  const bi = document.getElementById('recap-bilan');
+  const cp = document.getElementById('recap-compare');
+  const bc = document.getElementById('rc-vc'), bt = document.getElementById('rc-vt');
+  if(bc && bt){ bc.classList.toggle('on', _rcVue === 'cartes'); bt.classList.toggle('on', _rcVue === 'tableau'); }
+  if(!el) return;
+  if(!data.length){
+    el.innerHTML = '<div class="panel"><div class="emsg">Aucune donn\u00e9e pour l\'instant \u2014 ajoute une entr\u00e9e depuis le Dashboard</div></div>';
+    if(bi) bi.innerHTML = ''; if(cp) cp.innerHTML = '';
+    if(_recapChart){ _recapChart.destroy(); _recapChart = null; }
+    return;
+  }
+
+  // ── Totaux (tout l'historique) ──────────────────────────────────────
+  const T = data.reduce((t, r) => {
+    t.brut += r.brut; t.tg += (r.tg || 0); t.net += r.net;
+    t.va += r.va; t.mo += r.mo; t.ci += r.ci; t.ch += r.ch; t.al += r.al;
+    t.profit += r.profit; t.myAdv += (r.myAdv || 0); t.assocAdv += (r.assocAdv || 0);
+    t.count += r.count; return t;
+  }, {brut:0,tg:0,net:0,va:0,mo:0,ci:0,ch:0,al:0,profit:0,myAdv:0,assocAdv:0,count:0});
+  T.dep = T.va + T.mo + T.ci + T.ch + T.al;
+  const avecTg = T.tg > 0;
+  const avecAsso = T.assocAdv > 0;
+  const margeT = _rcPct(T.profit, T.net);
+
+  // ── Bandeau bilan ───────────────────────────────────────────────────
+  if(bi){
+    bi.innerHTML = '<div class="rc-sum">'
+      + '<div class="rc-sc" style="border-top-color:#60a5fa"><div class="rc-sl">Net encaiss\u00e9</div>'
+      + '<div class="rc-sv" style="color:#60a5fa">' + fmtR(T.net) + '</div>'
+      + '<div class="rc-ss">' + data.length + ' mois \u00b7 ' + T.count + ' entr\u00e9e' + (T.count > 1 ? 's' : '')
+      + (avecTg ? ' \u00b7 dont Telegram ' + fmtR(T.tg) : '') + '</div></div>'
+      + '<div class="rc-sc" style="border-top-color:#f87171"><div class="rc-sl">D\u00e9penses</div>'
+      + '<div class="rc-sv" style="color:#f87171">' + fmtR(T.dep) + '</div>'
+      + '<div class="rc-ss">' + _rcPct(T.dep, T.net) + '% de ce qui rentre</div></div>'
+      + '<div class="rc-sc" style="border-top-color:' + _rcCoul(T.profit) + '"><div class="rc-sl">Profit</div>'
+      + '<div class="rc-sv" style="color:' + _rcCoul(T.profit) + '">' + fmtS(T.profit) + '</div>'
+      + '<div class="rc-ss">ce qu\'il te reste au total</div></div>'
+      + '<div class="rc-sc" style="border-top-color:' + _rcMargeCoul(margeT) + '"><div class="rc-sl">Taux de marge</div>'
+      + '<div class="rc-sv" style="color:' + _rcMargeCoul(margeT) + '">' + margeT + '%</div>'
+      + '<div class="rc-ss">' + (margeT >= 50 ? 'tr\u00e8s bon' : margeT >= 20 ? 'correct' : 'les d\u00e9penses pr\u00e8sent') + '</div></div>'
+      + '</div>';
+  }
+
+  // ── Mois en cours vs mois precedent ─────────────────────────────────
+  if(cp){
+    if(data.length < 2){ cp.innerHTML = ''; }
+    else {
+      const a = data[0], b = data[1];
+      const dep_a = a.va + a.mo + a.ci + a.ch + a.al, dep_b = b.va + b.mo + b.ci + b.ch + b.al;
+      const puce = (v, inverse) => {
+        if(!isFinite(v) || Math.abs(v) < 0.5) return '<span class="rc-d" style="background:#1c1c20;color:#666">=</span>';
+        const bon = inverse ? v < 0 : v > 0;
+        const c = bon ? '#4ade80' : '#f87171';
+        return '<span class="rc-d" style="background:' + c + '1a;color:' + c + '">' + (v > 0 ? '+' : '') + Math.round(v) + '%</span>';
+      };
+      const ev = (x, y) => y > 0 ? (x - y) / y * 100 : (x > 0 ? 100 : 0);
+      cp.innerHTML = '<div class="panel" style="margin-bottom:12px">'
+        + '<div class="panel-title">' + esc(a.label) + ' compar\u00e9 \u00e0 ' + esc(b.label) + '</div>'
+        + '<div class="panel-sub">le mois le plus r\u00e9cent face au pr\u00e9c\u00e9dent</div>'
+        + '<div class="rc-cmp" style="margin-top:14px">'
+        + '<div class="rc-cmpi"><div class="rc-cmpl">Net encaiss\u00e9</div><div class="rc-cmpv" style="color:#60a5fa">' + fmtR(a.net) + puce(ev(a.net, b.net), false) + '</div></div>'
+        + '<div class="rc-cmpi"><div class="rc-cmpl">D\u00e9penses</div><div class="rc-cmpv" style="color:#f87171">' + fmtR(dep_a) + puce(ev(dep_a, dep_b), true) + '</div></div>'
+        + '<div class="rc-cmpi"><div class="rc-cmpl">Profit</div><div class="rc-cmpv" style="color:' + _rcCoul(a.profit) + '">' + fmtS(a.profit) + puce(ev(a.profit, b.profit), false) + '</div></div>'
+        + '<div class="rc-cmpi"><div class="rc-cmpl">Marge</div><div class="rc-cmpv" style="color:' + _rcMargeCoul(_rcPct(a.profit, a.net)) + '">' + _rcPct(a.profit, a.net) + '%'
+        + '<span class="rc-d" style="background:#1c1c20;color:#777">' + (_rcPct(a.profit, a.net) - _rcPct(b.profit, b.net) >= 0 ? '+' : '') + (_rcPct(a.profit, a.net) - _rcPct(b.profit, b.net)) + ' pt</span></div></div>'
+        + '</div></div>';
+    }
+  }
+
+  // ── Graphe ──────────────────────────────────────────────────────────
+  const cv = document.getElementById('recap-chart');
+  if(cv && typeof Chart !== 'undefined'){
+    const cd = [...data].reverse();
+    const acc = getComputedStyle(document.documentElement).getPropertyValue('--acc').trim() || '#4ade80';
+    if(_recapChart) _recapChart.destroy();
+    _recapChart = new Chart(cv, {
+      type:'bar',
+      data:{ labels: cd.map(r => r.label), datasets:[{ label:'Profit', data: cd.map(r => r.profit),
+        backgroundColor: cd.map(r => r.profit >= 0 ? acc + '99' : 'rgba(248,113,113,0.6)'),
+        borderColor: cd.map(r => r.profit >= 0 ? acc : '#f87171'), borderWidth:1, borderRadius:5 }] },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label: c => ' Profit ' + fmtS(c.parsed.y) } } },
+        scales:{ x:{ticks:{color:'#555',font:{size:10}},grid:{display:false}},
+                 y:{ticks:{color:'#555',font:{size:10},callback:v => '$' + Math.round(v).toLocaleString('en-US')},grid:{color:'#191919'}} } }
+    });
+  }
+
+  // ── Vue TABLEAU (l'ancienne, complete) ──────────────────────────────
+  if(_rcVue === 'tableau'){
+    const R = v => fmtR(v);
+    const sorted = [...data].sort((a, b) => a.key.localeCompare(b.key));
+    const tend = r => { const i = sorted.findIndex(x => x.key === r.key); if(i < 1) return '';
+      const d = r.margin - sorted[i-1].margin;
+      if(Math.abs(d) < 1) return '<span style="color:#555"> \u2192</span>';
+      return d > 0 ? '<span style="color:#4ade80"> \u2191</span>' : '<span style="color:#f87171"> \u2193</span>'; };
+    const th = '<th>Mois</th><th>CA Brut</th>' + (avecTg ? '<th style="color:#38bdf8">Telegram</th>' : '')
+      + '<th>Net</th><th>VA</th><th>Mod\u00e8le</th><th>Chat IA</th><th>Chat Hum.</th><th>D\u00e9p. diverses</th>'
+      + '<th>Profit</th><th>Marge</th>'
+      + (avecAsso ? '<th style="color:#60a5fa">Avanc\u00e9 Moi</th><th style="color:#e879f9">Avanc\u00e9 Asso.</th>' : '');
+    el.innerHTML = '<div class="panel"><div style="overflow-x:auto"><table class="recap-table">'
+      + '<thead><tr>' + th + '</tr></thead><tbody>'
+      + data.map(r => { const m = _rcPct(r.profit, r.net); return '<tr>'
+          + '<td>' + esc(r.label) + ' <span style="color:#444;font-size:10px">(' + r.count + ')</span></td>'
+          + '<td>' + R(r.brut) + '</td>' + (avecTg ? '<td style="color:#38bdf8">' + R(r.tg || 0) + '</td>' : '')
+          + '<td style="color:#60a5fa">' + R(r.net) + '</td>'
+          + '<td>' + R(r.va) + '</td><td>' + R(r.mo) + '</td><td>' + R(r.ci) + '</td><td>' + R(r.ch) + '</td><td>' + R(r.al) + '</td>'
+          + '<td style="color:' + _rcCoul(r.profit) + '">' + fmtS(r.profit) + '</td>'
+          + '<td style="color:' + _rcMargeCoul(m) + ';font-weight:500">' + m + '%' + tend(r) + '</td>'
+          + (avecAsso ? '<td style="color:#60a5fa">' + R(r.myAdv || 0) + '</td><td style="color:#e879f9">' + R(r.assocAdv || 0) + '</td>' : '')
+          + '</tr>'; }).join('')
+      + '<tr style="border-top:0.5px solid #333"><td>TOTAL</td><td>' + R(T.brut) + '</td>'
+      + (avecTg ? '<td style="color:#38bdf8">' + R(T.tg) + '</td>' : '')
+      + '<td style="color:#60a5fa">' + R(T.net) + '</td><td>' + R(T.va) + '</td><td>' + R(T.mo) + '</td>'
+      + '<td>' + R(T.ci) + '</td><td>' + R(T.ch) + '</td><td>' + R(T.al) + '</td>'
+      + '<td style="color:' + _rcCoul(T.profit) + '">' + fmtS(T.profit) + '</td>'
+      + '<td style="color:' + _rcMargeCoul(margeT) + ';font-weight:500">' + margeT + '%</td>'
+      + (avecAsso ? '<td style="color:#60a5fa">' + R(T.myAdv) + '</td><td style="color:#e879f9">' + R(T.assocAdv) + '</td>' : '')
+      + '</tr></tbody></table></div></div>';
+    return;
+  }
+
+  // ── Vue CARTES (par defaut) ─────────────────────────────────────────
+  el.innerHTML = data.map(r => {
+    const dep = r.va + r.mo + r.ci + r.ch + r.al;
+    // La barre doit TOUJOURS faire exactement 100%. Avec base = max(net, dep)
+    // un mois en perte montait a 128% : les derniers postes etaient rognes
+    // par l'overflow, donc INVISIBLES. Un mois deficitaire, ce sont les
+    // depenses qui remplissent toute la barre, et il n'y a pas de part de profit.
+    const base = (r.profit > 0 ? r.net : dep) || 1;
+    const marge = _rcPct(r.profit, r.net);
+    const ouvert = _rcOpen.has(r.key);
+    const segs = _RC_POSTES.filter(p => (r[p[0]] || 0) > 0)
+      .map(p => '<i style="width:' + (r[p[0]] / base * 100) + '%;background:' + p[2] + '" title="' + p[1] + ' ' + fmtR(r[p[0]]) + '"></i>').join('');
+    const segProfit = r.profit > 0
+      ? '<i style="width:' + (r.profit / base * 100) + '%;background:var(--acc)" title="Profit ' + fmtR(r.profit) + '"></i>'
+      : '';
+
+    let det = '<div class="rc-grp"><div class="rc-gt">Ce qui rentre</div>'
+      + '<div class="rc-l"><b style="background:#60a5fa"></b><span class="rc-ln">Net OnlyFans</span><span class="rc-lv">' + fmtR(r.net - (r.tg || 0)) + '</span></div>'
+      + ((r.tg || 0) > 0 ? '<div class="rc-l"><b style="background:#38bdf8"></b><span class="rc-ln">Net Telegram</span><span class="rc-lv">' + fmtR(r.tg) + '</span></div>' : '')
+      + '<div class="rc-tot"><span>Total encaiss\u00e9</span><span style="color:#60a5fa">' + fmtR(r.net) + '</span></div></div>';
+
+    const lignes = _RC_POSTES.filter(p => (r[p[0]] || 0) > 0).map(p =>
+      '<div class="rc-l"><b style="background:' + p[2] + '"></b><span class="rc-ln">' + _RC_LBL[p[0]] + '</span>'
+      + '<span class="rc-lp" title="part de ce qui est rentr\u00e9 ce mois-ci">' + _rcPct(r[p[0]], r.net) + '% du net</span>'
+      + '<span class="rc-lv">\u2212' + fmtR(r[p[0]]) + '</span></div>').join('');
+    det += '<div class="rc-grp"><div class="rc-gt">Ce qui sort</div>'
+      + (lignes || '<div class="rc-l"><span class="rc-ln" style="color:#4d4d55">Aucune d\u00e9pense ce mois-ci</span></div>')
+      + '<div class="rc-tot"><span>Total d\u00e9pens\u00e9</span><span style="color:#f87171">' + (dep > 0 ? '\u2212' : '') + fmtR(dep) + '</span></div></div>';
+
+    if(avecAsso && ((r.myAdv || 0) > 0 || (r.assocAdv || 0) > 0)){
+      det += '<div class="rc-grp"><div class="rc-gt">Qui a avanc\u00e9 l\'argent</div>'
+        + '<div class="rc-l"><b style="background:#60a5fa"></b><span class="rc-ln">Moi</span><span class="rc-lv">' + fmtR(r.myAdv || 0) + '</span></div>'
+        + '<div class="rc-l"><b style="background:#e879f9"></b><span class="rc-ln">Associ\u00e9</span><span class="rc-lv">' + fmtR(r.assocAdv || 0) + '</span></div></div>';
+    }
+    det += '<div class="rc-grp"><div class="rc-gt">R\u00e9sultat</div>'
+      + '<div class="rc-tot" style="border-top:none;padding-top:0"><span>Profit du mois</span>'
+      + '<span style="color:' + _rcCoul(r.profit) + ';font-size:15px;font-weight:600">' + fmtS(r.profit) + '</span></div>'
+      + '<div class="rc-l" style="padding-top:6px"><span class="rc-ln" style="font-size:11px;color:#5a5a62">soit '
+      + marge + '% de ce qui est rentr\u00e9</span></div></div>';
+
+    return '<div class="rc-m' + (ouvert ? ' open' : '') + '" id="rcm-' + esc(r.key) + '">'
+      + '<div class="rc-mh" onclick="rcTog(\'' + esc(r.key) + '\')">'
+      + '<span class="rc-cv">\u25B8</span>'
+      + '<div><div class="rc-mn">' + esc(r.label) + '</div>'
+      + '<div class="rc-me">' + r.count + ' entr\u00e9e' + (r.count > 1 ? 's' : '') + ' \u00b7 net ' + fmtR(r.net) + ' \u00b7 d\u00e9penses ' + fmtR(dep) + '</div></div>'
+      + '<div class="rc-mr"><span class="rc-mp" style="color:' + _rcCoul(r.profit) + '">' + fmtS(r.profit) + '</span>'
+      + '<span class="rc-badge" style="background:' + _rcMargeCoul(marge) + '1a;color:' + _rcMargeCoul(marge) + '">' + marge + '%</span></div></div>'
+      + '<div class="rc-bar">' + segs + segProfit + '</div>'
+      + '<div class="rc-det" id="rcd-' + esc(r.key) + '"' + (ouvert ? '' : ' style="display:none"') + '>' + det + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 function exportRecapCSV() {
@@ -4541,19 +4586,97 @@ async function deleteModelPayment(i){
     showSaveStatus("⚠ Suppression NON enregistrée — le paiement est toujours en base. "
       + "Recharge la page pour voir l état réel.", '#ef4444');
 }
+// ─────────────────────────────────────────────────────────────────────────
+// HISTORIQUE — refondu : la liste a plat de toutes les lignes, sans repere
+// de date ni moyen de filtrer, est remplacee par un journal groupe par
+// jour, avec filtres et recherche. Le panneau de recuperation descend en
+// bas, replie : c'est un outil de secours, pas une lecture quotidienne.
+// ─────────────────────────────────────────────────────────────────────────
+const _HL_FAM = [
+  ['tous',  'Tout',          null],
+  ['ajout', 'Ajouts',        a => /^ajout/i.test(a)],
+  ['modif', 'Modifications', a => /modif/i.test(a)],
+  ['suppr', 'Suppressions',  a => /suppr/i.test(a)],
+];
+let _hlF = 'tous', _hlQ = '', _hlMax = 60;
+
+function _hlCoul(a){
+  if(/suppr/i.test(a))  return '#f87171';
+  if(/modif/i.test(a))  return '#facc15';
+  if(/^ajout/i.test(a)) return 'var(--acc)';
+  if(/restaur/i.test(a))return '#38bdf8';
+  return '#8a8a93';
+}
+function hlFiltre(f){ _hlF = f; _hlMax = 60; renderEditLog(); }
+function hlCherche(v){ _hlQ = String(v || '').toLowerCase(); _hlMax = 60; renderEditLog(); }
+function hlPlus(){ _hlMax += 120; renderEditLog(); }
+
+function _hlJour(ts){
+  const d = new Date(ts); if(isNaN(d)) return {cle:'?', lbl:'Date inconnue'};
+  const j = new Date(); j.setHours(0,0,0,0);
+  const c = new Date(d); c.setHours(0,0,0,0);
+  const ecart = Math.round((j - c) / 86400000);
+  const lbl = ecart === 0 ? 'Aujourd\'hui' : ecart === 1 ? 'Hier'
+    : d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
+  return {cle: c.toISOString().slice(0,10), lbl};
+}
+
 function renderEditLog(){
-  try{renderRecovery();}catch(e){}
-  try{renderSnapshots();}catch(e){}
-  renderActivity();
-  const el=document.getElementById('editlog-content');if(!el)return;
-  if(!editLog.length){el.innerHTML='<div class="emsg">Aucune modification enregistrée</div>';return;}
-  const fmt2=ts=>new Date(ts).toLocaleString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-  const colors={'Ajout entrée':'#a855f7','Modification entrée':'#facc15','Suppression entrée':'#f87171','VA enregistré':'#60a5fa','Suppression VA':'#f87171','Ajout rapide':'#a78bfa'};
-  el.innerHTML=editLog.map(l=>{const c=colors[l.action]||'#888';return `<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:0.5px solid #1a1a1a">
-    <span style="font-size:10px;color:#444;min-width:130px;flex-shrink:0;margin-top:1px">${fmt2(l.ts)}</span>
-    <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:${c}20;color:${c};border:0.5px solid ${c};flex-shrink:0">${l.action}</span>
-    <span style="font-size:12px;color:#888">${esc(l.detail)}</span>
-  </div>`;}).join('');
+  try{ renderRecovery(); }catch(e){}
+  try{ renderSnapshots(); }catch(e){}
+  try{ renderActivity(); }catch(e){}
+  const el = document.getElementById('editlog-content'); if(!el) return;
+  const bf = document.getElementById('hl-filtres');
+
+  const tout = editLog || [];
+  const compte = f => f ? tout.filter(l => f(String(l.action || ''))).length : tout.length;
+  // ⚠ Le champ de recherche ne doit JAMAIS etre reconstruit pendant la frappe :
+  // reecrire innerHTML remplace l'<input>, qui perd le focus a CHAQUE lettre —
+  // on ne peut alors taper qu'un seul caractere. La barre n'est donc creee
+  // qu'une fois ; ensuite on ne met a jour que les pastilles et leurs compteurs.
+  if(bf && !document.getElementById('hl-q')){
+    bf.innerHTML = _HL_FAM.map(x =>
+        '<button class="hl-chip' + (_hlF === x[0] ? ' on' : '') + '" onclick="hlFiltre(\'' + x[0] + '\')">'
+        + x[1] + '<u>' + compte(x[2]) + '</u></button>').join('')
+      + '<input class="hl-s" id="hl-q" placeholder="Rechercher dans l\'historique\u2026" value="' + esc(_hlQ) + '" oninput="hlCherche(this.value)">';
+  } else if(bf){
+    bf.querySelectorAll('.hl-chip').forEach((b, i) => {
+      if(!_HL_FAM[i]) return;
+      b.classList.toggle('on', _HL_FAM[i][0] === _hlF);
+      const u = b.querySelector('u'); if(u) u.textContent = compte(_HL_FAM[i][2]);
+    });
+  }
+
+  const fam = (_HL_FAM.find(x => x[0] === _hlF) || [])[2];
+  let liste = fam ? tout.filter(l => fam(String(l.action || ''))) : tout.slice();
+  if(_hlQ) liste = liste.filter(l => (String(l.action || '') + ' ' + String(l.detail || '')).toLowerCase().includes(_hlQ));
+
+  if(!liste.length){
+    el.innerHTML = '<div class="emsg">' + (tout.length ? 'Rien ne correspond \u00e0 ce filtre' : 'Aucune modification enregistr\u00e9e') + '</div>';
+    return;
+  }
+
+  const visibles = liste.slice(0, _hlMax);
+  let html = '', jourEnCours = null;
+  visibles.forEach(l => {
+    const j = _hlJour(l.ts);
+    if(j.cle !== jourEnCours){
+      jourEnCours = j.cle;
+      const n = visibles.filter(x => _hlJour(x.ts).cle === j.cle).length;
+      html += '<div class="hl-day"><span>' + esc(j.lbl) + '</span><i></i><u>' + n + '</u></div>';
+    }
+    const c = _hlCoul(String(l.action || ''));
+    const h = new Date(l.ts);
+    html += '<div class="hl-r">'
+      + '<span class="hl-t">' + (isNaN(h) ? '--:--' : h.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})) + '</span>'
+      + '<span class="hl-b" style="background:' + c + '"></span>'
+      + '<span class="hl-c"><span class="hl-a" style="color:' + c + '">' + esc(l.action) + '</span>'
+      + '<div class="hl-d">' + esc(l.detail) + '</div></span></div>';
+  });
+  if(liste.length > visibles.length){
+    html += '<button class="hl-more" onclick="hlPlus()">Afficher les ' + (liste.length - visibles.length) + ' lignes plus anciennes</button>';
+  }
+  el.innerHTML = html;
 }
 
 // ── Keyboard shortcuts ──
