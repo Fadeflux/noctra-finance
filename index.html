@@ -1153,7 +1153,8 @@ body.light .tip-icon{background:var(--surf-2);border-color:var(--line-2);color:v
     <div class="kpi" style="border-top-color:#22d3ee"><div class="kpi-label"><span class="tip">Chat IA<i class="tip-icon">i</i><span class="tip-box">Coût du chatting automatisé par IA</span></span></div><div class="kpi-value" style="color:var(--ink-1)" id="vci">—</div><div class="kpi-pct" id="pci">–</div></div>
     <div class="kpi" style="border-top-color:#fb923c"><div class="kpi-label"><span class="tip">Chat Humain<i class="tip-icon">i</i><span class="tip-box">Coût du chatting réalisé par des humains</span></span></div><div class="kpi-value" style="color:var(--ink-1)" id="vch">—</div><div class="kpi-pct" id="pch">–</div></div>
     <div class="kpi" style="border-top-color:#e879f9"><div class="kpi-label"><span class="tip">Dép. diverses<i class="tip-icon">i</i><span class="tip-box">Dépenses ponctuelles (pub, outils, etc.)</span></span></div><div class="kpi-value" style="color:var(--ink-1)" id="val">—</div><div class="kpi-pct" id="pal">–</div></div>
-    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label"><span class="tip">Dép. totales<i class="tip-icon">i</i><span class="tip-box">VA + Modèle + Chat IA + Chat Humain + Aléatoires</span></span></div><div class="kpi-value" style="color:var(--neg)" id="vdep">—</div><span class="kpi-delta" id="dvdep" title="vs période précédente"></span><div class="kpi-pct" id="pdep">–</div></div>
+    <div class="kpi" style="border-top-color:var(--warn)"><div class="kpi-label"><span class="tip">Impôts + Paxum<i class="tip-icon">i</i><span class="tip-box">Sur l'argent OnlyFans seulement : 1 % d'impôts + 3,5 % de frais Paxum → crypto. Payés par l'agence, avant le partage avec la modèle. Telegram n'a aucun frais.</span></span></div><div class="kpi-value" style="color:var(--ink-1)" id="vfr">—</div><div class="kpi-pct" id="pfr">–</div></div>
+    <div class="kpi" style="border-top-color:#f87171"><div class="kpi-label"><span class="tip">Dép. totales<i class="tip-icon">i</i><span class="tip-box">VA + Modèle + Chat IA + Chat Humain + Diverses + Impôts et Paxum</span></span></div><div class="kpi-value" style="color:var(--neg)" id="vdep">—</div><span class="kpi-delta" id="dvdep" title="vs période précédente"></span><div class="kpi-pct" id="pdep">–</div></div>
     <div class="kpi kpi-info" style="border-top-color:var(--line-3)"><div class="kpi-label"><span class="tip">Gardé par OnlyFans<i class="tip-icon">i</i><span class="tip-box">Les 20 % qu'OnlyFans garde sur le brut. Déjà retirés de ton net : ce n'est pas une dépense à payer.</span></span></div><div class="kpi-value" style="color:var(--ink-3)" id="vof">—</div><div class="kpi-pct">déjà déduit de ton net</div></div>
   </div>
   <div class="g2">
@@ -2072,6 +2073,18 @@ function avancesLigne(e, k){
 }
 function gai(){return afs.map(id=>({name:document.getElementById('an-'+id)?.value||'Dépense',val:parseFloat(document.getElementById('av-'+id)?.value)||0,paidBy:document.getElementById('ar-'+id)?.querySelector('[data-pb]')?.dataset.pb||'moi'})).filter(i=>i.val>0);}
 const _TAUX=0.80;   // part qui te reste apres commission plateforme
+// (12/10) RÈGLE D'ANDRÉ — sur l'argent ONLYFANS seulement (Telegram n'a aucun frais) :
+//   1 % d'impôts + 3,5 % de frais Paxum → crypto, payés par l'AGENCE, avant le partage
+//   50/50 avec la modèle. Calculés sur le net OnlyFans (« ce qui rentre », après les 20 %).
+//   Appliqués DEPUIS LE DÉBUT : le profit de chaque saisie est recalculé à la lecture
+//   (entryFromDb) et à chaque enregistrement — jamais réécrit en douce dans la base.
+const _IMPOTS_OF=0.01, _PAXUM_OF=0.035;
+function fraisOF(netOF){ return (Number(netOF)||0)*(_IMPOTS_OF+_PAXUM_OF); }
+function profitEntree(e){
+  const n=(Number(e.brut)||0)*_TAUX;
+  return Math.round(n-fraisOF(n)+(Number(e.tgNet)||0)-(Number(e.va)||0)-(Number(e.mo)||0)
+    -(Number(e.ci)||0)-(Number(e.ch)||0)-(Number(e.alT)||0));
+}
 // ─────────────────────────────────────────────────────────────────────────────
 // GARDE-FOUS DE SAISIE · AUTOCOMPLÉTION · CHARGES HABITUELLES · DÉPENSES PAR MOIS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2681,7 +2694,7 @@ function periodDelta(){
   else if(acd||acdEnd){ start=acd||acdEnd; end=acdEnd||acd; days=Math.max(1,Math.round((new Date(end+'T00:00:00')-new Date(start+'T00:00:00'))/864e5)+1); }
   else return null;
   const pEnd=addD(start,-1), pStart=addD(pEnd,-(days-1));
-  const sums=(a,b)=>{let br=0,tg=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;tg+=e.tgNet||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.80+tg,dep=va+mo+ci+ch+al;return{br,net,dep,pr:net-dep};};
+  const sums=(a,b)=>{let br=0,tg=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;tg+=e.tgNet||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.80+tg,dep=va+mo+ci+ch+al+fraisOF(br*.80);return{br,net,dep,pr:net-dep};};
   return {curr:sums(start,end),prev:sums(pStart,pEnd)};
 }
 function setDelta(id,curr,prev,inverse){
@@ -2703,11 +2716,11 @@ function renderInsights(){
   const brTot=br+tg;
   if(!f.length||brTot<=0){el.style.display='none';return;}
   const va=f.reduce((s,e)=>s+(e.va||0),0),mo=f.reduce((s,e)=>s+(e.mo||0),0),ci=f.reduce((s,e)=>s+(e.ci||0),0),ch=f.reduce((s,e)=>s+(e.ch||0),0),al=f.reduce((s,e)=>s+(e.alT||0),0);
-  const net=br*.80+tg,dep=va+mo+ci+ch+al,pr=net-dep;
+  const fr=fraisOF(br*.80),net=br*.80+tg,dep=va+mo+ci+ch+al+fr,pr=net-dep;
   const items=[];
   // (Le profit et la marge sont DEJA dans la carte juste au-dessus : les
   // repeter ici ne disait rien de plus.)
-  const postes=[['Paiement VA',va],['Modèle',mo],['Chat IA',ci],['Chat Humain',ch],['Dép. diverses',al]];
+  const postes=[['Paiement VA',va],['Modèle',mo],['Chat IA',ci],['Chat Humain',ch],['Dép. diverses',al],['Impôts + Paxum',fr]];
   const mx=postes.reduce((a,b)=>b[1]>a[1]?b:a,['',0]);
   if(mx[1]>0)items.push({ic:'cible',c:'var(--warn)',t:'Plus gros poste : <b>'+mx[0]+'</b> ('+fmtR(mx[1])+', '+Math.round(mx[1]/net*100)+'% du net)'});
   const pd=periodDelta();
@@ -2746,11 +2759,11 @@ function uk(){
   const ch=f.reduce((s,e)=>s+(e.ch||0),0)+totLP('ch');
   const al=f.reduce((s,e)=>s+(e.alT||0),0)+gat();
   const ac=f.reduce((s,e)=>s+(e.alI?e.alI.length:0),0)+gai().length;
-  const of=br*.20,net=br*.80+tg,dep=va+mo+ci+ch+al,pr=net-dep,brTot=br+tg;
+  const of=br*.20,fr=fraisOF(br*.80),net=br*.80+tg,dep=va+mo+ci+ch+al+fr,pr=net-dep,brTot=br+tg;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
   // Deux sources de revenu clairement separees, toutes les deux en NET.
   set('vb',(br*_TAUX)?fmtC(br*_TAUX):'—');set('vof',br?fmtR(of):'—');set('vn',tg?fmtC(tg):'—');
-  set('vva',va?'−'+fmtR(va):'—');set('vmo',mo?'−'+fmtR(mo):'—');set('vci',ci?'−'+fmtR(ci):'—');set('vch',ch?'−'+fmtR(ch):'—');set('val',al?'−'+fmtR(al):'—');set('vdep',dep?'−'+fmtR(dep):'—');
+  set('vva',va?'−'+fmtR(va):'—');set('vmo',mo?'−'+fmtR(mo):'—');set('vci',ci?'−'+fmtR(ci):'—');set('vch',ch?'−'+fmtR(ch):'—');set('val',al?'−'+fmtR(al):'—');set('vdep',dep?'−'+fmtR(dep):'—');set('vfr',fr?'−'+fmtR(fr):'—');
   // Une PERTE doit se voir : fmtR() supprime le signe (Math.abs), et la couleur de la
   // carte Profit était figée en violet dans le HTML -> une perte s'affichait comme un gain.
   set('vpr',brTot?fmtS(pr):'—');
@@ -2762,10 +2775,10 @@ function uk(){
   // le net (« marge 72 % ») : deux marges differentes cote a cote. Et la regle
   // d'Andre est claire : la commission OnlyFans n'est pas une perte de marge.
   set('de',f.length?f.length+' entrée(s)':'données saisies');set('pn',net?'soit '+fmtC(net)+' de net au total':'–');set('pva',pct(va,net));set('pmo',pct(mo,net));set('pci',pct(ci,net));set('pch',pct(ch,net));
-  set('pal',al&&net?Math.round(al/net*100)+'% · '+ac+' dép.':'–');set('pdep',pct(dep,net));set('ppr',net?Math.round(pr/net*100)+'% du net':'–');
+  set('pal',al&&net?Math.round(al/net*100)+'% · '+ac+' dép.':'–');set('pdep',pct(dep,net));set('pfr',fr?'1 % impôts + 3,5 % Paxum (OnlyFans)':'–');set('ppr',net?Math.round(pr/net*100)+'% du net':'–');
   // Un poste a zero sur toute la periode n'a pas a occuper une carte entiere
   // (« Modele — », « Chat humain — ») ; si TOUT est a zero, on garde tout.
-  (function(){const _p=[['vva',va],['vmo',mo],['vci',ci],['vch',ch],['val',al]];const _un=_p.some(x=>x[1]>0);
+  (function(){const _p=[['vva',va],['vmo',mo],['vci',ci],['vch',ch],['val',al],['vfr',fr]];const _un=_p.some(x=>x[1]>0);
     _p.forEach(([id,v])=>{const el=document.getElementById(id);const t=el&&el.closest('.kpi');if(t)t.style.display=(!_un||v>0)?'':'none';});})();
   const _pd=periodDelta();
   if(_pd){setDelta('dvb',_pd.curr.br,_pd.prev.br);setDelta('dvn',_pd.curr.net,_pd.prev.net);setDelta('dvdep',_pd.curr.dep,_pd.prev.dep,true);setDelta('dvpr',_pd.curr.pr,_pd.prev.pr);}
@@ -3563,7 +3576,10 @@ if (typeof window.Chart === 'undefined') {
   window.Chart = function(){ return { destroy:function(){}, update:function(){}, resize:function(){}, data:{}, options:{} }; };
   window.Chart.defaults = { font:{}, plugins:{} };
 }
-function entryFromDb(r){ return { id:r.id, date:r.date, brut:+r.brut, va:+r.va, mo:+r.mo, ci:+r.ci, ch:+r.ch, alT:+r.al_total, alI:r.al_items||[], vaI:r.va_items||[], moI:r.mo_items||[], ciI:r.ci_items||[], chI:r.ch_items||[], profit:+r.profit, paidBy:r.paid_by||{}, notes:r.notes||'', author:r.author||'', tgNet:+(r.tg_net||0), ofNet:+(r.of_net||0) }; }
+function entryFromDb(r){ const e={ id:r.id, date:r.date, brut:+r.brut, va:+r.va, mo:+r.mo, ci:+r.ci, ch:+r.ch, alT:+r.al_total, alI:r.al_items||[], vaI:r.va_items||[], moI:r.mo_items||[], ciI:r.ci_items||[], chI:r.ch_items||[], profit:+r.profit, paidBy:r.paid_by||{}, notes:r.notes||'', author:r.author||'', tgNet:+(r.tg_net||0), ofNet:+(r.of_net||0) };
+  // (12/10) Le profit STOCKÉ suivait l'ancienne formule : on le recalcule avec la règle
+  // du jour (impôts + Paxum sur l'argent OnlyFans), pour TOUT l'historique.
+  e.profit=profitEntree(e); return e; }
 function entryToDb(e){ return { date:e.date, brut:e.brut||0, va:e.va||0, mo:e.mo||0, ci:e.ci||0, ch:e.ch||0, al_total:(e.alT!=null?e.alT:0), al_items:e.alI||[], va_items:e.vaI||[], mo_items:e.moI||[], ci_items:e.ciI||[], ch_items:e.chI||[], profit:e.profit||0, paid_by:e.paidBy||{}, notes:e.notes||null, author:e.author||null, tg_net:e.tgNet||0, of_net:e.ofNet||0 }; }
 function vaFromDb(v){ return { _db_id:v.id, name:v.name, cat:v.cat, subs:v.subs, ca:+v.ca, net:+v.net, rate:+v.rate, bon:+v.bon, mal:+v.mal, pay:+v.pay, ltv:+v.ltv, ltvNet:+v.ltv_net, profit:+v.profit, pps:+v.pps, currentPeriod:v.current_period, wallet_address:v.wallet_address, last_paid_amount:v.last_paid_amount!=null?+v.last_paid_amount:0, last_paid_date:v.last_paid_date, total_paid:v.total_paid!=null?+v.total_paid:0, history:[], periods:[] }; }
 function vaToDb(v){ return { name:v.name, cat:v.cat||'Autre', subs:v.subs||0, ca:v.ca||0, net:v.net||0, rate:(v.rate!=null?v.rate:0.5), bon:v.bon||0, mal:v.mal||0, pay:v.pay||0, ltv:v.ltv||0, ltv_net:v.ltvNet||0, profit:v.profit||0, pps:v.pps||0, current_period:v.currentPeriod||null }; }
@@ -3932,12 +3948,13 @@ function getMonthlyRecap() {
     const d = new Date(e.date + 'T00:00:00');
     const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
     const label = `${months[d.getMonth()]} ${d.getFullYear()}`;
-    if (!map[key]) map[key] = { key, label, brut:0, tg:0, net:0, va:0, mo:0, ci:0, ch:0, al:0, profit:0, count:0, myAdv:0, assocAdv:0, margin:0 };
+    if (!map[key]) map[key] = { key, label, brut:0, tg:0, net:0, va:0, mo:0, ci:0, ch:0, al:0, fr:0, profit:0, count:0, myAdv:0, assocAdv:0, margin:0 };
     // ||0 partout : un seul champ manquant (import partiel) suffisait à mettre
     // TOUT le tableau du récap mensuel à NaN.
     map[key].brut += (e.brut||0); map[key].tg += (e.tgNet||0); map[key].net += (e.brut||0)*0.80+(e.tgNet||0);
     map[key].va += (e.va||0); map[key].mo += (e.mo||0); map[key].ci += (e.ci||0);
     map[key].ch += (e.ch||0); map[key].al += (e.alT||0); map[key].profit += (e.profit||0);
+    map[key].fr += fraisOF((e.brut||0)*_TAUX);   // (12/10) impôts + Paxum, déjà dans le profit
     map[key].count++;
     map[key].margin=map[key].net>0?map[key].profit/map[key].net*100:0;
     const epb=e.paidBy||{};
@@ -3961,8 +3978,9 @@ const _RC_POSTES = [
   ['ci', 'Chat IA',     '#fbbf24'],
   ['ch', 'Chat humain', '#fb923c'],
   ['al', 'Diverses',    '#94a3b8'],
+  ['fr', 'Impôts + Paxum', 'var(--warn)'],   // (12/10) 1 % + 3,5 % de l'argent OnlyFans
 ];
-const _RC_LBL = {va:'VA', mo:'Mod\u00e8le', ci:'Chat IA', ch:'Chat humain', al:'D\u00e9penses diverses'};
+const _RC_LBL = {va:'VA', mo:'Mod\u00e8le', ci:'Chat IA', ch:'Chat humain', al:'D\u00e9penses diverses', fr:'Imp\u00f4ts 1 % + Paxum 3,5 % (OnlyFans)'};
 let _rcVue = 'cartes';
 const _rcOpen = new Set();
 try{ if(window.storage.get(cleLocale('recap_vue'))?.value === 'tableau') _rcVue = 'tableau'; }catch(e){}
@@ -4001,10 +4019,10 @@ function renderRecap(){
   // ── Totaux (tout l'historique) ──────────────────────────────────────
   const T = data.reduce((t, r) => {
     t.brut += r.brut; t.tg += (r.tg || 0); t.net += r.net;
-    t.va += r.va; t.mo += r.mo; t.ci += r.ci; t.ch += r.ch; t.al += r.al;
+    t.va += r.va; t.mo += r.mo; t.ci += r.ci; t.ch += r.ch; t.al += r.al; t.fr += (r.fr || 0);
     t.profit += r.profit; t.myAdv += (r.myAdv || 0); t.assocAdv += (r.assocAdv || 0);
     t.count += r.count; return t;
-  }, {brut:0,tg:0,net:0,va:0,mo:0,ci:0,ch:0,al:0,profit:0,myAdv:0,assocAdv:0,count:0});
+  }, {brut:0,tg:0,net:0,va:0,mo:0,ci:0,ch:0,al:0,fr:0,profit:0,myAdv:0,assocAdv:0,count:0});
   T.dep = T.va + T.mo + T.ci + T.ch + T.al;
   const avecTg = T.tg > 0;
   const avecAsso = T.assocAdv > 0;
@@ -4082,7 +4100,7 @@ function renderRecap(){
       if(Math.abs(d) < 1) return '<span style="color:var(--ink-4)"> \u2192</span>';
       return d > 0 ? '<span style="color:var(--pos)"> \u2191</span>' : '<span style="color:var(--neg)"> \u2193</span>'; };
     const th = '<th>Mois</th><th>CA Brut</th>' + (avecTg ? '<th style="color:var(--c-tg)">Telegram</th>' : '')
-      + '<th>Net</th><th>VA</th><th>Mod\u00e8le</th><th>Chat IA</th><th>Chat Hum.</th><th>D\u00e9p. diverses</th>'
+      + '<th>Net</th><th>VA</th><th>Mod\u00e8le</th><th>Chat IA</th><th>Chat Hum.</th><th>D\u00e9p. diverses</th><th>Imp\u00f4ts + Paxum</th>'
       + '<th>Profit</th><th>Marge</th>'
       + (avecAsso ? '<th style="color:var(--c-info)">Avanc\u00e9 Moi</th><th style="color:var(--c-fu)">Avanc\u00e9 Asso.</th>' : '');
     el.innerHTML = '<div class="panel"><div style="overflow-x:auto"><table class="recap-table">'
@@ -4091,7 +4109,7 @@ function renderRecap(){
           + '<td>' + esc(r.label) + ' <span style="color:var(--ink-4);font-size:11.5px">(' + r.count + ')</span></td>'
           + '<td>' + R(r.brut) + '</td>' + (avecTg ? '<td style="color:var(--c-tg)">' + R(r.tg || 0) + '</td>' : '')
           + '<td style="color:var(--c-info)">' + R(r.net) + '</td>'
-          + '<td>' + R(r.va) + '</td><td>' + R(r.mo) + '</td><td>' + R(r.ci) + '</td><td>' + R(r.ch) + '</td><td>' + R(r.al) + '</td>'
+          + '<td>' + R(r.va) + '</td><td>' + R(r.mo) + '</td><td>' + R(r.ci) + '</td><td>' + R(r.ch) + '</td><td>' + R(r.al) + '</td><td>' + R(r.fr || 0) + '</td>'
           + '<td style="color:' + _rcCoul(r.profit) + '">' + fmtS(r.profit) + '</td>'
           + '<td style="color:' + _rcMargeCoul(m) + ';font-weight:500">' + m + '%' + tend(r) + '</td>'
           + (avecAsso ? '<td style="color:var(--c-info)">' + R(r.myAdv || 0) + '</td><td style="color:var(--c-fu)">' + R(r.assocAdv || 0) + '</td>' : '')
@@ -4099,7 +4117,7 @@ function renderRecap(){
       + '<tr style="border-top:0.5px solid var(--line-3)"><td>TOTAL</td><td>' + R(T.brut) + '</td>'
       + (avecTg ? '<td style="color:var(--c-tg)">' + R(T.tg) + '</td>' : '')
       + '<td style="color:var(--c-info)">' + R(T.net) + '</td><td>' + R(T.va) + '</td><td>' + R(T.mo) + '</td>'
-      + '<td>' + R(T.ci) + '</td><td>' + R(T.ch) + '</td><td>' + R(T.al) + '</td>'
+      + '<td>' + R(T.ci) + '</td><td>' + R(T.ch) + '</td><td>' + R(T.al) + '</td><td>' + R(T.fr) + '</td>'
       + '<td style="color:' + _rcCoul(T.profit) + '">' + fmtS(T.profit) + '</td>'
       + '<td style="color:' + _rcMargeCoul(margeT) + ';font-weight:500">' + margeT + '%</td>'
       + (avecAsso ? '<td style="color:var(--c-info)">' + R(T.myAdv) + '</td><td style="color:var(--c-fu)">' + R(T.assocAdv) + '</td>' : '')
@@ -4109,7 +4127,7 @@ function renderRecap(){
 
   // ── Vue CARTES (par defaut) ─────────────────────────────────────────
   el.innerHTML = data.map(r => {
-    const dep = r.va + r.mo + r.ci + r.ch + r.al;
+    const dep = r.va + r.mo + r.ci + r.ch + r.al + (r.fr || 0);
     // La barre doit TOUJOURS faire exactement 100%. Avec base = max(net, dep)
     // un mois en perte montait a 128% : les derniers postes etaient rognes
     // par l'overflow, donc INVISIBLES. Un mois deficitaire, ce sont les
@@ -4162,8 +4180,8 @@ function renderRecap(){
 
 function exportRecapCSV() {
   const data = getMonthlyRecap();
-  const headers = ['Mois','Entrées','CA Brut','Telegram','Net','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Profit','Avancé Moi','Avancé Associé'];
-  const rows = data.map(r => [r.label, r.count, r.brut.toFixed(2), (r.tg||0).toFixed(2), r.net.toFixed(2), r.va.toFixed(2), r.mo.toFixed(2), r.ci.toFixed(2), r.ch.toFixed(2), r.al.toFixed(2), r.profit.toFixed(2), (r.myAdv||0).toFixed(2), (r.assocAdv||0).toFixed(2)]);
+  const headers = ['Mois','Entrées','CA Brut','Telegram','Net','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Impôts + Paxum','Profit','Avancé Moi','Avancé Associé'];
+  const rows = data.map(r => [r.label, r.count, r.brut.toFixed(2), (r.tg||0).toFixed(2), r.net.toFixed(2), r.va.toFixed(2), r.mo.toFixed(2), r.ci.toFixed(2), r.ch.toFixed(2), r.al.toFixed(2), (r.fr||0).toFixed(2), r.profit.toFixed(2), (r.myAdv||0).toFixed(2), (r.assocAdv||0).toFixed(2)]);
   const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
   const b = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
@@ -4400,7 +4418,7 @@ function se() {
   const alI=gai(),alT=alI.reduce((s,i)=>s+i.val,0);
   const dateInput=document.getElementById('entry-date-input')?.value;
   const date=dateInput||acd||ts();
-  const profit=Math.round(br*.80+tg-va-mo-ci-ch-alT);
+  const profit=profitEntree({brut:br,tgNet:tg,va,mo,ci,ch,alT});
   const _vaI=itemsLP('va'), _moI=itemsLP('mo'), _ciI=itemsLP('ci'), _chI=itemsLP('ch');
   // paidBy reste ecrit pour rester compatible avec tout le code existant :
   // on y met le payeur MAJORITAIRE des lignes. Le detail fait foi (vaI/moI).
@@ -4625,7 +4643,7 @@ function qaCalc(){
   const va=gv('qa-va');
   const mo=gv('qa-mo');
   const al=gv('qa-al');
-  const profit=Math.round(br*0.80+tg-va-mo-al);
+  const profit=profitEntree({brut:br,tgNet:tg,va,mo,alT:al});
   const p=document.getElementById('qa-profit');
   if(p){p.textContent=(profit>=0?'+':'')+fmt(profit);p.style.color=profit>=0?'#a855f7':'#f87171';}
 }
@@ -4648,7 +4666,7 @@ async function quickAddSave(){
   const mo=gv('qa-mo');
   const al=gv('qa-al');
   const date=document.getElementById('qa-date')?.value||ts();
-  const profit=Math.round(br*0.80+tg-va-mo-al);
+  const profit=profitEntree({brut:br,tgNet:tg,va,mo,alT:al});
   // La dépense « Autres » doit exister dans alI, sinon le récap des dépenses
   // (qui parcourt alI) affiche 0 alors que la carte KPI affiche bien le montant.
   const alIQ = al>0 ? [{name:'Ajout rapide', val:al, paidBy:'moi'}] : [];
@@ -4750,6 +4768,7 @@ function renderModelShare(){
   // (bénéfice négatif) il s'agit de sa part de la perte.
   const rl=reste>0.5?'Reste à envoyer':(reste<-0.5?(paid>0?'Trop envoyé':'Sa part de la perte'):'À jour ✓');
   let html=`<div style="display:flex;gap:9px;flex-wrap:wrap">${box('Bénéfice (avant sa part)',base,base<0?'var(--neg)':'var(--ink-1)',moPaid?'dont '+fmtR(moPaid)+' déjà versés':'')}${box('Part modèle (50%)',share,share<0?'var(--neg)':'var(--acc-txt)')}${box('Déjà envoyé',paid,'var(--ink-3)',moPaid&&envoye?fmtR(envoye)+' + '+fmtR(moPaid)+' (entrées)':(moPaid?'via « Paiement Modèle »':''))}${box(rl,Math.abs(reste),rc)}</div>`;
+  html+=`<div style="font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.45">Bénéfice après 1 % d'impôts et 3,5 % de frais Paxum → crypto sur l'argent OnlyFans (payés par l'agence, avant le partage). Telegram : aucun frais.</div>`;
   _VIR_AFFICHES=(virements||[]).slice();
   if((virements||[]).length){
     html+=`<div style="margin-top:12px"><div style="font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Paiements envoyés (${virements.length})</div>`+virements.map((v,i)=>({v,i})).reverse().map(o=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;padding:5px 0;border-bottom:0.5px solid var(--line-1)"><span style="color:var(--ink-3)">${dl(o.v.date)}${o.v.note?` · <span style="color:var(--ink-3)">${esc(o.v.note)}</span>`:''}</span><span style="display:inline-flex;align-items:center;gap:10px"><b style="color:var(--acc-txt)">${fmtR(o.v.amount)}</b><button onclick="deleteModelPayment(${o.i})" title="Supprimer" style="background:none;border:none;color:var(--ink-4);cursor:pointer;font-size:13px">✕</button></span></div>`).join('')+`</div>`;

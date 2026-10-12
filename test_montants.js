@@ -70,6 +70,11 @@ global.vas = [];
 const _mTaux = SRC.match(/const\s+_TAUX\s*=\s*([0-9.]+)/);
 if (!_mTaux) throw new Error('_TAUX introuvable dans la page');
 global._TAUX = Number(_mTaux[1]);
+// (12/10) Depuis la regle « impots + Paxum », l'enregistrement calcule le profit avec
+// `profitEntree` et ses taux : on les prend DANS la page quand ils existent (une
+// ancienne version de la page, sans eux, reste testable).
+const _mFr = SRC.match(/const _IMPOTS_OF=([0-9.]+), _PAXUM_OF=([0-9.]+);/);
+if (_mFr) { global._IMPOTS_OF = Number(_mFr[1]); global._PAXUM_OF = Number(_mFr[2]); }
 global._currentUser = 'banc';   // la page tamponne l'auteur de chaque entree
 for (const n of ['rh', 'rc', 'uk', 'rv', 'renderVirements', 'renderModeles', 'renderVA',
                  'renderVaList', 'renderAll', 'saveVA', 'pp', 'showSaveStatus']) {
@@ -77,6 +82,7 @@ for (const n of ['rh', 'rc', 'uk', 'rv', 'renderVirements', 'renderModeles', 're
 }
 
 const CODE = ['lireMontant', 'gv', 'verifierMontants', 'quickAddSave']
+  .concat(['fraisOF', 'profitEntree'].filter((n) => SRC.includes('function ' + n + '(')))
   .map(extraire).join('\n');
 Object.assign(global, new Function(
   CODE + ';return{lireMontant,gv,verifierMontants,quickAddSave};'
