@@ -76,13 +76,22 @@ global._TAUX = Number(_mTaux[1]);
 const _mFr = SRC.match(/const _IMPOTS_OF=([0-9.]+), _PAXUM_OF=([0-9.]+);/);
 if (_mFr) { global._IMPOTS_OF = Number(_mFr[1]); global._PAXUM_OF = Number(_mFr[2]); }
 global._currentUser = 'banc';   // la page tamponne l'auteur de chaque entree
+// (12/10, design) `quickAddSave` sort tout de suite si une fenetre de confirmation est
+// deja ouverte (`_dlgOuvert`, variable de la page). Sans elle dans le faux monde, l'appel
+// levait un ReferenceError et le TEMOIN echouait : le banc ne prouvait plus rien.
+// Aucune fenetre ouverte ici.
+if (/\b_dlgOuvert\b/.test(SRC)) global._dlgOuvert = false;
 for (const n of ['rh', 'rc', 'uk', 'rv', 'renderVirements', 'renderModeles', 'renderVA',
                  'renderVaList', 'renderAll', 'saveVA', 'pp', 'showSaveStatus']) {
   if (typeof global[n] !== 'function') global[n] = () => {};
 }
 
+// (12/10, design) l'ajout rapide previent aussi d'un 2e bilan dans le mois
+// (`_doublonMois` et ses deux aides) : les VRAIES fonctions de la page, quand elles
+// existent (avec `ents` vide, aucune alerte : le chemin teste reste celui des montants).
 const CODE = ['lireMontant', 'gv', 'verifierMontants', 'quickAddSave']
-  .concat(['fraisOF', 'profitEntree'].filter((n) => SRC.includes('function ' + n + '(')))
+  .concat(['fraisOF', 'profitEntree', '_doublonMois', '_rythmeBilan', '_bilansMois']
+    .filter((n) => SRC.includes('function ' + n + '(')))
   .map(extraire).join('\n');
 Object.assign(global, new Function(
   CODE + ';return{lireMontant,gv,verifierMontants,quickAddSave};'

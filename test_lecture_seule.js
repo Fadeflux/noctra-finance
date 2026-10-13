@@ -123,7 +123,11 @@ function remettreANeuf() {
 }
 
 const noms = ECRIVAINS.map((e) => e[0]);
-const CODE = [extraire('ecritureInterdite')].concat(noms.map(extraire)).join('\n');
+// (12/10, design) `restaurerSnapshot` ecrit sa confirmation avec `_pl` (vrais pluriels,
+// « 1 bilan » / « 2 bilans ») : on prend la VRAIE fonction dans la page quand elle existe,
+// sinon le temoin levait « _pl is not defined » et ce controle ne prouvait rien.
+const AIDES = ['_pl'].filter((n) => SRC.includes('function ' + n + '('));
+const CODE = [extraire('ecritureInterdite')].concat(AIDES.map(extraire), noms.map(extraire)).join('\n');
 Object.assign(global, new Function(
   CODE + ';return{ecritureInterdite,' + noms.join(',') + '};'
 )());
