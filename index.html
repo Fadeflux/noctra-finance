@@ -4720,7 +4720,8 @@ body.skin-bento-cockpit #login-box .lg-foot{border-top-color:var(--line-1)}
 
 /* ── oeil : cacher les montants (13/10) ── */
 /* ══ « œil » : montants cachés (13/10) ══ */
-body.montants-caches .mt-cache{filter:blur(7px);-webkit-user-select:none;user-select:none}
+/* Le flou suit la taille du texte : 7 px fixes laissaient lire un chiffre de 48 à 72 px. */
+body.montants-caches .mt-cache{filter:blur(max(7px,.22em));-webkit-user-select:none;user-select:none}
 body.montants-caches .dash canvas{filter:blur(9px)}
 #masque-btn .ico-oeil-barre,.mob-masque .ico-oeil-barre{display:none}
 body.montants-caches #masque-btn .ico-oeil,body.montants-caches .mob-masque .ico-oeil{display:none}
