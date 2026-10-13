@@ -3238,6 +3238,11 @@ body.skin-melange #page-editlog .hl-sos-i svg{width:14px;height:14px}
 }
 @keyframes mel-monte{from{opacity:0;transform:translateY(6px) scale(.995)}to{opacity:1;transform:none}}
 
+/* (13/10, vu par André) Le rond de l'icône se centrait sur l'étiquette (sur deux lignes : « GARDÉ PAR
+ ONLYFANS » au téléphone) alors que l'icône restait en haut : le « % » sortait de son rond. Le rond
+ se cale en haut, comme l'icône et comme les autres tuiles. */
+body.skin-melange #page-ca .kpi-dep-grid .kpi-label::before{align-self:flex-start}
+
 /* ══════ style « bento-couleurs » : uniquement sous body.skin-bento-couleurs ══════ */
 /* ═══ NOCTRA FINANCE — STYLE « BENTO-COULEURS » : les widgets en couleur ═══
    Le Bento qu'André a choisi, en version « widgets iPhone » : chaque sujet a SA couleur pleine
