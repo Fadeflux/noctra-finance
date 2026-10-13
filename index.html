@@ -43,7 +43,8 @@ input[type=date].active{border-color:var(--acc);color:var(--acc-txt)}
 .kpi-label{text-transform:uppercase;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
 .kpi-value{font-weight:700;}
 .kpi-delta{font-weight:600;display:none;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;letter-spacing:-.01em}
-.sdiv{text-transform:uppercase;border-bottom:0.5px solid var(--line-2);display:flex;align-items:center;gap:6px}
+.sdiv{text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.sdiv::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent 85%)}
 .ig2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ilbl{display:flex;align-items:center;gap:5px}
 .idot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
@@ -99,7 +100,7 @@ body.light .kpi:hover{background:#f5f5f5}
 body.light .kpi-label,.light .kpi-pct{color:var(--ink-3)}
 body.light .tab{color:var(--ink-3)}
 body.light .tab.active{background:#111;color:#fff}
-body.light .sdiv{border-bottom-color:#eee;}
+
 .lp-date{width:132px;flex-shrink:0;color-scheme:dark;}
 .pb-btn{border:0.5px solid #60a5fa;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;font-family:'Inter',system-ui,sans-serif}
 .pb-btn.assoc{background:#221a2d;border-color:#e879f9;color:#e879f9}
@@ -180,6 +181,8 @@ body{line-height:1.45;-moz-osx-font-smoothing:grayscale}
 .dash :focus-visible,.sidebar :focus-visible,#login-box :focus-visible,
 #quickadd-box :focus-visible,#gsearch-box :focus-visible,#confirm-box :focus-visible{
   outline:2px solid var(--acc);outline-offset:2px;border-radius:var(--r-sm)}
+/* (13/10) le champ de recherche a déjà le bord et l'anneau des champs : pas de contour en plus */
+#gsearch-box #gsearch-input:focus-visible{outline:none;border-radius:var(--r-md)}
 .dash,.dash input,.dash select,.dash textarea,
 #quickadd-box,#gsearch-box,#confirm-box{font-variant-numeric:tabular-nums}
 .dash-sub{color:var(--ink-3);margin-top:5px;letter-spacing:0}
@@ -188,8 +191,8 @@ body{line-height:1.45;-moz-osx-font-smoothing:grayscale}
   letter-spacing:.1em;}
 .panel-title{margin-bottom:4px}
 .panel-sub{line-height:1.5}
-.sdiv{font-size:12px;font-weight:600;color:var(--ink-3);letter-spacing:.09em;
-  margin:20px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line-1)}
+.sdiv{font-size:12px;font-weight:600;line-height:16px;color:var(--ink-3);letter-spacing:.08em;
+  margin:20px 0 10px}
 .ilbl{font-size:12px;font-weight:500;color:var(--ink-3);margin-bottom:6px;}
 .topbar{top:0;z-index:120;
   -webkit-backdrop-filter:blur(16px) saturate(150%);
@@ -673,6 +676,7 @@ body.light #quickadd-box,body.light #gsearch-box{background-color:var(--surf-1);
 @media (min-width:641px){
   #page-ca > .dash-header{align-items:center}
   #page-ca .per-tete{flex:1 1 auto}
+  #page-ca .per-tete .dash-sub{margin-top:0}
   #page-ca .per-autre{display:inline-flex;align-items:center;min-height:32px;margin-left:auto;padding:0 8px;border:0;border-radius:var(--r-sm);
     background:none;color:var(--ink-3);font-family:inherit;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;
     text-decoration:underline;text-decoration-color:var(--line-3);text-underline-offset:3px}
@@ -784,13 +788,13 @@ textarea.ifield{padding:8px 12px;line-height:1.5}
 .nfm-legende{display:flex;flex-wrap:wrap;align-items:center;column-gap:16px;row-gap:4px}
 .nfm-leg{display:inline-flex;align-items:center;gap:6px}
 .nfm-ic{display:inline-flex;flex:none;vertical-align:-2px}
-.nfm-ic-derape{color:var(--todo)}
+.nfm-ic-derape{color:var(--neg)}
 .nfm-ic-arret{color:var(--ink-4)}
 #dep-matrix .nfm-kpis{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
 #dep-matrix .nfm-kpi{flex:1 1 150px;min-width:0;background:var(--inset);border:1px solid var(--line-1);
   border-radius:var(--r-md);padding:11px 14px 12px}
-#dep-matrix .nfm-kpi-derape{background:color-mix(in srgb,var(--todo) 7%,var(--inset));
-  border-color:color-mix(in srgb,var(--todo) 32%,var(--line-1))}
+#dep-matrix .nfm-kpi-derape{background:color-mix(in srgb,var(--neg) 7%,var(--inset));
+  border-color:color-mix(in srgb,var(--neg) 32%,var(--line-1))}
 #dep-matrix .nfm-kl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--ink-3);
   text-transform:uppercase;letter-spacing:.05em}
 #dep-matrix .nfm-kv{font-size:20px;font-weight:600;letter-spacing:-.02em;margin-top:6px;line-height:1.15}
@@ -820,7 +824,7 @@ textarea.ifield{padding:8px 12px;line-height:1.5}
 #dep-matrix .nfm-table .nfm-doux{color:var(--ink-3)}
 #dep-matrix .nfm-table .nfm-hausse{color:var(--neg)}
 #dep-matrix .nfm-table .nfm-baisse{color:var(--pos)}
-#dep-matrix .nfm-table tr.nfm-derape td{background:color-mix(in srgb,var(--todo) 7%,var(--surf-1))}
+#dep-matrix .nfm-table tr.nfm-derape td{background:color-mix(in srgb,var(--neg) 6%,var(--surf-1))}
 #dep-matrix .nfm-table td.nfm-chaud{color:var(--ink-1);font-weight:600}
 #dep-matrix .nfm-table tbody tr:hover td{background:var(--surf-2)}
 #dep-matrix .nfm-note{font-size:12px;color:var(--ink-4);margin-top:12px;line-height:1.5}
@@ -874,7 +878,7 @@ body.light{--todo:#b45309}
 #page-recap .rc-cmp-p .panel-title{display:flex;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:6px}
 #page-recap .rc-nw{white-space:nowrap}
 @media (min-width:641px){
-  #page-ca .kpi-hero-grid{grid-template-columns:1.5fr 1fr 1fr;gap:16px}
+  #page-ca .kpi-hero-grid{grid-template-columns:1.45fr 1fr;gap:16px}
   #page-ca .kpi-hero-grid .kpi{min-height:148px;padding:20px}
   #page-ca .kpi-hero-grid .kpi-label{margin-bottom:14px}
   #page-ca .kpi-hero-grid .kpi-value{font-size:28px;letter-spacing:-.03em;line-height:1}
@@ -900,7 +904,7 @@ body.light{--todo:#b45309}
 .saisie-bascule svg{flex:none}
 #ca-entry-panel:not(.replie) .saisie-bascule svg{width:14px;height:14px}
 #ca-entry-panel .ilbl .idot{margin-right:7px;vertical-align:1px}
-#ca-entry-panel .ab-ico{display:inline-flex;margin-right:7px;vertical-align:-2px}
+#ca-entry-panel .ab-ico{display:inline-flex;flex:none}
 @media (min-width:641px){
   #ca-entry-panel.replie{display:grid;grid-template-columns:minmax(0,1fr) auto auto;column-gap:16px;align-items:center;padding:20px 24px}
   #ca-entry-panel.replie > .panel-title{grid-column:1;grid-row:1;margin:0}
@@ -1224,11 +1228,11 @@ body.readonly #model-share-panel .ms-form,body.readonly #model-share-panel .ms-n
 body.readonly #hist-panel .tx-mod,body.readonly #hist-panel .tx-acts{display:none!important}
 @media (min-width:641px){
   #hist-panel{--txs:16px minmax(112px,136px) minmax(0,1fr) minmax(0,1fr) minmax(112px,148px)}
-  #hist-panel .tx-head{display:grid;grid-template-columns:minmax(0,1fr) 112px;column-gap:16px;margin:4px -12px 0;padding:0 12px 10px;
+  #hist-panel .tx-head{display:grid;grid-template-columns:minmax(0,1fr) 140px;column-gap:16px;margin:4px -12px 0;padding:0 12px 10px;
     border-bottom:1px solid var(--line-2);font-size:12px;font-weight:600;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4)}
   #hist-panel .th-sum{display:grid;grid-template-columns:var(--txs);column-gap:16px}
   #hist-panel .th-res{text-align:right}
-  #hist-panel .txrow{grid-template-columns:minmax(0,1fr) 112px;column-gap:16px;margin:0 -12px;padding:0 12px}
+  #hist-panel .txrow{grid-template-columns:minmax(0,1fr) 140px;column-gap:16px;margin:0 -12px;padding:0 12px}
   #hist-panel .txrow:hover,#hist-panel .txrow.open{background:var(--hover)}
   #hist-panel .tx-sum{grid-template-columns:var(--txs);grid-template-areas:"cv when net dep res";column-gap:16px;row-gap:0;align-items:start;padding:14px 0}
   #hist-panel .tx-cv{margin-top:2px}
@@ -1787,7 +1791,7 @@ body.light{
   html body #ca-entry-panel:not(.replie) .saisie-bascule{top:12px;right:12px;}
   html body #ca-entry-panel .ilbl{font-size:13px}
   /* légende VA · Modèle · Chat IA · Chat Humain : la pastille ne se sépare plus de son nom */
-  html body #ca-entry-panel .sdiv{flex-wrap:wrap;row-gap:8px;column-gap:10px;letter-spacing:.04em}
+  html body #ca-entry-panel .sdiv{column-gap:12px}
   html body #ca-entry-panel #entry-date-input{width:100%!important}
   html body #ca-entry-panel textarea.ifield{min-height:88px}
   html body #ca-entry-panel .abtn + .abtn{margin-top:8px}
@@ -2087,15 +2091,101 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
   html body #page-editlog .hl-outil .hl-btn{width:100%;justify-content:center;}
 }
 
-/* (13/10) téléphone : « Modifier » d'une ligne = crayon seul, 44 px, neutre (6 boutons violets de 114 px avant) */
+/* (13/10) téléphone : « Mettre à jour » écrit en toutes lettres (André), neutre, sans crayon pour tenir
+   dans la ligne ; sous 375 px, le crayon seul (44 × 44, l'étiquette reste pour la lecture vocale) */
 @media (max-width:640px){
-  html body #hist-panel .tx-mod{width:auto;min-width:44px;padding:0 12px;gap:6px}
-  html body #hist-panel .tx-mod > span{display:inline}
+  html body #hist-panel .tx-mod{width:auto;min-width:44px;padding:0 10px;gap:6px;font-size:13px}
+  html body #hist-panel .tx-mod > span{display:inline;white-space:nowrap}
+  html body #hist-panel .tx-mod svg{display:none}
+}
+@media (max-width:374px){
+  html body #hist-panel .tx-mod{width:44px;padding:0}
+  html body #hist-panel .tx-mod > span{display:none}
   html body #hist-panel .tx-mod svg{display:block;width:16px;height:16px}
 }
 
 /* ── finitions finales ── */
 #ca-entry-panel .arow,#ca-entry-panel .lp-grid .arow,#ca-entry-panel #ainps .arow{background:var(--field)}
+
+/* ── r5_finitions étape 1 ── */
+/* (13/10) icône des messages sous les boutons (F1) */
+.fm-i{display:inline-flex;vertical-align:-3px;margin-right:6px}
+.fm-i svg{width:15px;height:15px}
+/* (13/10) Récupération : « rien à récupérer » avec l'icône du jeu (F1) */
+#page-editlog .hl-rec-ok{display:flex;align-items:flex-start;gap:8px}
+#page-editlog .hl-rec-ok > .pg-i{flex:none;margin-top:2px;color:var(--ink-3)}
+/* (13/10) état d'enregistrement : icône */
+.tb-etat > .pg-i{flex:none}
+
+
+/* ── r5_finitions étape 2 ── */
+/* (13/10) messages d'état : glyphe gardé dans le texte mais caché, icône du jeu à la place */
+.ss-g{display:none}
+/* (13/10) ordinateur : l'état d'enregistrement remplace le bouton « Sauvegarder » (André F7) */
+.tb-etat-ordi{display:none}
+@media (min-width:641px){
+  .dash > .topbar .tb-etat-ordi{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 8px 0 4px;
+    font-size:12px;font-weight:500;line-height:16px;color:var(--ink-3);white-space:nowrap}
+  .dash > .topbar .tb-etat-ordi:empty{display:none}
+  .dash > .topbar .tb-etat-ordi > .pg-i{flex:none}
+  .dash > .topbar .tb-etat-ordi.ko{color:var(--neg)}
+}
+.topbar .export-menu .menu-sep{height:1px;margin:4px 6px;background:var(--line-2)}
+.topbar .export-menu .ordi-seul svg{width:16px;height:16px;flex:none}
+@media (max-width:640px){html body .topbar .export-menu .ordi-seul{display:none!important}}
+
+
+/* ── r5_finitions étape 5 ── */
+/* (13/10) Récap : « dont ta moitié » sous le bénéfice (même dessin qu'à l'accueil) */
+#page-recap .rc-moitie{display:block;margin-top:2px;color:var(--ink-2)}
+#page-recap .rc-moitie b{font-weight:600;color:var(--ink-1)}
+/* téléphone (carte d'une demi-largeur) : « dont ta moitié » dit déjà le partage ; « avant la part de la
+   modèle (50 %) » reste pour la lecture vocale, sans prendre deux lignes de plus */
+@media (max-width:640px){#page-recap .rc-ss:has(.rc-moitie) .rc-avant{position:absolute;width:1px;height:1px;
+  margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  #page-recap .rc-ss .rc-moitie{margin-top:0}}
+/* (13/10) détail par dépense : le point de couleur du poste (DA F12) */
+#exp-recap .dd-pt{display:inline-block;width:8px;height:8px;margin-right:10px;border-radius:50%;vertical-align:1px}
+
+
+/* ── r5_finitions étape 6 ── */
+/* (13/10) I8 — carte « Net total » : le montant, le nombre de bilans, puis OnlyFans · Telegram */
+#page-ca .kpi-net .kpi-nets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px;
+  margin-top:14px;padding-top:12px;border-top:1px solid var(--line-1)}
+#page-ca .kpi-net .kn{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;min-width:0}
+#page-ca .kpi-net .kn-l{flex:1 0 100%;font-size:12px;font-weight:500;line-height:16px;color:var(--ink-3)}
+#page-ca .kpi-net .kn-v{font-size:15px;font-weight:600;line-height:22px;letter-spacing:-.01em;color:var(--ink-1);white-space:nowrap}
+#page-ca .kpi-net .kn > .kpi-delta{margin:0;flex:none}
+@media (max-width:640px){
+  html body #page-ca .kpi-hero-grid .kpi.kpi-net{grid-column:1/-1}
+  /* téléphone : compacte (le bouton du mois doit rester au-dessus de la barre d'onglets à 360 px) :
+     montant et nombre de bilans sur une ligne, puis « OnlyFans $6,800 » | « Telegram $510 » */
+  html body #page-ca .kpi-hero-grid .kpi.kpi-net{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:baseline}
+  html body #page-ca .kpi-net > .kpi-label{grid-column:1/-1}
+  html body #page-ca .kpi-net > .kpi-meta{margin-top:0;justify-self:end}
+  html body #page-ca .kpi-net .kpi-nets{grid-column:1/-1;margin-top:6px;padding-top:0;border-top:0}
+  html body #page-ca .kpi-net .kn{gap:4px 6px}
+  html body #page-ca .kpi-net .kn-l{flex:0 0 auto;font-size:13px;line-height:20px}
+  html body #page-ca .kpi-net .kn-v{font-size:14px;line-height:20px}
+}
+/* (13/10) I8 — TENDANCE : évolution du bénéfice et prévision côte à côte (une seule si la prévision
+   est cachée) ; la Répartition, seule sous DÉPENSES, range sa légende sur 3 colonnes */
+#page-ca .g2-tend > *{margin:0}
+#page-ca .g2-tend:has(> #forecast-card[style*="none"]){grid-template-columns:1fr}
+/* (renderForecast écrit display:block en ligne : la colonne n'est forcée que si la carte est montrée) */
+#page-ca .g2-tend > #forecast-card:not([style*="none"]){display:flex!important;flex-direction:column;min-width:0}
+#page-ca #forecast-card .fc-titre{margin-bottom:10px}
+#forecast-card .fc-nw{white-space:nowrap}
+/* à côté du graphique, la carte prend sa hauteur : l'action « Fixer un objectif » descend en bas */
+@media (min-width:769px){#page-ca .g2-tend > #forecast-card > .fc-obj{margin-top:auto;align-self:flex-start}}
+@media (min-width:769px){
+  #page-ca .nfr-seul #bars .nfr-liste{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px}
+  #page-ca .nfr-seul #bars .nfr-l:nth-child(-n+3){border-top:0}
+}
+/* (13/10) I8 — « Tes bilans » : l'étiquette du chapitre porte le titre ; il reste pour la lecture vocale */
+#hist-panel .tx-titre-chap{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
 </style>
 </head>
 <body>
@@ -2183,15 +2273,17 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
   <div style="display:flex;align-items:center;gap:7px">
     <span id="api-dot" title="API déconnectée"></span>
     <span id="save-status" style="font-size:12px;color:var(--acc-txt);opacity:0;transition:opacity .5s"></span>
-    <span id="ro-badge" class="ro-badge" style="display:none">👁 Lecture seule</span>
+    <span id="ro-badge" class="ro-badge" style="display:none"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Lecture seule</span>
     <div id="user-toggle" title="Qui saisit ? (signe chaque entrée)" style="display:inline-flex;background:var(--surf-1);border:1px solid var(--line-2);border-radius:8px;padding:2px;gap:2px"><button onclick="setUser('Moi')" id="ut-moi" style="border:none;background:var(--acc);color:var(--acc-ink);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer">Moi</button><button onclick="setUser('Associé')" id="ut-asso" style="border:none;background:transparent;color:var(--ink-3);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer">Associé</button></div>
-    <button onclick="saveData()" class="btn-sec" title="Envoie une copie de tout au cloud et dans ce navigateur">Sauvegarder</button>
+    <span class="tb-etat-ordi" id="tb-etat-ordi" aria-live="polite"></span>
     <div class="export-dropdown">
       <button class="export-dropdown-btn" aria-haspopup="menu">Exporter<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <div class="export-menu">
         <button onclick="exportCSV()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span>Télécharger mes bilans (tableur)</span></button>
         <button onclick="exportRecapCSV()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span>Télécharger le récap (tableur)</span></button>
         <button onclick="exportData()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span>Télécharger une copie de secours</span></button>
+        <div class="menu-sep ordi-seul" role="separator"></div>
+        <button class="ordi-seul" onclick="saveData()" title="L’enregistrement est automatique : ceci renvoie tout de suite une copie au cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 16.6A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/><path d="M12 12v9M8 16l4-4 4 4"/></svg><span>Sauvegarder maintenant</span></button>
       </div>
     </div>
     <button onclick="openGSearch()" class="icon-btn" title="Recherche globale (Ctrl+Shift+F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
@@ -2226,9 +2318,8 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
   </div>
   <div class="kpi-sec">Résultat</div>
   <div class="kpi-hero-grid">
-    <div class="kpi kpi-hero"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Bénéfice<i class="tip-icon">i</i><span class="tip-box">Ton net moins toutes les dépenses, AVANT la part de la modèle : la moitié lui revient (voir « Part de la modèle »).</span></span><span class="kpi-apercu" id="kpi-apercu" hidden>aperçu, pas encore enregistré</span></div><div class="kpi-value" id="vpr">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvpr"></span><span class="kpi-pct" id="ppr">–</span></div><div class="kpi-moitie" id="pmoitie" hidden title="La moitié du bénéfice te revient, l’autre moitié à la modèle (règle des 50 %)."></div></div>
-    <div class="kpi"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="tip">Net OnlyFans<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement d’OnlyFans, commission de 20 % déjà déduite.</span></span></div><div class="kpi-value" id="vb">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvb"></span><span class="kpi-pct" id="de">–</span></div></div>
-    <div class="kpi"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg><span class="tip">Net Telegram<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive de Telegram. Aucune commission : c’est du net direct.</span></span></div><div class="kpi-value" id="vn">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvn"></span><span class="kpi-pct" id="pn">–</span></div></div>
+    <div class="kpi kpi-hero"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Bénéfice<i class="tip-icon">i</i><span class="tip-box">Ton net moins toutes les dépenses, AVANT la part de la modèle : la moitié lui revient (voir « Part de la modèle »).</span></span><span class="kpi-apercu" id="kpi-apercu" hidden>aperçu, pas encore enregistré</span></div><div class="kpi-value" id="vpr">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvpr"></span><span class="kpi-pct" id="ppr">—</span></div><div class="kpi-moitie" id="pmoitie" hidden title="La moitié du bénéfice te revient, l’autre moitié à la modèle (règle des 50 %)."></div></div>
+    <div class="kpi kpi-net"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span class="tip">Net total<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement : OnlyFans, commission de 20 % déjà déduite, et Telegram, sans aucune commission.</span></span></div><div class="kpi-value" id="pn">—</div><div class="kpi-meta"><span class="kpi-pct" id="de">—</span></div><div class="kpi-nets"><div class="kn"><span class="kn-l">OnlyFans</span><span class="kn-v" id="vb">—</span><span class="kpi-delta" id="dvb"></span></div><div class="kn"><span class="kn-l">Telegram</span><span class="kn-v" id="vn">—</span><span class="kpi-delta" id="dvn"></span></div></div></div>
   </div>
   <div id="insights-banner" style="display:none"></div>
   <div class="panel replie" id="ca-entry-panel">
@@ -2239,7 +2330,7 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
     <button type="button" class="saisie-autre" id="saisie-autre" onclick="nouveauBilan({autreMois:true})" hidden>Nouveau bilan pour un autre mois</button>
     <div id="edit-banner" role="status">
       <span class="eb-ico" id="edit-banner-ico" aria-hidden="true"></span>
-      <span class="eb-txt"><span id="edit-banner-lbl">Tu modifies le bilan du</span> <b id="edit-banner-date"></b><span class="eb-note" id="edit-banner-note"></span></span>
+      <span class="eb-txt"><span id="edit-banner-lbl">Tu mets à jour le bilan du</span> <b id="edit-banner-date"></b><span class="eb-note" id="edit-banner-note"></span></span>
       <button type="button" class="eb-x" onclick="cancelEdit()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span>Annuler</span></button>
     </div>
     <div style="margin-bottom:10px"><label class="ilbl" for="entry-date-input" style="display:block">Date</label><input class="ifield" type="date" id="entry-date-input" style="width:160px" oninput="uk()" onchange="uk()"><div class="date-aide" id="date-aide">Choisis d’abord sa date : elle décide du mois où ce bilan compte.</div></div>
@@ -2258,7 +2349,7 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
       </div>
       <div id="vainps"></div>
       <datalist id="va-names"></datalist>
-      <button class="abtn" onclick="addLP('va')">+ Ajouter un versement</button>
+      <button class="abtn" onclick="addLP('va')"><span class="ab-ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></span>Ajouter un versement</button>
     </div>
     <div style="margin-bottom:10px" id="lp-mo">
       <div class="ilbl" style="display:flex;justify-content:space-between;align-items:center">
@@ -2268,7 +2359,7 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
       <div class="lp-aide">La part de la modèle se note dans « Part de la modèle », pas ici (sinon elle compte deux fois).</div>
       <div id="moinps"></div>
       <datalist id="mo-names"></datalist>
-      <button class="abtn" onclick="addLP('mo')">+ Ajouter un versement</button>
+      <button class="abtn" onclick="addLP('mo')"><span class="ab-ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></span>Ajouter un versement</button>
     </div>
     <div style="margin-bottom:10px" id="lp-ci">
       <div class="ilbl" style="display:flex;justify-content:space-between;align-items:center">
@@ -2277,7 +2368,7 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
       </div>
       <div id="ciinps"></div>
       <datalist id="ci-names"></datalist>
-      <button class="abtn" onclick="addLP('ci')">+ Ajouter un versement</button>
+      <button class="abtn" onclick="addLP('ci')"><span class="ab-ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></span>Ajouter un versement</button>
     </div>
     <div style="margin-bottom:10px" id="lp-ch">
       <div class="ilbl" style="display:flex;justify-content:space-between;align-items:center">
@@ -2286,14 +2377,14 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
       </div>
       <div id="chinps"></div>
       <datalist id="ch-names"></datalist>
-      <button class="abtn" onclick="addLP('ch')">+ Ajouter un versement</button>
+      <button class="abtn" onclick="addLP('ch')"><span class="ab-ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></span>Ajouter un versement</button>
     </div>
     </div>
     <div class="sdiv">Dépenses diverses</div>
     <div id="ainps"></div>
     <datalist id="dep-names"></datalist>
     <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
-      <button class="abtn" onclick="addAF()">+ Ajouter une dépense</button>
+      <button class="abtn" onclick="addAF()"><span class="ab-ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></span>Ajouter une dépense</button>
       <button class="abtn" id="btn-charges" onclick="ajouterChargesHabituelles()" title="Reprend d'un coup les dépenses qui reviennent chaque mois, avec leur dernier montant connu"><span class="ab-ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span>Charges habituelles</button>
     </div>
     <div style="margin-top:10px">
@@ -2358,25 +2449,24 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
   </div>
   <div class="kpi-sec">Dépenses</div>
   <div class="kpi-dep-grid">
-    <div class="kpi"><div class="kpi-label"><span class="tip">VA<i class="tip-icon">i</i><span class="tip-box">Ce que tu as versé à tes VA</span></span></div><div class="kpi-value" id="vva">—</div><div class="kpi-pct" id="pva">–</div></div>
-    <div class="kpi"><div class="kpi-label"><span class="tip">Modèle<i class="tip-icon">i</i><span class="tip-box">Paiements à la modèle notés dans tes bilans</span></span></div><div class="kpi-value" id="vmo">—</div><div class="kpi-pct" id="pmo">–</div></div>
-    <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">IA<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting automatisé par IA</span></span></div><div class="kpi-value" id="vci">—</div><div class="kpi-pct" id="pci">–</div></div>
-    <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">humain<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting fait par des humains</span></span></div><div class="kpi-value" id="vch">—</div><div class="kpi-pct" id="pch">–</div></div>
-    <div class="kpi"><div class="kpi-label"><span class="tip">Dépenses <span class="tip-nw">diverses<i class="tip-icon">i</i></span><span class="tip-box">Dépenses ponctuelles (pub, outils, etc.)</span></span></div><div class="kpi-value" id="val">—</div><div class="kpi-pct" id="pal">–</div></div>
-    <div class="kpi"><div class="kpi-label"><span class="tip">Impôts + <span class="tip-nw">Paxum<i class="tip-icon">i</i></span><span class="tip-box">Sur l'argent OnlyFans seulement : 1 % d'impôts + 3,5 % de frais Paxum → crypto. Payés par l'agence, avant le partage avec la modèle. Telegram n'a aucun frais.</span></span></div><div class="kpi-value" id="vfr">—</div><div class="kpi-pct" id="pfr">–</div></div>
-    <div class="kpi kpi-total"><div class="kpi-label"><span class="tip">Total <span class="tip-nw">dépenses<i class="tip-icon">i</i></span><span class="tip-box">VA + Modèle + Chat IA + Chat humain + Dépenses diverses + Impôts et Paxum</span></span></div><div class="kpi-value" id="vdep">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvdep"></span><span class="kpi-pct" id="pdep">–</span></div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">VA<i class="tip-icon">i</i><span class="tip-box">Ce que tu as versé à tes VA</span></span></div><div class="kpi-value" id="vva">—</div><div class="kpi-pct" id="pva">—</div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">Modèle<i class="tip-icon">i</i><span class="tip-box">Paiements à la modèle notés dans tes bilans</span></span></div><div class="kpi-value" id="vmo">—</div><div class="kpi-pct" id="pmo">—</div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">IA<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting automatisé par IA</span></span></div><div class="kpi-value" id="vci">—</div><div class="kpi-pct" id="pci">—</div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">humain<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting fait par des humains</span></span></div><div class="kpi-value" id="vch">—</div><div class="kpi-pct" id="pch">—</div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">Dépenses <span class="tip-nw">diverses<i class="tip-icon">i</i></span><span class="tip-box">Dépenses ponctuelles (pub, outils, etc.)</span></span></div><div class="kpi-value" id="val">—</div><div class="kpi-pct" id="pal">—</div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">Impôts + <span class="tip-nw">Paxum<i class="tip-icon">i</i></span><span class="tip-box">Sur l'argent OnlyFans seulement : 1 % d'impôts + 3,5 % de frais Paxum → crypto. Payés par l'agence, avant le partage avec la modèle. Telegram n'a aucun frais.</span></span></div><div class="kpi-value" id="vfr">—</div><div class="kpi-pct" id="pfr">—</div></div>
+    <div class="kpi kpi-total"><div class="kpi-label"><span class="tip">Total <span class="tip-nw">dépenses<i class="tip-icon">i</i></span><span class="tip-box">VA + Modèle + Chat IA + Chat humain + Dépenses diverses + Impôts et Paxum</span></span></div><div class="kpi-value" id="vdep">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvdep"></span><span class="kpi-pct" id="pdep">—</span></div></div>
     <div class="kpi kpi-info"><div class="kpi-label"><span class="tip">Gardé par <span class="tip-nw">OnlyFans<i class="tip-icon">i</i></span><span class="tip-box">Les 20 % qu'OnlyFans garde sur le brut. Déjà retirés de ton net : ce n'est pas une dépense à payer.</span></span></div><div class="kpi-value" id="vof">—</div><div class="kpi-pct">déjà déduit de ton net</div></div>
   </div>
   <div id="exp-recap-panel" class="dep-detail"><div id="exp-recap"></div></div>
-  <div class="g2">
-    <div class="panel nfr-panel"><div class="panel-title">Répartition du net</div><div class="panel-sub">où part chaque dollar encaissé</div><div id="bars"><div class="emsg">Entre des données ci-dessus</div></div></div>
+    <div class="panel nfr-panel nfr-seul"><div class="panel-title">Répartition du net</div><div class="panel-sub">où part chaque dollar encaissé</div><div id="bars"><div class="emsg">Entre des données ci-dessus</div></div></div>
+  <div class="kpi-sec">Tendance</div>
+  <div class="g2 g2-tend">
     <div class="panel nfg-panel"><div class="panel-title">Évolution du bénéfice</div><div class="panel-sub">un point par bilan enregistré</div><div class="nfg"><canvas id="chp" role="img" aria-label="Évolution du bénéfice"></canvas><div class="nfg-vide">Ton premier bilan apparaîtra ici.</div></div></div>
-  </div>
-  <div class="kpi-sec">PROJECTION</div>
   <div id="forecast-card" style="display:none;background:var(--surf-2);border-radius:10px;border:0.5px solid var(--line-2);padding:16px">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
       <div>
-        <div style="font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px"><span class="tip">Prévision fin de mois<i class="tip-icon">i</i><span class="tip-box">Ton rythme du mois prolongé jusqu'au dernier jour</span></span></div>
+        <div class="panel-title fc-titre"><span class="tip">Prévision fin de mois<i class="tip-icon">i</i><span class="tip-box">Ton rythme du mois prolongé jusqu'au dernier jour</span></span></div>
         <div class="fc-vl"><span id="forecast-val">—</span><span class="fc-vs" id="forecast-hint"></span></div>
         <div style="font-size:12px;color:var(--ink-4);margin-top:4px" id="forecast-sub">–</div>
       </div>
@@ -2418,9 +2508,11 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
       <div class="fc-d-aide">Colle l’adresse du webhook de ton salon Discord : un message y part quand l’objectif du mois est atteint.</div>
     </details>
   </div>
+  </div>
+  <div class="kpi-sec">Tes bilans</div>
   <div class="panel" id="hist-panel">
     <div class="tx-top">
-      <div><div class="panel-title">Tes bilans</div><div class="panel-sub" id="hsub"></div></div>
+      <div><div class="panel-title tx-titre-chap">Tes bilans</div><div class="panel-sub" id="hsub"></div></div>
       <label class="hs-wrap"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input id="hist-search" type="search" placeholder="Un mois, un montant, un mot…" oninput="_histPage=0;rh()" aria-label="Rechercher dans tes bilans : un mois, un montant ou un mot de tes notes" autocomplete="off" enterkeyhint="search"></label>
     </div>
     <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap">
@@ -2525,7 +2617,22 @@ document.addEventListener('click',function(ev){
 },true);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>_ESC[c]);
 const fmtPct=n=>n+'\u00a0%';   // (13/10) UN format : « 57 % », espace insécable
-const pct=(v,b)=>b>0?fmtPct(Math.round(v/b*100))+' du net':'–';
+const pct=(v,b)=>b>0?fmtPct(Math.round(v/b*100))+' du net':'—';
+// (13/10) Parts du net AFFICHÉES qui totalisent 100 % (DA F5 : la Répartition faisait 101 %).
+// La marge garde l'arrondi simple (même chiffre que la carte du bénéfice, le Récap, chaque bilan) ;
+// les postes se partagent 100 − marge au plus fort reste (à reste égal : l'ordre de la liste).
+// Perte (pr < 0) : rien à totaliser, arrondi simple. Aucun montant ne change.
+function _partsArrondies(net, pr, postes){
+  const r={}, cles=Object.keys(postes).filter(k=>(postes[k]||0)>0);
+  cles.forEach(k=>{ r[k]=net>0?Math.round(postes[k]/net*100):0; });
+  if(!(net>0) || !(pr>=0) || !cles.length) return r;
+  const ex=cles.map(k=>postes[k]/net*100), bas=ex.map(x=>Math.floor(x+1e-9));
+  let manque=(100-Math.round(pr/net*100))-bas.reduce((s,x)=>s+x,0);
+  const ordre=cles.map((k,i)=>i).sort((a,b)=>((ex[b]-bas[b])-(ex[a]-bas[a]))||(a-b));
+  for(let j=0;j<ordre.length&&manque>0;j++,manque--) bas[ordre[j]]++;
+  cles.forEach((k,i)=>{ r[k]=bas[i]; });
+  return r;
+}
 const CC={'Manager':'#facc15','Twitter':'#60a5fa','ADS':'#fb923c','SFS':'#a855f7','Instagram':'#f472b6','Threads':'#a78bfa','Reddit':'#f87171','TikTok':'#22d3ee','Autre':'#888'};
 const CB={'Manager':'#2a2010','Twitter':'#1a2030','ADS':'#2d1f10','SFS':'#1f2d1f','Instagram':'#2d1a25','Threads':'#221a2d','Reddit':'#2d1a1a','TikTok':'#1a2828','Autre':'#222'};
 let ents=[],chi=null,ap=null,acd=null,acdEnd=null,afs=[],afc=0,vas=[],af='Tous',alf='tous',aaf='tous',alertFilter='tous',profitChartInst=null,activeSourceReco='tous';
@@ -2715,7 +2822,7 @@ function renderModeles(){
       ${(m.payments||[]).length?`<div>
         <div style="font-size:11.5px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Historique</div>
         ${(m.payments||[]).slice(0,5).map((p,i)=>`<div class="txrow" style="align-items:center">
-          <span class="txdb">${dl(p.date)}</span>
+          <span class="txdb">${dlA(p.date)}</span>
           <span style="font-size:13px;font-weight:600;color:var(--acc-txt);flex:1">+${fmtR(p.amount)}</span>
           ${p.note?`<span style="font-size:12px;color:var(--ink-4);flex:2;font-style:italic">${esc(p.note)}</span>`:'<span style="flex:2"></span>'}
           <button onclick="rmModelePayment(${m.id},${i})" style="background:none;border:0.5px solid var(--line-2);border-radius:4px;padding:2px 6px;color:var(--ink-4);font-size:12px;cursor:pointer">✕</button>
@@ -3036,7 +3143,7 @@ function showAlertDetails(type){
   const panel=document.getElementById('alertDetails');
   document.getElementById('alertDetailsTitle').innerHTML=`${def.ic} ${def.titre}`;
   document.getElementById('alertDetailsTitle').style.color=def.c;
-  document.getElementById('alertDetailsSub').textContent=matches.length+' VA concerné(s)';
+  document.getElementById('alertDetailsSub').textContent=_pl(matches.length,'VA concerné','VA concernés');
   document.getElementById('alertDetailsList').innerHTML=matches.length
     ? matches.map(v=>`
         <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid var(--line-2)">
@@ -3089,14 +3196,19 @@ function gcls(p){if(p<30)return'cg';if(p<=50)return'cy';return'cr';}
 function sw(t,b){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('page-'+t).classList.add('active');try{localStorage.setItem('ccn_tab',t);}catch(e){}window.scrollTo(0,0);}
 function ts(){return new Date().toISOString().split('T')[0];}
 function dl(s){return new Date(s+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
+// (13/10) Date AFFICHÉE : « 1er oct. 2026 », « 5 oct. 2026 » (plus de zéro de tête). dl() garde
+// « 01 oct. 2026 » : c'est la clé des lignes du journal (Historique « avant → après », « mis à jour
+// hier à 10:12 »), et les lignes déjà enregistrées l'emploient.
+function _sansZero(t){ return String(t==null?'':t).replace(/^01(\s)/,'1er$1').replace(/^0(\d\s)/,'$1'); }
+function dlA(s){ return _sansZero(dl(s)); }
 function setRange(){
   const s=document.getElementById('cdate-start')?.value;
   const e=document.getElementById('cdate-end')?.value;
   if(!s&&!e)return;
   ap=null; acd=s||null; acdEnd=e||s||null;
   document.querySelectorAll('#page-ca .pbtn').forEach(x=>x.classList.remove('active'));
-  const lblS=s?new Date(s+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}):' ';
-  const lblE=e?new Date(e+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}):' ';
+  const lblS=s?_jourCourt(s):' ';
+  const lblE=e?_jourCourt(e):' ';
   document.getElementById('plbl').textContent=s&&e&&s!==e?`${lblS} → ${lblE}`:lblS;
   document.getElementById('edlbl').textContent=s&&e&&s!==e?`Entrée pour la période ${lblS}–${lblE}`:`Entrée pour le ${lblS}`;
   rh();uk();renderDayEvolution();
@@ -3166,7 +3278,7 @@ function sp(d,b){
   document.getElementById('cdate-start').value='';
   document.getElementById('cdate-end').value='';
   document.querySelectorAll('#page-ca .pbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
-  document.getElementById('plbl').textContent=d===1?'Aujourd\'hui — '+dl(ts()):d+' derniers jours';
+  document.getElementById('plbl').textContent=d===1?'Aujourd\'hui — '+dlA(ts()):d+' derniers jours';
   document.getElementById('edlbl').textContent=d===1?'Entrée pour aujourd\'hui':'Entrée groupée sur les '+d+' derniers jours';
   rh();uk();renderDayEvolution();
 }
@@ -3175,8 +3287,8 @@ function scd(v){
   document.getElementById('cdate-start').value=v;
   document.getElementById('cdate-end').value=v;
   document.querySelectorAll('#page-ca .pbtn').forEach(x=>x.classList.remove('active'));
-  document.getElementById('plbl').textContent='Jour — '+dl(v);
-  document.getElementById('edlbl').textContent='Entrée pour le '+dl(v);
+  document.getElementById('plbl').textContent='Jour — '+dlA(v);
+  document.getElementById('edlbl').textContent='Entrée pour le '+dlA(v);
   rh();uk();renderDayEvolution();
 }
 function gf(){
@@ -3414,7 +3526,7 @@ function renderEntryWarnings(){
     // Rythme quotidien : meme jour exact
     if(!w.length){
       const dup=(ents||[]).find(e=>e.date===date && (!_editingId || e.id!==_editingId));
-      if(dup) w.push({t:'Un bilan existe déjà le '+dl(date)+' (net '+fmtC(_netBilan(dup))+' · bénéfice '+_mtS(dup.profit||0)+').',
+      if(dup) w.push({t:'Un bilan existe déjà le '+dlA(date)+' (net '+fmtC(_netBilan(dup))+' · bénéfice '+_mtS(dup.profit||0)+').',
                       a:_editingId?'':ouvrir(dup,'Ouvrir celui-là')});
     }
     // Un mois qui n'a pas encore commencé : on prévient, on ne bloque pas.
@@ -3562,12 +3674,12 @@ function renderRecovery(){
       +'<div class="hl-rec-bt">'+_pgIco('warn',16)+'<span>'+_pl(virManquants.length,'paiement à la modèle absent du cloud','paiements à la modèle absents du cloud')+' — '+fmtC(totalManquant)+'</span></div>'
       +'<div class="hl-rec-bs">Ils sont sur cet appareil mais pas dans le cloud. Tu peux les y remettre (rien ne sera supprimé).</div>'
       +'<div class="hl-rec-ls">'
-      + virManquants.map(o=>'<div class="hl-rec-li"><span>'+dl(o.date)+(o.note?' · '+esc(o.note):'')+'</span><b>'+fmtC(o.amount)+'</b></div>').join('')
+      + virManquants.map(o=>'<div class="hl-rec-li"><span>'+dlA(o.date)+(o.note?' · '+esc(o.note):'')+'</span><b>'+fmtC(o.amount)+'</b></div>').join('')
       +'</div>'
       +'<button class="hl-btn pri" onclick="restaurerVirements()">'+_pgIco('cloud',15)+'Les remettre dans le cloud</button>'
       +'</div>';
   } else {
-    html+='<div class="hl-rec-vide">Rien à récupérer sur cet appareil : tes données sont dans le cloud ✓</div>';
+    html+='<div class="hl-rec-vide hl-rec-ok">'+_pgIco('check',16)+'<span>Rien à récupérer sur cet appareil : tes données sont dans le cloud.</span></div>';
   }
   const garde=[vir.length?_pl(vir.length,'paiement à la modèle','paiements à la modèle'):'', ent.length?_pl(ent.length,'bilan','bilans'):'',
     mod.length?_pl(mod.length,'modèle','modèles'):'', vs.length?vs.length+' VA':''].filter(Boolean);
@@ -3711,7 +3823,7 @@ async function restaurerSnapshot(i){
   if (!_okRestore) showSaveStatus("⚠ Restauration INCOMPLÈTE — virements ou "
     + "modèles NON enregistrés au serveur. Refais-la.", '#ef4444');
   else showSaveStatus('✓ Restauré : ' + _pl(virAjoutes.length, 'paiement', 'paiements') + ', ' + _pl(ok, 'bilan', 'bilans')
-    + (ko ? ' · ' + ko + ' échec(s)' : ''), ko ? 'var(--todo)' : 'var(--pos)');
+    + (ko ? ' · ' + _pl(ko, 'échec', 'échecs') : ''), ko ? 'var(--todo)' : 'var(--pos)');
 }
 
 async function snapshotManuel(){
@@ -3762,7 +3874,7 @@ function renderSnapshots(){
         nV ? _pl(nV, 'paiement à la modèle', 'paiements à la modèle') + (totalVir ? ' (' + fmtC(totalVir) + ')' : '') : '',
         nM ? _pl(nM, 'modèle', 'modèles') : ''].filter(Boolean).join(' · ');
       return '<div class="hl-snap-r">'
-        + '<div class="hl-snap-c"><div class="hl-snap-d">' + d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'}) + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) + '</div>'
+        + '<div class="hl-snap-c"><div class="hl-snap-d">' + d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'}).replace(/ 1 /, ' 1er ') + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) + '</div>'
         + '<div class="hl-snap-s">' + resume + '</div></div>'
         + '<button class="hl-btn acc" onclick="restaurerSnapshot(' + s.i + ')">' + _pgIco('undo', 15) + 'Restaurer</button></div>';
     }).join('');
@@ -3839,12 +3951,12 @@ function renderForecast(){
       // ou deja complet se voit tout de suite, au lieu d'etre multiplie en silence.
       fs.innerHTML=moisFini
         ? `Mois terminé : c'est ton bilan ${_deM}`
-        : `Ton bilan ${_deM} à ce jour : <strong>${fmtS(profitCumule)}</strong> en <strong>${joursEcoules}</strong> jour${_s(joursEcoules)} · même rythme sur <strong>${daysInMonth} jours</strong> · ${daysLeft} jour${_s(daysLeft)} restant${_s(daysLeft)}`;
+        : `Ton bilan ${_deM} à ce jour : <strong>${fmtS(profitCumule)}</strong> en <strong>${joursEcoules}</strong> jour${_s(joursEcoules)} · même rythme sur <strong>${daysInMonth} jours</strong> · <span class="fc-nw">${daysLeft} jour${_s(daysLeft)} restant${_s(daysLeft)}</span>`;
     } else {
       // « jours sans saisie » n'a de sens QUE pour quelqu'un qui saisit chaque jour.
       const _manquants=Math.max(0,joursEcoules-joursSaisis);
       const _ic=(typeof ICO!=='undefined'&&ICO&&ICO.alerte)||'';
-      fs.innerHTML=`Basé sur <strong>${fmtR(moyenneJour)}/jour</strong> (moyenne sur <strong>${joursSaisis}</strong> jour${_s(joursSaisis)} saisi${_s(joursSaisis)}) × <strong>${daysInMonth} jours</strong> · ${daysLeft} jour${_s(daysLeft)} restant${_s(daysLeft)}`+(_manquants?` · <span class="fc-warn">${_ic}${_manquants} jour${_s(_manquants)} sans saisie</span>`:'');
+      fs.innerHTML=`Basé sur <strong>${fmtR(moyenneJour)}/jour</strong> (moyenne sur <strong>${joursSaisis}</strong> jour${_s(joursSaisis)} saisi${_s(joursSaisis)}) × <strong>${daysInMonth} jours</strong> · <span class="fc-nw">${daysLeft} jour${_s(daysLeft)} restant${_s(daysLeft)}</span>`+(_manquants?` · <span class="fc-warn">${_ic}${_manquants} jour${_s(_manquants)} sans saisie</span>`:'');
     }
   }
 
@@ -3880,7 +3992,7 @@ function renderForecast(){
       else if(moyenneJour>0){
         const joursRestants=Math.ceil(reste/moyenneJour);
         const dateAtteinte=new Date(refDate.getTime()+joursRestants*86400000);
-        const dateStr=dateAtteinte.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
+        const dateStr=dateAtteinte.toLocaleDateString('fr-FR',{day:'numeric',month:'short'}).replace(/^1(\s)/,'1er$1');
         const _h=(typeof ICO!=='undefined'&&ICO&&ICO.horloge)||'', _a=(typeof ICO!=='undefined'&&ICO&&ICO.alerte)||'';
         if(joursRestants<=daysLeft){dg.innerHTML=`<span class="fc-ok">${_h}Objectif atteint vers le ${dateStr} si le rythme continue</span>`;}
         else{dg.innerHTML=`<span class="fc-ko">${_a}Au rythme actuel, il manquera environ ${fmtR((joursRestants-daysLeft)*moyenneJour)}</span>`;}
@@ -4028,7 +4140,7 @@ function uk(){
   // Le formulaire de saisie, lui, reste visible : c est le seul geste possible.
   document.querySelectorAll('#page-ca .kpi-sec,#page-ca .kpi-hero-grid,#page-ca .kpi-dep-grid,'
     +'#insights-banner,#advances-panel,#virements-panel,#rapprochement-panel,'
-    +'#model-share-panel,#forecast-card,#page-ca .g2,#exp-recap-panel,#hist-panel'
+    +'#model-share-panel,#forecast-card,#page-ca .g2,#page-ca .nfr-panel,#exp-recap-panel,#hist-panel'
   ).forEach(x=>{ if(x) x.style.display=_empty?'none':''; });
   // gv('ib') est maintenant du NET : on le reconvertit en brut pour rester
   // coherent avec e.brut des entrees deja enregistrees.
@@ -4065,8 +4177,9 @@ function uk(){
   // Le bilan en cours de modification (ou un bilan neuf déjà rempli) compte dans le nombre :
   // il est dans les montants, il est dans le compteur (plus de « $6,800 · aucun bilan »).
   const _nbB=f.length+(_brouillon&&(_editingId||_brouillonRempli())?1:0);
-  set('de',_nbB?_nbB+' bilan'+(_nbB>1?'s':''):'aucun bilan');set('pn',net?'Net total : '+fmtC(net):'–');set('pva',pct(va,net));set('pmo',pct(mo,net));set('pci',pct(ci,net));set('pch',pct(ch,net));
-  set('pal',al&&net?fmtPct(Math.round(al/net*100))+' · '+ac+' dépense'+(ac>1?'s':''):'–');set('pdep',pct(dep,net));set('pfr',fr?'1\u00a0% + 3,5\u00a0% Paxum':'–');set('ppr',net?fmtPct(Math.round(pr/net*100))+' de marge':'–');
+  set('de',_nbB?_nbB+' bilan'+(_nbB>1?'s':''):'aucun bilan');set('pn',net?fmtC(net):'—');const _parts=_partsArrondies(net,pr,{va,mo,ci,ch,al,fr}), _pp=(k,v)=>(net>0&&v>0&&_parts[k]!=null)?fmtPct(_parts[k])+' du net':pct(v,net);
+  set('pva',_pp('va',va));set('pmo',_pp('mo',mo));set('pci',_pp('ci',ci));set('pch',_pp('ch',ch));
+  set('pal',al&&net?fmtPct(_parts.al!=null?_parts.al:Math.round(al/net*100))+' · '+ac+' dépense'+(ac>1?'s':''):'—');set('pdep',pct(dep,net));set('pfr',fr?'1\u00a0% + 3,5\u00a0% Paxum':'—');set('ppr',net?fmtPct(Math.round(pr/net*100))+' de marge':'—');
   // « dont ta moitié » : la règle des 50 % que la Part de la modèle applique déjà
   // ((bénéfice + paiements modèle notés dans les bilans) × 0,5), vue du côté d'André.
   // Seulement si le bénéfice est positif.
@@ -4168,6 +4281,9 @@ function uk(){
       {l:'Dépenses diverses',v:al,    p:al/net,    c:'var(--m-fu)'},
       {l:'Impôts + Paxum',   v:fr,    p:fr/net,    c:'var(--m-fr)'},
     ].filter(i=>i.v>0||i.pr);
+    // (13/10) parts au plus fort reste : la liste totalise 100 % et redit les tuiles du dessus
+    const _cleRep={'VA':'va','Modèle':'mo','Chat IA':'ci','Chat humain':'ch','Dépenses diverses':'al','Impôts + Paxum':'fr'};
+    its.forEach(i=>{ const k=_cleRep[i.l]; i.pc=(k&&_parts[k]!=null)?_parts[k]:Math.round(i.p*100); });
     // « Plus gros poste » (venait du bandeau du haut) : dit ici, là où on regarde les dépenses.
     const _gros=its.filter(i=>!i.pr).reduce((a,b)=>b.v>a.v?b:a,{l:'',v:0});
     document.getElementById('bars').innerHTML=grafRepartition(net,its,_gros.v>0?_gros.l:'');
@@ -4255,12 +4371,12 @@ function rh(){
     return `<div class="txrow${ouvert?' open':''}" id="txr-${ri}">`
       +`<div class="tx-sum" role="button" tabindex="0" aria-expanded="${ouvert?'true':'false'}" aria-controls="txd-${ri}" onclick="txTog(${ri})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();txTog(${ri})}">`
       +`<span class="tx-cv" aria-hidden="true">${_pgIco('chev',16)}</span>`
-      +`<span class="tx-when"><span class="txdb">${dl(e.date)}</span>${_aut?`<span class="tx-auteur">par ${_aut}</span>`:''}</span>`
+      +`<span class="tx-when"><span class="txdb">${dlA(e.date)}</span>${_aut?`<span class="tx-auteur">par ${_aut}</span>`:''}</span>`
       +`<span class="tx-netc"><span class="tx-net"><span class="tx-k">Net </span>${fmtC(_netL)}</span>${e.tgNet?`<span class="tx-tg">dont Telegram ${fmtC(e.tgNet)}</span>`:''}</span>`
       +`<span class="tx-depc">${_depL>0?fmtC(_depL):'<span class="tx-none">aucune</span>'}</span>`
       +`<span class="tx-res"><span class="tx-pr${e.profit<0?' neg':''}">${_mP(e.profit)}</span><span class="tx-mg">${mg} % de marge</span></span>`
       +`</div>`
-      +`<button type="button" class="tx-mod" onclick="window.editEntry(${ri})" aria-label="Modifier le bilan du ${dl(e.date)}">${ICO.edit||''}<span>Modifier</span></button>`
+      +`<button type="button" class="tx-mod" onclick="window.editEntry(${ri})" aria-label="Mettre à jour le bilan du ${dlA(e.date)}">${ICO.edit||''}<span>Mettre à jour</span></button>`
       +`<div class="tx-det" id="txd-${ri}">`
       +(_meta?`<div class="tx-meta">${_meta}</div>`:'')
       +`<div class="tx-dl"><span>Dépenses</span><b>${_depL>0?fmtC(_depL):'aucune'}</b></div>`
@@ -4694,7 +4810,7 @@ function renderVA(filteredVas, flt){
     };
     if(alertTests[alertFilter])f=f.filter(alertTests[alertFilter]);
   }
-  const el=document.getElementById('vacl');if(el)el.textContent=f.length+' VA affiché(s)';
+  const el=document.getElementById('vacl');if(el)el.textContent=_pl(f.length,'VA affiché','VA affichés');
 
   const tb=document.getElementById('tbs');
   if(s.length>=2){
@@ -5214,7 +5330,15 @@ function showSaveStatus(msg, color='#a855f7') {
   // Un succès ne recouvre pas un échec récent : c'est tout le problème.
   if(!estEchec && _echecAffiche && (maintenant - _echecAffiche) < 20000) return;
   _echecAffiche = estEchec ? maintenant : 0;
-  el.textContent = msg; el.style.color = color; el.style.opacity = '1';
+  // (13/10) Le glyphe de tête (⚠ ✓ ⏳) est dessiné avec l'icône du jeu ; il reste dans le texte
+  // (caché) : el.textContent vaut EXACTEMENT msg, l'état de l'en-tête et l'effacement le relisent.
+  const _g = /^([\u26a0\u2713\u23f3])\uFE0F?\s*/.exec(String(msg));
+  if (_g) el.innerHTML = '<span class="ss-g">' + esc(_g[0]) + '</span><span class="fm-i" aria-hidden="true">'
+    + _ic(_g[1] === '\u2713' ? 'valide' : (_g[1] === '\u23f3' ? 'horloge' : 'alerte')) + '</span>' + esc(String(msg).slice(_g[0].length));
+  else el.textContent = msg;
+  // L'enregistrement AUTOMATIQUE réussi ne fait plus surgir « ✓ Sauvegardé » : l'état de l'en-tête
+  // (« ✓ Enregistré à 10:12 ») le dit déjà, et après un bilan c'était la 3e confirmation (André).
+  el.style.color = color; el.style.opacity = (msg === '✓ Sauvegardé') ? '0' : '1';
   const duree = estEchec ? 20000 : 2500;   // un échec doit rester lisible
   setTimeout(() => {
     // On n'efface que SON propre message (un autre a pu passer entre-temps).
@@ -5226,7 +5350,11 @@ function showSaveStatus(msg, color='#a855f7') {
 function flashMsg(id, msg, color='#a855f7') {
   const el = document.getElementById(id);
   if (!el) return;
-  el.textContent = msg; el.style.color = color; el.style.opacity = '1';
+  // (13/10) Le « ⚠ » / « ✓ » tapé en tête devient l'icône du jeu (même trait que le menu).
+  const _g = /^([\u26a0\u2713])\uFE0F?\s*/.exec(String(msg));
+  if (_g) el.innerHTML = '<span class="fm-i" aria-hidden="true">' + _ic(_g[1] === '\u2713' ? 'valide' : 'alerte') + '</span><span>' + esc(String(msg).slice(_g[0].length)) + '</span>';
+  else el.textContent = msg;
+  el.style.color = color; el.style.opacity = '1';
   clearTimeout(el._t);
   el._t = setTimeout(() => { el.style.opacity = '0'; }, 2200);
 }
@@ -5322,6 +5450,9 @@ function rcTog(k){
   const _h = el && el.querySelector('.rc-mh'); if(_h) _h.setAttribute('aria-expanded', _rcOpen.has(k) ? 'true' : 'false');
 }
 function _rcPct(a, b){ return b > 0 ? Math.round(a / b * 100) : 0; }
+// (13/10) « dont ta moitié » au Récap, la MÊME règle que l'accueil et la Part de la modèle :
+// (bénéfice + paiements modèle notés dans les bilans) × 0,5, seulement si le bénéfice est positif.
+function _rcMoitie(pr, mo){ return (pr > 0 && (mo || 0) <= pr) ? '<span class="rc-moitie">dont ta moitié : <b>' + fmtC((pr + (mo || 0)) * 0.5) + '</b></span>' : ''; }
 function _rcCoul(p){ return p >= 0 ? 'var(--acc-txt)' : 'var(--neg)'; }
 function _rcMargeCoul(m){ return m >= 50 ? 'var(--pos)' : m >= 20 ? 'var(--ink-2)' : 'var(--neg)'; }
 
@@ -5365,7 +5496,7 @@ function renderRecap(){
       + _carte('in', 'var(--ink-3)', 'Net total', fmtC(T.net), 'var(--ink-1)',
           _pl(data.length, 'mois', 'mois') + ' · ' + _pl(T.count, 'bilan', 'bilans') + (avecTg ? ' · <span class="rc-nw">dont Telegram ' + fmtC(T.tg) + '</span>' : ''))
       + _carte('out', 'var(--ink-3)', 'Dépenses', fmtC(T.dep), 'var(--ink-1)', _rcPct(T.dep, T.net) + ' % du net')
-      + _carte('dollar', _rcCoul(T.profit), 'Bénéfice', _mS(T.profit), _rcCoul(T.profit), 'avant la part de la modèle (50 %)')
+      + _carte('dollar', _rcCoul(T.profit), 'Bénéfice', _mS(T.profit), _rcCoul(T.profit), '<span class="rc-avant">avant la part de la modèle (50 %)</span>' + _rcMoitie(T.profit, T.mo))
       + _carte('pct', _rcMargeCoul(margeT), 'Marge', margeT + ' %', _rcMargeCoul(margeT),
           margeT >= 50 ? 'très bonne' : margeT >= 20 ? 'correcte' : 'les dépenses pèsent lourd')
       + '</div>';
@@ -5465,7 +5596,7 @@ function renderRecap(){
     + _vus.map(p => '<span class="rc-lg"><b style="background:' + p[2] + '"></b>' + p[1] + '</span>').join('');
   el.innerHTML = '<div class="panel rc-list">'
     + '<div class="rc-ph"><div><div class="panel-title">Mois par mois</div>'
-    + '<div class="panel-sub">ouvre un mois pour voir le détail et le corriger</div></div>'
+    + '<div class="panel-sub">ouvre un mois pour voir le détail et le mettre à jour</div></div>'
     + '<div class="rc-lgs" aria-label="Légende des barres">' + _legende + '</div></div>'
     + '<div class="rc-hd" aria-hidden="true"><span></span><span>Mois</span><span>Où part l’argent</span>'
     + '<span>Net</span><span>Dépenses</span><span>Bénéfice</span><span>Marge</span></div>'
@@ -5487,9 +5618,10 @@ function renderRecap(){
       + ((r.tg || 0) > 0 ? '<div class="rc-l"><b style="background:var(--m-tg)"></b><span class="rc-ln">Net Telegram</span><span class="rc-lv">' + fmtC(r.tg) + '</span></div>' : '')
       + '<div class="rc-tot"><span>Net total</span><span>' + fmtC(r.net) + '</span></div></div>';
 
+    const _parts = _partsArrondies(r.net, r.profit, {va: r.va, mo: r.mo, ci: r.ci, ch: r.ch, al: r.al, fr: r.fr || 0});
     const lignes = _RC_POSTES.filter(p => (r[p[0]] || 0) > 0).map(p =>
       '<div class="rc-l"><b style="background:' + p[2] + '"></b><span class="rc-ln">' + _RC_LBL[p[0]] + '</span>'
-      + '<span class="rc-lp" title="part de ce qui est rentré ce mois-ci">' + _rcPct(r[p[0]], r.net) + ' % du net</span>'
+      + '<span class="rc-lp" title="part de ce qui est rentré ce mois-ci">' + (_parts[p[0]] != null ? _parts[p[0]] : _rcPct(r[p[0]], r.net)) + ' % du net</span>'
       + '<span class="rc-lv">−' + fmtC(r[p[0]]) + '</span></div>').join('');
     det += '<div class="rc-grp"><div class="rc-gt">Ce qui sort</div>'
       + (lignes || '<div class="rc-l"><span class="rc-ln rc-muted">Aucune dépense ce mois-ci</span></div>')
@@ -5502,12 +5634,12 @@ function renderRecap(){
     }
     det += '<div class="rc-grp rc-res"><div class="rc-gt">Bénéfice du mois</div>'
       + '<div class="rc-resv" style="color:' + _rcCoul(r.profit) + '">' + _mS(r.profit) + '</div>'
-      + '<div class="rc-ress">avant la part de la modèle · <b style="color:' + _rcMargeCoul(marge) + '">' + marge + ' %</b> de marge</div></div>';
+      + '<div class="rc-ress">avant la part de la modèle · <b style="color:' + _rcMargeCoul(marge) + '">' + marge + ' %</b> de marge' + _rcMoitie(r.profit, r.mo) + '</div></div>';
 
     // « Corriger ce bilan » : ouvre la MEME modification que « Modifier » sur l'accueil.
     const _bil = (ents || []).filter(e => String(e.date || '').slice(0, 7) === r.key).sort((x, y) => String(y.date).localeCompare(String(x.date)));
     const act = _bil.length ? '<div class="rc-act">' + _bil.map((e, i) => '<button type="button" class="rc-fix" onclick="rcCorriger(\'' + esc(r.key) + '\',' + i + ')">'
-      + (ICO.edit || '') + '<span>' + (_bil.length > 1 ? 'Corriger le bilan du ' + esc(dl(e.date)) : 'Corriger ce bilan') + '</span></button>').join('') + '</div>' : '';
+      + (ICO.edit || '') + '<span>' + (_bil.length > 1 ? 'Mettre à jour le bilan du ' + esc(dlA(e.date)) : 'Mettre à jour ce bilan') + '</span></button>').join('') + '</div>' : '';
 
     return '<div class="rc-m' + (ouvert ? ' open' : '') + '" id="rcm-' + esc(r.key) + '">'
       + '<div class="rc-mh" role="button" tabindex="0" aria-expanded="' + (ouvert ? 'true' : 'false') + '" aria-controls="rcd-' + esc(r.key) + '"'
@@ -5677,7 +5809,7 @@ function importData(e) {
       // en base. Sans confirmation, un clic de travers sur ce bouton — voisin des
       // boutons d'export — détruisait définitivement la comptabilité.
       const _nb=(d.ents||[]).length;
-      if(!await showConfirm('Remplacer TOUTES les données actuelles par ce fichier ('+_nb+' entrée(s)) ? Cette action écrase la base et est irréversible.')){ e.target.value=''; return; }
+      if(!await showConfirm('Remplacer TOUTES les données actuelles par ce fichier ('+_pl(_nb,'bilan','bilans')+') ? Cette action écrase la base et est irréversible.')){ e.target.value=''; return; }
       if (d.ents) ents = d.ents;
       if (d.vas) vas = d.vas;
       if (d.virements) virements = d.virements;
@@ -5705,7 +5837,7 @@ function importData(e) {
           } catch (err) { ko++; }
         }
         ents = await apiFetch('/api/entries'); rh(); rc(); uk();
-        if (ko) { showSaveStatus('⚠ Import partiel : ' + ko + ' entrée(s) non restaurée(s)', '#f87171'); return; }
+        if (ko) { showSaveStatus('⚠ Import partiel : ' + _pl(ko, 'bilan non restauré', 'bilans non restaurés'), '#f87171'); return; }
       }
       if (!_okListes) showSaveStatus("⚠ Import partiel — virements ou modèles "
         + "NON enregistrés au serveur.", '#f87171');
@@ -5727,7 +5859,7 @@ window.quickNote=function(idx){
   var e=gf()[idx];if(!e)return;
   // Une fenetre de l'application, et non prompt() (la boite grise du navigateur,
   // avec l'adresse du site, au telephone).
-  _fenetre({ico:'note', titre:'Note du bilan du '+dl(e.date),
+  _fenetre({ico:'note', titre:'Note du bilan du '+dlA(e.date),
     champ:{valeur:e.notes||'', placeholder:'ex. bon mois, la pub a bien marché', label:'Note du bilan'},
     valider:'ok', boutons:[{l:'Annuler',v:'annuler'},{l:'Enregistrer la note',v:'ok',cls:'pri'}]
   }).then(function(r){
@@ -5787,7 +5919,7 @@ function se(force) {
     if(_dbl){ _alerteDoublon(_dbl, function(){ se(true); }); return; }
   }
   const wasEdit=!!_editingId;
-  const _oldK={vpr:_kpiNum('vpr'),vb:_kpiNum('vb'),vn:_kpiNum('vn')};
+  const _oldK={vpr:_kpiNum('vpr'),pn:_kpiNum('pn')};
   const va=totLP('va'),mo=totLP('mo'),ci=totLP('ci'),ch=totLP('ch');
   const alI=gai(),alT=alI.reduce((s,i)=>s+i.val,0);
   const dateInput=document.getElementById('entry-date-input')?.value;
@@ -5822,7 +5954,7 @@ function se(force) {
   loadDefaultPayers();
   _fermerPanneau();
   rh();rc();uk();renderVirements();renderModeles();
-  ['vpr','vb','vn'].forEach(id=>countUpKPI(id,_oldK[id]));
+  ['vpr','pn'].forEach(id=>countUpKPI(id,_oldK[id]));
   saveData();
   _annoncerBilan(_envoi, wasEdit, date);
 }
@@ -5994,7 +6126,7 @@ window.deleteEntry = async function(idx) {
   // On dit QUEL bilan part (date et montants) et le bouton est rouge : c'est le
   // pire accident possible (avant : « Supprimer cette entrée ? », bouton violet).
   const r = await _fenetre({ico:'del', ton:'danger',
-    titre:'Supprimer le bilan du '+dl(entry.date)+' (net '+fmtC(_netBilan(entry))+', bénéfice '+_mtS(entry.profit||0)+') ?',
+    titre:'Supprimer le bilan du '+dlA(entry.date)+' (net '+fmtC(_netBilan(entry))+', bénéfice '+_mtS(entry.profit||0)+') ?',
     texte:'Il sera retiré de tous tes totaux.',
     boutons:[{l:'Annuler',v:'non'},{l:'Supprimer',v:'oui',cls:'danger'}]});
   if (r.choix !== 'oui') return;
@@ -6135,7 +6267,7 @@ function runGSearch(q){
   res.innerHTML='<div class="gs-n">'+_pl(hits.length,'bilan trouvé','bilans trouvés')+'</div>'+hits.slice(0,30).map(i=>{
     const e=ents[i], net=(e.brut||0)*0.80+(e.tgNet||0);
     return '<button type="button" class="gsr-item" onclick="gsAller('+i+')"><span class="gsr-tag">Bilan</span>'
-      +'<span class="gsr-l"><b>'+esc(dl(e.date))+'</b> · Net '+fmtC(net)+' · Bénéfice '+_mS(e.profit||0)
+      +'<span class="gsr-l"><b>'+esc(dlA(e.date))+'</b> · Net '+fmtC(net)+' · Bénéfice '+_mS(e.profit||0)
       +(e.notes?'<span class="gsr-n">'+esc(e.notes)+'</span>':'')+'</span>'
       +'<span class="gsr-go" aria-hidden="true">'+_pgIco('chev',16)+'</span></button>';
   }).join('');
@@ -6148,16 +6280,19 @@ function renderActivity(){
   ents.forEach(function(e){var a=e.author;if(a==='Moi'||a==='Associé'){stats[a].n++;stats[a].ca+=e.brut||0;stats[a].pr+=e.profit||0;}else unsigned++;});
   if(stats['Moi'].n===0&&stats['Associé'].n===0){el.style.display='none';return;}
   el.style.display='block';
-  var card=function(name,s,color){return '<div style="flex:1;min-width:160px;background:var(--surf-1);border:1px solid var(--line-2);border-radius:10px;padding:14px 16px"><div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:'+color+'">'+name+'</div><div style="font-size:22px;font-weight:700;margin-top:8px">'+s.n+' <span style="font-size:12px;color:var(--ink-3);font-weight:400">entrée(s)</span></div><div style="font-size:12px;color:var(--ink-3);margin-top:5px">CA saisi <b style="color:var(--ink-2)">'+fmtR(s.ca)+'</b> · profit <b style="color:'+(s.pr>=0?'#a855f7':'#f87171')+'">'+fmtR(s.pr)+'</b></div></div>';};
-  el.innerHTML='<div class="panel-title">👥 Activité par associé</div><div class="panel-sub">qui a saisi quoi (toutes les entrées)</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">'+card('Moi',stats['Moi'],'#60a5fa')+card('Associé',stats['Associé'],'#e879f9')+'</div>'+(unsigned?'<div style="font-size:12px;color:var(--ink-4);margin-top:8px">+ '+unsigned+' entrée(s) non signée(s) (avant cette fonction)</div>':'');
+  var card=function(name,s,color){return '<div style="flex:1;min-width:160px;background:var(--surf-1);border:1px solid var(--line-2);border-radius:10px;padding:14px 16px"><div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:'+color+'">'+name+'</div><div style="font-size:22px;font-weight:700;margin-top:8px">'+s.n+' <span style="font-size:12px;color:var(--ink-3);font-weight:400">'+(s.n>1?'bilans':'bilan')+'</span></div><div style="font-size:12px;color:var(--ink-3);margin-top:5px">brut saisi <b style="color:var(--ink-2)">'+fmtR(s.ca)+'</b> · bénéfice <b style="color:'+(s.pr>=0?'var(--acc-txt)':'var(--neg)')+'">'+fmtS(s.pr)+'</b></div></div>';};
+  el.innerHTML='<div class="panel-title">Activité par associé</div><div class="panel-sub">qui a saisi quoi (tous les bilans)</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">'+card('Moi',stats['Moi'],'var(--c-info)')+card('Associé',stats['Associé'],'var(--c-fu)')+'</div>'+(unsigned?'<div style="font-size:12px;color:var(--ink-4);margin-top:8px">+ '+_pl(unsigned,'bilan non signé','bilans non signés')+' (saisis avant la signature des bilans)</div>':'');
 }
 function renderExpenseRecap(){
   const el=document.getElementById('exp-recap');if(!el)return;
   const ents2=gf();
   const map={};
-  const add=(name,val,payer)=>{if(!val||val<=0)return;if(!map[name])map[name]={moi:0,asso:0,total:0};const p=(payer==='associe')?'asso':'moi';map[name][p]+=val;map[name].total+=val;};
-  ents2.forEach(e=>{const pb=e.paidBy||{};add('VA',e.va||0,pb.va);add('Modèle',e.mo||0,pb.mo);add('Chat IA',e.ci||0,pb.ci);add('Chat Humain',e.ch||0,pb.ch);(e.alI||[]).forEach(x=>add((x.name||'Divers').trim()||'Divers',x.val||0,x.paidBy));});
-  const rows=Object.keys(map).map(name=>({name,...map[name]})).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
+  // (13/10) Chaque ligne porte le point de couleur de son poste (comme partout), et « Impôts + Paxum »
+  // y est (DA F12 : sans lui, la liste n'additionnait pas au « Total dépenses » juste au-dessus).
+  // Les postes ont leur propre clé : une dépense diverse nommée « VA » ne s'y mélange plus.
+  const add=(cle,nom,val,payer,c)=>{if(!val||val<=0)return;if(!map[cle])map[cle]={name:nom,c,moi:0,asso:0,total:0};const p=(payer==='associe')?'asso':'moi';map[cle][p]+=val;map[cle].total+=val;};
+  ents2.forEach(e=>{const pb=e.paidBy||{};add('\u00a7va','VA',e.va||0,pb.va,'var(--m-va)');add('\u00a7mo','Modèle',e.mo||0,pb.mo,'var(--m-mo)');add('\u00a7ci','Chat IA',e.ci||0,pb.ci,'var(--m-ci)');add('\u00a7ch','Chat humain',e.ch||0,pb.ch,'var(--m-ch)');(e.alI||[]).forEach(x=>{const n=(x.name||'Divers').trim()||'Divers';add(n,n,x.val||0,x.paidBy,'var(--m-fu)');});add('\u00a7fr','Impôts + Paxum',fraisOF((e.brut||0)*_TAUX),'moi','var(--m-fr)');});
+  const rows=Object.keys(map).map(k=>map[k]).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
   // (2e tour) L'ancien panneau « Récap des dépenses » répétait le total des tuiles dans un
   // cadre rouge : il ne reste qu'UN accès au détail, juste sous les tuiles Dépenses.
   if(!rows.length){el.innerHTML='';return;}
@@ -6165,7 +6300,7 @@ function renderExpenseRecap(){
   const nomP=n=>n==='Chat Humain'?'Chat humain':n;
   el.innerHTML='<button type="button" class="dd-b" aria-expanded="'+ouvert+'" aria-controls="exp-recap-detail" onclick="window._depDetailOuvert=!window._depDetailOuvert;window._depDetailFocus=true;renderExpenseRecap()">'
     +(ICO.recu||'')+'<span>'+(ouvert?'Masquer le détail par dépense':'Voir le détail par dépense')+'</span><span class="cv">'+(ICO.chev||'')+'</span></button>'
-    +(ouvert?'<div id="exp-recap-detail" class="dd-l">'+rows.map(r=>'<div class="dd-r"><span class="dd-n">'+esc(nomP(r.name))+'</span><b class="dd-v">'+fmtC(r.total)+'</b></div>').join('')+'</div>':'');
+    +(ouvert?'<div id="exp-recap-detail" class="dd-l">'+rows.map(r=>'<div class="dd-r"><span class="dd-n"><i class="dd-pt" style="background:'+r.c+'" aria-hidden="true"></i>'+esc(nomP(r.name))+'</span><b class="dd-v">'+fmtC(r.total)+'</b></div>').join('')+'</div>':'');
   if(window._depDetailFocus){window._depDetailFocus=false;const b=el.querySelector('.dd-b');if(b)b.focus();}
 }
 function renderModelShare(){
@@ -6226,7 +6361,7 @@ function renderModelShare(){
     // Les 3 derniers paiements ; le reste à un toucher (la liste grandissait de 46 px par mois).
     const tout=!!window._msTout;
     const liste=virements.map((v,i)=>({v,i})).reverse();
-    const _an=' '+ts().slice(0,4), _dc=d=>{const t=dl(d);return t.endsWith(_an)?t.slice(0,-_an.length):t;};
+    const _an=' '+ts().slice(0,4), _dc=d=>{const t=dlA(d);return t.endsWith(_an)?t.slice(0,-_an.length):t;};
     html+=`<div class="ms-pay"><div class="ms-pay-h"><span>Paiements à la modèle</span><span class="ms-pay-n">${n}</span>`
       +(n>3?`<button type="button" class="ms-tout" aria-expanded="${tout}" onclick="window._msTout=!window._msTout;renderModelShare()">${tout?'Voir moins':'Voir les '+n}</button>`:'')+`</div>`
       +(tout?liste:liste.slice(0,3)).map(o=>`<div class="ms-pr"><div class="ms-pi"><span class="ms-pd">${_dc(o.v.date)}</span>${o.v.note?`<span class="ms-pn" title="${esc(o.v.note)}">${esc(o.v.note)}</span>`:''}</div><b class="ms-pa">${fmtC(o.v.amount)}</b><button type="button" class="ms-del" onclick="deleteModelPayment(${o.i})" title="Supprimer ce paiement" aria-label="Supprimer le paiement du ${dl(o.v.date)}">${ICO.croix||'×'}</button></div>`).join('')+`</div>`;
@@ -6277,7 +6412,7 @@ async function deleteModelPayment(i){
   // (avant : « Confirmer » violet, sans date ni note). Montant exact (fmtC), comme la liste.
   const _mt=(typeof fmtC==='function'?fmtC:fmtR)(v.amount);
   if(!await showConfirm({ico:'del', ton:'danger',
-    titre:'Supprimer le paiement du '+dl(v.date)+' ('+_mt+(v.note?', « '+String(v.note).trim()+' »':'')+') ?',
+    titre:'Supprimer le paiement du '+String(dl(v.date)).replace(/^01(\s)/,'1er$1').replace(/^0(\d\s)/,'$1')+' ('+_mt+(v.note?', « '+String(v.note).trim()+' »':'')+') ?',
     texte:'« Reste à envoyer » remontera de '+_mt+'. Cette suppression est irréversible.',
     boutons:[{l:'Annuler',v:'non'},{l:'Supprimer',v:'oui',cls:'danger'}]}))return;
   i=virements.indexOf(v);   // la liste a pu bouger pendant la question
@@ -6309,7 +6444,7 @@ async function deleteModelPayment(i){
 const _HL_FAM = [
   ['tous',  'Tout',          null],
   ['ajout', 'Ajouts',        a => /^ajout/i.test(a)],
-  ['modif', 'Modifications', a => /modif/i.test(a)],
+  ['modif', 'Mises à jour', a => /modif/i.test(a)],
   ['suppr', 'Suppressions',  a => /suppr/i.test(a)],
 ];
 let _hlF = 'tous', _hlQ = '', _hlQBrut = '', _hlMax = 60;
@@ -6329,7 +6464,7 @@ function _hlJour(ts){
   const c = new Date(d); c.setHours(0,0,0,0);
   const ecart = Math.round((j - c) / 86400000);
   const lbl = ecart === 0 ? 'Aujourd\'hui' : ecart === 1 ? 'Hier'
-    : d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
+    : d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'}).replace(/ 1 /, ' 1er ');
   return {cle: c.toISOString().slice(0,10), lbl};
 }
 
@@ -6523,7 +6658,7 @@ if('serviceWorker' in navigator){
 function grafMoisCourt(i){ return ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'][i] || ''; }
 function grafMoisLong(i){ return ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'][i] || ''; }
 function grafCap(s){ s = String(s || ''); return s.charAt(0).toUpperCase() + s.slice(1); }
-function grafJourCourt(iso){ var d = new Date(String(iso) + 'T00:00:00'); return isNaN(d) ? String(iso || '') : d.getDate() + ' ' + grafMoisCourt(d.getMonth()); }
+function grafJourCourt(iso){ var d = new Date(String(iso) + 'T00:00:00'); return isNaN(d) ? String(iso || '') : (d.getDate() === 1 ? '1er' : d.getDate()) + ' ' + grafMoisCourt(d.getMonth()); }
 function grafCleMoisActuel(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
 function grafPolice(){ return "'Inter',system-ui,-apple-system,'Segoe UI',sans-serif"; }
 function grafSansAnimation(){
@@ -6700,7 +6835,7 @@ function grafEvolution(cv, d, ps){
     var k = cles[i], m = +k.slice(5, 7) - 1, an = k.slice(0, 4), v = ps[i];
     return {
       court: parMois ? grafMoisCourt(m) + (plusieursAns ? ' ' + an.slice(2) : '') : grafJourCourt(e.date),
-      titre: parMois ? grafCap(grafMoisLong(m)) + ' ' + an : dl(e.date),
+      titre: parMois ? grafCap(grafMoisLong(m)) + ' ' + an : dlA(e.date),
       enCours: parMois && i === n - 1 && k === actuel,
       v: v, couleur: grafRgba(v < 0 ? p.neg : p.acc)
     };
@@ -6775,7 +6910,7 @@ function grafProfitMois(cv, cd, ancien){
         borderColor: points.map(function (x){ return x.couleur; }),
         borderWidth: points.map(function (x){ return x.enCours ? 1.5 : 0; }),
         borderRadius: 4, borderSkipped: 'start',
-        maxBarThickness: 28, barPercentage: 0.62, categoryPercentage: 0.8
+        maxBarThickness: 64, barPercentage: 0.6, categoryPercentage: 0.8
       }]
     },
     options: grafOptionsCommunes(p, etroit, true)
@@ -6795,7 +6930,7 @@ function grafProfitMois(cv, cd, ancien){
 function grafRepartition(net, its, gros){
   var pleins = its.filter(function (i){ return i.v > 0; });
   var somme = pleins.reduce(function (s, i){ return s + i.p; }, 0) || 1;
-  var pc = function (i){ return fmtPct(Math.round(i.p * 100)); };
+  var pc = function (i){ return fmtPct(i.pc != null ? i.pc : Math.round(i.p * 100)); };
   var barre = pleins.map(function (i){
     return '<i style="flex-grow:' + (i.p / somme * 1000).toFixed(2) + ';background:' + i.c + '" title="' + esc(i.l + ' · ' + fmtC(i.v) + ' · ' + pc(i)) + '"></i>';
   }).join('');
@@ -6971,8 +7106,8 @@ function _nomMois(ym){
 // « d'octobre », « d'avril », « d'août », mais « de septembre »
 function _deMois(ym){ var n=_nomMois(ym); return (/^[aeiou]/i.test(n)?"d'":'de ')+n; }
 function _jourCourt(d){
-  // insecable : « 01 oct. » ne se coupe jamais en fin de ligne
-  try{ return new Date(String(d).slice(0,10)+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}).replace(/\s/g,'\u00a0'); }
+  // insecable : « 1er oct. » ne se coupe jamais en fin de ligne ; plus de zéro de tête (13/10)
+  try{ return _sansZero(new Date(String(d).slice(0,10)+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})).replace(/\s/g,'\u00a0'); }
   catch(e){ return String(d||''); }
 }
 // Net d'un bilan : la MEME regle que la liste « Tes bilans » (affichage seulement).
@@ -7081,7 +7216,7 @@ function _viderFormulaire(){
   var di=document.getElementById('entry-date-input'); if(di) di.value=_aujLocal();
   _snapSaisie=_etatSaisie();
 }
-// Bandeau au-dessus du formulaire : « Tu modifies le bilan du… » / « Copie du bilan du… »
+// Bandeau au-dessus du formulaire : « Tu mets à jour le bilan du… » / « Copie du bilan du… »
 function _bandeauSaisie(mode, e){
   var b=document.getElementById('edit-banner'), p=document.getElementById('ca-entry-panel');
   if(p){ p.classList.toggle('mode-edit', mode==='edit'); p.classList.toggle('mode-copie', mode==='copie'); }
@@ -7089,8 +7224,8 @@ function _bandeauSaisie(mode, e){
   if(!mode){ b.style.display='none'; var n0=document.getElementById('edit-banner-note'); if(n0) n0.textContent=''; return; }
   var set=function(id,v,html){ var el=document.getElementById(id); if(el){ if(html) el.innerHTML=v; else el.textContent=v; } };
   set('edit-banner-ico', mode==='edit'?_ic('edit'):_ic('copy'), true);
-  set('edit-banner-lbl', mode==='edit'?'Tu modifies le bilan du':'Copie du bilan du');
-  set('edit-banner-date', dl(e.date));
+  set('edit-banner-lbl', mode==='edit'?'Tu mets à jour le bilan du':'Copie du bilan du');
+  set('edit-banner-date', dlA(e.date));
   set('edit-banner-note', mode==='copie'?'Pas encore enregistrée. Elle prend la date du jour : change-la si besoin.':'');
   b.style.display='flex';
 }
@@ -7280,7 +7415,7 @@ function _majSaisie(){
   } else {
     titre='Nouveau bilan';
     var der=(ents||[]).reduce(function(m,e){ var d=String(e.date||''); return d>m?d:m; },'');
-    sous=der ? 'Dernier bilan : '+dl(der) : '';
+    sous=der ? 'Dernier bilan : '+dlA(der) : '';
   }
   if(replie && _flashSaisie && Date.now()<_flashSaisie.fin){
     var fi=_flashSaisie.cls==='ok'?_ic('valide'):(_flashSaisie.cls==='ko'?_ic('alerte'):'');
@@ -7467,7 +7602,7 @@ function _cherBilan(e){
   var net = (e.brut || 0) * 0.80 + (e.tgNet || 0);
   var noms = [].concat(e.alI || [], e.vaI || [], e.moI || [], e.ciI || [], e.chI || [])
     .map(function(x){ return (x && x.name) || ''; }).join(' | ');
-  return _cherNorm([e.date, dl(e.date), _moisDe(e.date), 'net ' + fmtC(net), 'bénéfice ' + _mP(e.profit || 0), e.notes || '', noms].join(' | '));
+  return _cherNorm([e.date, dl(e.date), dlA(e.date), _moisDe(e.date), 'net ' + fmtC(net), 'bénéfice ' + _mP(e.profit || 0), e.notes || '', noms].join(' | '));
 }
 
 // ── 2. Tes bilans : 6 derniers, ligne courte, détail au toucher ──────────
@@ -7555,7 +7690,7 @@ function _hlDuMois(b){
 }
 function _hlTitre(l){
   var a = String(l.action || ''), b = _hlBilan(l.detail), dm = _hlDuMois(b);
-  if (/^modification entr/i.test(a)) return b ? 'Bilan ' + dm + ' modifié' : 'Bilan modifié';
+  if (/^modification entr/i.test(a)) return b ? 'Bilan ' + dm + ' mis à jour' : 'Bilan mis à jour';
   if (/^ajout rapide/i.test(a)) return (b ? 'Bilan ' + dm + ' créé' : 'Bilan créé') + ' (ajout rapide)';
   if (/^ajout entr/i.test(a)) return b ? 'Bilan ' + dm + ' créé' : 'Bilan créé';
   if (/^suppression entr/i.test(a)) return b ? 'Bilan ' + dm + ' supprimé' : 'Bilan supprimé';
@@ -7606,12 +7741,12 @@ function _hlDetail(l, prev){
   if (v.net != null || v.pr != null){
     var pv = (prev && /^modif/i.test(a)) ? _hlVals(prev.detail) : {net: null, pr: null};
     var parts = [_hlEcart('Net', pv.net, v.net), _hlEcart('Bénéfice', pv.pr, v.pr)];
-    if (/^suppr/i.test(a)) { var bs = _hlBilan(l.detail); if (bs) parts.unshift('<span class="hl-p">Daté du ' + esc(bs.txt) + '</span>'); }
+    if (/^suppr/i.test(a)) { var bs = _hlBilan(l.detail); if (bs) parts.unshift('<span class="hl-p">Daté du ' + esc(_sansZero(bs.txt)) + '</span>'); }
     return parts.filter(Boolean).join(sep);
   }
-  if (/^note$/i.test(a)) { var bn = _hlBilan(l.detail); return bn ? 'Bilan du ' + esc(bn.txt) : esc(l.detail); }
+  if (/^note$/i.test(a)) { var bn = _hlBilan(l.detail); return bn ? 'Bilan du ' + esc(_sansZero(bn.txt)) : esc(_sansZero(l.detail)); }
   // le reste : le texte enregistré, montants sans « .00 », vrais pluriels
-  return esc(String(l.detail || '').replace(/\$([\d,]+)\.00(?!\d)/g, '$$$1')
+  return esc(_sansZero(String(l.detail || '')).replace(/\$([\d,]+)\.00(?!\d)/g, '$$$1')
     .replace(/(\d+) virement\(s\)/g, function(x, n){ return _pl(+n, 'paiement', 'paiements'); })
     .replace(/(\d+) entrée\(s\)/g, function(x, n){ return _pl(+n, 'bilan', 'bilans'); })
     .replace(/(\d+) modèle\(s\)/g, function(x, n){ return _pl(+n, 'modèle', 'modèles'); })
@@ -7621,7 +7756,7 @@ function _hlTexte(l, titre, detail){
   var b = _hlBilan(l.detail), d = new Date(l.ts), p2 = function(n){ return String(n).padStart(2, '0'); };
   var quand = isNaN(d) ? '' : [d.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'}),
     d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()), p2(d.getHours()) + ':' + p2(d.getMinutes())].join(' | ');
-  return _cherNorm([titre, String(detail || '').replace(/<[^>]*>/g, ''), b ? b.txt + ' | ' + b.iso + ' | ' + grafMoisLong(b.mois) + ' ' + b.an : '', _hlJour(l.ts).lbl, quand].join(' | '));
+  return _cherNorm([titre, String(detail || '').replace(/<[^>]*>/g, ''), b ? b.txt + ' | ' + _sansZero(b.txt) + ' | ' + b.iso + ' | ' + grafMoisLong(b.mois) + ' ' + b.an : '', _hlJour(l.ts).lbl, quand].join(' | '));
 }
 
 // ── 6. En-tête du téléphone : « ✓ Enregistré à 10:12 » en permanence ─────
@@ -7629,7 +7764,7 @@ function _hlTexte(l, titre, detail){
 // enregistré ni vérifié de plus ici.
 function _tbEtatInit(){
   var el = document.getElementById('tb-etat'); if (!el || el.textContent) return;
-  try { if (_apiConnected) el.textContent = '✓ Tout est enregistré'; } catch (e) {}
+  try { if (_apiConnected) el.innerHTML = _pgIco('check', 13) + '<span>Tout est enregistré</span>'; } catch (e) {}
 }
 (function(){
   var st = document.getElementById('save-status'), el = document.getElementById('tb-etat');
@@ -7638,12 +7773,24 @@ function _tbEtatInit(){
     var t = String(st.textContent || '');
     if (/^✓ (Sauvegardé|Entrée ajoutée|Import réussi|Restauré)/.test(t)) {
       el.classList.remove('ko'); document.body.classList.remove('sauve-ko');
-      el.textContent = '✓ Enregistré à ' + new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'});
+      el.innerHTML = _pgIco('check', 13) + '<span>Enregistré à ' + new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}) + '</span>';
     } else if (/NON SAUVEGARD|NON enregistr|INCOMPL|Lecture seule/i.test(t)) {
       el.classList.add('ko'); document.body.classList.add('sauve-ko');
       el.innerHTML = _pgIco('alert', 13) + '<span>' + (/Lecture seule/i.test(t) ? 'Lecture seule' : 'Non enregistré') + '</span>';
     }
   }).observe(st, {childList: true, characterData: true, subtree: true});
+})();
+
+
+// ── r5_finitions étape 2 ──
+// (13/10) Ordinateur : le MÊME état d'enregistrement qu'au téléphone (#tb-etat), recopié à la place
+// de l'ancien bouton « Sauvegarder ». Lecture seule de ce que la page écrit déjà.
+(function(){
+  var a = document.getElementById('tb-etat'), b = document.getElementById('tb-etat-ordi');
+  if (!a || !b || !window.MutationObserver) return;
+  var copier = function(){ if (b.innerHTML !== a.innerHTML) b.innerHTML = a.innerHTML; b.classList.toggle('ko', a.classList.contains('ko')); };
+  new MutationObserver(copier).observe(a, {childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class']});
+  copier();
 })();
 
 </script>
