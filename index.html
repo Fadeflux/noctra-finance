@@ -2799,8 +2799,10 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
       "mt mt mt mt mt mt mt mt mu mu mu mu"
       "ca ca cb cb cc cc py py py py py py"
       "mx mx mx mx mx mx py py py py py py"
+      "ip ip ip ip ip ip ip ip ip ip ip ip"
       "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
       "gr gr gr gr gr gr gr gr nr nr nr nr"
+      "rk rk rk rk rk rk rk rk rk rk rk rk"
       "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi hi hi hi hi hi hi"}
   body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto minmax(104px,auto)}
@@ -2823,8 +2825,10 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
       "mt mt mt mt mt mt mt mt mu mu mu mu"
       "ca ca cb cb cc cc py py py py py py"
       "mx mx mx mx mx mx py py py py py py"
+      "ip ip ip ip ip ip ip ip ip ip ip ip"
       "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
       "gr gr gr gr gr gr gr gr nr nr nr nr"
+      "rk rk rk rk rk rk rk rk rk rk rk rk"
       "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi hi hi hi hi hi hi"}
   /* objectif fixé : la prévision s'allonge → bilan et prévision chacun sur toute la rangée */
@@ -2846,8 +2850,10 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
       "mt mt mt mt mt mt mt mt mu mu mu mu"
       "ca ca cb cb cc cc py py py py py py"
       "mx mx mx mx mx mx py py py py py py"
+      "ip ip ip ip ip ip ip ip ip ip ip ip"
       "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
       "gr gr gr gr gr gr gr gr nr nr nr nr"
+      "rk rk rk rk rk rk rk rk rk rk rk rk"
       "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi hi hi hi hi hi hi"}
   /* le bilan du mois en version large : titre + date à gauche, le gros bouton à droite */
@@ -2897,9 +2903,11 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
       "ca ca cb cb cc cc"
       "mx mx mx mx mx mx"
       "py py py py py py"
+      "ip ip ip ip ip ip"
       "s3 s3 s3 s3 s3 s3"
       "gr gr gr gr gr gr"
       "nr nr nr nr nr nr"
+      "rk rk rk rk rk rk"
       "s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi"}
   body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto minmax(104px,auto)}
@@ -2926,8 +2934,8 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
     grid-template-areas:
       "hd hd" "em em" "s1 s1" "in in" "hr hr" "bi bi" "nt rs" "nt rd" "rn rn" "mf mf" "mg mg" "fc fc"
       "s2 s2" "dg dg" "dt dt"
-      "mt mt" "mu mu" "ca ca" "cb cb" "cc cc" "mx mx" "py py"
-      "s3 s3" "gr gr" "nr nr" "s4 s4" "hi hi"}
+      "mt mt" "mu mu" "ca ca" "cb cb" "cc cc" "mx mx" "py py" "ip ip"
+      "s3 s3" "gr gr" "nr nr" "rk rk" "s4 s4" "hi hi"}
   body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto auto minmax(74px,auto)}
   body.skin-melange #page-ca.active > *{grid-column:1 / -1}
   body.skin-melange #page-ca.active > .kpi-hero-grid,body.skin-melange #page-ca.active > .g2-tend,
@@ -3233,8 +3241,37 @@ body.skin-melange #page-editlog .hl-sos-i svg{width:14px;height:14px}
 /* ── 9. MOUVEMENT (coupé si l'utilisateur le demande) ──────────────────── */
 @media (prefers-reduced-motion:no-preference){
   body.skin-melange #login-overlay #login-box{animation:mel-monte .5s var(--ease) both}
-  body.skin-melange #page-ca.active .kpi,body.skin-melange #page-ca.active > .panel,body.skin-melange #page-ca.active .g2-tend > .panel{animation:mel-monte .4s var(--ease) both}
-  body.skin-melange #page-ca.active .kpi-hero-grid > .kpi-net{animation-delay:40ms}
+  body.skin-melange #page-ca.active .kpi,body.skin-melange #page-ca.active > .panel,body.skin-melange #page-ca.active .g2-tend > .panel{animation:mel-monte .4s var(--ease) backwards}
+  /* (animations 13/10) « backwards » au lieu de « both » : l'état d'arrivée est l'état normal ; en le
+     gardant (« both »), le navigateur laissait chaque tuile sur un calque à part et ses lettres perdaient
+     le lissage fin de l'écran (pixels différents de l'écran sans animation, mesuré). */
+  body.skin-melange #page-ca.active .kpi-hero-grid > .kpi-net{animation-delay:50ms}
+  /* (animations 13/10) les tuiles arrivent l'une après l'autre, dans l'ordre de lecture : le résultat,
+     le bilan du mois et la prévision, puis les dépenses de gauche à droite ; tout est posé en 0,75 s.
+     « Reste à envoyer » (la tuile, son détail et son bouton) est reconstruit à chaque rendu : son entrée
+     n'existe qu'au premier affichage (classe .mel-premier, posée 1,4 s par le script « ANIMATIONS »),
+     sinon elle se rejouerait à chaque lettre tapée dans la recherche des bilans. Le détail et le bouton
+     viennent APRÈS leur tuile : le détail a le fond de la tuile, et deux fondus superposés y
+     dessinaient un rectangle plus clair (vu sur la vitrine image par image). */
+  body.skin-melange #page-ca.active.mel-premier .ms-res{animation:mel-monte .4s var(--ease) 90ms backwards}
+  body.skin-melange #page-ca.active.mel-premier :is(.ms-det,#ms-noter){animation:mel-monte .3s var(--ease) 350ms backwards}
+  body.skin-melange #page-ca.active > #ca-entry-panel{animation-delay:120ms}
+  body.skin-melange #page-ca.active #forecast-card{animation:mel-monte .4s var(--ease) 150ms backwards}
+  body.skin-melange #page-ca.active .kpi-dep-grid > .kpi:nth-child(1){animation-delay:180ms}
+  body.skin-melange #page-ca.active .kpi-dep-grid > .kpi:nth-child(2){animation-delay:205ms}
+  body.skin-melange #page-ca.active .kpi-dep-grid > .kpi:nth-child(3){animation-delay:230ms}
+  body.skin-melange #page-ca.active .kpi-dep-grid > .kpi:nth-child(4){animation-delay:255ms}
+  body.skin-melange #page-ca.active .kpi-dep-grid > .kpi:nth-child(5){animation-delay:280ms}
+  body.skin-melange #page-ca.active .kpi-dep-grid > .kpi:nth-child(6){animation-delay:305ms}
+  body.skin-melange #page-ca.active .kpi-dep-grid > .kpi:nth-child(n+7){animation-delay:330ms}
+  @media (max-width:640px){
+    /* téléphone : le bilan du mois passe juste sous le bénéfice, puis net │ reste, puis la prévision */
+    body.skin-melange #page-ca.active > #ca-entry-panel{animation-delay:50ms}
+    body.skin-melange #page-ca.active .kpi-hero-grid > .kpi-net{animation-delay:100ms}
+    body.skin-melange #page-ca.active.mel-premier .ms-res{animation-delay:130ms}
+    body.skin-melange #page-ca.active.mel-premier :is(.ms-det,#ms-noter){animation-delay:390ms}
+    body.skin-melange #page-ca.active #forecast-card{animation-delay:160ms}
+  }
 }
 @keyframes mel-monte{from{opacity:0;transform:translateY(6px) scale(.995)}to{opacity:1;transform:none}}
 
@@ -3259,7 +3296,10 @@ body.montants-caches #masque-btn{color:var(--acc-txt);border-color:var(--acc)}
   html body .dash > .topbar > div:last-child > #masque-btn{order:4}
 }
 @media (min-width:641px){ .topbar .export-menu .mob-masque{display:none!important} }
-@media (prefers-reduced-motion:no-preference){ .mt-cache,.dash canvas{transition:filter .2s ease} }
+/* (animations 13/10) Plus de fondu du flou : ses 0,2 s laissaient LIRE les montants environ 0,1 s à la
+   fermeture de l'œil, à chaque redessin œil fermé (changement de période) et à l'ouverture de la page
+   œil déjà fermé (47 montants sur l'ordinateur : agents/feat_animations/temoin_oeil_final8.log).
+   Le flou est maintenant posé d'un coup. */
 /* Écrans moyens (tablette, petit portable) : l'en-tête passait sur deux lignes depuis l'ajout des
    boutons style / œil. « Tout est enregistré » y garde seulement son icône (le texte reste lu par
    les lecteurs d'écran) ; en cas d'échec, l'icône passe au rouge. */
@@ -3268,14 +3308,431 @@ body.montants-caches #masque-btn{color:var(--acc-txt);border-color:var(--acc)}
   html body .dash > .topbar .tb-etat-ordi > svg{width:16px;height:16px}
 }
 
+
+/* ── feat_chiffres (Records + Impôts à garder de côté) ── */
+/* ══ chiffres (13/10) : « Records » (section Tendance) et « Impôts + Paxum à garder de côté » (sous la
+   Part de la modèle). Affichage seulement. Dessin du Mélange : tuiles neutres de lecture, ronds d'icône au
+   trait en masque, la couleur pour repérer (violet = famille du bénéfice, ardoise = impôts + Paxum, rouge =
+   une vraie baisse). Leurs rangées « rk » et « ip » sont ajoutées aux grilles de l'accueil (remplacements). ══ */
+body.skin-melange{
+  --ic-rk:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 4h10v5a5 5 0 0 1-10 0z'/%3E%3Cpath d='M17 5h3v1a3 3 0 0 1-3 3'/%3E%3Cpath d='M7 5H4v1a3 3 0 0 0 3 3'/%3E%3Cpath d='M12 14v4'/%3E%3Cpath d='M8 20h8'/%3E%3C/svg%3E");
+  --ic-etoile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 3 2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z'/%3E%3C/svg%3E");
+  --ic-cal:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18'/%3E%3C/svg%3E");
+  --ic-alerte:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9v4M12 17h.01'/%3E%3C/svg%3E");
+}
+body.skin-melange #page-ca #records-panel{grid-area:rk}
+body.skin-melange #page-ca #impots-panel{grid-area:ip}
+body.skin-melange #records-panel[hidden],body.skin-melange #impots-panel[hidden]{display:none!important}
+@media (min-width:641px){body.skin-melange #page-ca #records-panel,body.skin-melange #page-ca #impots-panel{margin:0 0 var(--mx-gap)}}
+@media (max-width:640px){body.skin-melange #page-ca #records-panel,body.skin-melange #page-ca #impots-panel{margin:0 0 10px}}
+
+/* ── en-têtes : titre avec son rond d'icône, sous-titre ── */
+body.skin-melange #records-panel .rk-tete,body.skin-melange #impots-panel .ip-tete{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 16px}
+body.skin-melange #records-panel .rk-tete{margin-bottom:14px}
+body.skin-melange #records-panel .rk-titre,body.skin-melange #impots-panel .ip-titre{display:flex;align-items:center;gap:10px;margin:0}
+body.skin-melange #records-panel .rk-tete .panel-sub,body.skin-melange #impots-panel .ip-tete .panel-sub{margin:0;font-size:12px;color:var(--ink-4)}
+body.skin-melange #records-panel .rk-rond,body.skin-melange #impots-panel .ip-rond{position:relative;flex:none;width:var(--mx-ico);height:var(--mx-ico);border-radius:50%}
+body.skin-melange #records-panel .rk-rond{background:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));box-shadow:var(--mx-lift)}
+body.skin-melange #impots-panel .ip-rond{background:linear-gradient(155deg,var(--bc-fr-a),var(--bc-fr-b));box-shadow:var(--mx-lift),inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 14%,transparent)}
+body.skin-melange #records-panel .rk-rond::after,body.skin-melange #impots-panel .ip-rond::after{content:"";position:absolute;inset:0;pointer-events:none}
+body.skin-melange #records-panel .rk-rond::after{background:var(--bc-pr-on);-webkit-mask:var(--ic-rk) center/15px 15px no-repeat;mask:var(--ic-rk) center/15px 15px no-repeat}
+body.skin-melange #impots-panel .ip-rond::after{background:var(--bc-fr-on);-webkit-mask:var(--ic-fr) center/15px 15px no-repeat;mask:var(--ic-fr) center/15px 15px no-repeat}
+
+/* ── RECORDS : trois tuiles de lecture ── */
+body.skin-melange #records-panel .rk-grille{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--mx-gap)}
+body.skin-melange #records-panel .rk-c{position:relative;display:flex;flex-direction:column;min-width:0;padding:var(--mx-pad-s);
+  border-radius:var(--mx-r-md);background-color:var(--surf-2);box-shadow:inset 0 0 0 1px var(--mx-edge);overflow:hidden}
+body.skin-melange.light #records-panel .rk-c{background-color:var(--surf-2)}
+body.skin-melange #records-panel .rk-l{display:flex;align-items:center;gap:10px;min-height:24px;font-size:12px;font-weight:600;line-height:1.3;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+body.skin-melange #records-panel .rk-i{position:relative;flex:none;width:24px;height:24px;border-radius:50%;
+  background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+body.skin-melange #records-panel .rk-i::after{content:"";position:absolute;inset:0;background:var(--acc-txt);
+  -webkit-mask:var(--rk-ic,var(--ic-rk)) center/13px 13px no-repeat;mask:var(--rk-ic,var(--ic-rk)) center/13px 13px no-repeat}
+body.skin-melange #records-panel .rk-best{--rk-ic:var(--ic-etoile)}
+body.skin-melange #records-panel .rk-prog{--rk-ic:var(--ic-prev)}
+body.skin-melange #records-panel .rk-der{--rk-ic:var(--ic-cal)}
+body.skin-melange #records-panel .rk-v{margin-top:14px;font-size:32px;font-weight:700;line-height:1.1;letter-spacing:-.03em;
+  color:var(--ink-1);font-variant-numeric:tabular-nums;white-space:nowrap}
+body.skin-melange #records-panel .rk-best .rk-v{color:var(--acc-txt)}
+body.skin-melange #records-panel .rk-neg .rk-v,body.skin-melange #records-panel .rk-recul .rk-v{color:var(--neg)}
+body.skin-melange #records-panel .rk-hausse .rk-v{color:var(--pos)}
+body.skin-melange #records-panel .rk-stable .rk-v{color:var(--ink-2)}
+body.skin-melange #records-panel .rk-attente .rk-v{color:var(--ink-3)}
+body.skin-melange #records-panel .rk-nom{font-size:20px;letter-spacing:-.02em}
+body.skin-melange #records-panel .rk-tiret{color:var(--ink-4)}
+body.skin-melange #records-panel .rk-sens{display:inline-flex;align-items:center;gap:6px}
+body.skin-melange #records-panel .rk-sens svg{width:22px;height:22px;flex:none}
+body.skin-melange #records-panel .rk-s{margin-top:6px;font-size:13px;line-height:1.45;color:var(--ink-3)}
+body.skin-melange #records-panel .rk-s b{font-weight:600;color:var(--ink-1);font-variant-numeric:tabular-nums}
+body.skin-melange #records-panel .rk-s2{display:block;margin-top:3px}
+body.skin-melange #records-panel .rk-fl{color:var(--ink-4)}
+body.skin-melange #records-panel .rk-pill{align-self:flex-start;display:inline-flex;align-items:center;height:24px;margin-top:10px;padding:0 10px;
+  border-radius:999px;font-size:12px;font-weight:600;color:var(--acc-txt);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+/* une vraie baisse : liseré rouge de 3 px en haut (dessiné en fond, coupé net par l'arrondi), rond « alerte » */
+body.skin-melange #records-panel .rk-baisse{--rk-ic:var(--ic-alerte);
+  background-image:linear-gradient(color-mix(in srgb,var(--neg) 75%,transparent),color-mix(in srgb,var(--neg) 75%,transparent));
+  background-size:100% 3px;background-repeat:no-repeat;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 28%,transparent)}
+body.skin-melange #records-panel .rk-baisse .rk-i{background:color-mix(in srgb,var(--neg) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 32%,transparent)}
+body.skin-melange #records-panel .rk-baisse .rk-i::after{background:var(--neg)}
+body.skin-melange #records-panel .rk-baisse .rk-v{color:var(--neg)}
+body.skin-melange #records-panel .rk-alerte{font-weight:700;color:var(--neg)!important}
+body.skin-melange #records-panel .rk-note{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;line-height:1.4;color:var(--ink-4)}
+body.skin-melange #records-panel .rk-note svg{width:12px;height:12px;flex:none;color:var(--ink-4)}
+body.skin-melange #records-panel .rk-vide{padding:14px 16px;border-radius:var(--mx-r-md);font-size:13px;line-height:1.5;color:var(--ink-3);
+  background:var(--inset);border:1px dashed var(--line-2)}
+
+/* ── IMPÔTS + PAXUM : impôts + Paxum = à garder de côté (ardoise, la couleur de la tuile « Impôts + Paxum ») ── */
+body.skin-melange #impots-panel{display:grid;grid-template-columns:minmax(0,1fr);row-gap:14px}
+body.skin-melange #impots-panel .ip-eq{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--mx-gap)}
+body.skin-melange #impots-panel .ip-c{position:relative;display:flex;flex-direction:column;min-width:0;padding:var(--mx-pad-s);
+  border-radius:var(--mx-r-md);background-color:var(--surf-2);box-shadow:inset 0 0 0 1px var(--mx-edge)}
+body.skin-melange #impots-panel .ip-l{font-size:12px;font-weight:600;line-height:1.3;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+/* le chiffre à la même hauteur dans les trois tuiles, quelle que soit la longueur du détail dessous */
+body.skin-melange #impots-panel .ip-v{margin-top:16px;font-size:20px;font-weight:700;line-height:1.1;letter-spacing:-.02em;
+  color:var(--ink-1);font-variant-numeric:tabular-nums;white-space:nowrap}
+body.skin-melange #impots-panel .ip-s{display:flex;align-items:center;min-height:24px;margin-top:4px;font-size:12px;line-height:1.4;color:var(--ink-4)}
+@media (min-width:641px){body.skin-melange #impots-panel .ip-eq{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.25fr)}}
+body.skin-melange #impots-panel .ip-tot{background-color:var(--bc-fr-m);background-image:linear-gradient(155deg,var(--bc-fr-a),var(--bc-fr-b));
+  box-shadow:var(--mx-lift),inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-b) 70%,transparent),0 12px 24px -20px color-mix(in srgb,var(--bc-fr-b) 75%,transparent)}
+body.skin-melange.light #impots-panel .ip-tot{box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 12%,transparent),0 12px 26px -20px color-mix(in srgb,var(--bc-fr-on) 45%,transparent)}
+body.skin-melange #impots-panel .ip-tot .ip-l,body.skin-melange #impots-panel .ip-tot .ip-s{color:var(--bc-fr-on2)}
+body.skin-melange #impots-panel .ip-tot .ip-v{color:var(--bc-fr-on)}
+body.skin-melange #impots-panel .ip-moitie{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:999px;white-space:nowrap;
+  color:var(--bc-fr-on);background-color:color-mix(in srgb,var(--bc-fr-v) 22%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 20%,transparent)}
+body.skin-melange #impots-panel .ip-moitie b{font-weight:700}
+/* les signes + et = : de petites pastilles à cheval entre deux tuiles (comme le relevé de la Part de la modèle) */
+body.skin-melange #impots-panel .ip-pax::before,body.skin-melange #impots-panel .ip-tot::before{position:absolute;z-index:2;left:-19px;top:50%;
+  display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin-top:-13px;border-radius:50%;
+  background:var(--surf-3);box-shadow:0 0 0 1px var(--mx-edge-2),0 4px 10px -4px rgba(0,0,0,.5);color:var(--ink-3);font-size:15px;font-weight:600;line-height:1}
+body.skin-melange.light #impots-panel .ip-pax::before,body.skin-melange.light #impots-panel .ip-tot::before{box-shadow:0 0 0 1px var(--mx-edge-2),0 3px 8px -4px rgba(16,24,40,.25)}
+body.skin-melange #impots-panel .ip-pax::before{content:"+"}
+body.skin-melange #impots-panel .ip-tot::before{content:"="}
+body.skin-melange #impots-panel .ip-phrase{margin:0;font-size:13px;line-height:1.5;color:var(--ink-2)}
+body.skin-melange #impots-panel .ip-phrase b{font-weight:600;color:var(--ink-1)}
+body.skin-melange #impots-panel .ip-per{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:10px 12px;
+  border-radius:var(--mx-r-sm);background-color:var(--inset);box-shadow:inset 0 0 0 1px var(--mx-edge)}
+body.skin-melange #impots-panel .ip-per-l{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+body.skin-melange #impots-panel .ip-per-v{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+body.skin-melange #impots-panel .ip-per-v b{font-weight:600;color:var(--ink-1)}
+body.skin-melange #impots-panel .ip-per-n{font-size:12px;color:var(--ink-4)}
+body.skin-melange #impots-panel .ip-note{font-size:12px;line-height:1.45;color:var(--ink-4)}
+body.skin-melange #impots-panel .ip-vide{padding:14px 16px;border-radius:var(--mx-r-md);font-size:13px;line-height:1.5;color:var(--ink-3);
+  background:var(--inset);border:1px dashed var(--line-2)}
+/* l'ordre de lecture : titre, l'addition, la phrase sur sa moitié, la période, la note */
+body.skin-melange #impots-panel{grid-template-areas:"t" "e" "x" "p" "n";row-gap:12px}
+body.skin-melange #impots-panel .ip-tete{grid-area:t;margin-bottom:2px}
+body.skin-melange #impots-panel .ip-eq{grid-area:e}
+body.skin-melange #impots-panel .ip-phrase{grid-area:x}
+body.skin-melange #impots-panel .ip-per{grid-area:p;margin-top:0}
+body.skin-melange #impots-panel .ip-note{grid-area:n;margin-top:0}
+body.skin-melange #impots-panel .ip-vide{grid-area:e}
+body.skin-melange #impots-panel.ip-0{grid-template-areas:"t" "e"!important;grid-template-columns:minmax(0,1fr)!important}
+body.skin-melange #impots-panel.ip-0 .ip-tete .panel-sub{display:none}
+/* ordinateur : l'addition à gauche (7/12), ce qu'elle veut dire à droite ; la période sous l'addition */
+@media (min-width:1100px){
+  body.skin-melange #impots-panel{grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-areas:"t t" "e x" "p n";column-gap:28px;row-gap:14px;align-items:start}
+  body.skin-melange #impots-panel .ip-phrase{align-self:center;max-width:46ch}
+  body.skin-melange #impots-panel .ip-note{align-self:center;max-width:52ch}
+  body.skin-melange #impots-panel .ip-vide{grid-column:1 / -1}
+}
+/* tablette : Records en 2 + 1 (à 3 colonnes de 200 px, chaque étiquette passait sur deux lignes) */
+@media (min-width:641px) and (max-width:1099px){
+  body.skin-melange #records-panel .rk-grille{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.skin-melange #records-panel .rk-der{grid-column:1 / -1}
+}
+/* téléphone : impôts | Paxum, puis le total sur toute la largeur ; Records : une rangée par tuile
+   (étiquette à gauche, chiffre à droite, détail dessous) */
+@media (max-width:640px){
+  body.skin-melange #records-panel .rk-grille{grid-template-columns:minmax(0,1fr);gap:10px}
+  body.skin-melange #records-panel .rk-c{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l v" "s s" "p p";
+    column-gap:12px;align-items:center;padding:12px 14px}
+  body.skin-melange #records-panel .rk-l{grid-area:l;letter-spacing:.05em}
+  body.skin-melange #records-panel .rk-v{grid-area:v;margin:0;font-size:24px;text-align:right}
+  body.skin-melange #records-panel .rk-s{grid-area:s;margin-top:8px}
+  body.skin-melange #records-panel .rk-pill{grid-area:p;justify-self:start}
+  body.skin-melange #records-panel .rk-tete{margin-bottom:12px}
+  body.skin-melange #records-panel .rk-lx{display:none}
+  body.skin-melange #records-panel .rk-nom{font-size:18px}
+  body.skin-melange #records-panel .rk-sens svg{width:18px;height:18px}
+  body.skin-melange #impots-panel .ip-eq{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  body.skin-melange #impots-panel .ip-tot{grid-column:1 / -1;min-height:0}
+  body.skin-melange #impots-panel .ip-tot::before{left:50%;top:-18px;margin:0 0 0 -13px}
+  body.skin-melange #impots-panel .ip-v{font-size:20px}
+}
+
+
+/* ── feat_animations ── */
+/* ══ ANIMATIONS (idée 5, 13/10) : le calque du compteur (voir le script « ANIMATIONS ») ══
+   Le vrai montant reste dans l'élément, rendu transparent le temps du défilement ; le calque
+   (::after, texte tiré de data-mel-cpt) montre les valeurs intermédiaires exactement à sa place
+   (même police, même boîte, même alignement ; le calque hérite du flou de l'œil). Transparence et
+   calque sont des animations CSS de 0,9 s : même si le script s'arrêtait, le vrai texte reviendrait
+   seul. Le calque n'est pas lu par les lecteurs d'écran (texte de remplacement vide). Mouvement
+   réduit, ou animations coupées : rien de tout cela n'existe. */
+@media (prefers-reduced-motion:no-preference){
+  #mel-anim-temoin{animation:mel-temoin 1s linear infinite}
+  .mel-cpt{animation:mel-cpt-texte .9s linear}
+  .mel-cpt::after{content:attr(data-mel-cpt);content:attr(data-mel-cpt) / "";position:absolute;inset:0;padding:inherit;
+    margin:0;white-space:nowrap;text-align:inherit;-webkit-text-fill-color:currentColor;pointer-events:none;
+    opacity:0;animation:mel-cpt-calque .9s linear}
+}
+.mel-cpt-rel{position:relative}
+@keyframes mel-temoin{to{opacity:1}}
+@keyframes mel-cpt-texte{from,to{-webkit-text-fill-color:transparent}}
+@keyframes mel-cpt-calque{from,to{opacity:1}}
+
+/* ── feat_connexion (écran de connexion, page d'accueil de la marque) ── */
+/* ══ CONNEXION : la page d'accueil de la marque (agent connexion, 13/10) ══════════════════
+   Une scène : la tuile NF (même marque que le rail) au cœur d'un halo violet et de cercles
+   concentriques (la signature de la tuile Bénéfice), le nom en grand, puis le formulaire dans une
+   tuile Mélange. Rien d'autre ne change : mêmes champs, mêmes id, mêmes messages, même logique.
+   Tout est préfixé « body.skin-melange #login-overlay » : aucune autre zone n'est touchée. */
+
+/* 0. jetons de l'écran (sombre puis clair) */
+body.skin-melange #login-overlay{
+  --lg-halo:color-mix(in srgb,var(--acc) 30%,transparent);
+  --lg-halo-2:color-mix(in srgb,var(--acc) 9%,transparent);
+  --lg-anneau:color-mix(in srgb,var(--ink-1) 9%,transparent);
+  --lg-anneau-1:color-mix(in srgb,var(--acc) 42%,transparent);
+  --lg-carte:color-mix(in srgb,var(--surf-1) 88%,transparent);
+  --lg-champ:var(--field);
+  --lg-champ-focus:var(--field);
+  --lg-champ-bord:var(--line-2);
+  --lg-champ-creux:inset 0 1px 2px rgba(0,0,0,.35);
+  --lg-ombre-carte:0 50px 100px -44px rgba(0,0,0,.95),0 0 0 1px rgba(0,0,0,.25);
+  --lg-ombre-sceau:0 26px 60px -18px color-mix(in srgb,var(--acc) 75%,transparent),0 0 90px -16px color-mix(in srgb,var(--acc) 55%,transparent);
+  /* ordinateur et tablette : la scène (≈ 636 px) centrée sur la hauteur de l'écran, figée au chargement par le
+     JS (--lg-vh) : sur une tablette, le clavier qui s'ouvre ne la fait pas remonter (sans JS : 100vh) */
+  --lg-haut:clamp(32px,calc(var(--lg-vh,100vh) / 2 - 318px),260px);
+}
+body.skin-melange.light #login-overlay{
+  --lg-halo:color-mix(in srgb,var(--acc) 20%,transparent);
+  --lg-halo-2:color-mix(in srgb,var(--acc) 6%,transparent);
+  --lg-anneau:color-mix(in srgb,var(--acc) 20%,transparent);
+  --lg-anneau-1:color-mix(in srgb,var(--acc) 38%,transparent);
+  --lg-carte:color-mix(in srgb,var(--surf-1) 92%,transparent);
+  --lg-champ:var(--surf-2);
+  --lg-champ-focus:var(--surf-1);
+  --lg-champ-bord:var(--line-2);
+  --lg-champ-creux:inset 0 1px 1px rgba(16,24,40,.04);
+  --lg-ombre-carte:0 40px 80px -40px rgba(76,29,149,.32),0 2px 6px -2px rgba(16,24,40,.08);
+  --lg-ombre-sceau:0 24px 50px -18px color-mix(in srgb,var(--acc) 60%,transparent),0 0 70px -20px color-mix(in srgb,var(--acc) 40%,transparent);
+}
+
+/* 1. la toile : un seul fond, la scène occupe au moins tout l'écran (décor coupé net aux bords) */
+body.skin-melange #login-overlay{display:block;padding:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
+  background-color:var(--bg-0);background-image:none}
+body.skin-melange #login-overlay::before{content:none}
+body.skin-melange #login-overlay .lg-scene{position:relative;isolation:isolate;box-sizing:border-box;width:100%;min-height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden;
+  padding:var(--lg-haut) 24px max(32px,env(safe-area-inset-bottom))}
+/* une lueur d'horizon très douce en bas : la page a de la profondeur sans rien de plus */
+body.skin-melange #login-overlay .lg-scene::after{content:"";position:absolute;left:50%;bottom:-420px;width:1200px;height:640px;margin-left:-600px;
+  z-index:-2;pointer-events:none;border-radius:50%;background:radial-gradient(closest-side,var(--lg-halo-2),transparent)}
+
+/* 2. la marque : sceau + nom + phrase */
+body.skin-melange #login-overlay .lg-marque{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;
+  margin:0 0 32px;max-width:100%}
+body.skin-melange #login-overlay .lg-sceau{position:relative;width:104px;height:104px;margin:0 0 28px}
+/* le halo violet */
+body.skin-melange #login-overlay .lg-sceau::before{content:"";position:absolute;left:50%;top:50%;width:820px;height:820px;margin:-410px 0 0 -410px;
+  z-index:-1;pointer-events:none;border-radius:50%;
+  background:radial-gradient(closest-side,var(--lg-halo),var(--lg-halo-2) 46%,transparent 100%)}
+/* les cercles concentriques : visibles autour et au-dessus du sceau, ils s'effacent avant le nom */
+body.skin-melange #login-overlay .lg-anneaux{position:absolute;left:50%;top:50%;width:1100px;height:1100px;margin:-550px 0 0 -550px;
+  z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(circle,transparent 0 83.5px,var(--lg-anneau-1) 84px 85px,transparent 85.5px),
+    radial-gradient(circle,transparent 0 145.5px,var(--lg-anneau) 146px 147px,transparent 147.5px),
+    radial-gradient(circle,transparent 0 229.5px,var(--lg-anneau) 230px 231px,transparent 231.5px),
+    radial-gradient(circle,transparent 0 335.5px,var(--lg-anneau) 336px 337px,transparent 337.5px),
+    radial-gradient(circle,transparent 0 463.5px,var(--lg-anneau) 464px 465px,transparent 465.5px);
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 47%,transparent 56%),radial-gradient(closest-side,#000 30%,transparent 100%);
+  -webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,#000 0,#000 47%,transparent 56%),radial-gradient(closest-side,#000 30%,transparent 100%);
+  mask-composite:intersect}
+/* la tuile NF */
+body.skin-melange #login-overlay .lg-sceau .login-logo{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;
+  box-sizing:border-box;width:100%;height:100%;margin:0;padding:0;overflow:hidden;border-radius:32px;
+  font-size:40px;font-weight:800;letter-spacing:-.01em;line-height:1;color:var(--bc-pr-on);
+  background-color:var(--acc);background-image:linear-gradient(155deg,var(--acc) 0%,var(--bc-pr-a) 42%,var(--bc-pr-b) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32),inset 0 0 0 1px rgba(255,255,255,.12),var(--lg-ombre-sceau)}
+body.skin-melange #login-overlay .lg-sceau .login-logo::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,0) 48%)}
+body.skin-melange #login-overlay .lg-sceau .login-logo::after{
+  background:radial-gradient(circle at 100% 100%,transparent 0 30%,color-mix(in srgb,var(--bc-pr-on) 18%,transparent) 30.6% 31.8%,transparent 32.4% 52%,
+    color-mix(in srgb,var(--bc-pr-on) 10%,transparent) 52.6% 53.6%,transparent 54.2%)}
+body.skin-melange #login-overlay .lg-sceau .login-logo span{position:relative;z-index:1}
+/* le nom et la phrase */
+body.skin-melange #login-overlay .lg-marque h2{margin:0;font-size:32px;line-height:40px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-1)}
+body.skin-melange #login-overlay .lg-marque h2 span{color:var(--acc-txt)}
+body.skin-melange #login-overlay .lg-marque p{margin:10px 0 0;font-size:15px;line-height:22px;color:var(--ink-3)}
+
+/* 3. les sujets du site en orbite (ordinateur seulement) : les mêmes tuiles et icônes que l'accueil */
+body.skin-melange #login-overlay .lg-orbite{position:absolute;left:50%;top:50%;width:0;height:0;z-index:0;pointer-events:none;display:none}
+body.skin-melange #login-overlay .lg-o{--o-s:48px;position:absolute;left:0;top:0;width:var(--o-s);height:var(--o-s);
+  margin:calc(var(--o-s) / -2) 0 0 calc(var(--o-s) / -2);border-radius:calc(var(--o-s) * .31);
+  background-color:var(--o-m);background-image:linear-gradient(155deg,var(--o-a),var(--o-b));
+  box-shadow:var(--mx-lift),0 16px 30px -16px var(--o-b);
+  transform:rotate(var(--o-ang)) translateX(var(--o-r)) rotate(calc(-1 * var(--o-ang)))}
+body.skin-melange #login-overlay .lg-o::after{content:"";position:absolute;inset:0;margin:auto;width:44%;height:44%;background-color:var(--o-on);
+  -webkit-mask:var(--o-ic) center/contain no-repeat;mask:var(--o-ic) center/contain no-repeat}
+/* en clair, les tuiles pastel gardent un bord net */
+body.skin-melange.light #login-overlay .lg-o{box-shadow:var(--mx-lift),inset 0 0 0 1px color-mix(in srgb,var(--o-on) 12%,transparent),
+  0 14px 26px -16px color-mix(in srgb,var(--o-on) 45%,transparent)}
+/* trois paires symétriques posées SUR les cercles, de plus en plus bas vers l'extérieur (comme un arc) :
+   à gauche les revenus et l'équipe (OnlyFans, VA, Modèle), à droite Telegram, Chat humain, Dépenses diverses.
+   Par défaut l'arc est aplati (il tient dans un écran de 600 px de haut) ; il se lève sur un grand écran. */
+body.skin-melange #login-overlay .lg-o-of{--o-a:var(--bc-of-a);--o-b:var(--bc-of-b);--o-m:var(--bc-of-m);--o-on:var(--bc-of-on);--o-ic:var(--ic-of);--o-ang:-169deg;--o-r:230px}
+body.skin-melange #login-overlay .lg-o-tg{--o-a:var(--bc-tg-a);--o-b:var(--bc-tg-b);--o-m:var(--bc-tg-m);--o-on:var(--bc-tg-on);--o-ic:var(--ic-tg);--o-ang:-11deg;--o-r:230px}
+body.skin-melange #login-overlay .lg-o-va{--o-a:var(--bc-va-a);--o-b:var(--bc-va-b);--o-m:var(--bc-va-m);--o-on:var(--bc-va-on);--o-ic:var(--ic-va);--o-ang:-174deg;--o-r:336px}
+body.skin-melange #login-overlay .lg-o-ch{--o-a:var(--bc-ch-a);--o-b:var(--bc-ch-b);--o-m:var(--bc-ch-m);--o-on:var(--bc-ch-on);--o-ic:var(--ic-ch);--o-ang:-6deg;--o-r:336px}
+body.skin-melange #login-overlay .lg-o-mo{--o-a:var(--bc-mo-a);--o-b:var(--bc-mo-b);--o-m:var(--bc-mo-m);--o-on:var(--bc-mo-on);--o-ic:var(--ic-mo);--o-ang:-179deg;--o-r:464px}
+body.skin-melange #login-overlay .lg-o-fu{--o-a:var(--bc-fu-a);--o-b:var(--bc-fu-b);--o-m:var(--bc-fu-m);--o-on:var(--bc-fu-on);--o-ic:var(--ic-fu);--o-ang:-1deg;--o-r:464px}
+@media (pointer:fine) and (min-height:860px){
+  body.skin-melange #login-overlay .lg-o-of{--o-ang:-148deg} body.skin-melange #login-overlay .lg-o-tg{--o-ang:-32deg}
+  body.skin-melange #login-overlay .lg-o-va{--o-ang:-168deg} body.skin-melange #login-overlay .lg-o-ch{--o-ang:-12deg}
+  body.skin-melange #login-overlay .lg-o-mo{--o-ang:-178deg} body.skin-melange #login-overlay .lg-o-fu{--o-ang:-2deg}
+}
+/* profondeur : plus on s'éloigne du sceau, plus la tuile est petite */
+body.skin-melange #login-overlay .lg-o-va,body.skin-melange #login-overlay .lg-o-ch{--o-s:44px}
+body.skin-melange #login-overlay .lg-o-mo,body.skin-melange #login-overlay .lg-o-fu{--o-s:40px}
+/* visibles à partir de 1024 px de large : sur ordinateur si l'écran a 700 px de haut, sur tablette (à plat) toujours,
+   pour que l'ouverture du clavier ne les fasse pas disparaître */
+@media (min-width:1024px) and (min-height:700px) and (pointer:fine),(min-width:1024px) and (pointer:coarse){
+  body.skin-melange #login-overlay .lg-orbite{display:block}
+}
+@media (max-width:1179px){
+  body.skin-melange #login-overlay .lg-o-mo,body.skin-melange #login-overlay .lg-o-fu{display:none}
+}
+
+/* 4. la tuile du formulaire */
+body.skin-melange #login-overlay #login-box{position:relative;z-index:1;box-sizing:border-box;width:min(420px,100%);margin:0;
+  padding:28px;text-align:left;border-radius:28px;border:1px solid var(--mx-edge-2);
+  background-color:var(--lg-carte);-webkit-backdrop-filter:blur(20px) saturate(1.15);backdrop-filter:blur(20px) saturate(1.15);
+  box-shadow:var(--mx-hl),var(--lg-ombre-carte)}
+body.skin-melange #login-overlay #login-box .lg-f{margin:0 0 20px}
+body.skin-melange #login-overlay #login-box .lg-l{display:block;margin:0 0 8px;font-size:13px;font-weight:600;line-height:16px;
+  letter-spacing:.01em;color:var(--ink-2)}
+body.skin-melange #login-overlay #login-box .lg-c > .pg-i{left:16px;width:18px;height:18px;color:var(--ink-4)}
+body.skin-melange #login-overlay #login-box .lg-c:focus-within > .pg-i{color:var(--acc-txt)}
+/* les champs : 52 px, 16 px (aucun zoom de l'iPhone), creusés, anneau violet au focus */
+body.skin-melange #login-overlay #login-ident,body.skin-melange #login-overlay #login-input{box-sizing:border-box;width:100%;height:52px;margin:0;
+  padding:0 16px 0 48px;border-radius:14px;border:1px solid var(--lg-champ-bord);background:var(--lg-champ);box-shadow:var(--lg-champ-creux);
+  color:var(--ink-1);font-family:inherit;font-size:16px;font-weight:500;letter-spacing:0;
+  transition:border-color var(--t-fast) var(--ease),box-shadow var(--t) var(--ease),background-color var(--t) var(--ease)}
+body.skin-melange #login-overlay #login-input{padding-right:56px}
+body.skin-melange #login-overlay #login-ident:hover:not(:focus),body.skin-melange #login-overlay #login-input:hover:not(:focus){border-color:var(--line-3)}
+body.skin-melange #login-overlay #login-ident:focus,body.skin-melange #login-overlay #login-input:focus{border-color:var(--acc);
+  background:var(--lg-champ-focus);box-shadow:0 0 0 4px var(--acc-ring),0 10px 24px -14px color-mix(in srgb,var(--acc) 70%,transparent)}
+body.skin-melange #login-overlay #login-ident::placeholder,body.skin-melange #login-overlay #login-input::placeholder{color:var(--ink-4);font-weight:400;letter-spacing:0}
+body.skin-melange #login-overlay #login-aide{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--ink-3)}
+/* l'œil du mot de passe : un vrai bouton de 40 px, son focus suit l'arrondi */
+body.skin-melange #login-overlay #login-box .lg-eye{right:6px;width:40px;min-width:40px;height:40px;min-height:40px;padding:0;border-radius:10px;
+  color:var(--ink-3);background:transparent;border:0}
+body.skin-melange #login-overlay #login-box .lg-eye:hover{color:var(--ink-1);background:var(--hover)}
+body.skin-melange #login-overlay #login-box .lg-eye:focus-visible{outline:2px solid var(--acc);outline-offset:0;border-radius:10px}
+/* le bouton : la couleur de la tuile Bénéfice, la flèche avance au survol */
+body.skin-melange #login-overlay #login-btn{display:flex;align-items:center;justify-content:center;gap:10px;box-sizing:border-box;width:100%;
+  height:52px;min-height:52px;margin:28px 0 0;padding:0 20px;border:0;border-radius:14px;
+  font-family:inherit;font-size:16px;font-weight:600;letter-spacing:.005em;color:var(--bc-pr-on);
+  background-color:var(--bc-pr-a);background-image:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));
+  box-shadow:var(--mx-lift),0 16px 32px -16px color-mix(in srgb,var(--acc) 85%,transparent);
+  transition:filter var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),box-shadow var(--t) var(--ease)}
+body.skin-melange #login-overlay #login-btn:hover{filter:brightness(1.1);box-shadow:var(--mx-lift),0 20px 36px -16px color-mix(in srgb,var(--acc) 95%,transparent)}
+body.skin-melange #login-overlay #login-btn:focus-visible{outline:2px solid var(--acc-txt);outline-offset:3px;border-radius:14px}
+body.skin-melange #login-overlay #login-btn .pg-i{width:18px;height:18px}
+/* le message : une vraie bande d'alerte (rouge), neutre pendant « Connexion… » */
+body.skin-melange #login-overlay #login-error{margin:0;min-height:0;text-align:left;font-size:14px;line-height:20px;color:var(--neg)}
+body.skin-melange #login-overlay #login-error:not(:empty){display:flex;align-items:flex-start;gap:10px;margin:14px 0 0;padding:11px 14px;
+  border-radius:12px;background:color-mix(in srgb,var(--neg) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 30%,transparent)}
+body.skin-melange #login-overlay #login-error:not(:empty)::before{content:"";flex:0 0 18px;width:18px;height:18px;margin-top:1px;background-color:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5'/%3E%3Cpath d='M12 16h.01'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5'/%3E%3Cpath d='M12 16h.01'/%3E%3C/svg%3E") center/contain no-repeat}
+/* en clair, la phrase, le pied et le message gagnent une marche d'encre : ils restent nets sur le halo lavande */
+body.skin-melange.light #login-overlay .lg-marque p,body.skin-melange.light #login-overlay .lg-scene > .lg-foot{color:var(--ink-2)}
+body.skin-melange.light #login-overlay:not([data-lg="attente"]) #login-error{color:color-mix(in srgb,var(--neg) 82%,var(--ink-1))}
+body.skin-melange #login-overlay[data-lg="attente"] #login-error{color:var(--ink-2);background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--line-2)}
+body.skin-melange #login-overlay[data-lg="attente"] #login-error::before{-webkit-mask:none;mask:none;background:none;box-sizing:border-box;
+  border:2px solid currentColor;border-right-color:transparent;border-radius:50%;width:16px;height:16px;flex-basis:16px;margin:2px 1px 0}
+body.skin-melange #login-overlay[data-lg="attente"] #login-btn{cursor:progress}
+/* le pied : sous la carte (ordinateur), en bas de l'écran (téléphone) */
+body.skin-melange #login-overlay .lg-scene > .lg-foot{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  margin:24px 0 0;padding:0;border:0;font-size:12.5px;line-height:16px;letter-spacing:.01em;color:var(--ink-3)}
+body.skin-melange #login-overlay .lg-scene > .lg-foot .pg-i{flex:none;color:var(--acc-txt)}
+
+/* 5a. ordinateur à écran bas (≤ 800 px, portable 1366 × 768, fenêtre réduite) : la marque se resserre (−36 px),
+   le message d'erreur sur deux lignes tient sans faire défiler */
+@media (min-width:641px) and (max-height:800px) and (pointer:fine){
+  body.skin-melange #login-overlay{--lg-haut:clamp(20px,calc(var(--lg-vh,100vh) / 2 - 318px),260px)}
+  body.skin-melange #login-overlay .lg-scene{padding-bottom:20px}
+  body.skin-melange #login-overlay .lg-sceau{width:88px;height:88px;margin-bottom:22px}
+  body.skin-melange #login-overlay .lg-sceau .login-logo{border-radius:27px;font-size:34px}
+  body.skin-melange #login-overlay .lg-marque{margin-bottom:24px}
+  body.skin-melange #login-overlay .lg-marque h2{font-size:28px;line-height:34px}
+  body.skin-melange #login-overlay .lg-marque p{margin-top:8px}
+  body.skin-melange #login-overlay .lg-scene > .lg-foot{margin-top:18px}
+}
+/* 5. téléphone : la scène part d'une hauteur FIXE (liée à la largeur, jamais à la hauteur) : quand le
+   clavier s'ouvre, rien ne bouge, et les deux champs restent au-dessus du clavier */
+@media (max-width:640px){
+  body.skin-melange #login-overlay{--lg-haut:max(clamp(44px,13vw,60px),calc(env(safe-area-inset-top) + 24px))}
+  body.skin-melange #login-overlay .lg-scene{padding-left:16px;padding-right:16px}
+  body.skin-melange #login-overlay .lg-marque{margin-bottom:24px}
+  body.skin-melange #login-overlay .lg-sceau{width:84px;height:84px;margin-bottom:22px}
+  body.skin-melange #login-overlay .lg-sceau .login-logo{border-radius:26px;font-size:33px}
+  body.skin-melange #login-overlay .lg-sceau::before{width:600px;height:600px;margin:-300px 0 0 -300px}
+  body.skin-melange #login-overlay .lg-anneaux{transform:scale(.8)}
+  body.skin-melange #login-overlay .lg-marque h2{font-size:25px;line-height:32px;letter-spacing:.05em}
+  body.skin-melange #login-overlay .lg-marque p{margin-top:8px}
+  body.skin-melange #login-overlay #login-box{padding:22px 20px;border-radius:24px}
+  body.skin-melange #login-overlay #login-btn{margin-top:24px}
+  body.skin-melange #login-overlay .lg-scene{padding-bottom:max(20px,env(safe-area-inset-bottom))}
+  body.skin-melange #login-overlay .lg-scene > .lg-foot{margin-top:auto;padding-top:24px}
+}
+/* petits téléphones (iPhone SE, mini, 360) : tout se resserre d'environ 45 px, l'écran 375 × 667 tient sans défiler */
+@media (max-width:380px){
+  body.skin-melange #login-overlay .lg-marque{margin-bottom:20px}
+  body.skin-melange #login-overlay .lg-sceau{width:74px;height:74px;margin-bottom:18px}
+  body.skin-melange #login-overlay .lg-sceau .login-logo{border-radius:23px;font-size:29px}
+  body.skin-melange #login-overlay .lg-anneaux{transform:scale(.72)}
+  body.skin-melange #login-overlay .lg-marque h2{font-size:23px;line-height:30px}
+  body.skin-melange #login-overlay .lg-marque p{font-size:14px;line-height:20px;margin-top:6px}
+  body.skin-melange #login-overlay #login-box{padding:20px 16px 18px}
+  body.skin-melange #login-overlay #login-box .lg-f{margin-bottom:16px}
+  body.skin-melange #login-overlay #login-btn{margin-top:20px}
+  body.skin-melange #login-overlay .lg-scene > .lg-foot{padding-top:14px}
+}
+
+/* 6. mouvement : une entrée douce, rien qui tourne en boucle sauf l'attente ; tout est coupé si on le demande */
+@media (prefers-reduced-motion:no-preference){
+  body.skin-melange #login-overlay .lg-sceau .login-logo{animation:lg-sceau .7s var(--ease) backwards}
+  body.skin-melange #login-overlay .lg-sceau::before,body.skin-melange #login-overlay .lg-anneaux{animation:lg-fondu 1.1s var(--ease) backwards}
+  body.skin-melange #login-overlay .lg-o{animation:lg-fondu .9s var(--ease) backwards;animation-delay:.25s}
+  body.skin-melange #login-overlay .lg-marque h2,body.skin-melange #login-overlay .lg-marque p{animation:lg-monte .55s var(--ease) backwards;animation-delay:.08s}
+  body.skin-melange #login-overlay #login-box{animation:lg-monte .6s var(--ease) backwards;animation-delay:.14s}
+  body.skin-melange #login-overlay[data-lg="attente"] #login-error::before{animation:lg-tourne .8s linear infinite}
+}
+@media (prefers-reduced-motion:reduce){
+  body.skin-melange #login-overlay *,body.skin-melange #login-overlay *::before,body.skin-melange #login-overlay *::after{animation:none!important}
+}
+@keyframes lg-sceau{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
+@keyframes lg-fondu{from{opacity:0}to{opacity:1}}
+@keyframes lg-monte{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes lg-tourne{to{transform:rotate(360deg)}}
+
 </style>
 </head>
 <body class="skin-melange">
 <div id="login-overlay">
-  <div id="login-box">
-    <div class="login-logo" aria-hidden="true">NF</div>
+  <div class="lg-scene">
+  <div class="lg-marque">
+    <div class="lg-sceau" aria-hidden="true"><span class="lg-anneaux"></span><span class="lg-orbite"><i class="lg-o lg-o-of"></i><i class="lg-o lg-o-tg"></i><i class="lg-o lg-o-va"></i><i class="lg-o lg-o-ch"></i><i class="lg-o lg-o-mo"></i><i class="lg-o lg-o-fu"></i></span><div class="login-logo"><span>NF</span></div></div>
     <h2>Noctra <span>Finance</span></h2>
     <p>Connecte-toi pour retrouver tes chiffres.</p>
+  </div>
+  <div id="login-box">
     <div class="lg-f">
       <label class="lg-l" for="login-ident">Identifiant</label>
       <div class="lg-c"><svg class="pg-i" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input id="login-ident" type="text" placeholder="ton pr&#233;nom" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter'){document.getElementById('login-input').focus();}"></div>
@@ -3287,6 +3744,7 @@ body.montants-caches #masque-btn{color:var(--acc-txt);border-color:var(--acc)}
     </div>
     <button id="login-btn" onclick="doLogin()"><span>Accéder</span><svg class="pg-i" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>
     <div id="login-error" role="alert" aria-live="polite"></div>
+  </div>
     <div class="lg-foot"><svg class="pg-i" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span>Espace privé · connexion chiffrée</span></div>
   </div>
 </div>
@@ -3528,6 +3986,7 @@ body.montants-caches #masque-btn{color:var(--acc-txt);border-color:var(--acc)}
       </div>
     </div>
     <div id="mp-msg" style="font-size:12px;text-align:center;min-height:16px;margin-top:6px"></div>
+    <div class="panel ip-panel" id="impots-panel" hidden></div>
   </div>
   <div class="kpi-sec">Dépenses</div>
   <div class="kpi-dep-grid">
@@ -3590,6 +4049,7 @@ body.montants-caches #masque-btn{color:var(--acc-txt);border-color:var(--acc)}
       <div class="fc-d-aide">Colle l’adresse du webhook de ton salon Discord : un message y part quand l’objectif du mois est atteint.</div>
     </details>
   </div>
+  <div class="panel rk-panel" id="records-panel" hidden></div>
   </div>
   <div class="kpi-sec">Tes bilans</div>
   <div class="panel" id="hist-panel">
@@ -6955,15 +7415,15 @@ function _kpiNum(id){const el=document.getElementById(id);if(!el)return 0;return
 function countUpKPI(id,from){
   const el=document.getElementById(id);if(!el)return;
   const to=_kpiNum(id);
-  // Le texte FINAL est celui que uk() vient d'écrire (montant exact, vrai signe « − ») :
-  // l'animation ne change plus son format (avant, elle finissait en arrondi au dollar).
-  const fin=el.textContent;
   const card=el.closest('.kpi');
   if(card){const up=to>=from;card.style.transition='box-shadow .4s';card.style.boxShadow=up?'0 0 0 1px var(--acc-45),0 0 22px var(--acc-22)':'0 0 0 1px color-mix(in srgb,var(--neg) 55%,transparent),0 0 22px color-mix(in srgb,var(--neg) 24%,transparent)';setTimeout(function(){card.style.boxShadow='';},750);}
   if(from===to)return;
-  const start=performance.now(),dur=650;
-  const step=function(now){const t=Math.min(1,(now-start)/dur);const val=from+(to-from)*(1-Math.pow(1-t,3));el.textContent=t<1?((val<0?'−':'')+fmtR(val)):fin;if(t<1)requestAnimationFrame(step);};
-  requestAnimationFrame(step);
+  // (animations 13/10) Le défilement passe par le calque commun (melDefiler, script « ANIMATIONS ») :
+  // il n'écrit plus dans la carte. Avant, il réécrivait le chiffre à chaque image puis remettait le
+  // texte lu AU DÉPART : une période changée pendant ses 650 ms laissait le bénéfice de l'ANCIENNE
+  // période sous le nom de la nouvelle (vu par agents/feat_animations/sonde_enregistrer.py).
+  // Mouvement réduit demandé : plus de défilement du tout (avant, il défilait quand même).
+  if(typeof melDefiler==='function') melDefiler(el, from);
 }
 function se(force) {
   // Une fenetre (alerte de doublon, note…) est deja ouverte : Ctrl+Entree ne
@@ -7766,7 +8226,10 @@ function grafMelange(c1, c2, t){ return { r: c1.r + (c2.r - c1.r) * t, g: c1.g +
 function grafJetons(){
   var hote = document.body || document.documentElement, s = document.createElement('span'), p = {};
   s.setAttribute('aria-hidden', 'true');
-  s.style.cssText = 'position:absolute;left:0;top:0;width:0;height:0;overflow:hidden;visibility:hidden;pointer-events:none';
+  // (animations 13/10) Sans transition : en « mouvement réduit », la feuille donne 1 ms de transition à
+  // TOUT (« transition-duration:1ms!important ») ; la sonde relisait alors la couleur PRÉCÉDENTE, et 9
+  // jetons sur 10 sortaient violets (grille, textes, et le rouge d'une perte : barres et courbe violettes).
+  s.style.cssText = 'position:absolute;left:0;top:0;width:0;height:0;overflow:hidden;visibility:hidden;pointer-events:none;transition:none!important';
   hote.appendChild(s);
   [['acc', '--acc'], ['neg', '--neg'], ['ink1', '--ink-1'], ['ink2', '--ink-2'], ['ink3', '--ink-3'], ['ink4', '--ink-4'],
    ['line1', '--line-1'], ['line2', '--line-2'], ['line3', '--line-3'], ['surf1', '--surf-1']].forEach(function (j){
@@ -8935,6 +9398,539 @@ function basculerMontants(forcer){
   try{ new MutationObserver(_mtPlanifier).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']}); }catch(e){}
   var c=false; try{ c=localStorage.getItem(cleLocale('masque'))==='1'; }catch(e){}
   basculerMontants(c);
+})();
+
+
+// ── feat_chiffres (Records + Impôts à garder de côté) ──
+// ══ chiffres (13/10) : « Records » et « Impôts + Paxum à garder de côté » — AFFICHAGE SEULEMENT ══
+// Aucune écriture, aucun stockage, aucune règle nouvelle :
+//  - Records lit getMonthlyRecap(), les MÊMES agrégats par mois que le Récap (bénéfice r.profit,
+//    net, postes). Seuls les mois TERMINÉS (clé < mois en cours) sont classés et comparés : le mois
+//    en cours ne l'est jamais. Un mois se compare au mois CALENDAIRE d'avant (s'il a un bilan).
+//    Pourcentage : la formule des pastilles du Récap, (a − b) / b, seulement si b > 0.
+//  - Impôts + Paxum : fraisOF() sur la somme des bruts × 0,80 des MÊMES bilans que la tuile
+//    « Impôts + Paxum » (gf(), comme uk()) ; « depuis le début » = tous les bilans (= Récap).
+//    Le partage moitié-moitié est déjà dans le bénéfice : sa moitié est retirée de « Reste à envoyer ».
+function _chCts(v){ return Math.round((Number(v) || 0) * 100); }
+// centimes du montant TEL QU'AFFICHÉ (fmtC) : les parties s'additionnent au centime près à l'écran
+function _chCtsAff(v){ return Math.round(parseFloat(String(fmtC(v)).replace(/[^0-9.]/g, '')) * 100) || 0; }
+function _chMoisAvant(k){
+  var a = +String(k).slice(0, 4), m = +String(k).slice(5, 7) - 1, d = new Date(a, m - 1, 1);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+function _chNom(k){ return _rcMois(k); }                                   // « Septembre 2026 » (nom du Récap)
+function _chNomMin(k){ var s = _rcMois(k); return s.charAt(0).toLowerCase() + s.slice(1); }
+function _chMoisSeul(k){ return grafMoisLong(+String(k).slice(5, 7) - 1); }  // « août »
+function _chEvo(a, b){ return b > 0 ? Math.round((a - b) / b * 100) : null; }
+function _chPct(p){ return (p > 0 ? '+' : p < 0 ? '−' : '') + fmtPct(Math.abs(p)); }
+
+// ── Records : le modèle (lecture seule) ──────────────────────────────────
+function chRecords(){
+  var cour = _pgMoisCourant(), tous = getMonthlyRecap();
+  var finis = tous.filter(function(r){ return r.key < cour; });
+  var o = {tous: tous, finis: finis, n: finis.length, cour: cour,
+    enCours: tous.some(function(r){ return r.key === cour; })};
+  if(!finis.length) return o;
+  var max = finis.reduce(function(m, r){ return Math.max(m, r.profit); }, -Infinity);
+  o.meilleurs = finis.filter(function(r){ return Math.abs(r.profit - max) < 0.005; });
+  o.meilleur = o.meilleurs[0];
+  o.dernier = finis[0];
+  o.premier = finis[finis.length - 1];
+  o.kPrec = _chMoisAvant(o.dernier.key);
+  o.precedent = tous.filter(function(r){ return r.key === o.kPrec; })[0] || null;
+  if(o.precedent){
+    o.diff = o.dernier.profit - o.precedent.profit;
+    o.evo = _chEvo(o.dernier.profit, o.precedent.profit);
+    o.baisse = o.evo !== null ? o.evo < 0 : o.diff < -0.005;
+    o.stable = o.evo !== null ? o.evo === 0 : Math.abs(o.diff) < 0.005;
+    if(o.baisse) o.cause = _chCause(o.dernier, o.precedent);
+  }
+  if(o.n >= 2){
+    o.progDiff = o.dernier.profit - o.premier.profit;
+    o.prog = _chEvo(o.dernier.profit, o.premier.profit);
+  }
+  return o;
+}
+// Ce qui a le plus pesé sur la baisse : l'argent rentré en moins ou la dépense en plus la plus forte
+// (écarts entre les montants du Récap des deux mois, au centime).
+function _chCause(a, b){
+  var of = function(r){ return _chCts((r.net || 0) - (r.tg || 0)); };
+  var L = [
+    ['le net OnlyFans', of(a) - of(b), 'rev'],
+    ['le net Telegram', _chCts(a.tg || 0) - _chCts(b.tg || 0), 'rev'],
+    ['le VA', _chCts(b.va) - _chCts(a.va), 'dep'],
+    ['les paiements à la modèle', _chCts(b.mo) - _chCts(a.mo), 'dep'],
+    ['le Chat IA', _chCts(b.ci) - _chCts(a.ci), 'dep'],
+    ['le Chat humain', _chCts(b.ch) - _chCts(a.ch), 'dep'],
+    ['les dépenses diverses', _chCts(b.al) - _chCts(a.al), 'dep'],
+    ['les impôts + Paxum', _chCts(b.fr || 0) - _chCts(a.fr || 0), 'dep']
+  ];
+  var pire = null;
+  L.forEach(function(x){ if(x[1] < 0 && (!pire || x[1] < pire[1])) pire = x; });
+  return pire ? {nom: pire[0], cts: -pire[1], type: pire[2]} : null;
+}
+
+// ── Records : le dessin ──────────────────────────────────────────────────
+function renderRecords(){
+  var el = document.getElementById('records-panel'); if(!el) return;
+  var R = chRecords();
+  if(!R.tous.length){ el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  var tete = '<div class="rk-tete"><div class="panel-title rk-titre"><span class="rk-rond" aria-hidden="true"></span>Records</div>'
+    + '<div class="panel-sub">sur tes mois terminés, quelle que soit la période choisie</div></div>';
+  var noteCours = R.enCours ? '<div class="rk-note">' + _pillIco() + '<span>' + esc(grafCap(_chMoisSeul(R.cour)))
+    + ' est en cours : il comptera dans tes records une fois le mois fini.</span></div>' : '';
+  if(!R.n){
+    el.innerHTML = _chNb(tete + '<div class="rk-vide">Pas encore de mois terminé. Ton meilleur mois et ta progression apparaîtront ici à la fin de '
+      + esc(_chMoisSeul(R.cour)) + '.</div>');
+    el.className = 'panel rk-panel rk-0';
+    return;
+  }
+  var tuile = function(cls, lbl, val, sous, extra){
+    return '<div class="rk-c ' + cls + '"><div class="rk-l"><span class="rk-i" aria-hidden="true"></span><span>' + lbl + '</span></div>'
+      + '<div class="rk-v">' + val + '</div>' + (sous ? '<div class="rk-s">' + sous + '</div>' : '') + (extra || '') + '</div>';
+  };
+  // 1) meilleur mois
+  var m = R.meilleur, egal = '';
+  if(R.meilleurs.length === 2) egal = 'à égalité avec ' + esc(_chNomMin(R.meilleurs[1].key));
+  else if(R.meilleurs.length > 2) egal = 'à égalité avec ' + _pl(R.meilleurs.length - 1, 'autre mois', 'autres mois');
+  var mg = m.net > 0 ? _rcPct(m.profit, m.net) : null;     // la marge du Récap (même arrondi)
+  var sousM = esc(_chNom(m.key)) + (mg !== null ? ' · ' + (mg < 0 ? '−' : '') + fmtPct(Math.abs(mg)) + ' de marge' : '')
+    + (egal ? '<span class="rk-s2">' + egal + '</span>'
+      : (R.n >= 2 && m.profit > 0 ? '<span class="rk-s2">le meilleur de tes ' + R.n + ' mois terminés</span>' : ''))
+    + (m.profit < 0 ? '<span class="rk-s2">aucun mois en bénéfice pour l’instant</span>' : '');
+  var t1 = tuile('rk-best' + (m.profit < 0 ? ' rk-neg' : ''), 'Meilleur mois', '<span class="rk-mt">' + _mS(m.profit) + '</span>', sousM);
+  // 2) progression depuis le premier mois terminé
+  var t2;
+  if(R.n < 2){
+    t2 = tuile('rk-prog rk-attente', 'Progression', '<span class="rk-tiret">—</span>', 'elle se mesurera avec un 2<sup>e</sup> mois terminé');
+  } else {
+    var vP = R.prog !== null ? _chPct(R.prog) : '<span class="rk-mt">' + (R.progDiff < 0 ? '−' : '+') + fmtC(R.progDiff) + '</span>';
+    var sousP = esc(_chNom(R.premier.key)) + ' <b>' + _mS(R.premier.profit) + '</b> <span class="rk-fl" aria-label="puis">→</span> '
+      + esc(_chNomMin(R.dernier.key)) + ' <b>' + _mS(R.dernier.profit) + '</b>';
+    t2 = tuile('rk-prog' + ((R.prog !== null ? R.prog : R.progDiff) < 0 ? ' rk-recul' : ''), 'Progression<span class="rk-lx"> depuis le début</span>', vP, sousP);
+  }
+  // 3) dernier mois terminé, par rapport au mois calendaire d'avant
+  var d = R.dernier, p = R.precedent, t3, lblD = 'Dernier mois terminé', record = '';
+  if(R.n >= 2 && R.meilleur.key === d.key && d.profit > 0)
+    record = '<span class="rk-pill">' + (R.meilleurs.length > 1 ? 'égale ton record' : 'nouveau record') + '</span>';
+  if(!p){
+    t3 = tuile('rk-der rk-attente', lblD, '<span class="rk-nom">' + esc(_chNom(d.key)) + '</span>',
+      R.n === 1 ? 'ton premier mois terminé : rien à comparer encore'
+        : 'pas de bilan en ' + esc(_chNomMin(R.kPrec)) + ' : rien à comparer', record);
+  } else {
+    var avant = esc(_chMoisSeul(p.key));
+    var vD = R.evo !== null ? (R.stable ? 'stable' : _chPct(R.evo))
+      : '<span class="rk-mt">' + (R.diff < 0 ? '−' : '+') + fmtC(R.diff) + '</span>';
+    var ico = R.stable ? '' : (R.baisse ? _pgIco('dn', 18) : _pgIco('up', 18));
+    if(R.baisse){
+      var c = R.cause;
+      var pour = c ? ' : surtout ' + c.nom + ' (<b>' + (c.type === 'rev' ? '−' : '+') + fmtC(c.cts / 100) + '</b>)' : '';
+      var tete3 = '<b class="rk-alerte">' + esc(grafCap(_chMoisSeul(d.key))) + ' en baisse'
+        + (R.evo !== null ? ' de ' + fmtPct(Math.abs(R.evo)) : '') + '</b>';
+      t3 = tuile('rk-der rk-baisse', lblD, '<span class="rk-sens">' + ico + vD + '</span>',
+        tete3 + pour + '.<span class="rk-s2">' + esc(_chNom(d.key)) + ' : <b>' + _mS(d.profit) + '</b>, contre <b>' + _mS(p.profit) + '</b> en ' + avant + '</span>');
+    } else {
+      t3 = tuile('rk-der ' + (R.stable ? 'rk-stable' : 'rk-hausse'), lblD, '<span class="rk-sens">' + ico + vD + '</span>',
+        esc(_chNom(d.key)) + ' : <b>' + _mS(d.profit) + '</b>, contre <b>' + _mS(p.profit) + '</b> en ' + avant, record);
+    }
+  }
+  el.className = 'panel rk-panel rk-' + Math.min(R.n, 2);
+  el.innerHTML = _chNb(tete + '<div class="rk-grille">' + t1 + t2 + t3 + '</div>' + noteCours);
+}
+
+// ── Impôts + Paxum à garder de côté : le modèle ──────────────────────────
+// Parties : impôts = 1 % du net OnlyFans ; total = fraisOF() (exactement le chiffre de la tuile) ;
+// Paxum = total − impôts, au centime affiché (les deux parties font le total à l'écran).
+function _chFrais(es){
+  var br = (es || []).reduce(function(s, e){ return s + (e.brut || 0); }, 0);   // même somme que uk()
+  var n = br * _TAUX, tot = fraisOF(n), imp = n * _IMPOTS_OF;
+  var cT = _chCtsAff(tot), cI = _chCtsAff(imp);
+  return {br: br, net: n, tot: tot, imp: imp, pax: (cT - cI) / 100, paxExact: n * _PAXUM_OF, moitie: tot * 0.5};
+}
+function chImpots(){
+  var cour = _pgMoisCourant();
+  var o = {total: _chFrais(ents || []), toutes: !ap && !acd && !acdEnd};
+  if(o.toutes){
+    var ec = (ents || []).filter(function(e){ return String(e.date || '').slice(0, 7) === cour; });
+    o.periode = ec.length ? _chFrais(ec) : null;
+    o.lib = ec.length ? 'dont ' + _chMoisSeul(cour) + ' (en cours)' : '';
+  } else {
+    var f = gf();
+    o.periode = _chFrais(f);
+    o.nb = f.length;
+    o.lib = ((document.getElementById('plbl') || {}).textContent || 'Période choisie').trim();
+  }
+  return o;
+}
+function renderImpots(){
+  var el = document.getElementById('impots-panel'); if(!el) return;
+  if(!(ents || []).length){ el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  var I = chImpots(), T = I.total;
+  el.className = 'panel ip-panel' + (T.tot > 0 ? '' : ' ip-0');
+  var tete = '<div class="ip-tete"><div class="panel-title ip-titre"><span class="ip-rond" aria-hidden="true"></span>Impôts + Paxum à garder de côté</div>'
+    + '<div class="panel-sub">depuis le début · moitié-moitié avec la modèle, c’est toi qui les paies</div></div>';
+  if(!(T.tot > 0)){
+    el.innerHTML = _chNb(tete + '<div class="ip-vide">Rien à garder de côté : pas encore d’argent OnlyFans dans tes bilans (Telegram n’a aucun frais).</div>');
+    return;
+  }
+  var tuile = function(cls, lbl, val, sous){
+    return '<div class="ip-c ' + cls + '"><div class="ip-l">' + lbl + '</div><div class="ip-v">' + val + '</div>'
+      + (sous ? '<div class="ip-s">' + sous + '</div>' : '') + '</div>';
+  };
+  var eq = '<div class="ip-eq">'
+    + tuile('ip-imp', 'Impôts · 1 %', fmtC(T.imp), 'du net OnlyFans')
+    + tuile('ip-pax', 'Paxum · 3,5 %', fmtC(T.pax), 'passage en crypto')
+    + tuile('ip-tot', 'À garder de côté', fmtC(T.tot), '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(T.moitie) + '</b></span>')
+    + '</div>';
+  var phrase = '<p class="ip-phrase"><b>Sa moitié est déjà retirée de « Reste à envoyer ».</b> Cet argent reste donc chez toi, sur le compte crypto : c’est toi qui paies les impôts et Paxum pour vous deux.</p>';
+  var per = '';
+  if(I.periode && I.lib){
+    var P = I.periode;
+    var apercu = (function(){ var a = document.getElementById('kpi-apercu'); return !!(a && !a.hidden); })();
+    per = '<div class="ip-per"><span class="ip-per-l">' + esc(I.lib) + '</span>'
+      + (P.tot > 0 ? '<span class="ip-per-v">impôts <b>' + fmtC(P.imp) + '</b> + Paxum <b>' + fmtC(P.pax) + '</b> = <b>' + fmtC(P.tot) + '</b></span>'
+        : '<span class="ip-per-v">aucun frais : pas d’argent OnlyFans sur cette période</span>')
+      + (apercu ? '<span class="ip-per-n">bilans enregistrés seulement</span>' : '') + '</div>';
+  }
+  var note = '<div class="ip-note">Les impôts déjà payés ne se notent pas encore ici : ce total compte tout, depuis ton premier bilan.</div>';
+  el.innerHTML = _chNb(tete + eq + phrase + per + note);
+}
+// typographie : espace insécable devant « : » et dans « … » (plus de deux-points seul en début de ligne)
+function _chNb(h){ return String(h).replace(/ :/g, ' :').replace(/« /g, '« ').replace(/ »/g, ' »'); }
+
+function renderChiffres(){
+  try{ renderRecords(); }catch(e){ console.warn('records', e); }
+  try{ renderImpots(); }catch(e){ console.warn('impots', e); }
+}
+// Redessin : après chaque uk() (période, bilan, brouillon) et chaque renderModelShare() (paiements,
+// chargement). Les fonctions d'origine sont appelées telles quelles, avant.
+(function(){
+  if(typeof uk === 'function'){ var _ukCh = uk; uk = function(){ var r = _ukCh.apply(this, arguments); renderChiffres(); return r; }; }
+  if(typeof renderModelShare === 'function'){ var _msCh = renderModelShare; renderModelShare = function(){ var r = _msCh.apply(this, arguments); renderChiffres(); return r; }; }
+  renderChiffres();
+})();
+
+
+// ── feat_animations ──
+// ══ ANIMATIONS (idée 5, 13/10) : les chiffres défilent, la courbe se dessine, les tuiles arrivent ══
+// RÈGLE D'OR : une animation ne laisse JAMAIS un faux chiffre, ne dévoile rien quand l'œil est fermé
+// et ne gêne aucune saisie. D'où sa forme :
+//  - Le compteur n'écrit RIEN dans la page. Le vrai texte (celui que uk(), renderModelShare() ou
+//    renderForecast() viennent d'écrire) reste dans l'élément, rendu transparent le temps du
+//    défilement ; un CALQUE (::after, texte tiré de data-mel-cpt) montre les valeurs intermédiaires
+//    par-dessus. Tout ce qui lit la page (calculs, _kpiNum, lecteurs d'écran, copier, comparateurs)
+//    lit donc toujours le vrai montant, même au milieu du défilement.
+//  - Fin du défilement (650 ms), réécriture de l'élément par la page (nouveau rendu, période,
+//    saisie), élément retiré, œil fermé : le calque s'efface et le texte de la page reparaît tel quel.
+//  - Garde-fou CSS : la transparence et le calque sont des animations CSS de 0,9 s. Même si ce script
+//    s'arrêtait en route, le vrai texte reviendrait seul.
+//  - Mouvement réduit demandé, animations CSS coupées (captures), onglet caché : rien ne bouge.
+//  - Quand le nombre DIMINUE, le calque pourrait être plus large que le vrai chiffre et déborder
+//    sur son voisin (« dont ta moitié », « si le rythme continue ») : on compte alors depuis 0.
+//  - Jamais dans les tableaux ni le formulaire : seulement les grands chiffres de l'accueil, au
+//    premier affichage et au changement de période (et après un enregistrement, voir countUpKPI).
+(function(){
+  var DUREE = 650, TRACE = 700;
+  // (« dont ta moitié » défile avec le bénéfice : sinon « $4,385 » montait vers « $29,629 » à côté d'une
+  //  moitié déjà à « $14,814.50 ».)
+  var CIBLES = ['vpr','moitie','pn','vb','vn','vva','vmo','vci','vch','val','vfr','vdep','vof','forecast-val','reste'];
+  var trouver = function(cle){
+    if (cle === 'reste') return document.querySelector('#model-share .ms-res .ms-v');
+    if (cle === 'moitie') return document.querySelector('#pmoitie:not([hidden]) b');
+    return document.getElementById(cle);
+  };
+  var enCours = [];
+  var chargement = 0, premierFait = false, traceFait = false;
+  // Compteurs lus par les sondes (preuve que l'animation a bien eu lieu, et pourquoi elle s'est arrêtée).
+  var bilan = window.__melAnim = { lances: 0, finis: 0, arretsPage: 0, arretsOeil: 0, traces: 0, tracesFinis: 0 };
+
+  function permis(){
+    try { if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false; } catch (e) {}
+    if (document.hidden) return false;
+    // Même interrupteur que les animations CSS : si une feuille les coupe (captures d'écran,
+    // sondes, préférence du système), le compteur et la courbe se taisent aussi.
+    var t = document.getElementById('mel-anim-temoin');
+    if (!t) {
+      t = document.createElement('i'); t.id = 'mel-anim-temoin'; t.hidden = true; t.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(t);
+    }
+    var n = ''; try { n = getComputedStyle(t).animationName; } catch (e) {}
+    return !!n && n !== 'none';
+  }
+  var oeilFerme = function(){ return document.body.classList.contains('montants-caches'); };
+
+  // « $10,457.38 », « −$1,234 », « ≈ $4,385 » : préfixe, signe, nombre, décimales. Autre chose
+  // (« — », un pourcentage, une phrase) : pas de défilement.
+  var RE = /^(\D*?)([−-]?)\$(\d[\d,]*)(\.\d+)?(\D*)$/;
+  function lire(txt){
+    var m = RE.exec(String(txt == null ? '' : txt));
+    if (!m) return null;
+    var v = parseFloat(m[3].replace(/,/g, '') + (m[4] || ''));
+    if (!isFinite(v)) return null;
+    return { avant: m[1], v: m[2] ? -v : v, dec: m[4] ? m[4].length - 1 : 0, apres: m[5] };
+  }
+  function ecrire(f, v){
+    var a = Math.abs(v), s;
+    try { s = a.toLocaleString('en-US', { minimumFractionDigits: f.dec, maximumFractionDigits: f.dec }); }
+    catch (e) { s = a.toFixed(f.dec); }
+    return f.avant + (v < 0 && /[1-9]/.test(s) ? '−' : '') + '$' + s + f.apres;
+  }
+  function trouverAnim(el){ for (var i = 0; i < enCours.length; i++) if (enCours[i].el === el) return enCours[i]; return null; }
+  function arreter(a, pourquoi){
+    if (!a || a.fini) return;
+    a.fini = true;
+    try { cancelAnimationFrame(a.raf); } catch (e) {}
+    try { a.obs.disconnect(); } catch (e) {}
+    a.el.classList.remove('mel-cpt', 'mel-cpt-rel');
+    a.el.removeAttribute('data-mel-cpt');
+    var i = enCours.indexOf(a); if (i >= 0) enCours.splice(i, 1);
+    if (pourquoi === 'page') bilan.arretsPage++; else if (pourquoi === 'oeil') bilan.arretsOeil++; else bilan.finis++;
+  }
+  function arreterTout(pourquoi){ enCours.slice().forEach(function(a){ arreter(a, pourquoi); }); }
+  // Valeur MONTRÉE à l'écran (le calque si un défilement est en cours) : un 2e clic enchaîne sans saut.
+  function montree(el){
+    if (!el) return null;
+    var a = trouverAnim(el), f = lire(a ? el.getAttribute('data-mel-cpt') : el.textContent);
+    return f ? f.v : null;
+  }
+  function aLEcran(el){
+    if (!el || !el.isConnected) return false;
+    var r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 && r.bottom > 0 && r.right > 0 &&
+      r.top < (window.innerHeight || document.documentElement.clientHeight) && r.left < (window.innerWidth || document.documentElement.clientWidth);
+  }
+  function largeurTexte(el){
+    try { var r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect().width; } catch (e) { return 0; }
+  }
+
+  // Prépare un défilement (sans le lancer) ; rend null si rien à faire.
+  function preparer(el, depuis){
+    var vieux = trouverAnim(el); if (vieux) arreter(vieux, 'page');
+    if (!aLEcran(el)) return null;
+    var fin = el.textContent, f = lire(fin);
+    if (!f) return null;
+    var de = (typeof depuis === 'number' && isFinite(depuis)) ? depuis : 0;
+    // Signe qui change, ou nombre qui diminue sans la place pour ses chiffres en trop : depuis 0.
+    if (de !== 0 && ((de < 0) !== (f.v < 0))) de = 0;
+    if (Math.abs(de) > Math.abs(f.v)) {
+      var plusLong = ecrire(f, de), lt = largeurTexte(el), boite = el.clientWidth;
+      var estime = fin.length ? lt * plusLong.length / fin.length * 1.06 : Infinity;
+      if (!(lt > 0) || estime > boite) de = 0;
+    }
+    if (Math.abs(de - f.v) < 0.005) return null;
+    return { el: el, fin: fin, f: f, de: de, fini: false };
+  }
+  // Lance une liste de défilements préparés (une seule mise en page pour toute la liste).
+  function lancer(liste){
+    liste = liste.filter(Boolean);
+    if (!liste.length) return;
+    liste.forEach(function(a){
+      if (getComputedStyle(a.el).position === 'static') a.el.classList.add('mel-cpt-rel');
+      a.el.setAttribute('data-mel-cpt', ecrire(a.f, a.de));
+    });
+    void document.body.offsetWidth;   // relance le garde-fou CSS de 0,9 s si la classe vient d'être retirée
+    var t0 = performance.now();
+    liste.forEach(function(a){
+      a.el.classList.add('mel-cpt');
+      // Ce script coupé par une feuille SANS animation (vérifié sur l'élément même) : on n'insiste pas.
+      if (getComputedStyle(a.el).animationName === 'none') { a.el.classList.remove('mel-cpt', 'mel-cpt-rel'); a.el.removeAttribute('data-mel-cpt'); return; }
+      a.t0 = t0;
+      // La page réécrit l'élément (rendu, période, saisie) : elle a le dernier mot, tout de suite.
+      a.obs = new MutationObserver(function(){ arreter(a, 'page'); });
+      a.obs.observe(a.el, { childList: true, characterData: true, subtree: true });
+      enCours.push(a);
+      bilan.lances++;
+      var pas = function(){
+        if (a.fini) return;
+        try {
+          if (!a.el.isConnected || a.el.textContent !== a.fin) { arreter(a, 'page'); return; }
+          var t = (performance.now() - a.t0) / DUREE;
+          if (t >= 1) { arreter(a, 'fin'); return; }   // le texte de la page reparaît, tel quel
+          var k = 1 - Math.pow(1 - Math.max(0, t), 3);
+          a.el.setAttribute('data-mel-cpt', ecrire(a.f, a.de + (a.f.v - a.de) * k));
+          a.raf = requestAnimationFrame(pas);
+        } catch (e) { arreter(a, 'fin'); }
+      };
+      a.raf = requestAnimationFrame(pas);
+    });
+  }
+  // Un seul chiffre (utilisé par countUpKPI après un enregistrement).
+  window.melDefiler = function(el, depuis){
+    try { if (!el || !permis() || oeilFerme()) return; lancer([preparer(el, depuis)]); } catch (e) {}
+  };
+  function releverAccueil(){
+    var o = {}; CIBLES.forEach(function(c){ o[c] = montree(trouver(c)); }); return o;
+  }
+  function animerAccueil(avant){
+    if (!permis() || oeilFerme()) return;
+    var pg = document.getElementById('page-ca');
+    if (!pg || !pg.classList.contains('active')) return;
+    lancer(CIBLES.map(function(c){
+      var el = trouver(c); if (!el) return null;
+      var de = avant ? avant[c] : 0;
+      return preparer(el, de == null ? 0 : de);
+    }));
+  }
+
+  // L'œil se ferme pendant un défilement : on arrête tout, le vrai texte (flouté) reprend sa place.
+  try {
+    new MutationObserver(function(){ if (oeilFerme() && enCours.length) arreterTout('oeil'); })
+      .observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  } catch (e) {}
+
+  // Changement de période : on relève ce qui est MONTRÉ avant, la page réécrit, on défile vers SON texte.
+  ['spMois', 'spAll', 'setRange', 'sp', 'scd'].forEach(function(nom){
+    var orig = window[nom];
+    if (typeof orig !== 'function' || orig.__melAnim) return;
+    var f = function(){
+      var avant = null;
+      try { if (!chargement && permis() && !oeilFerme()) avant = releverAccueil(); } catch (e) {}
+      var r = orig.apply(this, arguments);
+      if (avant) { try { animerAccueil(avant); } catch (e) {} }
+      return r;
+    };
+    f.__melAnim = true;
+    window[nom] = f;
+  });
+
+  // Les tuiles arrivent l'une après l'autre (délais dans la feuille, « 9. MOUVEMENT ») : à l'entrée
+  // dans l'application, on rejoue leur entrée, qui s'était jouée derrière l'écran de connexion.
+  function entree(){
+    if (!permis()) return;
+    var pg = document.getElementById('page-ca');
+    if (!pg || !pg.classList.contains('active')) return;
+    var els = [].slice.call(pg.querySelectorAll('.kpi-hero-grid > .kpi, .kpi-dep-grid > .kpi, .g2-tend > .panel, #forecast-card'))
+      .concat([].slice.call(pg.children).filter(function(e){ return e.classList.contains('panel'); }));
+    els.forEach(function(e){ e.style.animation = 'none'; });
+    void pg.offsetWidth;
+    els.forEach(function(e){ e.style.animation = ''; });
+    // « Reste à envoyer » est reconstruit à chaque rendu : son entrée n'existe que ce premier instant
+    // (sinon elle se rejouerait à chaque lettre tapée dans la recherche des bilans).
+    pg.classList.add('mel-premier');
+    setTimeout(function(){ pg.classList.remove('mel-premier'); }, 1400);
+  }
+
+  // Premier affichage : à la fin du premier chargement des bilans, les grands chiffres défilent depuis 0.
+  if (typeof window.loadData === 'function' && !window.loadData.__melAnim) {
+    var _ld = window.loadData;
+    var ld = async function(){
+      var premier = !premierFait;
+      chargement++;
+      if (premier) { try { entree(); } catch (e) {} }
+      try { return await _ld.apply(this, arguments); }
+      finally {
+        chargement = Math.max(0, chargement - 1);
+        var n = 0; try { n = (typeof ents !== 'undefined' && ents) ? ents.length : 0; } catch (e) {}
+        if (premier && !premierFait && n) {
+          premierFait = true;
+          requestAnimationFrame(function(){ try { animerAccueil(null); } catch (e) {} });
+        }
+      }
+    };
+    ld.__melAnim = true;
+    window.loadData = ld;
+  }
+
+  // ── La courbe « Évolution du bénéfice » se dessine de gauche à droite, une seule fois : la première
+  // fois qu'elle apparaît à l'écran. Les redessins (thème, enregistrement) gardent leur comportement.
+  // Le tracé est un simple masque posé sur les courbes : axes, grille, valeurs ne changent pas.
+  if (window.Chart && typeof window.Chart.register === 'function' && typeof window.grafEvolution === 'function') {
+    try {
+      window.Chart.register({
+        id: 'melTrace',
+        beforeDatasetsDraw: function(ch){
+          var t = ch.$melTrace, a = ch.chartArea; if (!t || !a) return;
+          var c = ch.ctx; c.save(); c.beginPath();
+          c.rect(a.left - 12, 0, (a.right - a.left + 24) * t.p, ch.height); c.clip(); t.coupe = true;
+        },
+        afterDatasetsDraw: function(ch){ var t = ch.$melTrace; if (t && t.coupe) { t.coupe = false; ch.ctx.restore(); } },
+        afterDestroy: function(ch){ if (ch.$melTraceFin) ch.$melTraceFin(true); }
+      });
+    } catch (e) {}
+    var armer = function(ch){
+      if (!permis() || window._grafSansAnim || typeof IntersectionObserver !== 'function' || !ch.canvas) return;
+      var io = null, fait = false;
+      var finir = function(detruit){
+        if (fait) return; fait = true;
+        try { if (io) io.disconnect(); } catch (e) {}
+        window.removeEventListener('beforeprint', finir);
+        delete ch.$melTrace;
+        bilan.tracesFinis++;
+        if (!detruit && ch.ctx) { try { ch.draw(); } catch (e) {} }
+      };
+      ch.$melTraceFin = finir;
+      try { ch.stop(); } catch (e) {}
+      ch.$melTrace = { p: 0 };
+      try { ch.update('none'); } catch (e) { finir(); return; }
+      var demarrer = function(){
+        if (fait) return;
+        if (!permis()) { finir(); return; }
+        bilan.traces++;
+        var t0 = performance.now();
+        var pas = function(){
+          if (fait) return;
+          var k = Math.min(1, (performance.now() - t0) / TRACE);
+          if (k >= 1 || !ch.ctx || !ch.$melTrace) { finir(); return; }
+          ch.$melTrace.p = 1 - Math.pow(1 - k, 3);
+          try { ch.draw(); } catch (e) { finir(); return; }
+          requestAnimationFrame(pas);
+        };
+        requestAnimationFrame(pas);
+      };
+      io = new IntersectionObserver(function(es){
+        if (es.some(function(e){ return e.isIntersecting && e.intersectionRatio >= 0.3; })) { io.disconnect(); demarrer(); }
+      }, { threshold: [0, 0.3, 0.6] });
+      io.observe(ch.canvas);
+      window.addEventListener('beforeprint', finir);
+    };
+    var _ge = window.grafEvolution;
+    window.grafEvolution = function(){
+      var ch = _ge.apply(this, arguments);
+      try { if (ch && chargement && !traceFait) { traceFait = true; armer(ch); } } catch (e) {}
+      return ch;
+    };
+  }
+})();
+
+// ── feat_connexion (écran de connexion, page d'accueil de la marque) ──
+// Connexion (présentation seule) : le message sous le bouton est écrit par doLogin() ; on lit
+// seulement son texte pour le dessiner en « attente » (« Connexion… », neutre) ou en « erreur »
+// (bande rouge). Aucune valeur n'est lue dans les champs, rien n'est envoyé, doLogin n'est pas touché.
+// Le clavier du téléphone affiche « Suivant » puis « OK » : c'est déjà ce que fait la touche Entrée.
+// Tab reste dans l'écran de connexion (avant, il partait vers les onglets cachés derrière).
+(function(){
+  try {
+    var ov = document.getElementById('login-overlay'), er = document.getElementById('login-error');
+    if (!ov || !er) return;
+    var maj = function(){
+      var t = String(er.textContent || '').trim();
+      ov.setAttribute('data-lg', !t ? '' : (/^Connexion(…|\.\.\.)$/.test(t) ? 'attente' : 'erreur'));
+    };
+    new MutationObserver(maj).observe(er, { childList:true, characterData:true, subtree:true });
+    maj();
+    [['login-ident', 'next'], ['login-input', 'go']].forEach(function(x){
+      var e = document.getElementById(x[0]);
+      if (e && !e.hasAttribute('enterkeyhint')) e.setAttribute('enterkeyhint', x[1]);
+    });
+    // Hauteur de centrage figée : sur un écran tactile, elle ne change qu'à la rotation (largeur
+    // différente) ; le clavier qui s'ouvre ne fait donc jamais remonter la page.
+    var tactile = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches), l0 = window.innerWidth;
+    var fige = function(){ ov.style.setProperty('--lg-vh', window.innerHeight + 'px'); };
+    fige();
+    window.addEventListener('resize', function(){ if (!tactile || window.innerWidth !== l0) { l0 = window.innerWidth; fige(); } });
+    ov.addEventListener('keydown', function(ev){
+      if (ev.key !== 'Tab' || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+      var f = Array.prototype.filter.call(ov.querySelectorAll('input,button'), function(e){
+        return !e.disabled && e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden';
+      });
+      if (!f.length) return;
+      var i = f.indexOf(document.activeElement);
+      if (ev.shiftKey && i === 0) { ev.preventDefault(); f[f.length - 1].focus(); }
+      else if (!ev.shiftKey && i === f.length - 1) { ev.preventDefault(); f[0].focus(); }
+    });
+  } catch (e) {}
 })();
 
 </script>
