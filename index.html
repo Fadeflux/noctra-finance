@@ -2188,1119 +2188,1055 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
 
 
 /* ── selecteur de style (13/10) ── */
-/* ══════ style « bento » : uniquement sous body.skin-bento ══════ */
-/* ═══ NOCTRA FINANCE — STYLE « BENTO » : la mosaïque vivante ═══
-   Ordinateur : l'accueil devient une grille de tuiles (bénéfice en grande tuile violette, nets en
-   petites tuiles, « Reste à envoyer » en tuile accent orange, dépenses en carrés teintés par poste,
-   graphique en tuile large). Téléphone : des widgets empilés. Grands rayons, profondeur douce.
-   Tout est préfixé body.skin-bento : sans la classe, rien ne change. */
+/* ══════ style « melange » : uniquement sous body.skin-melange ══════ */
+/* ═══ NOCTRA FINANCE — STYLE « MÉLANGE » : le Cockpit en couleurs, version finale ═══
+   Départ : mix-dense (B3 × B4), puis tous les points de la critique (agents/critique_mix/critique.md) et les trois
+   meilleures idées de mix-colore (« ta moitié » en pastille de verre, « Noter un paiement » orange plein au téléphone,
+   formulaire teinté par poste). La mise en page est celle du Cockpit (B4) : sur ordinateur, tout le tableau de bord
+   tient dans le premier écran (bénéfice + ta moitié, net total, reste à envoyer avec son détail et son
+   bouton, bilan du mois, prévision, rangée des dépenses). Les couleurs pleines viennent du Bento Couleurs
+   (B3) : chaque sujet SA couleur, chaque couleur SON encre — et la couleur sert à repérer : elle va aux
+   tuiles qui portent un chiffre à reconnaître (bénéfice, reste à envoyer, canaux, postes de dépense) ;
+   les tuiles d'action et de lecture (bilan, prévision, relevé, listes) restent neutres.
+   Règle de lisibilité (B3) : chaque paire encre/fond passe 4,5:1 sur le point le PLUS défavorable du
+   dégradé (background-color = ce point-là, pour que la mesure automatique le contrôle).
+   Tout est préfixé body.skin-melange : sans la classe, rien ne change. */
 
 /* ── 0. JETONS ─────────────────────────────────────────────────────────── */
-body.skin-bento{
-  --bn-r:24px; --bn-r-md:18px; --bn-r-sm:12px; --bn-r-xs:10px;
-  --bn-gap:16px;
-  --bn-hero-a:color-mix(in srgb,var(--acc) 76%,#000);
-  --bn-hero-b:color-mix(in srgb,var(--acc) 58%,#000);
-  --bn-hero-c:color-mix(in srgb,var(--acc) 38%,#000);
-  --bn-on:var(--acc-ink);
-  --bn-on-2:color-mix(in srgb,var(--acc-ink) 90%,transparent);
-  --bn-on-glass:color-mix(in srgb,var(--acc-ink) 15%,transparent);
-  --bn-on-line:color-mix(in srgb,var(--acc-ink) 22%,transparent);
+body.skin-melange{
+  /* un seul jeu de mesures pour tout le style : rayons, gouttière, marges intérieures, ronds d'icône */
+  --mx-r:20px; --mx-r-md:14px; --mx-r-sm:11px; --mx-r-xs:9px;
+  --mx-gap:12px;
+  --mx-pad:18px 20px;        /* grandes tuiles */
+  --mx-pad-s:14px 16px;      /* petites tuiles (dépenses, relevé, canaux) */
+  --mx-ico:28px;             /* tous les ronds d'icône */
+  --mx-blanc:#ffffff;        /* le bouton posé sur un widget plein */
+  /* les icônes des sujets : même trait que les icônes du site (2 px, bouts ronds), dessinées en masque, à l'encre de la tuile */
+  --ic-va:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21a8 8 0 0 1 16 0'/%3E%3C/svg%3E");
+  --ic-mo:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='m16 11 2 2 4-4'/%3E%3C/svg%3E");
+  --ic-ci:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='8' width='16' height='12' rx='3'/%3E%3Cpath d='M12 8V4'/%3E%3Ccircle cx='12' cy='3' r='1'/%3E%3Cpath d='M9 13v2M15 13v2'/%3E%3C/svg%3E");
+  --ic-ch:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+  --ic-fu:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z'/%3E%3Cpath d='M3 6h18'/%3E%3Cpath d='M16 10a4 4 0 0 1-8 0'/%3E%3C/svg%3E");
+  --ic-fr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21h18'/%3E%3Cpath d='M3 10h18'/%3E%3Cpath d='m5 6 7-3 7 3'/%3E%3Cpath d='M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3'/%3E%3C/svg%3E");
+  --ic-tot:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 7V4H6l6 8-6 8h12v-3'/%3E%3C/svg%3E");
+  --ic-garde:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 5 5 19'/%3E%3Ccircle cx='6.5' cy='6.5' r='2.5'/%3E%3Ccircle cx='17.5' cy='17.5' r='2.5'/%3E%3C/svg%3E");
+  --ic-of:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z'/%3E%3C/svg%3E");
+  --ic-tg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 2-7 20-4-9-9-4z'/%3E%3Cpath d='M22 2 11 13'/%3E%3C/svg%3E");
+  --ic-envoi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m13 6 6 6-6 6'/%3E%3C/svg%3E");
+  --ic-ok:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  --ic-prev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 17 6-6 4 4 8-8'/%3E%3Cpath d='M14 7h7v7'/%3E%3C/svg%3E");
 }
-body.skin-bento:not(.light){
-  --bg-0:#09090c; --bg-1:#0d0e12; --inset:#0e0f14; --field:#0e0f14;
-  --surf-1:#131419; --surf-2:#1a1c22; --surf-3:#21242b;
-  --line-1:#1f2128; --line-2:#2a2d35; --line-3:#3b3f49;
-  --bn-edge:rgba(255,255,255,.06);
-  --bn-edge-2:rgba(255,255,255,.1);
-  --bn-hl:inset 0 1px 0 rgba(255,255,255,.05);
-  --bn-sh:0 1px 2px rgba(0,0,0,.45),0 20px 40px -24px rgba(0,0,0,.95);
-  --bn-sh-hero:0 1px 0 rgba(255,255,255,.16) inset,0 26px 56px -26px color-mix(in srgb,var(--acc) 70%,transparent);
-  --bn-tint:12%;
-  --bn-of:var(--c-info); --bn-tg:var(--m-tg);
-  --bn-todo-bg:color-mix(in srgb,var(--todo) 11%,var(--surf-1));
-  --bn-todo-ink:var(--todo);
-  --bn-hatch:color-mix(in srgb,var(--ink-1) 4%,transparent);
-  --mob-nav-bg:color-mix(in srgb,var(--surf-2) 82%,transparent);
+/* palette SOMBRE (B3) : a = haut du dégradé, b = bas, on = encre, on2 = encre secondaire,
+   m = point le plus défavorable (mesuré), v = teinte des « verres » (pastilles, ronds) */
+body.skin-melange:not(.light){
+  --bg-0:#08090b; --bg-1:#0c0d11; --inset:#0d0e13; --field:#0d0e13;
+  --surf-1:#121318; --surf-2:#181a20; --surf-3:#20232a;
+  --line-1:#1e2027; --line-2:#292c34; --line-3:#3a3e48;
+  --mx-edge:rgba(255,255,255,.065); --mx-edge-2:rgba(255,255,255,.11);
+  --mx-hl:inset 0 1px 0 rgba(255,255,255,.05);
+  --mx-sh:0 1px 2px rgba(0,0,0,.45),0 16px 32px -22px rgba(0,0,0,.95);
+  --mx-sh-hover:0 1px 2px rgba(0,0,0,.45),0 22px 40px -22px rgba(0,0,0,1);
+  --mx-lift:inset 0 1px 0 rgba(255,255,255,.22);
+  --mx-hatch:color-mix(in srgb,var(--ink-1) 4%,transparent);
+  --mx-chip:var(--surf-2);
+  --mob-nav-bg:color-mix(in srgb,var(--surf-2) 84%,transparent);
+  --bc-pr-a:#9333ea; --bc-pr-b:#6b21c8; --bc-pr-on:#ffffff; --bc-pr-on2:#ffffff; --bc-pr-m:#9333ea; --bc-pr-v:#000;
+  --bc-ng-a:#dc2626; --bc-ng-b:#991b1b; --bc-ng-on:#ffffff; --bc-ng-on2:#ffffff; --bc-ng-m:#dc2626; --bc-ng-v:#000;
+  --bc-du-a:#ffbd4f; --bc-du-b:#f59e0b; --bc-du-on:#231300; --bc-du-on2:#3a2200; --bc-du-m:#f59e0b; --bc-du-v:#fff;
+  --bc-of-a:#2563eb; --bc-of-b:#1e40af; --bc-of-on:#ffffff; --bc-of-on2:#ffffff; --bc-of-m:#2563eb; --bc-of-v:#000;
+  --bc-tg-a:#5ccafb; --bc-tg-b:#22aee9; --bc-tg-on:#03253a; --bc-tg-on2:#0a3550; --bc-tg-m:#22aee9; --bc-tg-v:#fff;
+  --bc-va-a:#fcd34d; --bc-va-b:#eab308; --bc-va-on:#241a00; --bc-va-on2:#3d2d00; --bc-va-m:#eab308; --bc-va-v:#fff;
+  --bc-mo-a:#b39dfb; --bc-mo-b:#9a7ff7; --bc-mo-on:#1b0a3d; --bc-mo-on2:#2b1660; --bc-mo-m:#9a7ff7; --bc-mo-v:#fff;
+  --bc-ci-a:#3ee0f5; --bc-ci-b:#06b6d4; --bc-ci-on:#032a31; --bc-ci-on2:#0b3a42; --bc-ci-m:#06b6d4; --bc-ci-v:#fff;
+  --bc-ch-a:#ff9880; --bc-ch-b:#f0674c; --bc-ch-on:#2b0b05; --bc-ch-on2:#42150b; --bc-ch-m:#f0674c; --bc-ch-v:#fff;
+  --bc-fu-a:#cc3570; --bc-fu-b:#9b1b50; --bc-fu-on:#ffffff; --bc-fu-on2:#ffffff; --bc-fu-m:#cc3570; --bc-fu-v:#000;
+  /* les marqueurs des postes suivent (légendes, barres, formulaire) : corail et framboise */
+  --m-ch:#f2735a; --c-ch:#f58a73; --m-fu:#ea4f8c; --c-fu:#f37aab;
+  --bc-fr-a:#5b6b82; --bc-fr-b:#3f4b5e; --bc-fr-on:#ffffff; --bc-fr-on2:#ffffff; --bc-fr-m:#5b6b82; --bc-fr-v:#000;
+  --bc-tr-a:#a9c2e0; --bc-tr-b:#8aa9cf; --bc-tr-on:#0b1f36; --bc-tr-on2:#15304f; --bc-tr-m:#8aa9cf; --bc-tr-v:#fff;
 }
-body.skin-bento.light{
+/* palette CLAIRE (B3) : bénéfice, perte et « Reste à envoyer » restent pleins (les essentiels),
+   le reste devient pastel franc, encre foncée de la même teinte */
+body.skin-melange.light{
   --bg-0:#eef0f4; --bg-1:#f5f6f9; --inset:#f4f5f8; --field:#ffffff;
+  --ink-4:#5b6270;
   --surf-1:#ffffff; --surf-2:#f4f5f8; --surf-3:#ffffff;
   --line-1:#e8eaef; --line-2:#dde0e7; --line-3:#c7cbd4;
-  --bn-edge:rgba(16,24,40,.06);
-  --bn-edge-2:rgba(16,24,40,.1);
-  --bn-hl:inset 0 1px 0 rgba(255,255,255,.9);
-  --bn-sh:0 1px 2px rgba(16,24,40,.05),0 16px 34px -20px rgba(16,24,40,.2);
-  --bn-sh-hero:0 1px 0 rgba(255,255,255,.22) inset,0 22px 44px -22px color-mix(in srgb,var(--acc) 60%,transparent);
-  --bn-tint:9%;
-  --bn-of:var(--c-info); --bn-tg:var(--m-tg);
-  --bn-todo-bg:color-mix(in srgb,var(--todo) 6%,var(--surf-1));
-  --bn-todo-ink:color-mix(in srgb,var(--todo) 88%,var(--ink-1));
-  --bn-hatch:color-mix(in srgb,var(--ink-1) 4%,transparent);
-  --mob-nav-bg:color-mix(in srgb,var(--surf-1) 86%,transparent);
+  --mx-edge:rgba(16,24,40,.07); --mx-edge-2:rgba(16,24,40,.11);
+  --mx-hl:inset 0 1px 0 rgba(255,255,255,.9);
+  --mx-sh:0 1px 2px rgba(16,24,40,.05),0 12px 28px -18px rgba(16,24,40,.22);
+  --mx-sh-hover:0 1px 2px rgba(16,24,40,.06),0 18px 34px -18px rgba(16,24,40,.3);
+  --mx-lift:inset 0 1px 0 rgba(255,255,255,.5);
+  --mx-hatch:color-mix(in srgb,var(--ink-1) 4%,transparent);
+  --mx-chip:var(--surf-2);
+  --mob-nav-bg:color-mix(in srgb,var(--surf-1) 88%,transparent);
+  --bc-pr-a:#9333ea; --bc-pr-b:#6b21c8; --bc-pr-on:#ffffff; --bc-pr-on2:#ffffff; --bc-pr-m:#9333ea; --bc-pr-v:#000;
+  --bc-ng-a:#dc2626; --bc-ng-b:#991b1b; --bc-ng-on:#ffffff; --bc-ng-on2:#ffffff; --bc-ng-m:#dc2626; --bc-ng-v:#000;
+  --bc-du-a:#ffbd4f; --bc-du-b:#f59e0b; --bc-du-on:#231300; --bc-du-on2:#3a2200; --bc-du-m:#f59e0b; --bc-du-v:#fff;
+  --bc-of-a:#e2ebff; --bc-of-b:#d3e1ff; --bc-of-on:#1e3a8a; --bc-of-on2:#1e40af; --bc-of-m:#d3e1ff; --bc-of-v:#fff;
+  --bc-tg-a:#def4fe; --bc-tg-b:#cbeefd; --bc-tg-on:#0c4a6e; --bc-tg-on2:#075985; --bc-tg-m:#cbeefd; --bc-tg-v:#fff;
+  --bc-va-a:#fff3c4; --bc-va-b:#fdeaa0; --bc-va-on:#5c4200; --bc-va-on2:#6b4d00; --bc-va-m:#fdeaa0; --bc-va-v:#fff;
+  --bc-mo-a:#eee8ff; --bc-mo-b:#e2d9ff; --bc-mo-on:#4c1d95; --bc-mo-on2:#5b21b6; --bc-mo-m:#e2d9ff; --bc-mo-v:#fff;
+  --bc-ci-a:#dbf8fc; --bc-ci-b:#c4f1f9; --bc-ci-on:#0b4f5c; --bc-ci-on2:#155e6d; --bc-ci-m:#c4f1f9; --bc-ci-v:#fff;
+  --bc-ch-a:#ffe8e1; --bc-ch-b:#ffd9cd; --bc-ch-on:#7c2412; --bc-ch-on2:#8f2b15; --bc-ch-m:#ffd9cd; --bc-ch-v:#fff;
+  --bc-fu-a:#ffe4ef; --bc-fu-b:#fcd2e3; --bc-fu-on:#8a1240; --bc-fu-on2:#9d1749; --bc-fu-m:#fcd2e3; --bc-fu-v:#fff;
+  --m-ch:#e35d43; --c-ch:#c2391f; --m-fu:#d1306f; --c-fu:#b0225c;
+  --bc-fr-a:#eaeef4; --bc-fr-b:#dde3eb; --bc-fr-on:#1e293b; --bc-fr-on2:#334155; --bc-fr-m:#dde3eb; --bc-fr-v:#fff;
+  --bc-tr-a:#e3edf8; --bc-tr-b:#d4e3f4; --bc-tr-on:#1b3a5c; --bc-tr-on2:#234870; --bc-tr-m:#d4e3f4; --bc-tr-v:#fff;
 }
-body.skin-bento:not(.light),body.skin-bento.light{background-color:var(--bg-0)}
-body.skin-bento:not(.light){background-image:radial-gradient(1100px 520px at 18% -8%,color-mix(in srgb,var(--acc) 9%,transparent),transparent 70%),
-  radial-gradient(900px 600px at 105% 40%,color-mix(in srgb,var(--todo) 3%,transparent),transparent 70%);background-attachment:fixed}
-body.skin-bento.light{background-image:radial-gradient(1100px 520px at 18% -8%,color-mix(in srgb,var(--acc) 7%,transparent),transparent 70%);background-attachment:fixed}
+body.skin-melange:not(.light),body.skin-melange.light{background-color:var(--bg-0)}
+body.skin-melange:not(.light){background-image:radial-gradient(1000px 460px at 20% -10%,color-mix(in srgb,var(--acc) 8%,transparent),transparent 70%);background-attachment:fixed}
+body.skin-melange.light{background-image:radial-gradient(1000px 460px at 20% -10%,color-mix(in srgb,var(--acc) 6%,transparent),transparent 70%);background-attachment:fixed}
 
 /* ── 1. LA TUILE (toutes les pages) ────────────────────────────────────── */
-body.skin-bento .panel,
-body.skin-bento .kpi,
-body.skin-bento #page-recap .rc-sc{border-radius:var(--bn-r);border:1px solid var(--bn-edge);box-shadow:var(--bn-hl),var(--bn-sh)}
-body.skin-bento .kpi-hero-grid .kpi:not(.kpi-hero),body.skin-bento .kpi-dep-grid .kpi{border-color:var(--bn-edge);border-top-color:var(--bn-edge)!important}
-body.skin-bento #insights-banner,body.skin-bento #forecast-card{border-radius:var(--bn-r)!important;border:1px solid var(--bn-edge)!important;box-shadow:var(--bn-hl),var(--bn-sh)}
-body.skin-bento .panel-title{font-size:16px;font-weight:600;letter-spacing:-.015em}
-body.skin-bento .kpi-sec{font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--ink-3)}
-body.skin-bento .kpi-sec::before{content:"";flex:none;width:6px;height:6px;border-radius:2px;background:var(--acc);box-shadow:0 0 0 3px var(--acc-12)}
-body.skin-bento .kpi-sec::after{background:linear-gradient(90deg,var(--line-2),transparent 70%)}
-/* pastilles « i » et bulles : inchangées ; boutons : plus ronds */
-body.skin-bento .btn-sec,body.skin-bento .export-dropdown-btn,body.skin-bento .icon-btn,
-body.skin-bento #exp-recap .dd-b,body.skin-bento #forecast-card .fc-obj,body.skin-bento #hist-panel .tx-tous,
-body.skin-bento #hist-pagination button,body.skin-bento #page-recap .rc-exp,body.skin-bento #page-editlog .hl-btn,
-body.skin-bento #page-editlog .hl-more,body.skin-bento #model-share-panel .ms-annuler,body.skin-bento #edit-banner .eb-x{border-radius:var(--bn-r-sm)}
-body.skin-bento .sbtn,body.skin-bento #confirm-yes,body.skin-bento #empty-state .es-b,body.skin-bento #page-editlog .hl-btn.pri,
-body.skin-bento #bilan-dlg .bd-b,body.skin-bento #ca-entry-panel.replie > .saisie-bascule,body.skin-bento #model-share-panel .ms-noter,
-body.skin-bento #model-share-panel .ms-add,body.skin-bento #page-recap .rc-fix,body.skin-bento .abtn{border-radius:14px}
-body.skin-bento .sbtn,body.skin-bento #ca-entry-panel.replie > .saisie-bascule,body.skin-bento #empty-state .es-b,body.skin-bento #confirm-yes{
+body.skin-melange .panel,
+body.skin-melange .kpi,
+body.skin-melange #page-recap .rc-sc{border-radius:var(--mx-r);border:1px solid var(--mx-edge);box-shadow:var(--mx-hl),var(--mx-sh)}
+body.skin-melange .kpi-hero-grid .kpi:not(.kpi-hero),body.skin-melange .kpi-dep-grid .kpi{border-color:var(--mx-edge);border-top-color:var(--mx-edge)!important}
+body.skin-melange #insights-banner,body.skin-melange #forecast-card{border-radius:var(--mx-r)!important;border:1px solid var(--mx-edge)!important;box-shadow:var(--mx-hl),var(--mx-sh)}
+body.skin-melange .panel-title{font-size:15px;font-weight:600;letter-spacing:-.012em}
+body.skin-melange .kpi-sec{font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--ink-3)}
+/* l'étiquette de section : ses points sont une LÉGENDE (les couleurs des tuiles qu'elle annonce) ; un seul point violet par défaut */
+body.skin-melange .kpi-sec{gap:10px}
+body.skin-melange .kpi-sec::before{content:"";flex:0 0 30px;width:30px;height:6px;border-radius:0;box-shadow:none;background:radial-gradient(circle at 3px 3px,var(--acc) 0 3px,transparent 3.5px)}
+/* Résultat : bénéfice (violet) · net (bleu) · reste à envoyer (orange) */
+body.skin-melange #page-ca > #empty-state + .kpi-sec::before{background:radial-gradient(circle at 3px 3px,var(--acc) 0 3px,transparent 3.5px),radial-gradient(circle at 12px 3px,var(--c-info) 0 3px,transparent 3.5px),radial-gradient(circle at 21px 3px,var(--todo) 0 3px,transparent 3.5px)}
+/* Dépenses : leurs trois premiers postes (jaune · cyan · framboise) */
+body.skin-melange #page-ca > #model-share-panel + .kpi-sec::before{background:radial-gradient(circle at 3px 3px,var(--m-va) 0 3px,transparent 3.5px),radial-gradient(circle at 12px 3px,var(--m-ci) 0 3px,transparent 3.5px),radial-gradient(circle at 21px 3px,var(--m-fu) 0 3px,transparent 3.5px)}
+/* Tes bilans : la case reste, vide (le texte démarre au même x que les autres titres) */
+body.skin-melange #page-ca > .g2-tend + .kpi-sec::before{background:none}
+body.skin-melange .kpi-sec::after{background:linear-gradient(90deg,var(--line-2),transparent 80%)}
+/* boutons : plus ronds ; les icônes de l'en-tête dans des ronds (le bouton « œil » compris) */
+body.skin-melange .btn-sec,body.skin-melange .export-dropdown-btn,
+body.skin-melange #exp-recap .dd-b,body.skin-melange #forecast-card .fc-obj,body.skin-melange #hist-panel .tx-tous,
+body.skin-melange #hist-pagination button,body.skin-melange #page-recap .rc-exp,body.skin-melange #page-editlog .hl-btn,
+body.skin-melange #page-editlog .hl-more,body.skin-melange #model-share-panel .ms-annuler,body.skin-melange #edit-banner .eb-x,
+body.skin-melange #hist-panel .tx-mod{border-radius:var(--mx-r-sm)}
+body.skin-melange .icon-btn{border-radius:50%}
+body.skin-melange .sbtn,body.skin-melange #confirm-yes,body.skin-melange #empty-state .es-b,body.skin-melange #page-editlog .hl-btn.pri,
+body.skin-melange #bilan-dlg .bd-b,body.skin-melange #ca-entry-panel.replie > .saisie-bascule,body.skin-melange #model-share-panel .ms-noter,
+body.skin-melange #model-share-panel .ms-add,body.skin-melange #page-recap .rc-fix,body.skin-melange .abtn{border-radius:12px}
+body.skin-melange .sbtn,body.skin-melange #ca-entry-panel.replie > .saisie-bascule,body.skin-melange #empty-state .es-b,body.skin-melange #confirm-yes{
   background-image:linear-gradient(180deg,color-mix(in srgb,var(--acc-ink) 12%,transparent),transparent 60%);
-  box-shadow:var(--hl-acc),0 10px 22px -12px color-mix(in srgb,var(--acc) 75%,transparent)}
-body.skin-bento .ifield,body.skin-bento input[type=date],body.skin-bento #cdate-start,body.skin-bento #cdate-end,
-body.skin-bento #hist-search,body.skin-bento #monthly-goal,body.skin-bento #discord-webhook{border-radius:var(--bn-r-sm)!important}
+  box-shadow:var(--hl-acc),0 10px 22px -14px color-mix(in srgb,var(--acc) 80%,transparent)}
+/* focus clavier : le même anneau violet partout (boutons, champs, lignes cliquables) */
+body.skin-melange button:focus-visible,body.skin-melange summary:focus-visible,body.skin-melange [role=button]:focus-visible,
+body.skin-melange a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+body.skin-melange .ifield,body.skin-melange input[type=date],body.skin-melange #cdate-start,body.skin-melange #cdate-end,
+body.skin-melange #hist-search,body.skin-melange #monthly-goal,body.skin-melange #discord-webhook{border-radius:var(--mx-r-sm)!important}
 /* segments (périodes, Liste/Tableau, filtres) : une pilule */
-body.skin-bento #page-recap .rc-switch,body.skin-bento #page-editlog .hl-chips{border-radius:999px;padding:3px}
-body.skin-bento .pbtn,body.skin-bento #page-recap .rc-sw,body.skin-bento #page-editlog .hl-chip{border-radius:999px}
-body.skin-bento .pbtn.active,body.skin-bento #page-recap .rc-sw.on,body.skin-bento #page-editlog .hl-chip.on{
+body.skin-melange #page-recap .rc-switch,body.skin-melange #page-editlog .hl-chips{border-radius:999px;padding:3px}
+body.skin-melange .pbtn,body.skin-melange #page-recap .rc-sw,body.skin-melange #page-editlog .hl-chip{border-radius:999px}
+body.skin-melange .pbtn.active,body.skin-melange #page-recap .rc-sw.on,body.skin-melange #page-editlog .hl-chip.on{
   background:var(--surf-1);color:var(--acc-txt);box-shadow:0 0 0 1px var(--acc-22),0 2px 8px -2px rgba(0,0,0,.35)}
-body.skin-bento.light .pbtn.active,body.skin-bento.light #page-recap .rc-sw.on,body.skin-bento.light #page-editlog .hl-chip.on{box-shadow:0 0 0 1px var(--acc-22),0 2px 6px -2px rgba(16,24,40,.18)}
-/* menu et rail */
-body.skin-bento .export-menu,body.skin-bento #gsearch-box,body.skin-bento #confirm-box,body.skin-bento #quickadd-box{border-radius:20px}
-/* fenêtres (_fenetre, dont « Style d'affichage ») : une tuile flottante */
-body.skin-bento #bilan-dlg .bd-box{border-radius:26px;border-color:var(--bn-edge-2);padding:26px 26px 22px;
-  box-shadow:var(--bn-hl),0 40px 80px -30px rgba(0,0,0,.8)}
-body.skin-bento.light #bilan-dlg .bd-box{box-shadow:var(--bn-hl),0 30px 60px -28px rgba(16,24,40,.32)}
-body.skin-bento #bilan-dlg .bd-ico{width:44px;height:44px;border-radius:14px}
-body.skin-bento #bilan-dlg .bd-d{border-radius:14px}
-body.skin-bento #bilan-dlg .bd-b{min-height:44px;border-radius:14px}
-/* « Style d'affichage » : les choix en liste = des tuiles */
-body.skin-bento #bilan-dlg .bd-box.bd-style .bd-b:not(.ghost){border-radius:16px}
+body.skin-melange.light .pbtn.active,body.skin-melange.light #page-recap .rc-sw.on,body.skin-melange.light #page-editlog .hl-chip.on{box-shadow:0 0 0 1px var(--acc-22),0 2px 6px -2px rgba(16,24,40,.18)}
+body.skin-melange .export-menu,body.skin-melange #gsearch-box,body.skin-melange #confirm-box,body.skin-melange #quickadd-box{border-radius:18px}
+/* fenêtres (_fenetre, dont « Style d'affichage ») : une tuile flottante, l'icône dans un rond */
+body.skin-melange #bilan-dlg .bd-box{border-radius:24px;border-color:var(--mx-edge-2);padding:24px 24px 20px;
+  box-shadow:var(--mx-hl),0 40px 80px -30px rgba(0,0,0,.8)}
+body.skin-melange.light #bilan-dlg .bd-box{box-shadow:var(--mx-hl),0 30px 60px -28px rgba(16,24,40,.32)}
+body.skin-melange #bilan-dlg .bd-ico{width:44px;height:44px;border-radius:50%}
+body.skin-melange #bilan-dlg .bd-d{border-radius:var(--mx-r-md)}
+body.skin-melange #bilan-dlg .bd-b{min-height:44px;border-radius:12px}
+body.skin-melange #bilan-dlg .bd-box.bd-style .bd-b:not(.ghost){border-radius:var(--mx-r-md)}
 /* en-tête ordinateur : l'état « Tout est enregistré » en pastille */
 @media (min-width:641px){
-  body.skin-bento .dash > .topbar .tb-etat-ordi{min-height:36px;padding:0 14px 0 11px;border-radius:999px;background:var(--surf-1);
-    box-shadow:inset 0 0 0 1px var(--bn-edge-2)}
-  body.skin-bento .dash > .topbar .tb-etat-ordi.ko{background:color-mix(in srgb,var(--neg) 8%,var(--surf-1));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 30%,transparent)}
+  body.skin-melange .dash > .topbar .tb-etat-ordi{min-height:36px;padding:0 14px 0 11px;border-radius:999px;background:var(--surf-1);
+    box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+  body.skin-melange .dash > .topbar .tb-etat-ordi.ko{background:color-mix(in srgb,var(--neg) 8%,var(--surf-1));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 30%,transparent)}
 }
 @media (min-width:769px){
-  body.skin-bento .sidebar .tab{border-radius:16px}
-  body.skin-bento .side-mark{border-radius:12px}
-  body.skin-bento #page-ca .period-bar::before{border-radius:999px;background:var(--surf-2)}
-  body.skin-bento #page-ca .period-bar > .pbtn{margin:3px 0 3px 3px}
-  body.skin-bento #page-ca .period-bar > .pbtn:nth-child(4){margin-right:3px}
+  body.skin-melange .sidebar .tab{border-radius:var(--mx-r-md)}
+  body.skin-melange .side-mark{border-radius:12px}
+  body.skin-melange #page-ca .period-bar::before{border-radius:999px;background:var(--surf-2)}
+  body.skin-melange #page-ca .period-bar > .pbtn{margin:3px 0 3px 3px}
+  body.skin-melange #page-ca .period-bar > .pbtn:nth-child(4){margin-right:3px}
 }
 
-/* ── 2. ACCUEIL : LES TUILES (dessin, toutes tailles) ───────────────────── */
-/* 2a. Bénéfice : LA grande tuile, violet plein de la marque */
-body.skin-bento #page-ca .kpi-hero-grid > .kpi-hero:not(:has(#vpr.neg)){
-  background-color:var(--bn-hero-b);
-  background-image:radial-gradient(70% 90% at 100% 100%,color-mix(in srgb,var(--acc) 55%,transparent),transparent 70%),
-    linear-gradient(150deg,var(--bn-hero-a) 0%,var(--bn-hero-b) 52%,var(--bn-hero-c) 100%);
-  border-color:color-mix(in srgb,var(--acc) 40%,transparent);box-shadow:var(--bn-sh-hero);color:var(--bn-on)}
-body.skin-bento #page-ca .kpi-hero-grid > .kpi-hero:not(:has(#vpr.neg))::after{opacity:1;
-  background:radial-gradient(circle at 96% 112%,transparent 0 22%,var(--bn-on-line) 22.2% 22.5%,transparent 22.7% 34%,
-    color-mix(in srgb,var(--acc-ink) 14%,transparent) 34.2% 34.45%,transparent 34.65% 47%,
-    color-mix(in srgb,var(--acc-ink) 9%,transparent) 47.2% 47.4%,transparent 47.6%)}
-body.skin-bento #page-ca .kpi-hero-grid > .kpi-hero:not(:has(#vpr.neg)):hover{border-color:color-mix(in srgb,var(--acc) 60%,transparent)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-label{color:var(--bn-on-2)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-label .tip-icon{color:color-mix(in srgb,var(--acc-ink) 72%,transparent)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-ico{color:var(--bn-on);background:var(--bn-on-glass);box-shadow:inset 0 0 0 1px var(--bn-on-line)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) #vpr{color:var(--bn-on)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-pct{color:var(--bn-on-2)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .pill-encours,
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kd,
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-apercu{color:var(--bn-on);background:var(--bn-on-glass);box-shadow:inset 0 0 0 1px var(--bn-on-line)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .pill-encours svg,
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kd svg{color:var(--bn-on)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-moitie{color:var(--bn-on-2);
-  background:color-mix(in srgb,var(--bn-hero-c) 62%,transparent);box-shadow:inset 0 0 0 1px var(--bn-on-line)}
-body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-moitie b{color:var(--bn-on)}
-/* bénéfice négatif : la tuile redevient sombre, chiffre rouge (sens conservé) */
-body.skin-bento #page-ca .kpi-hero-grid > .kpi-hero:has(#vpr.neg){background-color:var(--surf-1);
-  background-image:radial-gradient(120% 100% at 100% 0%,color-mix(in srgb,var(--neg) 12%,transparent),transparent 62%);
-  border-color:color-mix(in srgb,var(--neg) 36%,transparent)}
-body.skin-bento #page-ca .kpi-hero-grid > .kpi{container-type:inline-size}
-body.skin-bento #page-ca .kpi-hero .kpi-moitie:not([hidden]){display:inline-block;align-self:flex-start;margin-top:16px;padding:9px 14px;border-radius:14px}
-body.skin-bento #page-ca .kpi-hero #vpr{font-variant-numeric:tabular-nums}
+/* ── 2. LE WIDGET EN COULEUR (mécanique du B3, posée sur les tuiles du Cockpit) ── */
+/* chaque tuile qui porte un chiffre à reconnaître reçoit sa famille de couleurs, puis le dessin commun */
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero{--bc-a:var(--bc-pr-a);--bc-b:var(--bc-pr-b);--bc-on:var(--bc-pr-on);--bc-on2:var(--bc-pr-on2);--bc-m:var(--bc-pr-m);--bc-v:var(--bc-pr-v)}
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero:has(#vpr.neg){--bc-a:var(--bc-ng-a);--bc-b:var(--bc-ng-b);--bc-on:var(--bc-ng-on);--bc-on2:var(--bc-ng-on2);--bc-m:var(--bc-ng-m);--bc-v:var(--bc-ng-v)}
+body.skin-melange #page-ca .kpi-net .kn{--bc-a:var(--bc-of-a);--bc-b:var(--bc-of-b);--bc-on:var(--bc-of-on);--bc-on2:var(--bc-of-on2);--bc-m:var(--bc-of-m);--bc-v:var(--bc-of-v)}
+body.skin-melange #page-ca .kpi-net .kn:has(#vn){--bc-a:var(--bc-tg-a);--bc-b:var(--bc-tg-b);--bc-on:var(--bc-tg-on);--bc-on2:var(--bc-tg-on2);--bc-m:var(--bc-tg-m);--bc-v:var(--bc-tg-v)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vva){--bc-a:var(--bc-va-a);--bc-b:var(--bc-va-b);--bc-on:var(--bc-va-on);--bc-on2:var(--bc-va-on2);--bc-m:var(--bc-va-m);--bc-v:var(--bc-va-v)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vmo){--bc-a:var(--bc-mo-a);--bc-b:var(--bc-mo-b);--bc-on:var(--bc-mo-on);--bc-on2:var(--bc-mo-on2);--bc-m:var(--bc-mo-m);--bc-v:var(--bc-mo-v)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vci){--bc-a:var(--bc-ci-a);--bc-b:var(--bc-ci-b);--bc-on:var(--bc-ci-on);--bc-on2:var(--bc-ci-on2);--bc-m:var(--bc-ci-m);--bc-v:var(--bc-ci-v)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vch){--bc-a:var(--bc-ch-a);--bc-b:var(--bc-ch-b);--bc-on:var(--bc-ch-on);--bc-on2:var(--bc-ch-on2);--bc-m:var(--bc-ch-m);--bc-v:var(--bc-ch-v)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#val){--bc-a:var(--bc-fu-a);--bc-b:var(--bc-fu-b);--bc-on:var(--bc-fu-on);--bc-on2:var(--bc-fu-on2);--bc-m:var(--bc-fu-m);--bc-v:var(--bc-fu-v)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vfr){--bc-a:var(--bc-fr-a);--bc-b:var(--bc-fr-b);--bc-on:var(--bc-fr-on);--bc-on2:var(--bc-fr-on2);--bc-m:var(--bc-fr-m);--bc-v:var(--bc-fr-v)}
+body.skin-melange #model-share .ms-res-du .ms-c{--bc-a:var(--bc-du-a);--bc-b:var(--bc-du-b);--bc-on:var(--bc-du-on);--bc-on2:var(--bc-du-on2);--bc-m:var(--bc-du-m);--bc-v:var(--bc-du-v)}
+body.skin-melange #model-share .ms-res-perte .ms-c{--bc-a:var(--bc-ng-a);--bc-b:var(--bc-ng-b);--bc-on:var(--bc-ng-on);--bc-on2:var(--bc-ng-on2);--bc-m:var(--bc-ng-m);--bc-v:var(--bc-ng-v)}
+body.skin-melange #model-share .ms-res-trop .ms-c{--bc-a:var(--bc-tr-a);--bc-b:var(--bc-tr-b);--bc-on:var(--bc-tr-on);--bc-on2:var(--bc-tr-on2);--bc-m:var(--bc-tr-m);--bc-v:var(--bc-tr-v)}
+/* la même famille portée par le panneau : le détail et le bouton posés DANS le widget « Reste à envoyer » la lisent */
+body.skin-melange #model-share-panel:has(.ms-res-du){--bc-a:var(--bc-du-a);--bc-b:var(--bc-du-b);--bc-on:var(--bc-du-on);--bc-on2:var(--bc-du-on2);--bc-m:var(--bc-du-m);--bc-v:var(--bc-du-v);--bc-bi:var(--bc-du-on)}
+body.skin-melange #model-share-panel:has(.ms-res-trop){--bc-a:var(--bc-tr-a);--bc-b:var(--bc-tr-b);--bc-on:var(--bc-tr-on);--bc-on2:var(--bc-tr-on2);--bc-m:var(--bc-tr-m);--bc-v:var(--bc-tr-v);--bc-bi:var(--bc-tr-on)}
+body.skin-melange #model-share-panel:has(.ms-res-perte){--bc-a:var(--bc-ng-a);--bc-b:var(--bc-ng-b);--bc-on:var(--bc-ng-on);--bc-on2:var(--bc-ng-on2);--bc-m:var(--bc-ng-m);--bc-v:var(--bc-ng-v);--bc-bi:var(--bc-ng-b)}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"]{--bc-a:var(--bc-pr-a);--bc-b:var(--bc-pr-b);--bc-on:var(--bc-pr-on);--bc-on2:var(--bc-pr-on2);--bc-m:var(--bc-pr-m);--bc-v:var(--bc-pr-v)}
+body.skin-melange #page-recap .rc-sum > .rc-sc:first-child{--bc-a:var(--bc-of-a);--bc-b:var(--bc-of-b);--bc-on:var(--bc-of-on);--bc-on2:var(--bc-of-on2);--bc-m:var(--bc-of-m);--bc-v:var(--bc-of-v)}
 
-/* 2b. pastilles d'icône des tuiles (nets, bénéfice) */
-body.skin-bento #page-ca .kpi-hero-grid .kpi-ico{display:block;box-sizing:border-box;width:32px;height:32px;padding:8px;border-radius:var(--bn-r-xs);
-  color:var(--bn-t,var(--ink-3));background:color-mix(in srgb,var(--bn-t,var(--ink-3)) 15%,transparent);
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bn-t,var(--ink-3)) 22%,transparent)}
-body.skin-bento #page-ca .kpi-hero-grid .kpi-label{gap:10px;align-items:center}
+/* le dessin commun : dégradé franc, reflet en haut, ombre courte de sa couleur */
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero,
+body.skin-melange #page-ca .kpi-net .kn,
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:not(.kpi-total):not(.kpi-info),
+body.skin-melange #model-share .ms-res-du .ms-c,body.skin-melange #model-share .ms-res-perte .ms-c,body.skin-melange #model-share .ms-res-trop .ms-c,
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"],body.skin-melange #page-recap .rc-sum > .rc-sc:first-child{
+  background-color:var(--bc-m)!important;
+  background-image:linear-gradient(155deg,var(--bc-a) 0%,var(--bc-b) 100%)!important;
+  border:1px solid color-mix(in srgb,var(--bc-b) 70%,transparent)!important;
+  color:var(--bc-on);
+  box-shadow:var(--mx-lift),0 12px 24px -20px color-mix(in srgb,var(--bc-b) 75%,transparent)}
+body.skin-melange.light #page-ca .kpi-net .kn,
+body.skin-melange.light #page-ca .kpi-dep-grid > .kpi:not(.kpi-total):not(.kpi-info),
+body.skin-melange.light #model-share .ms-res-trop .ms-c,body.skin-melange.light #page-recap .rc-sum > .rc-sc:first-child{
+  border-color:color-mix(in srgb,var(--bc-on) 12%,transparent)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 12px 26px -20px color-mix(in srgb,var(--bc-on) 45%,transparent)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi::after{display:none}
+/* survol : la tuile se soulève à peine (une ombre, jamais un filtre : le flou de l'œil passe par filter) */
+body.skin-melange #page-ca .kpi-hero-grid > .kpi,body.skin-melange #page-ca .kpi-dep-grid > .kpi,body.skin-melange #hist-panel .txrow{
+  transition:box-shadow var(--t) var(--ease),border-color var(--t) var(--ease),background-color var(--t) var(--ease)}
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-net:hover,body.skin-melange #page-ca .kpi-dep-grid > .kpi.kpi-total:hover{box-shadow:var(--mx-hl),var(--mx-sh-hover);border-color:var(--mx-edge-2)}
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero:hover,body.skin-melange #page-ca .kpi-dep-grid > .kpi:not(.kpi-total):not(.kpi-info):hover{
+  box-shadow:var(--mx-lift),0 16px 30px -20px color-mix(in srgb,var(--bc-b) 90%,transparent)}
 
-/* 2c. Net total : tuile teintée « argent qui rentre », OnlyFans et Telegram repérés par le point de leur canal */
-body.skin-bento #page-ca .kpi-hero-grid > .kpi-net{--bn-t:var(--bn-of);
-  background-image:radial-gradient(120% 110% at 100% 0%,color-mix(in srgb,var(--bn-t) var(--bn-tint),transparent),transparent 62%)}
-body.skin-bento #page-ca .kpi-net .kpi-value,body.skin-bento #page-ca .kpi-net .kn-v{font-variant-numeric:tabular-nums}
-body.skin-bento #page-ca .kpi-net .kn-l{display:flex;align-items:center;gap:8px}
-body.skin-bento #page-ca .kpi-net .kn-l::before{content:"";flex:none;width:8px;height:8px;border-radius:3px;background:var(--bn-of)}
-body.skin-bento #page-ca .kpi-net .kn:has(#vn) .kn-l::before{background:var(--bn-tg)}
+/* ── 2b. ACCUEIL : LES TUILES (dessin, toutes tailles) ─────────────────── */
+/* Bénéfice : LE widget violet ; [chiffre │ ta moitié] sur la même ligne, puis la marge */
+body.skin-melange #page-ca .kpi-hero-grid > .kpi{container-type:inline-size}
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero{overflow:hidden}
+/* deux cercles discrets en bas à droite (décor du B3, à l'encre du widget) : rien qui promette une mesure */
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero::after{display:block;opacity:1;inset:auto;right:-90px;bottom:-130px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle,transparent 0 38%,color-mix(in srgb,var(--bc-on) 11%,transparent) 38.4% 39%,transparent 39.4% 58%,
+    color-mix(in srgb,var(--bc-on) 7%,transparent) 58.4% 59%,transparent 59.4%)}
+body.skin-melange #page-ca .kpi-hero .kpi-label,body.skin-melange #page-ca .kpi-hero .kpi-label .tip-icon{color:var(--bc-on2)}
+body.skin-melange #page-ca .kpi-hero #vpr,body.skin-melange #page-ca .kpi-hero #vpr.neg{color:var(--bc-on)!important}
+body.skin-melange #page-ca .kpi-hero .kpi-pct{color:var(--bc-on2)!important;font-weight:500}
+body.skin-melange #page-ca .kpi-hero .pill-encours,
+body.skin-melange #page-ca .kpi-hero .kd,
+body.skin-melange #page-ca .kpi-hero .kpi-apercu{color:var(--bc-on)!important;background:color-mix(in srgb,var(--bc-v) 20%,transparent)!important;border:0!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 22%,transparent)}
+body.skin-melange #page-ca .kpi-hero .pill-encours svg,body.skin-melange #page-ca .kpi-hero .kd svg{color:var(--bc-on)}
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero{display:grid;grid-template-columns:auto minmax(0,1fr);
+  grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"l l" "v m" ". ." "k k";column-gap:0}
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > *{position:relative;z-index:1}
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-label{grid-area:l;margin:0}
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-value{grid-area:v;align-self:start;margin:14px 0 0;font-variant-numeric:tabular-nums}
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-meta{grid-area:k;margin:12px 0 0}
+/* « dont ta moitié » : une pastille de verre collée au chiffre (idée du mix-colore). Le verre est un FOND, jamais un filter :
+   le flou de l'œil (filter sur le montant) reste entier */
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-moitie:not([hidden]){grid-area:m;display:block;align-self:center;justify-self:start;
+  min-width:0;margin:14px 0 0 18px;padding:9px 14px 10px;border:0;border-radius:var(--mx-r-md);
+  background:color-mix(in srgb,var(--bc-v) 20%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 18%,transparent);
+  font-size:12px;font-weight:500;line-height:1.3;letter-spacing:.01em;color:var(--bc-on2)}
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-moitie b{display:block;margin-top:3px;font-size:21px;font-weight:700;line-height:1.1;
+  letter-spacing:-.025em;white-space:nowrap;color:var(--bc-on);font-variant-numeric:tabular-nums}
 
-/* 2d. Dépenses : carrés teintés par poste, pastille du poste en tête */
-body.skin-bento #page-ca .kpi-dep-grid > .kpi:not(.kpi-info){
-  background-image:radial-gradient(130% 120% at 100% 0%,color-mix(in srgb,var(--kc) var(--bn-tint),transparent),transparent 64%)}
-body.skin-bento #page-ca .kpi-dep-grid > .kpi::after{display:none}
-body.skin-bento #page-ca .kpi-dep-grid .kpi-label::before{width:26px;height:26px;border-radius:9px;margin-top:-5px!important;
-  background:radial-gradient(circle,var(--kc) 0 4px,transparent 4.6px),color-mix(in srgb,var(--kc) 16%,transparent);
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--kc) 24%,transparent)}
-body.skin-bento #page-ca .kpi-dep-grid > .kpi:not(.kpi-info) .kpi-label{gap:10px}
-body.skin-bento #page-ca .kpi-dep-grid .kpi-value{font-variant-numeric:tabular-nums}
-body.skin-bento #page-ca .kpi-dep-grid > .kpi.kpi-total:not(.kpi-info){--kc:var(--ink-2);background-color:var(--surf-2);
-  background-image:radial-gradient(130% 120% at 100% 0%,color-mix(in srgb,var(--ink-1) 6%,transparent),transparent 64%);border-color:var(--bn-edge-2)}
-/* gardé par OnlyFans : une info, pas une dépense → tuile hachurée */
-body.skin-bento #page-ca .kpi-dep-grid > .kpi-info{background-color:transparent;
-  background-image:repeating-linear-gradient(135deg,transparent 0 9px,var(--bn-hatch) 9px 10px);
+/* tous les ronds d'icône : même taille (--mx-ico), même dessin */
+body.skin-melange #page-ca .kpi-hero-grid .kpi-ico{display:block;box-sizing:border-box;width:var(--mx-ico);height:var(--mx-ico);padding:7px;border-radius:50%;
+  color:var(--ink-2);background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+body.skin-melange #page-ca .kpi-hero .kpi-ico{color:var(--bc-on);background:color-mix(in srgb,var(--bc-v) 22%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 24%,transparent)}
+body.skin-melange #page-ca .kpi-hero-grid .kpi-label{gap:10px;align-items:center}
+
+/* Net total : la tuile neutre, OnlyFans (bleu) et Telegram (cyan) en mini-widgets pleins */
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-net{background-color:var(--surf-1);background-image:none}
+body.skin-melange #page-ca .kpi-net .kpi-value{font-variant-numeric:tabular-nums}
+body.skin-melange #page-ca .kpi-net .kn{border-radius:var(--mx-r-md)}
+body.skin-melange #page-ca .kpi-net .kn-l{display:flex;align-items:center;gap:7px;color:var(--bc-on2)!important;font-weight:600}
+body.skin-melange #page-ca .kpi-net .kn-l::before{content:"";flex:none;width:14px;height:14px;background:var(--bc-on);
+  -webkit-mask:var(--ic-of) center/14px 14px no-repeat;mask:var(--ic-of) center/14px 14px no-repeat}
+body.skin-melange #page-ca .kpi-net .kn:has(#vn) .kn-l::before{-webkit-mask-image:var(--ic-tg);mask-image:var(--ic-tg)}
+body.skin-melange #page-ca .kpi-net .kn-v{color:var(--bc-on)!important;font-weight:700;font-variant-numeric:tabular-nums}
+body.skin-melange #page-ca .kpi-net .kn > .kpi-delta{color:var(--bc-on)!important;background:color-mix(in srgb,var(--bc-v) 20%,transparent)!important;border:0!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 22%,transparent)}
+body.skin-melange #page-ca .kpi-net .kn > .kpi-delta svg{color:var(--bc-on)}
+body.skin-melange #page-ca .kpi-net .kpi-nets > .kn,body.skin-melange.light #page-ca .kpi-net .kpi-nets > .kn{
+  box-shadow:var(--mx-lift),0 4px 10px -6px color-mix(in srgb,var(--bc-b) 70%,transparent)}
+
+/* Dépenses : chaque poste dans SA couleur, le rond du poste en tête ; total neutre, « gardé par OnlyFans » hachuré */
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:not(.kpi-total):not(.kpi-info) .kpi-label,
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:not(.kpi-total):not(.kpi-info) .kpi-label .tip-icon{color:var(--bc-on2)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:not(.kpi-total):not(.kpi-info) .kpi-value{color:var(--bc-on)!important}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:not(.kpi-total):not(.kpi-info) .kpi-pct{color:var(--bc-on2)!important;font-weight:500}
+body.skin-melange #page-ca .kpi-dep-grid .kpi-label{position:relative}
+body.skin-melange #page-ca .kpi-dep-grid .kpi-label::before{width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;margin-top:-6px!important;box-sizing:border-box;
+  background:color-mix(in srgb,var(--bc-v,var(--kc)) 24%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on,var(--kc)) 22%,transparent)}
+body.skin-melange #page-ca .kpi-dep-grid .kpi-label::after{content:"";position:absolute;left:0;top:-6px;width:var(--mx-ico);height:var(--mx-ico);pointer-events:none;
+  background:var(--bc-on,var(--ink-2));-webkit-mask:var(--mx-i,var(--ic-tot)) center/15px 15px no-repeat;mask:var(--mx-i,var(--ic-tot)) center/15px 15px no-repeat}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vva){--mx-i:var(--ic-va)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vmo){--mx-i:var(--ic-mo)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vci){--mx-i:var(--ic-ci)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vch){--mx-i:var(--ic-ch)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#val){--mx-i:var(--ic-fu)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi:has(#vfr){--mx-i:var(--ic-fr)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi.kpi-total{--mx-i:var(--ic-tot)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi-info{--mx-i:var(--ic-garde)}
+/* D-B3 : chaque tuile est un conteneur ; son chiffre suit sa largeur (un total à 6 chiffres tient) */
+body.skin-melange #page-ca .kpi-dep-grid > .kpi{container-type:inline-size}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi .kpi-label{gap:10px}
+body.skin-melange #page-ca .kpi-dep-grid .kpi-value{font-variant-numeric:tabular-nums}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi.kpi-total:not(.kpi-info){background-color:var(--surf-2);background-image:none;border-color:var(--mx-edge-2)}
+body.skin-melange.light #page-ca .kpi-dep-grid > .kpi.kpi-total:not(.kpi-info){background-color:var(--surf-1)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi.kpi-total .kpi-label::before{background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi.kpi-total .kpi-label::after{background:var(--ink-1)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi-info{background-color:transparent;
+  background-image:repeating-linear-gradient(135deg,transparent 0 9px,var(--mx-hatch) 9px 10px);
   border:1px dashed var(--line-2)!important;box-shadow:none}
-body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-label::before{--kc:var(--ink-4)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi-info .kpi-label::before{background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+body.skin-melange #page-ca .kpi-dep-grid > .kpi-info .kpi-label::after{background:var(--ink-3)}
 
-/* 2e. Bandeau « en cours », bilan du mois */
-body.skin-bento #insights-banner{background-color:var(--surf-1)!important;padding:14px 18px!important}
-body.skin-bento #insights-banner .ins-ic{width:32px;height:32px;border-radius:var(--bn-r-xs)}
-body.skin-bento #ca-entry-panel{background-image:radial-gradient(110% 120% at 100% 0%,color-mix(in srgb,var(--acc) 9%,transparent),transparent 60%)}
-body.skin-bento #ca-entry-panel.replie .pt-ico{display:inline-flex;align-items:center;justify-content:center;flex:none;width:32px;height:32px;
-  border-radius:var(--bn-r-xs);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
-body.skin-bento #ca-entry-panel.replie > .panel-title{font-size:17px;gap:12px}
+/* formulaire du bilan : chaque bloc de poste teinté de SA couleur, léger (on y écrit) — idée du mix-colore ;
+   les revenus et les dépenses diverses portent aussi leur point de couleur */
+/* sombre : fond neutre + liseré gauche de 3 px et titre à la couleur du poste (plus de kaki ni de bordeaux par transparence) ;
+   clair : le pastel franc du poste */
+body.skin-melange #ca-entry-panel .lp-grid > div{border-radius:var(--mx-r-md)!important;padding:14px 14px 12px!important;
+  background:linear-gradient(var(--mx-k,var(--line-3)),var(--mx-k,var(--line-3))) left top/3px 100% no-repeat,var(--surf-2)!important;border:1px solid var(--mx-edge)!important}
+body.skin-melange.light #ca-entry-panel .lp-grid > div{background:linear-gradient(var(--mx-k,var(--line-3)),var(--mx-k,var(--line-3))) left top/3px 100% no-repeat,
+    color-mix(in srgb,var(--mx-k,var(--ink-1)) 6%,var(--surf-1))!important;
+  border-color:color-mix(in srgb,var(--mx-k,var(--ink-1)) 22%,transparent)!important}
+body.skin-melange #ca-entry-panel #lp-va{--mx-k:var(--m-va);--mx-kt:var(--warn);--mx-ki:var(--ic-va)}
+body.skin-melange #ca-entry-panel #lp-mo{--mx-k:var(--m-mo);--mx-kt:var(--model);--mx-ki:var(--ic-mo)}
+body.skin-melange #ca-entry-panel #lp-ci{--mx-k:var(--m-ci);--mx-kt:var(--c-ci);--mx-ki:var(--ic-ci)}
+body.skin-melange #ca-entry-panel #lp-ch{--mx-k:var(--m-ch);--mx-kt:var(--c-ch);--mx-ki:var(--ic-ch)}
+body.skin-melange #ca-entry-panel .lp-grid > div > .ilbl > span:first-child{display:inline-flex;align-items:center;color:var(--mx-kt,var(--ink-2));font-weight:600}
+/* le point plat du poste devient SON icône (même masque que la tuile), à sa couleur (la base l'écrit en ligne) */
+body.skin-melange #ca-entry-panel .ilbl .idot{width:15px;height:15px;margin-right:8px;vertical-align:0;border-radius:0;
+  -webkit-mask:var(--mx-ki,var(--ic-tot)) center/15px 15px no-repeat;mask:var(--mx-ki,var(--ic-tot)) center/15px 15px no-repeat}
+body.skin-melange #ca-entry-panel .ig2 > div > .ilbl{display:flex;align-items:center}
+body.skin-melange #ca-entry-panel .ig2 > div > .ilbl::before{content:"";flex:none;width:15px;height:15px;margin-right:8px;background:var(--c-info);
+  -webkit-mask:var(--ic-of) center/15px 15px no-repeat;mask:var(--ic-of) center/15px 15px no-repeat}
+body.skin-melange #ca-entry-panel .ig2 > div:nth-child(2) > .ilbl::before{background:var(--m-tg);-webkit-mask-image:var(--ic-tg);mask-image:var(--ic-tg)}
+/* les titres du formulaire : la même case de 30 px que les titres de l'accueil (Revenus bleu·cyan, Dépenses jaune·cyan·corail,
+   Dépenses diverses : son icône) — le texte démarre partout au même x */
+body.skin-melange #ca-entry-panel .sdiv{gap:10px}
+body.skin-melange #ca-entry-panel .sdiv::before{content:"";flex:0 0 30px;width:30px;height:6px;background:radial-gradient(circle at 3px 3px,var(--c-info) 0 3px,transparent 3.5px),radial-gradient(circle at 12px 3px,var(--m-tg) 0 3px,transparent 3.5px)}
+body.skin-melange #ca-entry-panel .ig2 + .sdiv::before{background:radial-gradient(circle at 3px 3px,var(--m-va) 0 3px,transparent 3.5px),radial-gradient(circle at 12px 3px,var(--m-ci) 0 3px,transparent 3.5px),radial-gradient(circle at 21px 3px,var(--m-ch) 0 3px,transparent 3.5px)}
+body.skin-melange #ca-entry-panel #lp-grid + .sdiv::before{height:15px;background:var(--m-fu);
+  -webkit-mask:var(--ic-fu) left center/15px 15px no-repeat;mask:var(--ic-fu) left center/15px 15px no-repeat}
+/* bandeau « tu as déjà un bilan » : un ocre propre en clair (plus de beige rosé) */
+body.skin-melange.light #entry-doublon,body.skin-melange.light #entry-warnings{background:color-mix(in srgb,var(--warn) 10%,var(--surf-1));
+  border-color:color-mix(in srgb,var(--warn) 35%,transparent)}
+body.skin-melange #ca-entry-panel .abtn{border-radius:var(--mx-r-sm)}
 
-/* 2f. Part de la modèle : relevé en mini-tuiles, « Reste à envoyer » en tuile accent */
-body.skin-bento #model-share-panel{background-image:radial-gradient(90% 120% at 0% 0%,color-mix(in srgb,var(--model) 6%,transparent),transparent 55%)}
-body.skin-bento #model-share .ms-res .ms-c{border-radius:var(--bn-r-md)}
-body.skin-bento #model-share .ms-res-du .ms-c{background-color:var(--bn-todo-bg);
-  background-image:radial-gradient(90% 120% at 100% 0%,color-mix(in srgb,var(--todo) 20%,transparent),transparent 65%);
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--todo) 34%,transparent),0 18px 40px -26px color-mix(in srgb,var(--todo) 80%,transparent)}
-body.skin-bento #model-share .ms-res-du .ms-l,body.skin-bento #model-share .ms-res-du .ms-sg{color:var(--bn-todo-ink)}
-body.skin-bento #model-share .ms-res-du .ms-v{color:var(--todo)}
-/* un point orange qui « respire » : il reste quelque chose à faire */
-@media (min-width:1100px){
-  body.skin-bento #model-share .ms-res-du .ms-l > span:last-child{display:inline-flex;align-items:center;gap:12px}
-  body.skin-bento #model-share .ms-res-du .ms-l > span:last-child::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;
-    background:var(--todo);box-shadow:0 0 0 4px color-mix(in srgb,var(--todo) 22%,transparent)}
+/* compte neuf : l'icône de bienvenue dans un rond violet plein */
+body.skin-melange #empty-state .es-ico{border-radius:50%;color:var(--bc-pr-on);background:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));
+  border:0;box-shadow:var(--mx-lift),0 14px 28px -18px var(--bc-pr-b)}
+body.skin-melange #empty-state{border-radius:var(--mx-r)}
+/* Bandeau du mois : une barre d'état neutre, l'icône dans un rond */
+body.skin-melange #insights-banner{background-color:var(--surf-1)!important;padding:7px 14px 7px 8px!important;border-radius:14px!important}
+body.skin-melange #insights-banner .ins-ic{width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+/* bilan du mois : tuile d'action neutre, son rond violet plein */
+body.skin-melange #ca-entry-panel{background-image:linear-gradient(180deg,color-mix(in srgb,var(--acc) 6%,transparent),transparent 55%)}
+body.skin-melange #ca-entry-panel.replie .pt-ico{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--mx-ico);height:var(--mx-ico);
+  border-radius:50%;color:var(--bc-pr-on);background:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));box-shadow:var(--mx-lift)}
+body.skin-melange #ca-entry-panel.replie .pt-ico svg{width:14px;height:14px}
+body.skin-melange #ca-entry-panel.replie > .panel-title{font-size:16px;gap:10px}
+
+/* Part de la modèle : « Reste à envoyer » = LE widget orange (lavande si trop envoyé, rouge si perte) */
+body.skin-melange #model-share .ms-v{font-variant-numeric:tabular-nums}
+body.skin-melange #model-share .ms-pay-n{border-radius:999px}
+@media (min-width:641px){body.skin-melange #model-share .ms-pr{border-radius:var(--mx-r-xs)}}
+body.skin-melange #model-share .ms-res-du .ms-l,body.skin-melange #model-share .ms-res-du .ms-sg,
+body.skin-melange #model-share .ms-res-perte .ms-l,body.skin-melange #model-share .ms-res-perte .ms-sg,
+body.skin-melange #model-share .ms-res-trop .ms-l,body.skin-melange #model-share .ms-res-trop .ms-sg{color:var(--bc-on2)!important}
+body.skin-melange #model-share .ms-res-du .ms-v,body.skin-melange #model-share .ms-res-perte .ms-v,
+body.skin-melange #model-share .ms-res-trop .ms-v{color:var(--bc-on)!important}
+body.skin-melange #model-share .ms-res-du .ms-s,body.skin-melange #model-share .ms-res-perte .ms-s,
+body.skin-melange #model-share .ms-res-trop .ms-s{color:var(--bc-on2)!important}
+/* « À jour » : rien à envoyer, la tuile reste neutre (étiquette verte : une bonne nouvelle) */
+body.skin-melange #model-share .ms-res-ok .ms-c{background:var(--surf-1);border:1px solid var(--mx-edge);box-shadow:var(--mx-hl),var(--mx-sh)}
+body.skin-melange #page-editlog details.hl-sos{border-radius:var(--mx-r);border-color:var(--mx-edge);box-shadow:var(--mx-hl),var(--mx-sh)}
+
+/* Répartition, graphique, prévision (neutre : une tuile de lecture) */
+body.skin-melange #bars .nfr-barre{height:12px;gap:3px;border-radius:999px}
+body.skin-melange #bars .nfr-barre i{border-radius:999px}
+body.skin-melange #bars .nfr-pt{width:10px;height:10px;border-radius:50%}
+body.skin-melange #bars .nfr-l{grid-template-columns:10px minmax(0,1fr) auto}
+body.skin-melange #page-ca .nfg-panel{background-image:linear-gradient(180deg,transparent 45%,color-mix(in srgb,var(--acc) 5%,transparent))}
+body.skin-melange #forecast-card{background-color:var(--surf-1)!important;
+  background-image:linear-gradient(180deg,color-mix(in srgb,var(--ink-1) 3%,transparent),transparent 55%)!important}
+body.skin-melange #forecast-card #forecast-val{font-variant-numeric:tabular-nums}
+body.skin-melange #forecast-card{background-image:linear-gradient(color-mix(in srgb,var(--bc-pr-a) 60%,transparent),color-mix(in srgb,var(--bc-pr-a) 60%,transparent)),
+    linear-gradient(180deg,color-mix(in srgb,var(--ink-1) 3%,transparent),transparent 55%)!important;
+  background-size:100% 3px,100% 100%!important;background-repeat:no-repeat!important;overflow:hidden}
+body.skin-melange #forecast-card .fc-titre{position:relative;display:flex;align-items:center;gap:10px}
+body.skin-melange #forecast-card .fc-titre::before{content:"";flex:none;width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;
+  background:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));box-shadow:var(--mx-lift)}
+body.skin-melange #forecast-card .fc-titre::after{content:"";position:absolute;left:0;top:50%;width:var(--mx-ico);height:var(--mx-ico);margin-top:calc(var(--mx-ico) / -2);
+  pointer-events:none;background:var(--bc-pr-on);-webkit-mask:var(--ic-prev) center/15px 15px no-repeat;mask:var(--ic-prev) center/15px 15px no-repeat}
+body.skin-melange #forecast-card > div:has(> #forecast-bar){height:8px!important}
+body.skin-melange #forecast-card #forecast-bar{height:8px!important;background-image:linear-gradient(90deg,var(--bc-pr-b),var(--bc-pr-a))!important}
+body.skin-melange #exp-recap .dd-l{border-radius:var(--mx-r);border-color:var(--mx-edge);box-shadow:var(--mx-hl),var(--mx-sh)}
+
+/* Tes bilans : chaque bilan est une petite tuile, son bénéfice dans une pastille violette */
+body.skin-melange #hist-panel .txrow{border-bottom:0;margin-bottom:8px;border-radius:var(--mx-r-md);background:var(--surf-2);
+  box-shadow:inset 0 0 0 1px var(--mx-edge)}
+body.skin-melange #hist-panel .txrow:last-child{margin-bottom:0}
+body.skin-melange #hist-panel .txrow:hover,body.skin-melange #hist-panel .txrow.open{background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+body.skin-melange #hist-panel .txrow.open{box-shadow:inset 0 0 0 1px var(--acc-22)}
+body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
+@media (min-width:641px){
+  body.skin-melange #hist-panel .tx-pr{display:inline-flex;align-items:center;justify-self:end;padding:2px 10px;border-radius:999px;
+    color:var(--bc-pr-on)!important;background:var(--bc-pr-m)}
+  body.skin-melange #hist-panel .tx-pr.neg{background:var(--bc-ng-m)}
 }
-@media (min-width:1100px) and (prefers-reduced-motion:no-preference){
-  body.skin-bento #model-share .ms-res-du .ms-l > span:last-child::before{animation:bento-respire 2.4s ease-in-out infinite}
+
+/* ── 3. LE COCKPIT (≥ 641 px) : les pièces, communes à l'ordinateur et à la tablette ── */
+@media (min-width:641px){
+  /* tout enfant non prévu : pleine largeur (jamais coincé dans une colonne) */
+  body.skin-melange #page-ca.active > *{grid-column:1 / -1}
+  body.skin-melange #page-ca.active > .kpi-hero-grid,body.skin-melange #page-ca.active > .g2-tend,
+  body.skin-melange #page-ca.active > #model-share-panel,body.skin-melange #page-ca.active > #model-share-panel > #model-share,
+  body.skin-melange #page-ca.active #model-share > .ms-eq{display:contents}
+  body.skin-melange #page-ca > .dash-header{grid-area:hd;margin-bottom:4px}
+  body.skin-melange #page-ca > #empty-state{grid-area:em}
+  body.skin-melange #page-ca > #empty-state + .kpi-sec{grid-area:s1}
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero{grid-area:hr}
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi-net{grid-area:nt}
+  body.skin-melange #page-ca > #ca-entry-panel{grid-area:bi}
+  body.skin-melange #page-ca .g2-tend > #forecast-card{grid-area:fc}
+  body.skin-melange #page-ca > #model-share-panel + .kpi-sec{grid-area:s2}
+  body.skin-melange #page-ca > .kpi-dep-grid{grid-area:dg}
+  body.skin-melange #page-ca > #exp-recap-panel{grid-area:dt}
+  body.skin-melange #page-ca > .nfr-seul{grid-area:nr}
+  body.skin-melange #page-ca > .nfr-seul + .kpi-sec{grid-area:s3}
+  body.skin-melange #page-ca .g2-tend > .nfg-panel{grid-area:gr}
+  body.skin-melange #page-ca > .g2-tend + .kpi-sec{grid-area:s4}
+  body.skin-melange #page-ca > #hist-panel{grid-area:hi}
+  /* pas de prévision (mois sans bilan) : le bilan du mois prend toute la rangée */
+  body.skin-melange #page-ca.active:has(#forecast-card[style*="none"]) > #ca-entry-panel{grid-column:1 / -1}
+
+  /* rythme : 12 px entre les tuiles, ~24 px avant une étiquette de section */
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi,body.skin-melange #page-ca > #ca-entry-panel,
+  body.skin-melange #page-ca .g2-tend > .panel,body.skin-melange #page-ca > .kpi-dep-grid,
+  body.skin-melange #page-ca > .nfr-seul,body.skin-melange #page-ca > #hist-panel{margin:0 0 var(--mx-gap)}
+  body.skin-melange #page-ca .g2-tend > #forecast-card{margin:0 0 var(--mx-gap)!important}
+  body.skin-melange #page-ca > .kpi-sec{margin:14px 2px 10px}
+  body.skin-melange #page-ca > #empty-state + .kpi-sec{align-self:center;margin:2px 2px var(--mx-gap)}
+  body.skin-melange #page-ca > #exp-recap-panel{margin:0 0 var(--mx-gap)}
+  body.skin-melange #page-ca > #exp-recap-panel:has(> #exp-recap:empty){margin:0}
+
+  /* ─ rangée A : bénéfice · net total · reste à envoyer ─ */
+  body.skin-melange #page-ca .kpi-hero-grid .kpi{min-height:0;padding:var(--mx-pad)}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi-label{margin-bottom:0}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero{padding:var(--mx-pad)}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-value{font-size:min(15cqi,84px);line-height:.88;letter-spacing:-.055em}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero:has(#vpr.neg) > .kpi-value{font-size:min(12cqi,70px)}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi-pct{font-size:13px}
+  /* net total : étiquette + nombre de bilans en haut, le montant JUSTE dessous (même ligne que le bénéfice et le reste),
+     les deux canaux en bas : le vide devient de l'air en bas de tuile */
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto minmax(0,1fr) auto;
+    grid-template-areas:"l m" "v v" "n n";grid-template-rows:auto auto minmax(0,1fr);column-gap:8px}
+  body.skin-melange #page-ca .kpi-net > .kpi-label{grid-area:l}
+  body.skin-melange #page-ca .kpi-net > .kpi-meta{grid-area:m;align-self:center;margin:0}
+  body.skin-melange #page-ca .kpi-net > .kpi-meta .kpi-pct{display:inline-flex;align-items:center;min-height:24px;padding:0 9px;border-radius:999px;
+    background:var(--mx-chip);box-shadow:inset 0 0 0 1px var(--mx-edge);font-size:12px;color:var(--ink-3)}
+  body.skin-melange #page-ca .kpi-net > .kpi-value{grid-area:v;margin:14px 0 0;font-size:min(13cqi,34px);line-height:1;letter-spacing:-.04em}
+  body.skin-melange #page-ca .kpi-net .kpi-nets{grid-area:n;margin-top:14px;padding-top:0;border-top:0;column-gap:8px}
+  body.skin-melange #page-ca .kpi-net .kpi-nets{align-self:stretch;align-items:stretch}
+  /* chaque mini-widget : son étiquette en haut, son montant en bas */
+  body.skin-melange #page-ca .kpi-net .kn{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:flex-start;justify-content:flex-start;
+    padding:12px 14px 13px;row-gap:6px}
+  body.skin-melange #page-ca .kpi-net .kn > .kn-l{flex:0 0 auto}
+  body.skin-melange #page-ca .kpi-net .kn > .kn-v{margin-top:auto}
+  body.skin-melange #page-ca .kpi-net .kn > .kpi-delta{flex:0 0 auto}
+  body.skin-melange #page-ca .kpi-net .kn-v{font-size:20px;line-height:24px;letter-spacing:-.02em}
+
+  /* « Reste à envoyer » : sa tuile occupe 3 sous-rangées (montant · détail · bouton) */
+  body.skin-melange #page-ca #model-share .ms-res{grid-column:rs;grid-row:rs-start / rn-end;display:flex;margin:0 0 var(--mx-gap);container-type:inline-size}
+  body.skin-melange #page-ca #model-share .ms-res .ms-c{position:relative;flex:1;display:block;height:auto;padding:var(--mx-pad);border-radius:var(--mx-r);overflow:hidden}
+  /* le dégradé ne couvre que le haut (étiquette + montant) ; dessous, la teinte plate où se posent le détail et le bouton */
+  body.skin-melange #page-ca #model-share .ms-res:not(.ms-res-ok) .ms-c{background-color:var(--bc-b)!important;
+    background-image:linear-gradient(180deg,var(--bc-a) 0,var(--bc-b) 92px)!important}
+  /* les anneaux en filigrane dans le coin du widget plein (comme le bénéfice) */
+  body.skin-melange #page-ca #model-share .ms-res:not(.ms-res-ok) .ms-c::after{content:"";position:absolute;right:-64px;top:-84px;width:210px;height:210px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,transparent 0 40%,color-mix(in srgb,var(--bc-on) 12%,transparent) 40.5% 41.3%,transparent 41.8% 62%,
+      color-mix(in srgb,var(--bc-on) 7%,transparent) 62.5% 63.2%,transparent 63.7%)}
+  body.skin-melange #page-ca #model-share .ms-res .ms-c > *{position:relative;z-index:1}
+  body.skin-melange #page-ca #model-share .ms-res-ok .ms-l{color:var(--pos)}
+  body.skin-melange #page-ca #model-share .ms-res .ms-sg{display:none}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:var(--mx-ico)}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child::before{content:"";flex:none;width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;
+    background:color-mix(in srgb,var(--bc-v,var(--ink-1)) 28%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on,var(--ink-1)) 20%,transparent)}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child::after{content:"";position:absolute;left:0;top:50%;width:var(--mx-ico);height:var(--mx-ico);
+    margin-top:calc(var(--mx-ico) / -2);pointer-events:none;background:var(--bc-on,var(--ink-2));
+    -webkit-mask:var(--ic-envoi) center/15px 15px no-repeat;mask:var(--ic-envoi) center/15px 15px no-repeat}
+  body.skin-melange #page-ca #model-share .ms-res-ok .ms-l > span:last-child::before{background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+  body.skin-melange #page-ca #model-share .ms-res-ok .ms-l > span:last-child::after{background:var(--pos);-webkit-mask-image:var(--ic-ok);mask-image:var(--ic-ok)}
+  body.skin-melange #page-ca #model-share .ms-res .ms-v{margin-top:14px;font-size:min(13cqi,34px);line-height:1;letter-spacing:-.04em;text-align:left}
+  body.skin-melange #page-ca #model-share .ms-res .ms-s{margin-top:6px;padding:0;font-size:12px}
+  body.skin-melange #page-ca #model-share .ms-det{grid-area:rd;z-index:2;position:relative;display:flex;flex-direction:column;gap:3px;
+    margin:0 20px 0;padding-top:12px;border-top:0;font-size:12.5px;line-height:20px;color:var(--bc-on2,var(--ink-3));
+    background-color:var(--bc-b,transparent)}
+  body.skin-melange #page-ca #model-share .ms-det span + span::before{content:none}
+  body.skin-melange #page-ca #model-share .ms-det b{color:var(--bc-on,var(--ink-1))}
+  body.skin-melange #page-ca #model-share-panel > .ms-noter{grid-area:rn;z-index:2;position:relative;align-self:end;justify-self:stretch;width:auto;
+    margin:12px 20px calc(var(--mx-gap) + 18px)}
+  body.skin-melange #page-ca #model-share-panel > .ms-noter[hidden]{display:none}
+  /* sur le widget plein : un bouton blanc, à l'encre du widget (B3) */
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-du) > .ms-noter,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-trop) > .ms-noter,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-perte) > .ms-noter{color:var(--bc-bi);background:var(--mx-blanc);border:0;
+    box-shadow:0 6px 16px -8px rgba(20,10,0,.55)}
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-du) > .ms-noter svg,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-trop) > .ms-noter svg,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-perte) > .ms-noter svg{color:var(--bc-bi)}
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-du) > .ms-noter:hover,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-trop) > .ms-noter:hover,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-perte) > .ms-noter:hover{background:color-mix(in srgb,var(--mx-blanc) 92%,var(--bc-b));filter:none}
+
+  /* ─ bilan du mois : titre et lien en haut, la date, le gros bouton en bas ─ */
+  body.skin-melange #page-ca #ca-entry-panel.replie{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto 1fr auto auto;
+    grid-template-areas:"t a" "s s" ". ." "b b" "p p";align-items:start;padding:var(--mx-pad);column-gap:16px}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .panel-title{grid-area:t;align-self:center;margin:0}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .panel-sub{grid-area:s;margin:4px 0 0 38px}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .saisie-autre{grid-area:a;align-self:start;justify-self:end;margin:-6px -8px 0 0}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .saisie-bascule{grid-area:b;width:100%;min-height:46px;margin:14px 0 0;font-size:15px}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .saisie-prec{grid-area:p;margin-top:8px}
+  /* prévision : titre et « Fixer un objectif » sur la 1re ligne, le chiffre, puis le texte sur toute la largeur */
+  body.skin-melange #page-ca .g2-tend > #forecast-card{display:grid!important;grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"t o" "v v" "s s" "b b" "d d" "x x";align-content:start;column-gap:16px;padding:var(--mx-pad)!important}
+  body.skin-melange #page-ca .g2-tend > #forecast-card[style*="none"]{display:none!important}
+  body.skin-melange #page-ca .g2-tend > #forecast-card:not(.fc-replie){grid-template-areas:"t g" "v g" "s g" "b b" "d d" "x x"}
+  body.skin-melange #page-ca .g2-tend > #forecast-card > div:first-child,
+  body.skin-melange #page-ca .g2-tend > #forecast-card > div:first-child > div:first-child{display:contents!important}
+  body.skin-melange #page-ca .g2-tend > #forecast-card .fc-titre{grid-area:t;align-self:center;margin:0!important}
+  body.skin-melange #page-ca .g2-tend > #forecast-card .fc-vl{grid-area:v;margin-top:10px}
+  body.skin-melange #page-ca .g2-tend > #forecast-card #forecast-sub{grid-area:s;max-width:68ch;margin-top:8px!important;line-height:1.5;color:var(--ink-3)!important}
+  body.skin-melange #page-ca .g2-tend > #forecast-card > div:first-child > div:last-child{grid-area:g;align-self:start}
+  body.skin-melange #page-ca .g2-tend > #forecast-card > div:has(> #forecast-bar){grid-area:b}
+  body.skin-melange #page-ca .g2-tend > #forecast-card > #forecast-goal-detail{grid-area:d}
+  body.skin-melange #page-ca .g2-tend > #forecast-card > .fc-obj{grid-area:o;align-self:center;margin:0}
+  body.skin-melange #page-ca .g2-tend > #forecast-card > .fc-discord{grid-area:x}
+  body.skin-melange #page-ca .g2-tend > #forecast-card #forecast-val{font-size:32px;line-height:1.05;letter-spacing:-.035em}
+
+  /* ─ dépenses : le dessin de chaque tuile (la grille dépend de la largeur) ─ */
+  body.skin-melange #page-ca .kpi-dep-grid{display:grid;grid-template-columns:none;gap:var(--mx-gap)}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi,body.skin-melange #page-ca .kpi-dep-grid > .kpi-info{flex-direction:column;align-items:stretch;gap:0;
+    min-width:0;min-height:116px;padding:var(--mx-pad-s)}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi .kpi-label{min-height:30px;margin-bottom:10px;align-items:flex-start;line-height:1.25}
+  body.skin-melange #page-ca .kpi-dep-grid .kpi-value,body.skin-melange #page-ca .kpi-dep-grid > .kpi-info .kpi-value{margin-top:0;
+    font-size:clamp(16px,15cqi,22px);line-height:1.1;letter-spacing:-.03em;white-space:nowrap}
+  body.skin-melange #page-ca .kpi-dep-grid .kpi-pct{line-height:17px}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi-info .kpi-pct::before{content:none}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi .kpi-meta,body.skin-melange #page-ca .kpi-dep-grid > .kpi > .kpi-pct{margin-top:5px}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi-total .kpi-value{font-weight:800}
+
+  /* ─ Part de la modèle : le relevé en 3 petites tuiles, les paiements dans la leur ─ */
+  body.skin-melange #page-ca #model-share-panel > .panel-title{grid-area:mt;display:flex;align-items:center;gap:10px;margin:14px 2px 10px;
+    font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  body.skin-melange #page-ca #model-share-panel > .panel-title::before{content:"";flex:0 0 30px;width:30px;height:6px;background:radial-gradient(circle at 3px 3px,var(--todo) 0 3px,transparent 3.5px)}
+  body.skin-melange #page-ca #model-share-panel > .panel-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent 90%)}
+  body.skin-melange #page-ca #model-share-panel > .panel-sub{grid-area:mu;align-self:center;justify-self:end;margin:14px 2px 10px;font-size:12px;color:var(--ink-4)}
+  body.skin-melange #page-ca #model-share .ms-c-base{grid-area:ca}
+  body.skin-melange #page-ca #model-share .ms-c-part{grid-area:cb}
+  body.skin-melange #page-ca #model-share .ms-c-paid{grid-area:cc}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c{display:flex;flex-direction:column;min-height:96px;margin:0;padding:var(--mx-pad-s);border:0;
+    border-radius:var(--mx-r-md);background:var(--surf-1);box-shadow:var(--mx-hl),var(--mx-sh),inset 0 0 0 1px var(--mx-edge)}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c .ms-sg{display:none}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c .ms-l{white-space:normal;font-size:12px;font-weight:600;line-height:1.3;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-3)}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c .ms-v{margin-top:auto;padding-top:8px;font-size:19px;text-align:left;color:var(--ink-1)}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c-part .ms-v{color:var(--model)}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c .ms-s{margin-top:4px;padding-left:0}
+  /* les signes → et − : de petites pastilles posées à cheval entre deux tuiles */
+  body.skin-melange #page-ca #model-share .ms-c-base + .ms-op{grid-area:cb}
+  body.skin-melange #page-ca #model-share .ms-c-part + .ms-op{grid-area:cc}
+  body.skin-melange #page-ca #model-share .ms-c-base + .ms-op,body.skin-melange #page-ca #model-share .ms-c-part + .ms-op{
+    z-index:2;position:relative;align-self:center;justify-self:start;display:flex;align-items:center;justify-content:center;
+    width:26px;height:26px;margin-left:-19px;border-radius:50%;background:var(--surf-3);box-shadow:0 0 0 1px var(--mx-edge-2),0 4px 10px -4px rgba(0,0,0,.5);
+    color:var(--ink-3);font-size:15px;font-weight:600;line-height:1}
+  body.skin-melange.light #page-ca #model-share .ms-c-base + .ms-op,body.skin-melange.light #page-ca #model-share .ms-c-part + .ms-op{
+    box-shadow:0 0 0 1px var(--mx-edge-2),0 3px 8px -4px rgba(16,24,40,.25)}
+  body.skin-melange #page-ca #model-share .ms-c-base + .ms-op svg{width:13px;height:13px}
+  body.skin-melange #page-ca #model-share .ms-c-paid + .ms-op{display:none}
+  body.skin-melange #page-ca #model-share .ms-frais{grid-area:mx;margin:10px 4px 0;max-width:62ch;font-size:12px;line-height:1.5;color:var(--ink-3)}
+  body.skin-melange #page-ca #model-share .ms-pay{grid-area:py;margin:0 0 var(--mx-gap);padding:6px 16px 8px;border-radius:var(--mx-r-md);
+    background:var(--surf-1);box-shadow:var(--mx-hl),var(--mx-sh),inset 0 0 0 1px var(--mx-edge)}
+  body.skin-melange #page-ca #model-share .ms-pay-h{min-height:38px}
+  body.skin-melange #page-ca #model-share .ms-pr{min-height:36px}
+  body.skin-melange #page-ca #model-share-panel > .ms-form{grid-area:mf;margin:0 0 var(--mx-gap);padding:16px 18px;border-radius:var(--mx-r);
+    background:var(--surf-1);border:0;box-shadow:var(--mx-hl),var(--mx-sh),inset 0 0 0 1px color-mix(in srgb,var(--bc-du-b) 55%,transparent)}
+  body.skin-melange #page-ca #model-share-panel > #mp-msg{grid-area:mg}
+
+  /* ─ tendance, tes bilans ─ */
+  body.skin-melange #page-ca .g2-tend > .nfg-panel{display:flex;flex-direction:column}
+  body.skin-melange #page-ca .g2-tend > .nfg-panel > .nfg{flex:1 1 auto;min-height:220px}
+  body.skin-melange #hist-panel .tx-head{margin:4px 0 6px;padding:0 12px 8px;border-bottom:0}
+  body.skin-melange #hist-panel .txrow{margin:0 0 8px;padding:0 12px}
+  body.skin-melange #hist-panel .tx-sum{padding:12px 0}
+  body.skin-melange #hist-panel .th-sum > span:nth-child(3),body.skin-melange #hist-panel .th-dep{text-align:right}
+  body.skin-melange #hist-panel .tx-netc{align-items:flex-end;text-align:right}
+  body.skin-melange #hist-panel .tx-depc{text-align:right}
+  /* Récap « Mois par mois » : le bénéfice du mois dans une pastille violette, comme « Tes bilans » */
+  body.skin-melange #page-recap .rc-mh .rc-mp{justify-self:end;display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;
+    color:var(--acc-txt)!important;background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+  body.skin-melange #page-recap .rc-mh:has(.pill-encours) .rc-mp{color:var(--bc-pr-on)!important;background:var(--bc-pr-m);box-shadow:none}
+  body.skin-melange #page-recap .rc-mh .rc-mp[style*="neg"]{color:var(--neg)!important;background:color-mix(in srgb,var(--neg) 12%,transparent);
+    box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 28%,transparent)}
 }
-@keyframes bento-respire{0%,100%{box-shadow:0 0 0 3px color-mix(in srgb,var(--todo) 26%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--todo) 8%,transparent)}}
-body.skin-bento #page-editlog details.hl-sos{border-radius:var(--bn-r);border-color:var(--bn-edge);box-shadow:var(--bn-hl),var(--bn-sh)}
-body.skin-bento #model-share .ms-v{font-variant-numeric:tabular-nums}
-body.skin-bento #model-share .ms-pay-n{border-radius:999px}
-body.skin-bento #model-share .ms-pr{border-radius:var(--bn-r-sm)}
 
-/* 2g. Répartition, graphique, projection, bilans */
-body.skin-bento #bars .nfr-barre{height:14px;gap:3px;border-radius:999px}
-body.skin-bento #bars .nfr-barre i{border-radius:999px}
-body.skin-bento #bars .nfr-pt{width:10px;height:10px;border-radius:4px}
-body.skin-bento #bars .nfr-l{grid-template-columns:10px minmax(0,1fr) auto}
-body.skin-bento #page-ca .nfg-panel{background-image:linear-gradient(180deg,transparent 40%,color-mix(in srgb,var(--acc) 6%,transparent))}
-body.skin-bento #forecast-card{background-color:var(--surf-1)!important;
-  background-image:radial-gradient(110% 120% at 100% 0%,color-mix(in srgb,var(--ink-1) 5%,transparent),transparent 60%)!important}
-body.skin-bento #forecast-card #forecast-val{font-size:30px;font-variant-numeric:tabular-nums}
-body.skin-bento #forecast-card > div:has(> #forecast-bar){height:8px!important}
-body.skin-bento #forecast-card #forecast-bar{height:8px!important;background-image:linear-gradient(90deg,var(--acc-btn),var(--acc))!important}
-body.skin-bento #hist-panel .txrow{border-radius:var(--bn-r-sm)}
-body.skin-bento #exp-recap .dd-l{border-radius:var(--bn-r);border-color:var(--bn-edge);box-shadow:var(--bn-hl),var(--bn-sh)}
-
-/* ── 3. ACCUEIL ORDINATEUR (≥ 1100 px) : LA MOSAÏQUE ───────────────────── */
+/* ── 3b. ORDINATEUR (≥ 1100 px) : la grille 12 colonnes — tout le tableau de bord au premier écran ── */
 @media (min-width:1100px){
-  body.skin-bento #page-ca.active{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--bn-gap);row-gap:0;
+  /* (repeat() est interdit dans la forme abrégée « grid-template » avec zones : propriétés séparées)
+     4e rangée = le haut de la tuile « Reste à envoyer » : 104 px mini, pour que son montant ne touche jamais son détail */
+  body.skin-melange #page-ca.active{display:grid;column-gap:var(--mx-gap);row-gap:0;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    grid-template-rows:auto auto auto auto;
     grid-template-areas:
       "hd hd hd hd hd hd hd hd hd hd hd hd"
       "em em em em em em em em em em em em"
       "s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1"
-      "hr hr hr hr hr hr nt nt nt nt nt nt"
-      "hr hr hr hr hr hr bi bi bi bi bi bi"
-      "in in in in in in in in in in in in"
-      "ms ms ms ms ms ms ms ms ms ms ms ms"
+      "hr hr hr hr hr hr nt nt nt rs rs rs"
+      "hr hr hr hr hr hr nt nt nt rd rd rd"
+      "hr hr hr hr hr hr nt nt nt rn rn rn"
+      "bi bi bi bi bi bi fc fc fc fc fc fc"
+      "mf mf mf mf mf mf mf mf mf mf mf mf"
+      "mg mg mg mg mg mg mg mg mg mg mg mg"
       "s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2"
-      "dg dg dg dg dg dg dg dg nr nr nr nr"
+      "dg dg dg dg dg dg dg dg dg dg dg dg"
       "dt dt dt dt dt dt dt dt dt dt dt dt"
+      "mt mt mt mt mt mt mt mt mu mu mu mu"
+      "ca ca cb cb cc cc py py py py py py"
+      "mx mx mx mx mx mx py py py py py py"
       "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
-      "gr gr gr gr gr gr gr gr fc fc fc fc"
+      "gr gr gr gr gr gr gr gr nr nr nr nr"
       "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi hi hi hi hi hi hi"}
-  /* formulaire ouvert : il prend toute la largeur sous la mosaïque du haut */
-  body.skin-bento #page-ca.active:has(> #ca-entry-panel:not(.replie)){
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto minmax(104px,auto)}
+  /* formulaire du bilan ouvert : il prend toute la largeur sous la rangée du haut */
+  body.skin-melange #page-ca.active:has(> #ca-entry-panel:not(.replie)){
     grid-template-areas:
       "hd hd hd hd hd hd hd hd hd hd hd hd"
       "em em em em em em em em em em em em"
       "s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1"
-      "hr hr hr hr hr hr nt nt nt nt nt nt"
-      "in in in in in in in in in in in in"
+      "hr hr hr hr hr hr nt nt nt rs rs rs"
+      "hr hr hr hr hr hr nt nt nt rd rd rd"
+      "hr hr hr hr hr hr nt nt nt rn rn rn"
       "bi bi bi bi bi bi bi bi bi bi bi bi"
-      "ms ms ms ms ms ms ms ms ms ms ms ms"
+      "fc fc fc fc fc fc fc fc fc fc fc fc"
+      "mf mf mf mf mf mf mf mf mf mf mf mf"
+      "mg mg mg mg mg mg mg mg mg mg mg mg"
       "s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2"
-      "dg dg dg dg dg dg dg dg nr nr nr nr"
+      "dg dg dg dg dg dg dg dg dg dg dg dg"
       "dt dt dt dt dt dt dt dt dt dt dt dt"
+      "mt mt mt mt mt mt mt mt mu mu mu mu"
+      "ca ca cb cb cc cc py py py py py py"
+      "mx mx mx mx mx mx py py py py py py"
       "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
-      "gr gr gr gr gr gr gr gr fc fc fc fc"
+      "gr gr gr gr gr gr gr gr nr nr nr nr"
       "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi hi hi hi hi hi hi"}
-  body.skin-bento #page-ca.active > .kpi-hero-grid,body.skin-bento #page-ca.active > .g2-tend{display:contents}
-  body.skin-bento #page-ca > .dash-header{grid-area:hd;margin-bottom:8px}
-  body.skin-bento #page-ca > #empty-state{grid-area:em}
-  body.skin-bento #page-ca > #empty-state + .kpi-sec{grid-area:s1}
-  body.skin-bento #page-ca .kpi-hero-grid > .kpi-hero{grid-area:hr}
-  body.skin-bento #page-ca .kpi-hero-grid > .kpi-net{grid-area:nt}
-  body.skin-bento #page-ca > #insights-banner{grid-area:in}
-  body.skin-bento #page-ca > #ca-entry-panel{grid-area:bi}
-  body.skin-bento #page-ca > #model-share-panel{grid-area:ms}
-  body.skin-bento #page-ca > #model-share-panel + .kpi-sec{grid-area:s2}
-  body.skin-bento #page-ca > .kpi-dep-grid{grid-area:dg}
-  body.skin-bento #page-ca > #exp-recap-panel{grid-area:dt}
-  body.skin-bento #page-ca > .nfr-seul{grid-area:nr}
-  body.skin-bento #page-ca > .nfr-seul + .kpi-sec{grid-area:s3}
-  body.skin-bento #page-ca .g2-tend > .nfg-panel{grid-area:gr}
-  body.skin-bento #page-ca .g2-tend > #forecast-card{grid-area:fc}
-  /* pas de prévision (aucun bilan ce mois-là) : le graphique prend toute la largeur */
-  body.skin-bento #page-ca .g2-tend:has(> #forecast-card[style*="none"]) > .nfg-panel{grid-column:1 / -1}
-  body.skin-bento #page-ca > .g2-tend + .kpi-sec{grid-area:s4}
-  body.skin-bento #page-ca > #hist-panel{grid-area:hi}
-  /* rythme : 16 px sous chaque tuile (les lignes vides ne laissent pas de trou), 32 px avant une section */
-  body.skin-bento #page-ca .kpi-hero-grid > .kpi,body.skin-bento #page-ca .g2-tend > .panel{margin:0 0 var(--bn-gap)}
-  body.skin-bento #page-ca .g2-tend > #forecast-card{margin:0 0 var(--bn-gap)!important}
-  body.skin-bento #page-ca > .kpi-sec{margin:16px 4px 12px}
-  body.skin-bento #page-ca > .kpi-dep-grid,body.skin-bento #page-ca > #exp-recap-panel,body.skin-bento #page-ca > .nfr-seul{margin:0 0 var(--bn-gap)}
-  body.skin-bento #page-ca > #exp-recap-panel:has(> #exp-recap:empty){margin:0}
-
-  /* tuiles du haut */
-  body.skin-bento #page-ca .kpi-hero-grid .kpi{min-height:0;padding:24px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-label{margin-bottom:18px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-value{font-size:34px;letter-spacing:-.035em}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero{padding:28px 28px 26px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{font-size:min(17cqi,104px);line-height:.92;letter-spacing:-.055em;margin-top:auto}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero:has(#vpr.neg) .kpi-value{font-size:min(14cqi,96px)}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-net .kpi-value{font-size:min(10cqi,40px);line-height:1}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-meta{margin-top:16px}
-  /* le chiffre flotte au milieu de la grande tuile, « ta moitié » se pose en bas */
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-moitie:not([hidden]){margin-top:auto}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero:has(.kpi-moitie:not([hidden])) .kpi-meta{margin-bottom:24px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-pct{font-size:13px}
-  /* net total : le montant, puis OnlyFans et Telegram en deux mini-tuiles posées en bas */
-  body.skin-bento #page-ca .kpi-net .kpi-meta{margin-top:8px}
-  body.skin-bento #page-ca .kpi-net .kpi-nets{margin-top:auto;padding-top:18px;border-top:0;column-gap:12px}
-  body.skin-bento #page-ca .kpi-net .kn{padding:12px 14px;border-radius:var(--bn-r-md);background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--bn-edge);row-gap:4px}
-  body.skin-bento #page-ca .kpi-net .kn-v{font-size:18px;line-height:24px}
-  body.skin-bento #page-ca > #insights-banner{margin-bottom:var(--bn-gap)!important}
-
-  /* bilan du mois : titre en haut, le lien à droite, le gros bouton en bas */
-  body.skin-bento #page-ca #ca-entry-panel.replie{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto 1fr auto auto;
-    grid-template-areas:"t a" "s s" ". ." "b b" "p p";padding:24px;column-gap:16px}
-  body.skin-bento #page-ca #ca-entry-panel.replie > .panel-title{grid-area:t;align-self:center}
-  body.skin-bento #page-ca #ca-entry-panel.replie > .panel-sub{grid-area:s;margin:6px 0 0 44px}
-  body.skin-bento #page-ca #ca-entry-panel.replie > .saisie-autre{grid-area:a;align-self:start;justify-self:end;margin:-4px -8px 0 0}
-  body.skin-bento #page-ca #ca-entry-panel.replie > .saisie-bascule{grid-area:b;width:100%;min-height:48px;margin:20px 0 0;font-size:15px}
-  body.skin-bento #page-ca #ca-entry-panel.replie > .saisie-prec{grid-area:p;margin-top:10px}
-
-  /* Part de la modèle : à gauche le calcul en 3 mini-tuiles, à droite la tuile « Reste à envoyer » */
-  body.skin-bento #page-ca #model-share-panel{display:grid;padding:24px;column-gap:0;
-    grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 40px minmax(0,1.3fr);
+  /* objectif fixé : la prévision s'allonge → bilan et prévision chacun sur toute la rangée */
+  body.skin-melange #page-ca.active:has(> #ca-entry-panel.replie):has(.g2-tend > #forecast-card:not(.fc-replie):not([style*="none"])){
     grid-template-areas:
-      "t t t t t . r"
-      "s s s s s . r"
-      "a o1 b o2 c o3 r"
-      "d d d d d . r"
-      "f f f f f . r"
-      "n n n n n . r"
-      "m m m m m m m"
-      "g g g g g g g"
-      "p p p p p p p"}
-  body.skin-bento #page-ca #model-share-panel > .panel-title{grid-area:t}
-  body.skin-bento #page-ca #model-share-panel > .panel-sub{grid-area:s}
-  body.skin-bento #page-ca #model-share .ms-eq{display:contents}
-  body.skin-bento #page-ca #model-share .ms-c-base{grid-area:a}
-  body.skin-bento #page-ca #model-share .ms-c-base + .ms-op{grid-area:o1}
-  body.skin-bento #page-ca #model-share .ms-c-part{grid-area:b}
-  body.skin-bento #page-ca #model-share .ms-c-part + .ms-op{grid-area:o2}
-  body.skin-bento #page-ca #model-share .ms-c-paid{grid-area:c}
-  body.skin-bento #page-ca #model-share .ms-c-paid + .ms-op{grid-area:o3}
-  body.skin-bento #page-ca #model-share .ms-res{grid-area:r;display:flex;margin-bottom:0}
-  body.skin-bento #page-ca #model-share .ms-det{grid-area:d;margin-top:14px}
-  body.skin-bento #page-ca #model-share .ms-frais{grid-area:f;margin-top:6px}
-  body.skin-bento #page-ca #model-share-panel > .ms-noter{grid-area:n;align-self:end;justify-self:start;margin-top:16px}
-  body.skin-bento #page-ca #model-share-panel > .ms-form{grid-area:m;margin-top:16px}
-  body.skin-bento #page-ca #model-share-panel > #mp-msg{grid-area:g}
-  body.skin-bento #page-ca #model-share .ms-pay{grid-area:p;margin-top:20px;padding-top:6px;border-top:1px solid var(--line-1)}
-  body.skin-bento #page-ca #model-share .ms-eq > .ms-c{padding:16px 16px 15px;border-radius:var(--bn-r-md);background:var(--surf-2);
-    box-shadow:inset 0 0 0 1px var(--bn-edge)}
-  body.skin-bento #page-ca #model-share .ms-eq > .ms-c .ms-v{margin-top:10px;font-size:22px}
-  body.skin-bento #page-ca #model-share .ms-op{color:var(--ink-4)}
-  body.skin-bento #page-ca #model-share .ms-res .ms-c{position:relative;flex:1;display:flex;flex-direction:column;justify-content:space-between;height:auto;padding:22px 24px 22px;border:0}
-  body.skin-bento #page-ca #model-share .ms-res-du .ms-c::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-    background:radial-gradient(circle at 104% 118%,transparent 0 24%,color-mix(in srgb,var(--todo) 26%,transparent) 24.2% 24.6%,transparent 24.8% 38%,
-      color-mix(in srgb,var(--todo) 16%,transparent) 38.2% 38.5%,transparent 38.7% 53%,color-mix(in srgb,var(--todo) 10%,transparent) 53.2% 53.4%,transparent 53.6%)}
-  body.skin-bento #page-ca #model-share .ms-res .ms-c > *{position:relative;z-index:1}
-  body.skin-bento #page-ca #model-share .ms-res .ms-l{font-size:13px}
-  body.skin-bento #page-ca #model-share .ms-res .ms-v{margin-top:16px;font-size:48px;line-height:1;letter-spacing:-.045em}
-  body.skin-bento #page-ca #model-share .ms-res .ms-s{margin-top:8px}
-
-  /* dépenses : 4 carrés par rangée, à la hauteur de la Répartition */
-  body.skin-bento #page-ca .kpi-dep-grid{gap:var(--bn-gap);align-content:stretch}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi{flex:1 1 160px;min-height:150px;padding:20px 20px 18px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info{flex:1 1 160px;flex-direction:column;align-items:stretch;gap:0;padding:20px 20px 18px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-label{margin-bottom:10px;min-height:32px;align-items:flex-start}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-value{margin-top:0;font-size:24px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-pct{margin-top:6px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-pct::before{content:none}
-  body.skin-bento #page-ca .kpi-dep-grid .kpi-value{font-size:26px;letter-spacing:-.03em}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi .kpi-meta,body.skin-bento #page-ca .kpi-dep-grid > .kpi > .kpi-pct{margin-top:6px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi:not(.kpi-info) .kpi-value{margin-top:auto}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-total .kpi-value{font-size:30px}
-
-  /* tendance : le graphique en tuile large, la prévision à côté (même hauteur) */
-  body.skin-bento #page-ca .g2-tend > .nfg-panel{display:flex;flex-direction:column}
-  body.skin-bento #page-ca .g2-tend > .nfg-panel > .nfg{flex:1 1 auto;min-height:240px}
-  body.skin-bento #page-ca .g2-tend > #forecast-card .fc-titre{margin-bottom:14px}
-  body.skin-bento #page-ca .g2-tend > #forecast-card #forecast-val{font-size:40px;letter-spacing:-.04em}
-  body.skin-bento #page-ca .g2-tend > #forecast-card .fc-vl{margin-top:6px}
-  /* répartition dans sa colonne de 4 : une liste (la base la range sur 3 colonnes en pleine largeur) */
-  body.skin-bento #page-ca .nfr-seul #bars .nfr-liste{display:flex;flex-direction:column}
-  body.skin-bento #page-ca .nfr-seul #bars .nfr-l:nth-child(-n+3){border-top:1px solid var(--line-1)}
-  body.skin-bento #page-ca .nfr-seul #bars .nfr-l:first-child{border-top:0}
+      "hd hd hd hd hd hd hd hd hd hd hd hd"
+      "em em em em em em em em em em em em"
+      "s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1"
+      "hr hr hr hr hr hr nt nt nt rs rs rs"
+      "hr hr hr hr hr hr nt nt nt rd rd rd"
+      "hr hr hr hr hr hr nt nt nt rn rn rn"
+      "bi bi bi bi bi bi bi bi bi bi bi bi"
+      "fc fc fc fc fc fc fc fc fc fc fc fc"
+      "mf mf mf mf mf mf mf mf mf mf mf mf"
+      "mg mg mg mg mg mg mg mg mg mg mg mg"
+      "s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2"
+      "dg dg dg dg dg dg dg dg dg dg dg dg"
+      "dt dt dt dt dt dt dt dt dt dt dt dt"
+      "mt mt mt mt mt mt mt mt mu mu mu mu"
+      "ca ca cb cb cc cc py py py py py py"
+      "mx mx mx mx mx mx py py py py py py"
+      "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
+      "gr gr gr gr gr gr gr gr nr nr nr nr"
+      "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
+      "hi hi hi hi hi hi hi hi hi hi hi hi"}
+  /* le bilan du mois en version large : titre + date à gauche, le gros bouton à droite */
+  body.skin-melange #page-ca.active:has(.g2-tend > #forecast-card:not(.fc-replie):not([style*="none"])) > #ca-entry-panel.replie,
+  body.skin-melange #page-ca.active:has(#forecast-card[style*="none"]) > #ca-entry-panel.replie{
+    grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto auto;grid-template-areas:"t b" "s b" "a b" "p p";align-items:center}
+  body.skin-melange #page-ca.active:has(.g2-tend > #forecast-card:not(.fc-replie):not([style*="none"])) > #ca-entry-panel.replie > .saisie-bascule,
+  body.skin-melange #page-ca.active:has(#forecast-card[style*="none"]) > #ca-entry-panel.replie > .saisie-bascule{width:auto;min-width:320px;margin:0;padding:0 24px}
+  body.skin-melange #page-ca.active:has(.g2-tend > #forecast-card:not(.fc-replie):not([style*="none"])) > #ca-entry-panel.replie > .saisie-autre,
+  body.skin-melange #page-ca.active:has(#forecast-card[style*="none"]) > #ca-entry-panel.replie > .saisie-autre{justify-self:start;margin:2px 0 -6px 30px}
+  /* le bandeau du mois partage la rangée de l'étiquette « Résultat » : une pastille posée au bout de sa ligne */
+  body.skin-melange #page-ca > #insights-banner{grid-area:s1;justify-self:end;align-self:center;z-index:1;max-width:calc(100% - 180px);
+    margin:2px 0 var(--mx-gap)!important;padding:5px 16px 5px 6px!important;border-radius:999px!important;
+    background-color:var(--bg-0)!important;box-shadow:inset 0 0 0 1px var(--mx-edge-2)!important;border:0!important}
+  body.skin-melange #page-ca > #insights-banner .ins-ic{width:26px;height:26px;border-radius:50%}
+  /* dépenses : toutes sur UNE rangée (6 à 8 tuiles selon les postes utilisés) */
+  body.skin-melange #page-ca .kpi-dep-grid{grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+  /* répartition dans sa colonne de 4 : une liste */
+  body.skin-melange #page-ca .nfr-seul #bars .nfr-liste{display:flex;flex-direction:column}
+  body.skin-melange #page-ca .nfr-seul #bars .nfr-l{padding-top:8px;padding-bottom:8px}
+  body.skin-melange #page-ca .nfr-seul #bars .nfr-l:nth-child(-n+3){border-top:1px solid var(--line-1)}
+  body.skin-melange #page-ca .nfr-seul #bars .nfr-l:first-child{border-top:0}
 }
 
-/* ── 4. TABLETTE (641 – 1099 px) : mosaïque à 6 colonnes ───────────────── */
+/* ── 4. TABLETTE (641 – 1099 px) : la même grille, sur 6 colonnes ───────── */
 @media (min-width:641px) and (max-width:1099px){
-  body.skin-bento #page-ca .kpi-hero-grid{gap:var(--bn-gap)}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi{padding:20px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{font-size:min(16cqi,64px);line-height:.95;letter-spacing:-.05em}
-  body.skin-bento #page-ca .kpi-net .kn{padding:10px 12px;border-radius:14px;background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--bn-edge)}
-  body.skin-bento #page-ca .kpi-net .kpi-nets{margin-top:auto;padding-top:14px;border-top:0;column-gap:10px}
-  body.skin-bento #page-ca .kpi-dep-grid{gap:12px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi{min-height:128px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info{flex:1 1 172px;flex-direction:column;align-items:stretch;gap:0;padding:16px 20px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-label{margin-bottom:10px;min-height:32px;align-items:flex-start}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-value{font-size:20px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-pct{margin-top:6px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi-info .kpi-pct::before{content:none}
+  body.skin-melange #page-ca.active{display:grid;column-gap:var(--mx-gap);row-gap:0;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    grid-template-rows:auto auto auto auto auto auto;
+    grid-template-areas:
+      "hd hd hd hd hd hd"
+      "em em em em em em"
+      "s1 s1 s1 s1 s1 s1"
+      "in in in in in in"
+      "hr hr hr hr hr hr"
+      "nt nt nt rs rs rs"
+      "nt nt nt rd rd rd"
+      "nt nt nt rn rn rn"
+      "bi bi bi bi bi bi"
+      "fc fc fc fc fc fc"
+      "mf mf mf mf mf mf"
+      "mg mg mg mg mg mg"
+      "s2 s2 s2 s2 s2 s2"
+      "dg dg dg dg dg dg"
+      "dt dt dt dt dt dt"
+      "mt mt mt mu mu mu"
+      "ca ca cb cb cc cc"
+      "mx mx mx mx mx mx"
+      "py py py py py py"
+      "s3 s3 s3 s3 s3 s3"
+      "gr gr gr gr gr gr"
+      "nr nr nr nr nr nr"
+      "s4 s4 s4 s4 s4 s4"
+      "hi hi hi hi hi hi"}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto minmax(104px,auto)}
+  body.skin-melange #page-ca > #insights-banner{grid-area:in;margin:0 0 var(--mx-gap)!important}
+  body.skin-melange #page-ca #model-share .ms-frais{margin-bottom:var(--mx-gap)}
+  /* dépenses : 3 par rangée */
+  body.skin-melange #page-ca .kpi-dep-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row;gap:10px}
+  /* Récap : le bénéfice ouvre le résumé, comme à l'ordinateur et au téléphone */
+  body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"]{order:-1}
+  /* Récap « Mois par mois » : la base y coupait les colonnes Bénéfice et Marge (colonnes trop larges) ; ici tout tient */
+  body.skin-melange #page-recap .rc-list{--rc-cols:16px minmax(104px,1.05fr) minmax(70px,1.2fr) minmax(76px,.72fr) minmax(76px,.72fr) minmax(76px,.76fr) 52px}
+  body.skin-melange #page-recap .rc-hd,body.skin-melange #page-recap .rc-mh{column-gap:12px;padding-left:18px;padding-right:18px}
+  /* le bénéfice a sa propre rangée : un peu d'air entre l'étiquette et le chiffre */
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-value{margin-top:22px}
 }
 
-/* ── 5. TÉLÉPHONE (≤ 640 px) : des widgets empilés ─────────────────────── */
+/* ── 5. TÉLÉPHONE (≤ 640 px) : une grille de widgets à 2 colonnes ───────── */
 @media (max-width:640px){
-  body.skin-bento{--mob-nav-h:70px}
-  body.skin-bento .panel{border-radius:22px;padding:16px 18px}
-  body.skin-bento .kpi{border-radius:22px}
+  body.skin-melange{--mob-nav-h:66px;--mx-ico:24px}
+  body.skin-melange .panel{border-radius:20px;padding:15px 16px}
+  body.skin-melange .kpi{border-radius:20px}
+  body.skin-melange #page-ca.active{display:grid;column-gap:10px;row-gap:0;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:
+      "hd hd" "em em" "s1 s1" "in in" "hr hr" "bi bi" "nt rs" "nt rd" "rn rn" "mf mf" "mg mg" "fc fc"
+      "s2 s2" "dg dg" "dt dt"
+      "mt mt" "mu mu" "ca ca" "cb cb" "cc cc" "mx mx" "py py"
+      "s3 s3" "gr gr" "nr nr" "s4 s4" "hi hi"}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto auto minmax(74px,auto)}
+  body.skin-melange #page-ca.active > *{grid-column:1 / -1}
+  body.skin-melange #page-ca.active > .kpi-hero-grid,body.skin-melange #page-ca.active > .g2-tend,
+  body.skin-melange #page-ca.active > #model-share-panel,body.skin-melange #page-ca.active > #model-share-panel > #model-share,
+  body.skin-melange #page-ca.active #model-share > .ms-eq{display:contents}
+  body.skin-melange #page-ca > .dash-header{grid-area:hd}
+  body.skin-melange #page-ca > #empty-state{grid-area:em}
+  body.skin-melange #page-ca > #empty-state + .kpi-sec{grid-area:s1}
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero{grid-area:hr}
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi-net{grid-area:nt}
+  body.skin-melange #page-ca #model-share .ms-res{grid-area:rs}
+  body.skin-melange #page-ca > #ca-entry-panel{grid-area:bi}
+  body.skin-melange #page-ca > #insights-banner{grid-area:in}
+  body.skin-melange #page-ca .g2-tend > #forecast-card{grid-area:fc}
+  body.skin-melange #page-ca > #model-share-panel + .kpi-sec{grid-area:s2}
+  body.skin-melange #page-ca > .kpi-dep-grid{grid-area:dg}
+  body.skin-melange #page-ca > #exp-recap-panel{grid-area:dt}
+  body.skin-melange #page-ca #model-share-panel > .panel-title{grid-area:mt}
+  body.skin-melange #page-ca #model-share-panel > .panel-sub{grid-area:mu}
+  body.skin-melange #page-ca #model-share .ms-c-base{grid-area:ca}
+  body.skin-melange #page-ca #model-share .ms-c-part{grid-area:cb}
+  body.skin-melange #page-ca #model-share .ms-c-paid{grid-area:cc}
+  body.skin-melange #page-ca #model-share .ms-det{grid-area:rd}
+  body.skin-melange #page-ca #model-share .ms-frais{grid-area:mx}
+  body.skin-melange #page-ca #model-share-panel > .ms-noter{grid-area:rn}
+  body.skin-melange #page-ca #model-share-panel > .ms-form{grid-area:mf}
+  body.skin-melange #page-ca #model-share-panel > #mp-msg{grid-area:mg}
+  body.skin-melange #page-ca #model-share .ms-pay{grid-area:py}
+  body.skin-melange #page-ca > .nfr-seul{grid-area:nr}
+  body.skin-melange #page-ca > .nfr-seul + .kpi-sec{grid-area:s3}
+  body.skin-melange #page-ca .g2-tend > .nfg-panel{grid-area:gr}
+  body.skin-melange #page-ca > .g2-tend + .kpi-sec{grid-area:s4}
+  body.skin-melange #page-ca > #hist-panel{grid-area:hi}
+  body.skin-melange #page-ca #model-share .ms-op{display:none}
 
-  /* compact : le gros bouton du mois reste visible au premier écran, même à 360 px */
-  body.skin-bento #page-ca .kpi-hero-grid{gap:8px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi{padding:13px 16px 12px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero{padding:16px 18px 16px}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-ico{display:block;width:24px;height:24px;padding:5px;border-radius:8px}
-  body.skin-bento #page-ca .kpi-hero-grid > .kpi:not(.kpi-hero) .kpi-ico{display:none}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-label{gap:8px;margin-bottom:8px;flex-wrap:nowrap}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-value{margin-top:auto}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{font-size:min(14cqi,44px);letter-spacing:-.05em;line-height:1}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi:not(.kpi-hero) .kpi-value{font-size:min(16cqi,22px)}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-hero .kpi-meta{margin-top:8px}
-  body.skin-bento #page-ca .kpi-hero .kpi-moitie:not([hidden]){margin-top:8px;padding:3px 10px;border-radius:9px}
-  body.skin-bento #page-ca .kpi-dep-grid{gap:10px}
-  body.skin-bento #page-ca .kpi-dep-grid > .kpi{min-height:118px;padding:14px 14px 13px}
-  body.skin-bento #page-ca .kpi-dep-grid .kpi-label::before{width:24px;height:24px;border-radius:8px}
-  body.skin-bento #page-ca .kpi-dep-grid .kpi-value{font-size:21px}
-  body.skin-bento #insights-banner{border-radius:20px!important}
-  body.skin-bento #forecast-card{border-radius:22px!important}
-  body.skin-bento #model-share .ms-eq{border-radius:var(--bn-r-md)}
-  body.skin-bento #model-share .ms-res .ms-c{border-radius:0}
-  body.skin-bento #model-share .ms-res .ms-v{font-size:28px}
-  body.skin-bento #ca-entry-panel.replie .pt-ico{width:28px;height:28px}
-  body.skin-bento #ca-entry-panel.replie > .panel-title{font-size:16px;gap:10px}
-  body.skin-bento #page-ca > .dash-header + .kpi-sec,body.skin-bento #page-ca > .dash-header + #empty-state + .kpi-sec{margin-top:12px}
+  /* rythme : 10 px entre widgets */
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi,body.skin-melange #page-ca #model-share .ms-res,
+  body.skin-melange #page-ca > #ca-entry-panel,body.skin-melange #page-ca > #insights-banner,
+  body.skin-melange #page-ca .g2-tend > .panel,body.skin-melange #page-ca > .kpi-dep-grid,
+  body.skin-melange #page-ca > .nfr-seul,body.skin-melange #page-ca > #hist-panel{margin:0 0 10px!important}
+  body.skin-melange #page-ca .g2-tend > #forecast-card{margin:0 0 10px!important}
+  body.skin-melange #page-ca > .kpi-sec{margin:16px 2px 10px}
+  body.skin-melange #page-ca > .dash-header + .kpi-sec,body.skin-melange #page-ca > .dash-header + #empty-state + .kpi-sec{margin-top:10px}
+
+  /* bénéfice : compact, [chiffre | ta moitié] côte à côte */
+  body.skin-melange #page-ca .kpi-hero-grid .kpi{padding:13px 14px 12px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero{grid-area:hr;padding:14px 16px 13px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi-ico{padding:5px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi-label{gap:8px;margin-bottom:0;flex-wrap:nowrap}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-value{margin-top:12px;font-size:min(13cqi,44px);letter-spacing:-.05em;line-height:.95}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-moitie:not([hidden]){margin:12px 0 0 12px;padding:6px 10px 7px;border-radius:var(--mx-r-sm)}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-moitie b{font-size:16px;margin-top:2px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-meta{margin-top:9px}
+  /* net total et reste à envoyer : deux widgets carrés côte à côte */
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net{display:flex;flex-direction:column;grid-area:nt;min-height:0}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-label .kpi-ico{display:block;position:absolute;top:10px;right:10px;margin:0}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-value{margin-top:10px;font-size:min(14cqi,23px);letter-spacing:-.03em;line-height:1}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-meta{justify-self:auto;margin-top:4px}
+  /* OnlyFans / Telegram : deux pastilles pleines empilées (la couleur dit le canal : pas de point en plus) */
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kpi-nets{display:flex;flex:1 1 auto;flex-direction:column;gap:6px;margin-top:0;padding-top:10px;border-top:0}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn{display:flex;flex:1 1 0;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:space-between;
+    gap:4px;min-height:30px;padding:4px 9px;border-radius:var(--mx-r-sm)}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-l{gap:5px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-l::before{display:block;width:12px;height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-l{flex:1 1 auto;min-width:0;font-size:12px;line-height:18px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-v{font-size:14px;line-height:18px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn > .kpi-delta{display:none}
+  body.skin-melange #page-ca #model-share .ms-res{grid-area:auto;grid-column:rs;grid-row:rs-start / rd-end;display:flex;container-type:inline-size}
+  body.skin-melange #page-ca #model-share .ms-res:not(.ms-res-ok) .ms-c{background-color:var(--bc-b)!important;
+    background-image:linear-gradient(180deg,var(--bc-a) 0,var(--bc-b) 64px)!important}
+  body.skin-melange #page-ca #model-share .ms-det{z-index:2;position:relative;display:flex;flex-direction:column;gap:4px;
+    margin:0 14px 22px;padding-top:8px;font-size:12px;line-height:16px;color:var(--bc-on2,var(--ink-3));background-color:var(--bc-b,transparent)}
+  body.skin-melange #page-ca #model-share .ms-det b{color:var(--bc-on,var(--ink-1))}
+  body.skin-melange #page-ca #model-share .ms-det span + span::before{content:none}
+  body.skin-melange #page-ca #model-share .ms-res .ms-c{position:relative;flex:1;display:flex;flex-direction:column;padding:13px 14px 12px;border-radius:20px;overflow:hidden}
+  body.skin-melange #page-ca #model-share .ms-res .ms-c > *{position:relative;z-index:1}
+  body.skin-melange #page-ca #model-share .ms-res .ms-sg{display:none}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;line-height:1.3}
+  /* son rond en haut à droite du widget : il ne prend pas de place sur la ligne de l'étiquette */
+  body.skin-melange #page-ca #model-share .ms-res .ms-c::before{content:"";position:absolute;z-index:2;top:10px;right:10px;width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;
+    background:color-mix(in srgb,var(--bc-v,var(--ink-1)) 28%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on,var(--ink-1)) 20%,transparent)}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l{padding-right:20px;letter-spacing:.02em}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l,body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child{position:static}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child::after{content:"";position:absolute;z-index:3;top:10px;right:10px;width:var(--mx-ico);height:var(--mx-ico);
+    pointer-events:none;background:var(--bc-on,var(--ink-2));-webkit-mask:var(--ic-envoi) center/12px 12px no-repeat;mask:var(--ic-envoi) center/12px 12px no-repeat}
+  body.skin-melange #page-ca #model-share .ms-res-ok .ms-c::before{background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+  body.skin-melange #page-ca #model-share .ms-res-ok .ms-l > span:last-child::after{background:var(--pos);-webkit-mask-image:var(--ic-ok);mask-image:var(--ic-ok)}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res-perte){grid-template-rows:auto auto auto auto auto auto minmax(92px,auto)}
+  body.skin-melange #page-ca #model-share .ms-res .ms-v{margin-top:10px;font-size:min(14cqi,23px);line-height:1;letter-spacing:-.03em;text-align:left}
+  body.skin-melange #page-ca #model-share .ms-res .ms-s{margin-top:auto;padding:8px 0 0;font-size:12px;line-height:1.35}
+  /* bilan du mois */
+  body.skin-melange #page-ca #ca-entry-panel.replie{display:flex;flex-direction:column;align-items:stretch}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .panel-title{order:0}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .saisie-bascule{order:1;margin-top:12px}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .panel-sub{order:2;margin:10px 0 0;text-align:center;font-size:12.5px}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .saisie-prec{order:3}
+  body.skin-melange #page-ca #ca-entry-panel.replie > .saisie-autre{order:4;align-self:center;width:auto;margin-top:2px}
+  body.skin-melange #ca-entry-panel.replie > .panel-title{font-size:16px;gap:10px}
+  body.skin-melange #page-ca > #insights-banner{margin:-2px 2px 10px!important;padding:0!important;border:0!important;border-radius:0!important;
+    background:transparent!important;box-shadow:none!important}
+  body.skin-melange #page-ca > #insights-banner .ins-it{align-items:center;gap:8px;font-size:13px;line-height:18px}
+  body.skin-melange #page-ca > #insights-banner .ins-ic{width:20px;height:20px}
+  body.skin-melange #page-ca > #insights-banner .ins-ic svg{width:12px;height:12px}
+  body.skin-melange #page-ca > #insights-banner .ins-m{display:inline;color:var(--ink-3)}
+  body.skin-melange #page-ca > #insights-banner .ins-m::before{content:"·";margin:0 6px;color:var(--ink-4)}
+  body.skin-melange #forecast-card{border-radius:20px!important}
+  /* dépenses : des carrés à 2 colonnes */
+  body.skin-melange #page-ca .kpi-dep-grid{gap:10px}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi{min-height:104px;padding:13px 14px 12px}
+  body.skin-melange #page-ca .kpi-dep-grid .kpi-value{font-size:clamp(16px,15cqi,20px)}
+  /* 7 dépenses : la 7e (« Gardé par OnlyFans ») ne reste pas orpheline, elle devient une bande fine pleine largeur */
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi-info.kpi-large{min-height:0;padding:11px 14px;align-items:center}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-label{min-height:0}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-label::before{margin-top:-4px!important}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-label::after{top:-4px}
+  body.skin-melange #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-pct{padding-left:34px}
+  /* part de la modèle : le relevé en liste, le détail et le bouton dessous */
+  body.skin-melange #page-ca #model-share-panel > .panel-title{display:flex;align-items:center;gap:10px;margin:16px 2px 2px;
+    font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  body.skin-melange #page-ca #model-share-panel > .panel-title::before{content:"";flex:0 0 30px;width:30px;height:6px;background:radial-gradient(circle at 3px 3px,var(--todo) 0 3px,transparent 3.5px)}
+  body.skin-melange #page-ca #model-share-panel > .panel-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent 90%)}
+  body.skin-melange #page-ca #model-share-panel > .panel-sub{margin:0 2px 10px 42px;font-size:12px;color:var(--ink-4)}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c{margin:0;background:var(--surf-1);border-top:1px solid var(--line-1);
+    box-shadow:inset 1px 0 0 var(--mx-edge),inset -1px 0 0 var(--mx-edge)}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c-base{border-top:0;border-radius:16px 16px 0 0;box-shadow:inset 0 1px 0 var(--mx-edge),inset 1px 0 0 var(--mx-edge),inset -1px 0 0 var(--mx-edge)}
+  body.skin-melange #page-ca #model-share .ms-eq > .ms-c-paid{border-radius:0 0 16px 16px;box-shadow:inset 0 -1px 0 var(--mx-edge),inset 1px 0 0 var(--mx-edge),inset -1px 0 0 var(--mx-edge)}
+  body.skin-melange #page-ca #model-share .ms-frais{margin:8px 2px 0}
+  body.skin-melange #page-ca #model-share-panel > .ms-noter{width:100%;min-height:48px;margin:0 0 10px}
+  /* « Noter un paiement envoyé » : un bouton plein, à la couleur de la dette qu'il règle (orange ; lavande si trop envoyé ; rouge si perte) */
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-du) > .ms-noter,body.skin-melange #page-ca #model-share-panel:has(.ms-res-trop) > .ms-noter,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-perte) > .ms-noter{color:var(--bc-on);background-color:var(--bc-m);
+    background-image:linear-gradient(155deg,var(--bc-a),var(--bc-b));border:0;box-shadow:var(--mx-lift),0 12px 24px -16px var(--bc-b)}
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-du) > .ms-noter svg,body.skin-melange #page-ca #model-share-panel:has(.ms-res-trop) > .ms-noter svg,
+  body.skin-melange #page-ca #model-share-panel:has(.ms-res-perte) > .ms-noter svg{color:var(--bc-on)}
+  body.skin-melange #page-ca #model-share-panel > .ms-form{margin:0 0 10px;border-radius:18px;background:var(--surf-1)}
+  body.skin-melange #page-ca #model-share .ms-pay{margin:12px 0 0;padding:4px 14px 6px;border-radius:18px;background:var(--surf-1);box-shadow:var(--mx-hl),inset 0 0 0 1px var(--mx-edge)}
+  /* tes bilans */
+  body.skin-melange #hist-panel .txrow{padding:0 12px}
   /* barre d'onglets flottante, en pilule */
-  body.skin-bento #sidebar{left:12px;right:12px;bottom:calc(8px + var(--mob-safe-b));padding:5px 8px;border:1px solid var(--bn-edge-2);border-radius:26px;
+  body.skin-melange #sidebar{left:12px;right:12px;bottom:calc(8px + var(--mob-safe-b));padding:5px 8px;border:1px solid var(--mx-edge-2);border-radius:24px;
     box-shadow:0 18px 40px -16px rgba(0,0,0,.7)}
-  body.skin-bento.light #sidebar{box-shadow:0 14px 34px -16px rgba(16,24,40,.35)}
-  body.skin-bento #sidebar .tab{border-radius:20px}
+  body.skin-melange.light #sidebar{box-shadow:0 14px 34px -16px rgba(16,24,40,.35)}
+  body.skin-melange #sidebar .tab{border-radius:18px}
 }
-
-/* téléphone court (≤ 700 px de haut : iPhone SE, 390 × 660) : le gros bouton du mois doit rester au-dessus
-   de la barre d'onglets → barre posée en bas, pastilles d'icône retirées, « ta moitié » sans cadre */
+/* C9 · petit téléphone (< 375 px) : le choix de période sur UNE rangée (au lieu de 2 × 2), boutons à 12,5 px */
+@media (max-width:374px){
+  body.skin-melange #page-ca #model-share .ms-res .ms-c{padding-left:12px;padding-right:12px}
+  body.skin-melange #page-ca #model-share .ms-res .ms-l{padding-right:22px}
+  body.skin-melange #page-ca #model-share .ms-det{margin-left:12px;margin-right:12px}
+  body.skin-melange #page-ca .period-bar{grid-template-columns:repeat(4,auto);grid-template-rows:auto auto;overflow-x:auto;scrollbar-width:none}
+  body.skin-melange #page-ca .period-bar::-webkit-scrollbar{display:none}
+  body.skin-melange #page-ca .period-bar::before{grid-area:1/1/2/-1}
+  body.skin-melange #page-ca .period-bar > .pbtn{grid-row:1;padding:0 6px!important;font-size:12.5px;margin:3px 0}
+  body.skin-melange #page-ca .period-bar > .pbtn:nth-child(1){grid-area:1/1;margin:3px 0 3px 3px}
+  body.skin-melange #page-ca .period-bar > .pbtn:nth-child(2){grid-area:1/2;margin:3px 0}
+  body.skin-melange #page-ca .period-bar > .pbtn:nth-child(3){grid-area:1/3;margin:3px 0}
+  body.skin-melange #page-ca .period-bar > .pbtn:nth-child(4){grid-area:1/4;margin:3px 3px 3px 0}
+  body.skin-melange #page-ca .period-bar > div{grid-area:2/1/3/-1}
+}
+/* téléphone court (≤ 700 px de haut) : la barre d'onglets se pose en bas, la pastille du bénéfice disparaît */
 @media (max-width:640px) and (max-height:700px){
-  body.skin-bento{--mob-nav-h:62px}
-  body.skin-bento #sidebar{left:0;right:0;bottom:0;border-radius:22px 22px 0 0;border-bottom:0;padding-bottom:calc(5px + var(--mob-safe-b))}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi-hero .kpi-ico,body.skin-bento #ca-entry-panel.replie .pt-ico{display:none}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{font-size:min(13cqi,40px)}
-  body.skin-bento #page-ca .kpi-hero .kpi-moitie:not([hidden]),
-  body.skin-bento #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-moitie:not([hidden]){padding:0;background:none;box-shadow:none}
-  body.skin-bento #page-ca .kpi-hero-grid .kpi.kpi-net{padding:12px 16px}
+  body.skin-melange{--mob-nav-h:60px}
+  body.skin-melange #sidebar{left:0;right:0;bottom:0;border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:calc(4px + var(--mob-safe-b))}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-value{font-size:min(12cqi,40px)}
+  body.skin-melange #page-ca > .dash-header + .kpi-sec,body.skin-melange #page-ca > .dash-header + #empty-state + .kpi-sec{margin-top:6px;margin-bottom:8px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero{padding:12px 16px 11px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-value{margin-top:10px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-meta{margin-top:8px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net{padding-top:12px;padding-bottom:11px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-value{margin-top:8px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kpi-nets{padding-top:8px}
 }
 
-/* ── 6. RÉCAP : un bento en tête (bénéfice en grande tuile) ─────────────── */
-body.skin-bento #page-recap .rc-sc{
-  background-image:radial-gradient(120% 110% at 100% 0%,color-mix(in srgb,var(--rc-c,var(--ink-3)) 9%,transparent),transparent 62%)}
-body.skin-bento #page-recap .rc-sc[style*="acc-txt"]{background-color:var(--bn-hero-b);
-  background-image:radial-gradient(70% 90% at 100% 100%,color-mix(in srgb,var(--acc) 55%,transparent),transparent 70%),
-    linear-gradient(150deg,var(--bn-hero-a) 0%,var(--bn-hero-b) 52%,var(--bn-hero-c) 100%);
-  border-color:color-mix(in srgb,var(--acc) 40%,transparent);box-shadow:var(--bn-sh-hero)}
-body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-sl,body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-ss{color:var(--bn-on-2)}
-body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-si svg{color:var(--bn-on)}
-body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-sv{color:var(--bn-on)!important}
-body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-moitie{color:var(--bn-on-2)}
-body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-moitie b{color:var(--bn-on)}
-body.skin-bento #page-recap .rc-sv{font-variant-numeric:tabular-nums}
-body.skin-bento #page-recap .rc-sc[style*="pos"],body.skin-bento #page-recap .rc-sc[style*="neg"],body.skin-bento #page-recap .rc-sc[style*="warn"]{
-  background-image:radial-gradient(120% 110% at 100% 0%,color-mix(in srgb,var(--ink-1) 4%,transparent),transparent 62%)}
-@media (min-width:1100px){
-  /* 4 colonnes : net | dépenses | BÉNÉFICE (2 x 2) — marge sous les deux premiers */
-  body.skin-bento #page-recap .rc-sum{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto auto;gap:var(--bn-gap);margin-bottom:var(--bn-gap)}
-  body.skin-bento #page-recap .rc-sc{display:flex;flex-direction:column;min-height:128px;padding:20px 22px}
-  body.skin-bento #page-recap .rc-sc .rc-sv{margin-top:auto;padding-top:14px}
-  body.skin-bento #page-recap .rc-sc[style*="acc-txt"]{grid-column:3 / span 2;grid-row:1 / span 2;padding:26px 28px;container-type:inline-size}
-  body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-sv{font-size:min(17cqi,84px);letter-spacing:-.055em;line-height:.92}
-  body.skin-bento #page-recap .rc-sc[style*="acc-txt"] .rc-ss{margin-top:12px;font-size:13px}
-  body.skin-bento #page-recap .rc-sc:last-child:not([style*="acc-txt"]){grid-column:1 / span 2}
-  body.skin-bento #page-recap .rc-sc:not([style*="acc-txt"]):not(:last-child) .rc-ss{min-height:40px}
-  body.skin-bento #page-recap .rc-sc:last-child:not([style*="acc-txt"]) .rc-sv{font-size:32px}
-  /* comparaison du mois : 4 mini-tuiles */
-  body.skin-bento #page-recap .rc-cmp{gap:12px;margin-top:4px}
-  body.skin-bento #page-recap .rc-cmpi,body.skin-bento #page-recap .rc-cmpi:first-child{padding:16px 18px;border:0;border-radius:var(--bn-r-md);background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--bn-edge)}
-}
-
-/* ── 7. CONNEXION : une tuile de marque + le formulaire, sur un fond en mosaïque ── */
-body.skin-bento #login-overlay::before{content:"";position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;
-  border-radius:30px;pointer-events:none;z-index:0;background:var(--bn-mo-1);
-  box-shadow:
-    -166px -166px 0 var(--bn-mo-2),0 -166px 0 var(--bn-mo-1),166px -166px 0 var(--bn-mo-1),
-    -166px 0 0 var(--bn-mo-1),166px 0 0 var(--bn-mo-1),
-    -166px 166px 0 var(--bn-mo-1),0 166px 0 var(--bn-mo-1),166px 166px 0 var(--bn-mo-3),
-    -332px -332px 0 var(--bn-mo-0),-166px -332px 0 var(--bn-mo-0),0 -332px 0 var(--bn-mo-0),166px -332px 0 var(--bn-mo-0),332px -332px 0 var(--bn-mo-0),
-    -332px -166px 0 var(--bn-mo-0),332px -166px 0 var(--bn-mo-4),
-    -332px 0 0 var(--bn-mo-0),332px 0 0 var(--bn-mo-0),
-    -332px 166px 0 var(--bn-mo-4),332px 166px 0 var(--bn-mo-0),
-    -332px 332px 0 var(--bn-mo-0),-166px 332px 0 var(--bn-mo-0),0 332px 0 var(--bn-mo-0),166px 332px 0 var(--bn-mo-0),332px 332px 0 var(--bn-mo-0)}
-body.skin-bento:not(.light) #login-overlay{--bn-mo-0:color-mix(in srgb,var(--ink-1) 1.6%,transparent);--bn-mo-1:color-mix(in srgb,var(--ink-1) 3.2%,transparent);
-  --bn-mo-2:color-mix(in srgb,var(--acc) 14%,transparent);--bn-mo-3:color-mix(in srgb,var(--todo) 9%,transparent);--bn-mo-4:color-mix(in srgb,var(--acc) 6%,transparent)}
-body.skin-bento.light #login-overlay{--bn-mo-0:color-mix(in srgb,var(--surf-1) 32%,transparent);--bn-mo-1:color-mix(in srgb,var(--surf-1) 62%,transparent);
-  --bn-mo-2:color-mix(in srgb,var(--acc) 11%,transparent);--bn-mo-3:color-mix(in srgb,var(--todo) 10%,transparent);--bn-mo-4:color-mix(in srgb,var(--acc) 5%,transparent)}
-body.skin-bento #login-overlay #login-box{z-index:1;width:min(400px,100%);padding:16px 16px 20px;border-radius:30px;border-color:var(--bn-edge-2);
-  box-shadow:var(--bn-hl),0 40px 80px -30px rgba(0,0,0,.75)}
-body.skin-bento.light #login-overlay #login-box{box-shadow:var(--bn-hl),0 30px 60px -30px rgba(16,24,40,.3)}
-body.skin-bento #login-overlay .login-logo{position:relative;overflow:hidden;width:100%;height:136px;margin:0 0 22px;padding:18px 20px;box-sizing:border-box;
-  justify-content:flex-start;align-items:flex-end;border-radius:22px;font-size:40px;letter-spacing:.01em;line-height:1;
-  background-color:var(--bn-hero-b);
-  background-image:radial-gradient(70% 120% at 100% 100%,color-mix(in srgb,var(--acc) 60%,transparent),transparent 70%),
-    linear-gradient(150deg,var(--bn-hero-a) 0%,var(--bn-hero-b) 52%,var(--bn-hero-c) 100%);
-  box-shadow:var(--bn-sh-hero)}
-body.skin-bento #login-overlay .login-logo::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle at 100% 120%,transparent 0 30%,var(--bn-on-line) 30.3% 30.8%,transparent 31.1% 46%,
-    color-mix(in srgb,var(--acc-ink) 13%,transparent) 46.3% 46.7%,transparent 47% 62%,color-mix(in srgb,var(--acc-ink) 8%,transparent) 62.3% 62.6%,transparent 62.9%)}
-body.skin-bento #login-overlay #login-box h2,body.skin-bento #login-overlay #login-box p,body.skin-bento #login-box .lg-f,
-body.skin-bento #login-overlay #login-btn,body.skin-bento #login-box .lg-foot,body.skin-bento #login-overlay #login-error{margin-left:12px;margin-right:12px}
-body.skin-bento #login-overlay #login-box h2{font-size:22px}
-body.skin-bento #login-overlay #login-ident,body.skin-bento #login-overlay #login-input{height:48px;border-radius:14px;font-size:15px}
-body.skin-bento #login-overlay #login-btn{width:calc(100% - 24px);min-height:50px;border-radius:14px;font-size:15px}
-body.skin-bento #login-box .lg-foot{border-top-color:var(--line-1)}
-body.skin-bento.light #page-recap .rc-sc:not([style*="acc-txt"]){
-  background-image:radial-gradient(120% 110% at 100% 0%,color-mix(in srgb,var(--acc) 4%,transparent),transparent 62%)}
+/* ── 6. RÉCAP : tout le résumé sur une rangée (bénéfice violet, net bleu), la comparaison à côté du graphique ── */
+body.skin-melange #page-recap .rc-sc{background-image:none}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-sl,body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-ss,
+body.skin-melange #page-recap .rc-sum > .rc-sc:first-child .rc-sl,body.skin-melange #page-recap .rc-sum > .rc-sc:first-child .rc-ss{color:var(--bc-on2)!important}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-sv,body.skin-melange #page-recap .rc-sum > .rc-sc:first-child .rc-sv{color:var(--bc-on)!important}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-moitie,body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-avant,
+body.skin-melange #page-recap .rc-sum > .rc-sc:first-child .rc-nw{color:var(--bc-on2)!important}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-moitie b{color:var(--bc-on)!important}
+/* « dont ta moitié » : la même pastille de verre qu'à l'accueil (un fond, jamais un filter : le flou de l'œil reste entier) */
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-moitie{display:block;width:max-content;max-width:100%;margin-top:8px;padding:6px 12px 7px;
+  border-radius:var(--mx-r-sm);background:color-mix(in srgb,var(--bc-v) 20%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 18%,transparent)}
+/* les icônes du résumé dans des ronds (même taille que l'accueil) */
+body.skin-melange #page-recap .rc-si{display:inline-flex;flex:none;align-items:center;justify-content:center;width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;
+  background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+body.skin-melange #page-recap .rc-si svg{display:block;margin:0;width:14px;height:14px}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-si,body.skin-melange #page-recap .rc-sum > .rc-sc:first-child .rc-si{
+  background:color-mix(in srgb,var(--bc-v) 22%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 24%,transparent)}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] .rc-si svg,body.skin-melange #page-recap .rc-sum > .rc-sc:first-child .rc-si svg{color:var(--bc-on)}
+body.skin-melange #page-recap .rc-sl{gap:10px}
+body.skin-melange #page-recap .rc-sv,body.skin-melange #page-recap .rc-mp{font-variant-numeric:tabular-nums}
+/* le bénéfice : deux cercles discrets, comme à l'accueil */
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"]{position:relative;overflow:hidden}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"]::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 100% 0%,transparent 0 22%,color-mix(in srgb,var(--bc-on) 20%,transparent) 22.3% 22.7%,transparent 23% 36%,
+    color-mix(in srgb,var(--bc-on) 11%,transparent) 36.3% 36.6%,transparent 36.9%)}
+body.skin-melange #page-recap .rc-sum > .rc-sc[style*="acc-txt"] > *{position:relative;z-index:1}
 @media (max-width:640px){
-  body.skin-bento #login-overlay::before{transform:scale(.72)}
-  body.skin-bento #login-overlay #login-box{padding:14px 14px 18px}
-  body.skin-bento #login-overlay #login-ident,body.skin-bento #login-overlay #login-input{font-size:16px}
+  /* le résultat d'abord (bénéfice | marge), puis l'argent (net | dépenses) */
+  body.skin-melange #page-recap .rc-sc[style*="acc-txt"]{order:-2}
+  body.skin-melange #page-recap .rc-sc[style*="pos"],body.skin-melange #page-recap .rc-sc[style*="neg"],
+  body.skin-melange #page-recap .rc-sc[style*="warn"]{order:-1}
+  body.skin-melange #page-recap .rc-sc{border-radius:20px}
+  body.skin-melange #page-recap .rc-si{width:24px;height:24px}
 }
-@media (prefers-reduced-motion:no-preference){
-  body.skin-bento #login-overlay #login-box{animation:bento-monte .5s var(--ease) both}
-  body.skin-bento #page-ca.active .kpi,body.skin-bento #page-ca.active > .panel,body.skin-bento #page-ca.active .g2-tend > .panel{animation:bento-monte .45s var(--ease) both}
-  body.skin-bento #page-ca.active .kpi-hero-grid > .kpi-net{animation-delay:50ms}
-}
-@keyframes bento-monte{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
-
-/* ══════ style « bento-pro » : uniquement sous body.skin-bento-pro ══════ */
-/* ═══ NOCTRA FINANCE — STYLE « BENTO PRO » : le Bento affiné ═══
-   Même esprit que le Bento (grille de tuiles, grands rayons, widgets au téléphone), mais chaque tuile
-   est taillée à son contenu : mêmes gouttières (16 px), mêmes rayons (22 / 14 px), mêmes marges
-   intérieures (24 px), plus de grands vides. Teintes sobres : tuiles neutres, la couleur ne vit que
-   dans les pastilles de poste ; violet plein pour le bénéfice, orange pour « Reste à envoyer ».
-   Tout est préfixé body.skin-bento-pro : sans la classe, rien ne change. */
-
-/* ── 0. JETONS ─────────────────────────────────────────────────────────── */
-body.skin-bento-pro{
-  --bp-r:22px; --bp-r-md:14px; --bp-r-sm:12px; --bp-r-xs:10px;
-  --bp-gap:16px; --bp-pad:24px;
-  --bp-hero-a:color-mix(in srgb,var(--acc) 82%,#000);
-  --bp-hero-b:color-mix(in srgb,var(--acc) 64%,#000);
-  --bp-hero-c:color-mix(in srgb,var(--acc) 46%,#000);
-  /* le violet du bénéfice : une lumière douce en haut à droite, plus profond en bas à gauche */
-  --bp-hero-img:radial-gradient(90% 80% at 100% 0%,color-mix(in srgb,var(--acc-ink) 13%,transparent),transparent 60%),
-    radial-gradient(80% 70% at 0% 100%,color-mix(in srgb,var(--bp-hero-c) 80%,transparent),transparent 70%),
-    linear-gradient(145deg,var(--bp-hero-a) 0%,var(--bp-hero-b) 55%,var(--bp-hero-c) 100%);
-  --bp-on:var(--acc-ink);
-  --bp-on-2:color-mix(in srgb,var(--acc-ink) 86%,transparent);
-  --bp-on-glass:color-mix(in srgb,var(--acc-ink) 14%,transparent);
-  --bp-on-line:color-mix(in srgb,var(--acc-ink) 22%,transparent);
-}
-body.skin-bento-pro:not(.light){
-  --bg-0:#0a0a0d; --bg-1:#0e0e12; --inset:#0f1014; --field:#0f1014;
-  --surf-1:#141519; --surf-2:#1b1c21; --surf-3:#222329;
-  --line-1:#202126; --line-2:#2a2b31; --line-3:#3b3d45;
-  --bp-well:#1a1b20;
-  --bp-well-2:#202127;
-  --bp-edge:rgba(255,255,255,.065);
-  --bp-edge-2:rgba(255,255,255,.1);
-  --bp-hl:inset 0 1px 0 rgba(255,255,255,.045);
-  --bp-sh:0 1px 2px rgba(0,0,0,.4),0 14px 32px -20px rgba(0,0,0,.9);
-  --bp-sh-hero:inset 0 1px 0 rgba(255,255,255,.18),0 24px 50px -28px color-mix(in srgb,var(--acc) 75%,transparent);
-  --bp-todo-bg:color-mix(in srgb,var(--todo) 5%,var(--surf-1));
-  --bp-todo-line:color-mix(in srgb,var(--todo) 40%,transparent);
-  --bp-todo-ink:var(--todo);
-  --bp-hatch:color-mix(in srgb,var(--ink-1) 3.5%,transparent);
-  --mob-nav-bg:color-mix(in srgb,var(--surf-2) 84%,transparent);
-}
-body.skin-bento-pro.light{
-  --bg-0:#f2f2f6; --bg-1:#f7f7fa; --inset:#f4f4f7; --field:#ffffff;
-  --surf-1:#ffffff; --surf-2:#f4f4f7; --surf-3:#ffffff;
-  --line-1:#ebebf0; --line-2:#dfdfe6; --line-3:#c8c8d2;
-  --bp-well:#f6f6f9;
-  --bp-well-2:#efeff3;
-  --bp-edge:rgba(20,20,40,.07);
-  --bp-edge-2:rgba(20,20,40,.11);
-  --bp-hl:inset 0 1px 0 rgba(255,255,255,.9);
-  --bp-sh:0 1px 2px rgba(20,20,40,.05),0 12px 30px -18px rgba(20,20,40,.18);
-  --bp-sh-hero:inset 0 1px 0 rgba(255,255,255,.22),0 20px 40px -24px color-mix(in srgb,var(--acc) 70%,transparent);
-  --bp-todo-bg:color-mix(in srgb,var(--todo) 7%,var(--surf-1));
-  --bp-todo-line:color-mix(in srgb,var(--todo) 26%,transparent);
-  --bp-todo-ink:color-mix(in srgb,var(--todo) 90%,var(--ink-1));
-  --bp-hatch:color-mix(in srgb,var(--ink-1) 3.5%,transparent);
-  --mob-nav-bg:color-mix(in srgb,var(--surf-1) 88%,transparent);
-}
-body.skin-bento-pro:not(.light),body.skin-bento-pro.light{background-color:var(--bg-0)}
-body.skin-bento-pro:not(.light){background-image:radial-gradient(1200px 560px at 20% -12%,color-mix(in srgb,var(--acc) 8%,transparent),transparent 70%);background-attachment:fixed}
-body.skin-bento-pro.light{background-image:radial-gradient(1200px 560px at 20% -12%,color-mix(in srgb,var(--acc) 6%,transparent),transparent 70%);background-attachment:fixed}
-
-/* ── 1. LA TUILE (toutes les pages) ────────────────────────────────────── */
-body.skin-bento-pro .panel,
-body.skin-bento-pro .kpi,
-body.skin-bento-pro #page-recap .rc-sc{border-radius:var(--bp-r);border:1px solid var(--bp-edge);box-shadow:var(--bp-hl),var(--bp-sh)}
-body.skin-bento-pro .panel,body.skin-bento-pro .kpi:not(.kpi-hero){background-image:none}
-body.skin-bento-pro .kpi-hero-grid .kpi:not(.kpi-hero),body.skin-bento-pro .kpi-dep-grid .kpi{border-color:var(--bp-edge);border-top-color:var(--bp-edge)!important}
-body.skin-bento-pro .kpi::after{display:none}
-body.skin-bento-pro #insights-banner,body.skin-bento-pro #forecast-card{border-radius:var(--bp-r)!important;border:1px solid var(--bp-edge)!important;box-shadow:var(--bp-hl),var(--bp-sh)}
-body.skin-bento-pro .panel-title{font-size:16px;font-weight:600;letter-spacing:-.015em}
-body.skin-bento-pro .kpi-sec{font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--ink-3)}
-body.skin-bento-pro .kpi-sec::before{content:"";flex:none;width:6px;height:6px;border-radius:2px;background:var(--acc)}
-body.skin-bento-pro .kpi-sec::after{background:linear-gradient(90deg,var(--line-2),transparent 80%)}
-/* boutons : un seul rayon (12), le bouton principal à 14 */
-body.skin-bento-pro .btn-sec,body.skin-bento-pro .export-dropdown-btn,body.skin-bento-pro .icon-btn,
-body.skin-bento-pro #exp-recap .dd-b,body.skin-bento-pro #forecast-card .fc-obj,body.skin-bento-pro #hist-panel .tx-tous,
-body.skin-bento-pro #hist-pagination button,body.skin-bento-pro #page-recap .rc-exp,body.skin-bento-pro #page-editlog .hl-btn,
-body.skin-bento-pro #page-editlog .hl-more,body.skin-bento-pro #model-share-panel .ms-annuler,body.skin-bento-pro #edit-banner .eb-x,
-body.skin-bento-pro #hist-panel .tx-mod,body.skin-bento-pro #hist-panel .tx-a,body.skin-bento-pro #hist-panel .tx-misc-b{border-radius:var(--bp-r-sm)}
-body.skin-bento-pro .sbtn,body.skin-bento-pro #confirm-yes,body.skin-bento-pro #empty-state .es-b,body.skin-bento-pro #page-editlog .hl-btn.pri,
-body.skin-bento-pro #bilan-dlg .bd-b,body.skin-bento-pro #ca-entry-panel.replie > .saisie-bascule,body.skin-bento-pro #model-share-panel .ms-noter,
-body.skin-bento-pro #model-share-panel .ms-add,body.skin-bento-pro #page-recap .rc-fix,body.skin-bento-pro .abtn{border-radius:14px}
-body.skin-bento-pro .sbtn,body.skin-bento-pro #ca-entry-panel.replie > .saisie-bascule,body.skin-bento-pro #empty-state .es-b,body.skin-bento-pro #confirm-yes{
-  background-image:linear-gradient(180deg,color-mix(in srgb,var(--acc-ink) 10%,transparent),transparent 70%);
-  box-shadow:var(--hl-acc),0 8px 20px -12px color-mix(in srgb,var(--acc) 80%,transparent)}
-body.skin-bento-pro .ifield,body.skin-bento-pro input[type=date],body.skin-bento-pro #cdate-start,body.skin-bento-pro #cdate-end,
-body.skin-bento-pro #hist-search,body.skin-bento-pro #monthly-goal,body.skin-bento-pro #discord-webhook{border-radius:var(--bp-r-sm)!important}
-/* segments (périodes, Liste/Tableau, filtres) : une pilule, l'onglet actif en pastille blanche/claire */
-body.skin-bento-pro #page-recap .rc-switch,body.skin-bento-pro #page-editlog .hl-chips{border-radius:999px;padding:3px}
-body.skin-bento-pro .pbtn,body.skin-bento-pro #page-recap .rc-sw,body.skin-bento-pro #page-editlog .hl-chip{border-radius:999px}
-body.skin-bento-pro .pbtn.active,body.skin-bento-pro #page-recap .rc-sw.on,body.skin-bento-pro #page-editlog .hl-chip.on{
-  background:var(--surf-3);color:var(--acc-txt);box-shadow:0 0 0 1px var(--bp-edge-2),0 2px 8px -2px rgba(0,0,0,.4)}
-body.skin-bento-pro.light .pbtn.active,body.skin-bento-pro.light #page-recap .rc-sw.on,body.skin-bento-pro.light #page-editlog .hl-chip.on{
-  background:var(--surf-1);box-shadow:0 0 0 1px var(--bp-edge),0 2px 6px -2px rgba(20,20,40,.16)}
-/* menus et fenêtres : des tuiles flottantes */
-body.skin-bento-pro .export-menu,body.skin-bento-pro #gsearch-box,body.skin-bento-pro #confirm-box,body.skin-bento-pro #quickadd-box{border-radius:20px}
-body.skin-bento-pro #bilan-dlg .bd-box{border-radius:26px;border-color:var(--bp-edge-2);padding:26px 26px 22px;
-  box-shadow:var(--bp-hl),0 40px 80px -30px rgba(0,0,0,.8)}
-body.skin-bento-pro.light #bilan-dlg .bd-box{box-shadow:var(--bp-hl),0 30px 60px -28px rgba(20,20,40,.3)}
-body.skin-bento-pro #bilan-dlg .bd-ico{width:44px;height:44px;border-radius:14px}
-body.skin-bento-pro #bilan-dlg .bd-d{border-radius:14px}
-body.skin-bento-pro #bilan-dlg .bd-b{min-height:44px;border-radius:14px}
-body.skin-bento-pro #bilan-dlg .bd-box.bd-style .bd-b:not(.ghost){border-radius:16px}
-/* en-tête ordinateur : l'état « Tout est enregistré » en pastille ; les icônes de l'en-tête alignées (thème, style, œil…) */
-@media (min-width:641px){
-  body.skin-bento-pro .dash > .topbar .tb-etat-ordi{min-height:36px;padding:0 14px 0 11px;border-radius:999px;background:var(--surf-1);
-    box-shadow:inset 0 0 0 1px var(--bp-edge-2)}
-  body.skin-bento-pro .dash > .topbar .tb-etat-ordi.ko{background:color-mix(in srgb,var(--neg) 8%,var(--surf-1));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 30%,transparent)}
-  body.skin-bento-pro .dash > .topbar .icon-btn{width:36px;min-width:36px;height:36px;min-height:36px;padding:0;border-radius:var(--bp-r-sm)}
-}
-@media (min-width:769px){
-  body.skin-bento-pro .sidebar .tab{border-radius:16px}
-  body.skin-bento-pro .side-mark{border-radius:12px}
-  body.skin-bento-pro #page-ca .period-bar::before{border-radius:999px;background:var(--surf-2)}
-  body.skin-bento-pro #page-ca .period-bar > .pbtn{margin:3px 0 3px 3px}
-  body.skin-bento-pro #page-ca .period-bar > .pbtn:nth-child(4){margin-right:3px}
-}
-
-/* ── 2. ACCUEIL : LE DESSIN DES TUILES (toutes tailles) ─────────────────── */
-/* 2a. Bénéfice : violet plein de la marque ; le chiffre et « dont ta moitié » se lisent ensemble */
-body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi-hero:not(:has(#vpr.neg)){
-  background-color:var(--bp-hero-b);background-image:var(--bp-hero-img);
-  border-color:color-mix(in srgb,var(--acc) 44%,transparent);box-shadow:var(--bp-sh-hero);color:var(--bp-on)}
-body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi-hero:not(:has(#vpr.neg)):hover{border-color:color-mix(in srgb,var(--acc) 64%,transparent)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-label{color:var(--bp-on-2)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-label .tip-icon{color:color-mix(in srgb,var(--acc-ink) 72%,transparent)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-ico{color:var(--bp-on);background:var(--bp-on-glass);box-shadow:inset 0 0 0 1px var(--bp-on-line)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) #vpr{color:var(--bp-on)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-pct{color:var(--bp-on-2)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .pill-encours,
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kd,
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-delta,
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-apercu{color:var(--bp-on);background:var(--bp-on-glass);box-shadow:inset 0 0 0 1px var(--bp-on-line);border-color:transparent}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .pill-encours svg,
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-delta svg{color:var(--bp-on)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-moitie{color:var(--bp-on-2)}
-body.skin-bento-pro #page-ca .kpi-hero:not(:has(#vpr.neg)) .kpi-moitie b{color:var(--bp-on)}
-/* l'ordre de lecture : le chiffre, sa moitié juste dessous, puis l'état (en cours, marge) */
-body.skin-bento-pro #page-ca .kpi-hero > .kpi-value{order:1}
-body.skin-bento-pro #page-ca .kpi-hero > .kpi-moitie{order:2}
-body.skin-bento-pro #page-ca .kpi-hero > .kpi-meta{order:3}
-body.skin-bento-pro #page-ca .kpi-hero .kpi-moitie:not([hidden]){display:block;margin-top:10px;padding:0;background:none;box-shadow:none;font-size:15px;line-height:1.35;letter-spacing:-.005em}
-body.skin-bento-pro #page-ca .kpi-hero .kpi-moitie b{font-weight:650;font-variant-numeric:tabular-nums}
-body.skin-bento-pro #page-ca .kpi-hero #vpr{font-variant-numeric:tabular-nums}
-/* bénéfice négatif : la tuile redevient neutre, chiffre rouge (sens conservé) */
-body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi-hero:has(#vpr.neg){background-color:var(--surf-1);background-image:none;
-  border-color:color-mix(in srgb,var(--neg) 36%,transparent);box-shadow:var(--bp-hl),var(--bp-sh),inset 0 0 0 1px color-mix(in srgb,var(--neg) 10%,transparent)}
-body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi{container-type:inline-size}
-
-/* 2b. pastilles d'icône des tuiles du haut */
-body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-ico{display:block;box-sizing:border-box;width:32px;height:32px;padding:8px;border-radius:var(--bp-r-xs);
-  color:var(--ink-2);background:var(--bp-well-2);box-shadow:inset 0 0 0 1px var(--bp-edge)}
-body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-label{gap:10px;align-items:center}
-
-/* 2c. Net total : neutre ; OnlyFans et Telegram repérés par le point de leur canal */
-body.skin-bento-pro #page-ca .kpi-net .kpi-value,body.skin-bento-pro #page-ca .kpi-net .kn-v{font-variant-numeric:tabular-nums}
-body.skin-bento-pro #page-ca .kpi-net .kn-l{display:flex;align-items:center;gap:8px}
-body.skin-bento-pro #page-ca .kpi-net .kn-l::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--c-info)}
-body.skin-bento-pro #page-ca .kpi-net .kn:has(#vn) .kn-l::before{background:var(--m-tg)}
-
-/* 2d. Dépenses : tuiles neutres, la couleur du poste dans une pastille nette */
-body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi{background-color:var(--surf-1);background-image:none}
-body.skin-bento-pro #page-ca .kpi-dep-grid .kpi-label::before{width:28px;height:28px;border-radius:9px;margin-top:-6px!important;
-  background:radial-gradient(circle,var(--kc) 0 4px,transparent 4.6px),color-mix(in srgb,var(--kc) 15%,var(--surf-1));
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--kc) 26%,transparent)}
-body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi .kpi-label{gap:10px}
-body.skin-bento-pro #page-ca .kpi-dep-grid .kpi-value{font-variant-numeric:tabular-nums}
-body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi.kpi-total:not(.kpi-info){--kc:var(--ink-2);background-color:var(--bp-well)}
-/* gardé par OnlyFans : une info, pas une dépense → tuile hachurée, sans ombre */
-body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info{background-color:transparent;
-  background-image:repeating-linear-gradient(135deg,transparent 0 9px,var(--bp-hatch) 9px 10px);
-  border:1px dashed var(--line-2)!important;box-shadow:none}
-body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info .kpi-label::before{--kc:var(--ink-4)}
-
-/* 2e. Bandeau « en cours », bilan du mois */
-body.skin-bento-pro #insights-banner{background-color:var(--surf-1)!important;background-image:none!important;padding:16px 20px!important}
-body.skin-bento-pro #insights-banner .ins-ic{width:36px;height:36px;border-radius:var(--bp-r-xs);background:var(--bp-well-2);box-shadow:inset 0 0 0 1px var(--bp-edge)}
-body.skin-bento-pro #ca-entry-panel{background-image:none}
-body.skin-bento-pro #ca-entry-panel.replie .pt-ico{display:inline-flex;align-items:center;justify-content:center;flex:none;width:32px;height:32px;
-  border-radius:var(--bp-r-xs);color:var(--acc-txt);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
-body.skin-bento-pro #ca-entry-panel.replie > .panel-title{font-size:17px;gap:12px}
-
-/* 2f. Part de la modèle : un relevé calme, « Reste à envoyer » en tuile accent */
-body.skin-bento-pro #model-share .ms-v{font-variant-numeric:tabular-nums}
-body.skin-bento-pro #model-share .ms-res .ms-c{border-radius:var(--bp-r-md)}
-body.skin-bento-pro #model-share .ms-res-du .ms-c{background:var(--bp-todo-bg);box-shadow:inset 0 0 0 1px var(--bp-todo-line),0 16px 34px -26px color-mix(in srgb,var(--todo) 70%,transparent)}
-body.skin-bento-pro.light #model-share .ms-res-du .ms-c{box-shadow:inset 0 0 0 1px var(--bp-todo-line),0 10px 24px -20px color-mix(in srgb,var(--todo) 55%,transparent)}
-/* un point orange devant « Reste à envoyer » : il reste quelque chose à faire */
-body.skin-bento-pro #model-share .ms-res-du .ms-l > span:last-child{display:inline-flex;align-items:center;gap:10px}
-body.skin-bento-pro #model-share .ms-res-du .ms-l > span:last-child::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;
-  background:var(--todo);box-shadow:0 0 0 3px color-mix(in srgb,var(--todo) 22%,transparent)}
-body.skin-bento-pro #model-share .ms-res-du .ms-l,body.skin-bento-pro #model-share .ms-res-du .ms-sg,body.skin-bento-pro #model-share .ms-res-du .ms-s{color:var(--bp-todo-ink)}
-body.skin-bento-pro #model-share .ms-res-du .ms-v{color:var(--todo)}
-body.skin-bento-pro #model-share .ms-res-perte .ms-c{background:color-mix(in srgb,var(--neg) 8%,var(--surf-1));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 28%,transparent)}
-body.skin-bento-pro #model-share .ms-res-ok .ms-c,body.skin-bento-pro #model-share .ms-res-trop .ms-c{background:var(--bp-well);box-shadow:inset 0 0 0 1px var(--bp-edge-2)}
-body.skin-bento-pro #model-share .ms-pay-n{border-radius:999px}
-body.skin-bento-pro #model-share .ms-pr{border-radius:var(--bp-r-sm)}
-body.skin-bento-pro #page-editlog details.hl-sos{border-radius:var(--bp-r);border-color:var(--bp-edge);box-shadow:var(--bp-hl),var(--bp-sh)}
-
-/* 2g. Répartition, graphique, projection, bilans */
-body.skin-bento-pro #bars .nfr-barre{height:12px;gap:3px;border-radius:999px}
-body.skin-bento-pro #bars .nfr-barre i{border-radius:999px}
-body.skin-bento-pro #bars .nfr-pt{width:10px;height:10px;border-radius:50%}
-body.skin-bento-pro #bars .nfr-l{grid-template-columns:10px minmax(0,1fr) auto}
-body.skin-bento-pro #page-ca .nfg-panel{background-image:none}
-body.skin-bento-pro #forecast-card{background-color:var(--surf-1)!important;background-image:none!important}
-body.skin-bento-pro #forecast-card #forecast-val{font-size:32px;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
-body.skin-bento-pro #forecast-card > div:has(> #forecast-bar){height:8px!important}
-body.skin-bento-pro #forecast-card #forecast-bar{height:8px!important;background-image:linear-gradient(90deg,var(--acc-btn),var(--acc))!important}
-body.skin-bento-pro #exp-recap .dd-l{border-radius:var(--bp-r);border-color:var(--bp-edge);box-shadow:var(--bp-hl),var(--bp-sh)}
-/* Tes bilans : chaque bilan devient une petite tuile */
-body.skin-bento-pro #hist-panel .txrow{border:0;border-radius:16px;background:var(--bp-well);box-shadow:inset 0 0 0 1px var(--bp-edge)}
-body.skin-bento-pro #hist-panel .txrow + .txrow{margin-top:8px}
-body.skin-bento-pro #hist-panel .txrow:hover,body.skin-bento-pro #hist-panel .txrow.open{background:var(--bp-well-2)}
-body.skin-bento-pro #hist-panel .txrow.tx-flash{background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-45);border-radius:16px}
-body.skin-bento-pro #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
-body.skin-bento-pro #hist-panel .tx-net,body.skin-bento-pro #hist-panel .tx-depc{font-variant-numeric:tabular-nums}
-body.skin-bento-pro #hist-panel .tx-misc-l{border-radius:var(--bp-r-sm)}
-
-/* ── 3. ACCUEIL ORDINATEUR (≥ 1100 px) : LA MOSAÏQUE ───────────────────── */
 @media (min-width:1100px){
-  body.skin-bento-pro #page-ca.active{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--bp-gap);row-gap:0;
-    grid-template-areas:
-      "hd hd hd hd hd hd hd hd hd hd hd hd"
-      "em em em em em em em em em em em em"
-      "s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1"
-      "hr hr hr hr hr hr hr nt nt nt nt nt"
-      "hr hr hr hr hr hr hr in in in in in"
-      "bi bi bi bi bi bi bi bi bi bi bi bi"
-      "ms ms ms ms ms ms ms ms ms ms ms ms"
-      "s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2"
-      "dg dg dg dg dg dg dg dg nr nr nr nr"
-      "dt dt dt dt dt dt dt dt dt dt dt dt"
-      "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
-      "fc fc fc fc fc fc fc fc fc fc fc fc"
-      "gr gr gr gr gr gr gr gr gr gr gr gr"
-      "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
-      "hi hi hi hi hi hi hi hi hi hi hi hi"}
-  /* sans bandeau (« Depuis le début ») : bénéfice et net total sur une seule rangée, même hauteur */
-  body.skin-bento-pro #page-ca.active:has(> #insights-banner[style*="none"]){
-    grid-template-areas:
-      "hd hd hd hd hd hd hd hd hd hd hd hd"
-      "em em em em em em em em em em em em"
-      "s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1"
-      "hr hr hr hr hr hr hr nt nt nt nt nt"
-      "bi bi bi bi bi bi bi bi bi bi bi bi"
-      "ms ms ms ms ms ms ms ms ms ms ms ms"
-      "s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2 s2"
-      "dg dg dg dg dg dg dg dg nr nr nr nr"
-      "dt dt dt dt dt dt dt dt dt dt dt dt"
-      "s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3 s3"
-      "fc fc fc fc fc fc fc fc fc fc fc fc"
-      "gr gr gr gr gr gr gr gr gr gr gr gr"
-      "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
-      "hi hi hi hi hi hi hi hi hi hi hi hi"}
-  body.skin-bento-pro #page-ca.active > .kpi-hero-grid,body.skin-bento-pro #page-ca.active > .g2-tend{display:contents}
-  body.skin-bento-pro #page-ca > .dash-header{grid-area:hd;margin-bottom:4px}
-  body.skin-bento-pro #page-ca > #empty-state{grid-area:em}
-  body.skin-bento-pro #page-ca > #empty-state + .kpi-sec{grid-area:s1}
-  body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi-hero{grid-area:hr}
-  body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi-net{grid-area:nt}
-  body.skin-bento-pro #page-ca > #insights-banner{grid-area:in}
-  body.skin-bento-pro #page-ca > #ca-entry-panel{grid-area:bi}
-  body.skin-bento-pro #page-ca > #model-share-panel{grid-area:ms}
-  body.skin-bento-pro #page-ca > #model-share-panel + .kpi-sec{grid-area:s2}
-  body.skin-bento-pro #page-ca > .kpi-dep-grid{grid-area:dg}
-  body.skin-bento-pro #page-ca > #exp-recap-panel{grid-area:dt}
-  body.skin-bento-pro #page-ca > .nfr-seul{grid-area:nr}
-  body.skin-bento-pro #page-ca > .nfr-seul + .kpi-sec{grid-area:s3}
-  body.skin-bento-pro #page-ca .g2-tend > .nfg-panel{grid-area:gr}
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card{grid-area:fc}
-  body.skin-bento-pro #page-ca > .g2-tend + .kpi-sec{grid-area:s4}
-  body.skin-bento-pro #page-ca > #hist-panel{grid-area:hi}
-  /* rythme : 16 px sous chaque tuile (une rangée vide ne laisse pas de trou), 32 px avant une section */
-  body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi,body.skin-bento-pro #page-ca .g2-tend > .panel{margin:0 0 var(--bp-gap)}
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card{margin:0 0 var(--bp-gap)!important}
-  body.skin-bento-pro #page-ca > .kpi-sec{margin:16px 2px 14px}
-  body.skin-bento-pro #page-ca > #ca-entry-panel,body.skin-bento-pro #page-ca > #model-share-panel{margin:0 0 var(--bp-gap)}
-  body.skin-bento-pro #page-ca > .kpi-dep-grid,body.skin-bento-pro #page-ca > .nfr-seul{margin:0 0 var(--bp-gap)}
-  body.skin-bento-pro #page-ca > #exp-recap-panel{margin:0 0 var(--bp-gap)}
-  body.skin-bento-pro #page-ca > #exp-recap-panel:has(> #exp-recap:empty){margin:0}
-  body.skin-bento-pro #page-ca > #insights-banner{margin:0 0 var(--bp-gap)!important}
-
-  /* tuiles du haut */
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi{min-height:0;padding:var(--bp-pad)}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-label{margin-bottom:16px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-pct{font-size:13px}
-  /* bénéfice : l'étiquette en haut, le groupe chiffre + moitié + état posé en bas, sans grand vide */
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero{padding:26px 28px 24px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{margin-top:auto;font-size:min(17cqi,124px);line-height:.92;letter-spacing:-.055em}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero:has(#vpr.neg) .kpi-value{font-size:min(12cqi,84px)}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-moitie:not([hidden]){margin-top:12px;font-size:17px}
-  /* l'état (en cours / évolution, marge) monte en haut à droite, sur la ligne de l'étiquette : la carte se lit
-     comme une carte bancaire — étiquette et état en haut, le chiffre et sa moitié en bas */
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero{position:relative}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-meta{position:absolute;top:26px;right:28px;height:32px;margin:0;flex-wrap:nowrap}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-meta .kpi-pct{white-space:nowrap}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero:has(.kpi-apercu:not([hidden])) > .kpi-meta{position:static;height:auto;margin-top:14px}
-  /* net total : le montant, puis OnlyFans et Telegram en deux mini-tuiles posées en bas */
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-net .kpi-value{font-size:min(10cqi,40px);line-height:1;letter-spacing:-.035em}
-  body.skin-bento-pro #page-ca .kpi-net .kpi-meta{margin-top:8px}
-  body.skin-bento-pro #page-ca .kpi-net .kpi-nets{margin-top:auto;padding-top:16px;border-top:0;column-gap:10px}
-  body.skin-bento-pro #page-ca .kpi-net .kn{padding:11px 14px;border-radius:var(--bp-r-md);background:var(--bp-well);box-shadow:inset 0 0 0 1px var(--bp-edge);row-gap:3px}
-  body.skin-bento-pro #page-ca .kpi-net .kn-v{font-size:18px;line-height:24px}
-  /* bandeau « en cours » : une petite tuile sous le net total */
-  body.skin-bento-pro #page-ca > #insights-banner{align-items:center}
-  body.skin-bento-pro #page-ca > #insights-banner .ins-it{gap:14px;align-items:center}
-  body.skin-bento-pro #page-ca > #insights-banner .ins-m{display:block}
-  body.skin-bento-pro #page-ca > #insights-banner .ins-m::before{content:none}
-
-  /* bilan du mois : une barre d'action pleine largeur (icône, titre et date à gauche, le bouton à droite) */
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;
-    grid-template-areas:"t a p b" "s a p b";column-gap:12px;align-items:center;padding:20px 20px 20px 80px}
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie .pt-ico{position:absolute;left:20px;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:14px}
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie .pt-ico svg{width:19px;height:19px}
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie > .panel-title{grid-area:t;align-self:end;margin:0}
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie > .panel-sub{grid-area:s;align-self:start;margin:4px 0 0}
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie > .saisie-autre{grid-area:a;margin:0 4px 0 0}
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie > .saisie-prec{grid-area:p;width:auto;margin:0}
-  body.skin-bento-pro #page-ca #ca-entry-panel.replie > .saisie-bascule{grid-area:b;width:auto;min-height:48px;margin:0;padding:0 22px;font-size:15px}
-
-  /* Part de la modèle : à gauche la tuile « Reste à envoyer », à droite le relevé, le bouton en haut à droite */
-  body.skin-bento-pro #page-ca #model-share-panel{display:grid;padding:var(--bp-pad);column-gap:0;
-    grid-template-columns:minmax(0,5fr) 32px minmax(0,7fr);
-    grid-template-areas:
-      "t . n"
-      "s . n"
-      "r . a"
-      "r . b"
-      "r . c"
-      "d . f"
-      "m m m"
-      "g g g"
-      "p p p"}
-  body.skin-bento-pro #page-ca #model-share-panel > .panel-title{grid-area:t}
-  body.skin-bento-pro #page-ca #model-share-panel > .panel-sub{grid-area:s;margin-bottom:18px}
-  body.skin-bento-pro #page-ca #model-share .ms-eq{display:contents}
-  body.skin-bento-pro #page-ca #model-share .ms-op{display:none}
-  body.skin-bento-pro #page-ca #model-share .ms-c-base{grid-area:a}
-  body.skin-bento-pro #page-ca #model-share .ms-c-part{grid-area:b}
-  body.skin-bento-pro #page-ca #model-share .ms-c-paid{grid-area:c}
-  body.skin-bento-pro #page-ca #model-share .ms-res{grid-area:r;display:flex;margin:0}
-  body.skin-bento-pro #page-ca #model-share .ms-det{grid-area:d;align-self:start;flex-direction:column;gap:2px;margin-top:14px}
-  body.skin-bento-pro #page-ca #model-share .ms-det span + span::before{content:none}
-  body.skin-bento-pro #page-ca #model-share .ms-frais{grid-area:f;align-self:start;margin-top:14px;line-height:1.5}
-  body.skin-bento-pro #page-ca #model-share-panel > .ms-noter{grid-area:n;align-self:start;justify-self:end;width:auto;margin:0}
-  body.skin-bento-pro #page-ca #model-share-panel > .ms-form{grid-area:m;margin-top:20px}
-  body.skin-bento-pro #page-ca #model-share-panel > #mp-msg{grid-area:g}
-  body.skin-bento-pro #page-ca #model-share .ms-pay{grid-area:p}
-  /* le relevé : trois lignes, montants alignés à droite */
-  body.skin-bento-pro #page-ca #model-share .ms-eq > .ms-c{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;
-    padding:12px 2px;border-top:0;border-bottom:1px solid var(--line-1);background:none;box-shadow:none;border-radius:0}
-  body.skin-bento-pro #page-ca #model-share .ms-eq > .ms-c-base{padding-top:2px}
-  body.skin-bento-pro #page-ca #model-share .ms-sg{display:inline-block}
-  body.skin-bento-pro #page-ca #model-share .ms-eq > .ms-c .ms-l{font-size:14px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-2)}
-  body.skin-bento-pro #page-ca #model-share .ms-eq > .ms-c .ms-v{margin:0;font-size:18px;font-weight:650;text-align:right;color:var(--ink-1)}
-  body.skin-bento-pro #page-ca #model-share .ms-eq > .ms-c-base .ms-v,body.skin-bento-pro #page-ca #model-share .ms-eq > .ms-c-paid .ms-v{color:var(--ink-2)}
-  body.skin-bento-pro #page-ca #model-share .ms-eq > .ms-c .ms-s{grid-column:1 / -1;padding-left:20px;margin-top:2px}
-  /* la tuile accent : étiquette et montant groupés, centrés dans la hauteur du relevé */
-  body.skin-bento-pro #page-ca #model-share .ms-res .ms-c{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;height:auto;
-    padding:20px 24px;border:0}
-  body.skin-bento-pro #page-ca #model-share .ms-res .ms-sg{display:none}
-  body.skin-bento-pro #page-ca #model-share .ms-res .ms-l{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-  body.skin-bento-pro #page-ca #model-share .ms-res .ms-v{margin-top:10px;font-size:46px;line-height:1;letter-spacing:-.045em;text-align:left}
-  body.skin-bento-pro #page-ca #model-share .ms-res .ms-s{margin-top:8px;padding-left:0}
-  /* les paiements à la modèle : des mini-tuiles, trois par rangée */
-  body.skin-bento-pro #page-ca #model-share .ms-pay{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px;padding-top:12px;border-top:1px solid var(--line-1)}
-  body.skin-bento-pro #page-ca #model-share .ms-pay-h{grid-column:1 / -1;min-height:36px}
-  body.skin-bento-pro #page-ca #model-share .ms-pay-h .ms-tout{margin-left:auto}
-  body.skin-bento-pro #page-ca #model-share .ms-pr{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"i x" "v x";align-items:center;
-    column-gap:8px;row-gap:2px;min-height:0;margin:0;padding:12px 8px 12px 16px;border:0;border-radius:var(--bp-r-md);background:var(--bp-well);box-shadow:inset 0 0 0 1px var(--bp-edge)}
-  body.skin-bento-pro #page-ca #model-share .ms-pr:hover{background:var(--bp-well-2)}
-  body.skin-bento-pro #page-ca #model-share .ms-pi{grid-area:i;gap:10px}
-  body.skin-bento-pro #page-ca #model-share .ms-pd{min-width:0;font-size:13px;color:var(--ink-3)}
-  body.skin-bento-pro #page-ca #model-share .ms-pn{font-size:13px}
-  body.skin-bento-pro #page-ca #model-share .ms-pa{grid-area:v;font-size:18px;font-weight:650;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-  body.skin-bento-pro #page-ca #model-share .ms-del{grid-area:x;align-self:center}
-
-  /* dépenses : trois tuiles par rangée (le Total en bas à droite), à côté de la Répartition */
-  body.skin-bento-pro #page-ca .kpi-dep-grid{display:flex;flex-wrap:wrap;gap:12px;align-content:stretch}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi{flex:1 1 calc((100% - 24px) / 3);min-width:0;min-height:0;padding:20px 20px 19px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info:not(.kpi-large){order:1}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-total{order:2}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info.kpi-large{order:3;flex:1 1 100%;flex-direction:row;align-items:center;flex-wrap:wrap;gap:4px 14px;padding:14px 20px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-label{margin:0;min-height:0}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-label::before{margin-top:0!important}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-value{margin:0 0 0 auto;font-size:18px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-pct{margin:0}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info.kpi-large .kpi-pct::before{content:none}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info:not(.kpi-large){flex-direction:column;align-items:stretch;gap:0}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info:not(.kpi-large) .kpi-pct::before{content:none}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi:not(.kpi-large) .kpi-label{min-height:32px;margin-bottom:14px;align-items:flex-start}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi:not(.kpi-large) .kpi-value{margin-top:auto;font-size:28px;letter-spacing:-.035em}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi:not(.kpi-large) > .kpi-pct,body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi .kpi-meta{margin-top:6px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi-info:not(.kpi-large) .kpi-value{color:var(--ink-2)}
-  /* répartition dans sa colonne de 4 : une liste serrée */
-  body.skin-bento-pro #page-ca .nfr-seul{padding:20px 22px}
-  body.skin-bento-pro #page-ca .nfr-seul #bars .nfr-liste{display:flex;flex-direction:column}
-  body.skin-bento-pro #page-ca .nfr-seul #bars .nfr-l{padding-top:4px;padding-bottom:4px;line-height:19px}
-  body.skin-bento-pro #page-ca .nfr-seul #bars .nfr-l:nth-child(-n+3){border-top:1px solid var(--line-1)}
-  body.skin-bento-pro #page-ca .nfr-seul #bars .nfr-l:first-child{border-top:0}
-
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card #forecast-val{font-size:36px;letter-spacing:-.04em}
-  body.skin-bento-pro #page-ca .g2-tend > .nfg-panel{display:flex;flex-direction:column}
-  body.skin-bento-pro #page-ca .g2-tend > .nfg-panel > .nfg{flex:1 1 auto;min-height:230px}
-
-  /* tes bilans : des tuiles alignées sur les colonnes */
-  body.skin-bento-pro #hist-panel .tx-head{margin:6px 0 8px;padding:0 16px 8px;border-bottom:0}
-  body.skin-bento-pro #hist-panel .txrow{margin:0;padding:0 16px}
+  body.skin-melange #page-recap.active{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--mx-gap);align-items:stretch}
+  body.skin-melange #page-recap.active > *{grid-column:1 / -1}
+  body.skin-melange #page-recap.active > #recap-compare:not(:empty){grid-column:1 / span 5;display:flex}
+  body.skin-melange #page-recap.active > #recap-compare:not(:empty) > .panel{flex:1;display:flex;flex-direction:column;margin-bottom:var(--mx-gap)}
+  body.skin-melange #page-recap.active > #recap-compare:not(:empty) .rc-cmp{flex:1;grid-auto-rows:1fr}
+  body.skin-melange #page-recap.active > #recap-compare:not(:empty) + .panel{grid-column:6 / -1}
+  body.skin-melange #page-recap .rc-sum{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,3fr) minmax(0,2fr);grid-template-rows:auto;gap:var(--mx-gap);margin-bottom:var(--mx-gap)}
+  body.skin-melange #page-recap .rc-sc{display:flex;flex-direction:column;min-height:0;padding:var(--mx-pad)}
+  body.skin-melange #page-recap .rc-sc[style*="acc-txt"]{order:-1;container-type:inline-size}
+  body.skin-melange #page-recap .rc-sc .rc-sv{margin-top:12px;padding-top:0;font-size:26px;letter-spacing:-.03em}
+  body.skin-melange #page-recap .rc-sc[style*="acc-txt"] .rc-sv{font-size:min(14cqi,46px);letter-spacing:-.045em;line-height:1}
+  body.skin-melange #page-recap .rc-sc .rc-ss{margin-top:auto;padding-top:8px}
+  body.skin-melange #page-recap .rc-cmp{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:4px}
+  body.skin-melange #page-recap .rc-cmpi,body.skin-melange #page-recap .rc-cmpi:first-child{display:flex;flex-direction:column;padding:var(--mx-pad-s);border:0;
+    border-radius:var(--mx-r-md);background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--mx-edge)}
+  body.skin-melange #page-recap .rc-cmpi .rc-cmpb{margin-top:auto;padding-top:6px}
 }
 
-/* ── 3b. TENDANCE (≥ 641 px) : la prévision en bandeau (titre et chiffre, l'explication dessous, le bouton à
-   droite), puis le graphique en pleine largeur : plus de grand vide entre le texte et « Fixer un objectif ». ── */
-@media (min-width:641px){
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card.fc-replie:not([style*="none"]){display:grid!important;grid-template-columns:minmax(0,1fr) auto;
-    align-items:center;column-gap:24px;padding:20px 24px 20px!important}
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card.fc-replie > div:first-child{grid-column:1;grid-row:1}
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card.fc-replie .fc-titre{margin:0 0 8px}
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card.fc-replie #forecast-sub{margin-top:8px!important;font-size:13px!important;line-height:1.5;color:var(--ink-3)!important}
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card.fc-replie > .fc-obj{grid-column:2;grid-row:1;margin:0!important;align-self:center}
-}
-@media (min-width:641px) and (max-width:1099px){
-  body.skin-bento-pro #page-ca .g2-tend{grid-template-columns:minmax(0,1fr)!important;gap:var(--bp-gap)}
-  body.skin-bento-pro #page-ca .g2-tend > #forecast-card{order:-1}
-  body.skin-bento-pro #page-ca .g2-tend > .nfg-panel > .nfg{min-height:220px}
-}
-
-/* ── 3c. PART DE LA MODÈLE (≤ 1099 px) : d'abord « Reste à envoyer » en tuile accent, puis le relevé ── */
 @media (max-width:1099px){
-  body.skin-bento-pro #model-share .ms-eq{display:flex;flex-direction:column;gap:0;padding:0;border:0;background:none;overflow:visible;border-radius:0}
-  body.skin-bento-pro #model-share .ms-res{order:-1;margin-bottom:6px}
-  body.skin-bento-pro #model-share .ms-res .ms-c{display:grid;grid-template-columns:minmax(0,1fr);padding:14px 18px;border:0;border-radius:var(--bp-r-md)}
-  body.skin-bento-pro #model-share .ms-res .ms-sg{display:none}
-  body.skin-bento-pro #model-share .ms-res .ms-l{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-  body.skin-bento-pro #model-share .ms-res .ms-v{margin-top:6px;font-size:40px;line-height:1.05;letter-spacing:-.04em;text-align:left}
-  body.skin-bento-pro #model-share .ms-res .ms-s{padding-left:0}
-  body.skin-bento-pro #model-share .ms-res-du .ms-c,body.skin-bento-pro.light #model-share .ms-res-du .ms-c{box-shadow:inset 0 0 0 1px var(--bp-todo-line)}
-  body.skin-bento-pro #model-share .ms-eq > .ms-c{padding:10px 2px;border-top:0;border-bottom:1px solid var(--line-1);background:none}
-  /* paiements à la modèle : une mini-tuile par paiement (même dessin que « Tes bilans ») */
-  body.skin-bento-pro #model-share .ms-pr{min-height:48px;margin:0;padding:0 4px 0 14px;border:0;border-radius:var(--bp-r-md);background:var(--bp-well);box-shadow:inset 0 0 0 1px var(--bp-edge)}
-  body.skin-bento-pro #model-share .ms-pr:hover{background:var(--bp-well-2)}
-  body.skin-bento-pro #model-share .ms-pr + .ms-pr{margin-top:6px}
-  body.skin-bento-pro #model-share .ms-pa{font-variant-numeric:tabular-nums}
+  body.skin-melange #dep-matrix .nfm-table .nfm-nom{box-shadow:1px 0 0 var(--line-2),10px 0 10px -6px rgba(0,0,0,.85)}
+  body.skin-melange.light #dep-matrix .nfm-table .nfm-nom{box-shadow:1px 0 0 var(--line-2),10px 0 10px -6px rgba(16,24,40,.22)}
 }
 
-/* ── 4. TABLETTE (641 – 1099 px) ───────────────────────────────────────── */
-@media (min-width:641px) and (max-width:1099px){
-  body.skin-bento-pro #page-ca .kpi-hero-grid{gap:var(--bp-gap)}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi{padding:20px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{margin-top:auto;font-size:min(16cqi,64px);line-height:.96;letter-spacing:-.05em}
-  body.skin-bento-pro #page-ca .kpi-net .kn{padding:10px 12px;border-radius:var(--bp-r-sm);background:var(--bp-well);box-shadow:inset 0 0 0 1px var(--bp-edge)}
-  body.skin-bento-pro #page-ca .kpi-net .kpi-nets{margin-top:auto;padding-top:14px;border-top:0;column-gap:10px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid{gap:12px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi{min-height:0;padding:16px 18px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi:not(.kpi-info) .kpi-value{font-size:22px}
-  body.skin-bento-pro #hist-panel .tx-head{margin:6px 0 8px;padding:0 14px 8px;border-bottom:0}
-  body.skin-bento-pro #hist-panel .txrow{margin:0;padding:0 14px}
-}
-
-/* ── 5. TÉLÉPHONE (≤ 640 px) : des widgets empilés ─────────────────────── */
-@media (max-width:640px){
-  body.skin-bento-pro{--mob-nav-h:70px}
-  body.skin-bento-pro .panel{border-radius:22px;padding:16px 18px}
-  body.skin-bento-pro .kpi{border-radius:20px}
-
-  /* compact : le gros bouton du mois reste visible au premier écran, même à 360 px */
-  body.skin-bento-pro #page-ca .kpi-hero-grid{gap:8px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi{padding:13px 16px 12px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero{padding:15px 18px 15px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-ico{display:block;width:24px;height:24px;padding:5px;border-radius:8px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid > .kpi:not(.kpi-hero) .kpi-ico{display:none}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-label{gap:8px;margin-bottom:8px;flex-wrap:nowrap}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{font-size:min(14cqi,46px);letter-spacing:-.05em;line-height:1}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi:not(.kpi-hero) .kpi-value{font-size:min(16cqi,22px)}
-  body.skin-bento-pro #page-ca .kpi-hero .kpi-moitie:not([hidden]){margin-top:6px;font-size:15px}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-hero .kpi-meta{margin-top:10px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid{gap:10px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid > .kpi{min-height:0;padding:14px 14px 13px}
-  body.skin-bento-pro #page-ca .kpi-dep-grid .kpi-label::before{width:24px;height:24px;border-radius:8px;margin-top:-4px!important}
-  body.skin-bento-pro #page-ca .kpi-dep-grid .kpi-value{font-size:21px}
-  body.skin-bento-pro #insights-banner{border-radius:20px!important;padding:12px 14px!important}
-  body.skin-bento-pro #insights-banner .ins-ic{width:32px;height:32px}
-  body.skin-bento-pro #forecast-card{border-radius:22px!important}
-  body.skin-bento-pro #ca-entry-panel.replie .pt-ico{width:28px;height:28px}
-  body.skin-bento-pro #ca-entry-panel.replie > .panel-title{font-size:16px;gap:10px}
-  body.skin-bento-pro #page-ca > .dash-header + .kpi-sec,body.skin-bento-pro #page-ca > .dash-header + #empty-state + .kpi-sec{margin-top:12px}
-  body.skin-bento-pro #model-share .ms-res .ms-v{font-size:34px}
-  body.skin-bento-pro #model-share .ms-eq > .ms-c .ms-v{font-size:16px}
-  body.skin-bento-pro #model-share .ms-eq > .ms-c-part .ms-v{font-size:17px}
-  /* tes bilans : une tuile par bilan sur trois lignes (date, bénéfice et marge, net), le bouton à droite */
-  body.skin-bento-pro #hist-panel .txrow{padding:0 6px 0 10px;column-gap:8px}
-  body.skin-bento-pro #hist-panel .tx-sum{grid-template-columns:16px auto minmax(0,1fr);grid-template-areas:"cv when when" "cv pr mg" "cv net net";
-    column-gap:8px;row-gap:1px;padding-top:12px;padding-bottom:12px}
-  body.skin-bento-pro #hist-panel .tx-cv{align-self:center}
-  body.skin-bento-pro #hist-panel .tx-pr{justify-self:start;font-size:16px}
-  body.skin-bento-pro #hist-panel .tx-mg{justify-self:start;align-self:center}
-  body.skin-bento-pro #hist-panel .tx-mod{align-self:center}
-  /* barre d'onglets flottante, en pilule */
-  body.skin-bento-pro #sidebar{left:12px;right:12px;bottom:calc(8px + var(--mob-safe-b));padding:5px 8px;border:1px solid var(--bp-edge-2);border-radius:26px;
-    box-shadow:0 18px 40px -16px rgba(0,0,0,.7)}
-  body.skin-bento-pro.light #sidebar{box-shadow:0 14px 34px -16px rgba(20,20,40,.32)}
-  body.skin-bento-pro #sidebar .tab{border-radius:20px}
-}
-
-/* téléphone court (≤ 700 px de haut : iPhone SE, 390 × 660) : le gros bouton du mois doit rester au-dessus
-   de la barre d'onglets → barre posée en bas, pastilles d'icône retirées */
-@media (max-width:640px) and (max-height:700px){
-  body.skin-bento-pro{--mob-nav-h:62px}
-  body.skin-bento-pro #sidebar{left:0;right:0;bottom:0;border-radius:22px 22px 0 0;border-bottom:0;padding-bottom:calc(5px + var(--mob-safe-b))}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi-hero .kpi-ico,body.skin-bento-pro #ca-entry-panel.replie .pt-ico{display:none}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-hero .kpi-value{font-size:min(13cqi,40px)}
-  body.skin-bento-pro #page-ca .kpi-hero-grid .kpi.kpi-net{padding:12px 16px}
-}
-
-/* ── 6. RÉCAP : le bénéfice en tête de rangée, les autres chiffres à côté ── */
-body.skin-bento-pro #page-recap .rc-sc{background-image:none}
-body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"]{background-color:var(--bp-hero-b);background-image:var(--bp-hero-img);
-  border-color:color-mix(in srgb,var(--acc) 44%,transparent);box-shadow:var(--bp-sh-hero)}
-body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-sl,body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-ss{color:var(--bp-on-2)}
-body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-si svg{color:var(--bp-on)}
-body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-sv{color:var(--bp-on)!important}
-body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-moitie{color:var(--bp-on-2)}
-body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-moitie b{color:var(--bp-on)}
-body.skin-bento-pro #page-recap .rc-sv{font-variant-numeric:tabular-nums}
-@media (min-width:1100px){
-  body.skin-bento-pro #page-recap .rc-sum{grid-template-columns:minmax(0,1.7fr) repeat(3,minmax(0,1fr));grid-template-rows:auto;gap:var(--bp-gap);margin-bottom:var(--bp-gap)}
-  body.skin-bento-pro #page-recap .rc-sc{display:flex;flex-direction:column;min-height:0;padding:22px 24px}
-  body.skin-bento-pro #page-recap .rc-sc .rc-sv{margin-top:auto;padding-top:16px}
-  body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"]{order:-1;grid-column:auto;grid-row:auto;padding:22px 26px;container-type:inline-size}
-  body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-sv{font-size:min(16cqi,64px);letter-spacing:-.05em;line-height:.95;padding-top:14px}
-  body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-ss{margin-top:10px;font-size:13px}
-  body.skin-bento-pro #page-recap .rc-sc:not([style*="acc-txt"]) .rc-sv{font-size:28px;letter-spacing:-.03em}
-  body.skin-bento-pro #page-recap .rc-sc:not([style*="acc-txt"]) .rc-ss{min-height:40px;line-height:20px}
-  /* comparaison du mois : 4 mini-tuiles */
-  body.skin-bento-pro #page-recap .rc-cmp{gap:12px;margin-top:4px}
-  body.skin-bento-pro #page-recap .rc-cmpi,body.skin-bento-pro #page-recap .rc-cmpi:first-child{padding:16px 18px;border:0;border-radius:var(--bp-r-md);background:var(--bp-well);box-shadow:inset 0 0 0 1px var(--bp-edge)}
-}
-
-@media (max-width:640px){
-  /* téléphone : le bénéfice d'abord, en grande tuile ; net et dépenses côte à côte ; la marge en bande fine */
-  body.skin-bento-pro #page-recap .rc-sum{gap:10px}
-  body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"]{order:-1;grid-column:1 / -1;padding:16px 18px}
-  body.skin-bento-pro #page-recap .rc-sc[style*="acc-txt"] .rc-sv{font-size:40px;letter-spacing:-.045em;line-height:1.05}
-  body.skin-bento-pro #page-recap .rc-sc[style*="pos"],body.skin-bento-pro #page-recap .rc-sc[style*="neg"],body.skin-bento-pro #page-recap .rc-sc[style*="warn"]{
-    grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;column-gap:12px;row-gap:2px;padding:12px 18px}
-  body.skin-bento-pro #page-recap .rc-sc[style*="pos"] .rc-sl,body.skin-bento-pro #page-recap .rc-sc[style*="neg"] .rc-sl,body.skin-bento-pro #page-recap .rc-sc[style*="warn"] .rc-sl{margin:0;flex:1 1 auto}
-  body.skin-bento-pro #page-recap .rc-sc[style*="pos"] .rc-sv,body.skin-bento-pro #page-recap .rc-sc[style*="neg"] .rc-sv,body.skin-bento-pro #page-recap .rc-sc[style*="warn"] .rc-sv{margin:0;font-size:22px}
-  body.skin-bento-pro #page-recap .rc-sc[style*="pos"] .rc-ss,body.skin-bento-pro #page-recap .rc-sc[style*="neg"] .rc-ss,body.skin-bento-pro #page-recap .rc-sc[style*="warn"] .rc-ss{margin:0}
-}
-
-/* ── 7. CONNEXION : une tuile de marque + le formulaire, sur une mosaïque discrète ── */
-body.skin-bento-pro #login-overlay::before{content:"";position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;
-  border-radius:30px;pointer-events:none;z-index:0;background:var(--bp-mo-1);
+/* ── 7. CONNEXION : la tuile de marque, sur une mosaïque de petites tuiles de couleur (B3) ── */
+body.skin-melange #login-overlay::before{content:"";position:absolute;left:50%;top:50%;width:132px;height:132px;margin:-66px 0 0 -66px;
+  border-radius:26px;pointer-events:none;z-index:0;background:var(--mx-mo-0);
   box-shadow:
-    -166px -166px 0 var(--bp-mo-2),0 -166px 0 var(--bp-mo-1),166px -166px 0 var(--bp-mo-1),
-    -166px 0 0 var(--bp-mo-1),166px 0 0 var(--bp-mo-1),
-    -166px 166px 0 var(--bp-mo-1),0 166px 0 var(--bp-mo-1),166px 166px 0 var(--bp-mo-3),
-    -332px -332px 0 var(--bp-mo-0),-166px -332px 0 var(--bp-mo-0),0 -332px 0 var(--bp-mo-0),166px -332px 0 var(--bp-mo-0),332px -332px 0 var(--bp-mo-0),
-    -332px -166px 0 var(--bp-mo-0),332px -166px 0 var(--bp-mo-2),
-    -332px 0 0 var(--bp-mo-0),332px 0 0 var(--bp-mo-0),
-    -332px 166px 0 var(--bp-mo-2),332px 166px 0 var(--bp-mo-0),
-    -332px 332px 0 var(--bp-mo-0),-166px 332px 0 var(--bp-mo-0),0 332px 0 var(--bp-mo-0),166px 332px 0 var(--bp-mo-0),332px 332px 0 var(--bp-mo-0)}
-body.skin-bento-pro:not(.light) #login-overlay{--bp-mo-0:color-mix(in srgb,var(--ink-1) 1.4%,transparent);--bp-mo-1:color-mix(in srgb,var(--ink-1) 2.8%,transparent);
-  --bp-mo-2:color-mix(in srgb,var(--acc) 9%,transparent);--bp-mo-3:color-mix(in srgb,var(--todo) 6%,transparent)}
-body.skin-bento-pro.light #login-overlay{--bp-mo-0:color-mix(in srgb,var(--surf-1) 34%,transparent);--bp-mo-1:color-mix(in srgb,var(--surf-1) 64%,transparent);
-  --bp-mo-2:color-mix(in srgb,var(--acc) 8%,transparent);--bp-mo-3:color-mix(in srgb,var(--todo) 8%,transparent)}
-@media (max-width:640px){body.skin-bento-pro #login-overlay::before{transform:scale(.72)}}
-/* avertissements du formulaire (doublon, contrôles) : la même crème « à faire », nette */
-body.skin-bento-pro #entry-warnings,body.skin-bento-pro #entry-doublon{background:var(--bp-todo-bg);border-color:var(--bp-todo-line);border-radius:var(--bp-r-md)}
-body.skin-bento-pro #login-overlay #login-box{z-index:1;width:min(400px,100%);padding:16px 16px 20px;border-radius:30px;border-color:var(--bp-edge-2);
-  box-shadow:var(--bp-hl),0 40px 80px -30px rgba(0,0,0,.75)}
-body.skin-bento-pro.light #login-overlay #login-box{box-shadow:var(--bp-hl),0 30px 60px -30px rgba(20,20,40,.3)}
-body.skin-bento-pro #login-overlay .login-logo{position:relative;overflow:hidden;width:100%;height:136px;margin:0 0 22px;padding:18px 20px;box-sizing:border-box;
-  justify-content:flex-start;align-items:flex-end;border-radius:22px;font-size:40px;letter-spacing:.01em;line-height:1;
-  background-color:var(--bp-hero-b);background-image:var(--bp-hero-img);
-  box-shadow:var(--bp-sh-hero)}
-body.skin-bento-pro #login-overlay #login-box h2,body.skin-bento-pro #login-overlay #login-box p,body.skin-bento-pro #login-box .lg-f,
-body.skin-bento-pro #login-overlay #login-btn,body.skin-bento-pro #login-box .lg-foot,body.skin-bento-pro #login-overlay #login-error{margin-left:12px;margin-right:12px}
-body.skin-bento-pro #login-overlay #login-box h2{font-size:22px}
-body.skin-bento-pro #login-overlay #login-ident,body.skin-bento-pro #login-overlay #login-input{height:48px;border-radius:14px;font-size:15px}
-body.skin-bento-pro #login-overlay #login-btn{width:calc(100% - 24px);min-height:50px;border-radius:14px;font-size:15px}
-body.skin-bento-pro #login-box .lg-foot{border-top-color:var(--line-1)}
+    -146px -146px 0 var(--mx-mo-pr),0 -146px 0 var(--mx-mo-0),146px -146px 0 var(--mx-mo-tg),
+    -146px 0 0 var(--mx-mo-0),146px 0 0 var(--mx-mo-0),
+    -146px 146px 0 var(--mx-mo-va),0 146px 0 var(--mx-mo-0),146px 146px 0 var(--mx-mo-du),
+    -292px -292px 0 var(--mx-mo-1),-146px -292px 0 var(--mx-mo-1),0 -292px 0 var(--mx-mo-ci),146px -292px 0 var(--mx-mo-1),292px -292px 0 var(--mx-mo-1),
+    -292px -146px 0 var(--mx-mo-1),292px -146px 0 var(--mx-mo-fu),
+    -292px 0 0 var(--mx-mo-of),292px 0 0 var(--mx-mo-1),
+    -292px 146px 0 var(--mx-mo-1),292px 146px 0 var(--mx-mo-1),
+    -292px 292px 0 var(--mx-mo-1),-146px 292px 0 var(--mx-mo-1),0 292px 0 var(--mx-mo-1),146px 292px 0 var(--mx-mo-pr),292px 292px 0 var(--mx-mo-1)}
+body.skin-melange:not(.light) #login-overlay{--mx-mo-0:color-mix(in srgb,var(--ink-1) 3%,transparent);--mx-mo-1:color-mix(in srgb,var(--ink-1) 1.6%,transparent);
+  --mx-mo-pr:color-mix(in srgb,var(--bc-pr-a) 26%,transparent);--mx-mo-du:color-mix(in srgb,var(--bc-du-b) 20%,transparent);--mx-mo-tg:color-mix(in srgb,var(--bc-tg-b) 16%,transparent);
+  --mx-mo-va:color-mix(in srgb,var(--bc-va-b) 14%,transparent);--mx-mo-ci:color-mix(in srgb,var(--bc-ci-b) 10%,transparent);--mx-mo-fu:color-mix(in srgb,var(--bc-fu-a) 14%,transparent);
+  --mx-mo-of:color-mix(in srgb,var(--bc-of-a) 16%,transparent)}
+body.skin-melange.light #login-overlay{--mx-mo-0:color-mix(in srgb,var(--surf-1) 62%,transparent);--mx-mo-1:color-mix(in srgb,var(--surf-1) 32%,transparent);
+  --mx-mo-pr:color-mix(in srgb,var(--bc-pr-a) 16%,transparent);--mx-mo-du:color-mix(in srgb,var(--bc-du-b) 24%,transparent);--mx-mo-tg:color-mix(in srgb,var(--bc-tg-b) 70%,transparent);
+  --mx-mo-va:color-mix(in srgb,var(--bc-va-b) 70%,transparent);--mx-mo-ci:color-mix(in srgb,var(--bc-ci-b) 60%,transparent);--mx-mo-fu:color-mix(in srgb,var(--bc-fu-b) 70%,transparent);
+  --mx-mo-of:color-mix(in srgb,var(--bc-of-b) 70%,transparent)}
+body.skin-melange #login-overlay #login-box{z-index:1;width:min(400px,100%);padding:16px 16px 20px;border-radius:28px;border-color:var(--mx-edge-2);
+  box-shadow:var(--mx-hl),0 40px 80px -30px rgba(0,0,0,.75)}
+body.skin-melange.light #login-overlay #login-box{box-shadow:var(--mx-hl),0 30px 60px -30px rgba(16,24,40,.3)}
+body.skin-melange #login-overlay .login-logo{position:relative;overflow:hidden;width:100%;height:124px;margin:0 0 20px;padding:18px 20px;box-sizing:border-box;
+  justify-content:flex-start;align-items:flex-end;border-radius:var(--mx-r);font-size:38px;letter-spacing:.01em;line-height:1;color:var(--bc-pr-on);
+  background-color:var(--bc-pr-m);background-image:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));box-shadow:var(--mx-lift),0 22px 44px -26px var(--bc-pr-b)}
+body.skin-melange #login-overlay .login-logo::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 100% 0%,transparent 0 26%,color-mix(in srgb,var(--bc-pr-on) 22%,transparent) 26.3% 26.8%,transparent 27.1% 42%,
+    color-mix(in srgb,var(--bc-pr-on) 13%,transparent) 42.3% 42.7%,transparent 43% 58%,color-mix(in srgb,var(--bc-pr-on) 8%,transparent) 58.3% 58.6%,transparent 58.9%)}
+body.skin-melange #login-overlay #login-box h2,body.skin-melange #login-overlay #login-box p,body.skin-melange #login-box .lg-f,
+body.skin-melange #login-overlay #login-btn,body.skin-melange #login-box .lg-foot,body.skin-melange #login-overlay #login-error{margin-left:12px;margin-right:12px}
+body.skin-melange #login-overlay #login-box h2{font-size:21px}
+body.skin-melange #login-overlay #login-ident,body.skin-melange #login-overlay #login-input{height:46px;border-radius:12px;font-size:15px}
+body.skin-melange #login-overlay #login-btn{width:calc(100% - 24px);min-height:48px;border-radius:12px;font-size:15px}
+body.skin-melange #login-box .lg-foot{border-top-color:var(--line-1)}
 @media (max-width:640px){
-  body.skin-bento-pro #login-overlay #login-box{padding:14px 14px 18px}
-  body.skin-bento-pro #login-overlay #login-ident,body.skin-bento-pro #login-overlay #login-input{font-size:16px}
+  body.skin-melange #login-overlay::before{transform:scale(.74)}
 }
+@media (max-width:480px){
+  body.skin-melange #login-overlay::before{display:none}
+  body.skin-melange #login-overlay #login-box{padding:14px 14px 18px}
+  body.skin-melange #login-overlay #login-ident,body.skin-melange #login-overlay #login-input{font-size:16px}
+}
+
+/* ── 8. HISTORIQUE : chaque ligne repérée par un rond PLEIN (ajout violet, mise à jour ardoise, suppression rouge) ── */
+body.skin-melange #page-editlog .hl-b{width:var(--mx-ico);height:var(--mx-ico);box-shadow:var(--mx-lift)}
+body.skin-melange #page-editlog .hl-r .hl-b{color:var(--bc-fr-on);background:linear-gradient(155deg,var(--bc-fr-a),var(--bc-fr-b))}
+body.skin-melange #page-editlog .hl-r[style*="acc-txt"] .hl-b{color:var(--bc-pr-on);background:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b))}
+body.skin-melange #page-editlog .hl-r[style*="neg"] .hl-b{color:var(--bc-ng-on);background:linear-gradient(155deg,var(--bc-ng-a),var(--bc-ng-b))}
+body.skin-melange.light #page-editlog .hl-r .hl-b{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 14%,transparent)}
+body.skin-melange.light #page-editlog .hl-r[style*="acc-txt"] .hl-b,body.skin-melange.light #page-editlog .hl-r[style*="neg"] .hl-b{box-shadow:var(--mx-lift)}
+body.skin-melange #page-editlog .hl-r{border-radius:var(--mx-r-md)}
+body.skin-melange #page-editlog .hl-r:hover{background:var(--surf-2)}
+/* le jour : une étiquette de section, son filet */
+body.skin-melange #page-editlog .hl-day{letter-spacing:.12em}
+/* (les jours n'ont pas de points de couleur : une légende répétée dix fois ne dit plus rien ; le filet suffit) */
+body.skin-melange #page-editlog .hl-day i{background:linear-gradient(90deg,var(--line-2),transparent 85%)}
+body.skin-melange #page-editlog .hl-day u,body.skin-melange #page-editlog .hl-chip u{border-radius:999px}
+/* les filtres : le compteur à la couleur de son type */
+body.skin-melange #page-editlog .hl-chip:nth-child(2) u{color:var(--bc-pr-on);background:var(--bc-pr-m);box-shadow:none}
+body.skin-melange #page-editlog .hl-chip:nth-child(3) u{color:var(--bc-fr-on);background:var(--bc-fr-m);box-shadow:none}
+body.skin-melange #page-editlog .hl-chip:nth-child(4) u{color:var(--bc-ng-on);background:var(--bc-ng-m);box-shadow:none}
+/* récupération & sauvegardes : la tuile, l'icône dans un rond violet plein */
+body.skin-melange #page-editlog .hl-sos-i{width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;color:var(--bc-pr-on);
+  background:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));box-shadow:var(--mx-lift)}
+body.skin-melange #page-editlog .hl-sos-i svg{width:14px;height:14px}
+@media (max-width:640px){
+  body.skin-melange #page-editlog .hl-b{width:24px;height:24px}
+  body.skin-melange #page-editlog .hl-b svg{width:12px;height:12px}
+}
+
+/* ── 9. MOUVEMENT (coupé si l'utilisateur le demande) ──────────────────── */
 @media (prefers-reduced-motion:no-preference){
-  body.skin-bento-pro #login-overlay #login-box{animation:bpro-monte .5s var(--ease) both}
-  body.skin-bento-pro #page-ca.active .kpi,body.skin-bento-pro #page-ca.active > .panel,body.skin-bento-pro #page-ca.active .g2-tend > .panel{animation:bpro-monte .4s var(--ease) both}
+  body.skin-melange #login-overlay #login-box{animation:mel-monte .5s var(--ease) both}
+  body.skin-melange #page-ca.active .kpi,body.skin-melange #page-ca.active > .panel,body.skin-melange #page-ca.active .g2-tend > .panel{animation:mel-monte .4s var(--ease) both}
+  body.skin-melange #page-ca.active .kpi-hero-grid > .kpi-net{animation-delay:40ms}
 }
-@keyframes bpro-monte{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes mel-monte{from{opacity:0;transform:translateY(6px) scale(.995)}to{opacity:1;transform:none}}
 
 /* ══════ style « bento-couleurs » : uniquement sous body.skin-bento-couleurs ══════ */
 /* ═══ NOCTRA FINANCE — STYLE « BENTO-COULEURS » : les widgets en couleur ═══
@@ -10357,10 +10293,9 @@ function _tbEtatInit(){
 // chiffre, aucun calcul. Le choix est gardé dans le stockage de CE site (cleLocale).
 var _STYLES=[
   {v:'',          l:'Actuel',     d:''},
-  {v:"bento", l:"Bento", d:"1re version"},
-  {v:"bento-pro", l:"Bento Pro", d:"affiné, sans vide"},
-  {v:"bento-couleurs", l:"Bento Couleurs", d:"widgets en couleur"},
-  {v:"bento-cockpit", l:"Bento Cockpit", d:"tout en un coup d’œil"}
+  {v:"melange", l:"Mélange B3 × B4", d:"le plus abouti"},
+  {v:"bento-couleurs", l:"B3 · Bento Couleurs", d:"widgets en couleur"},
+  {v:"bento-cockpit", l:"B4 · Bento Cockpit", d:"tout en un coup d’œil"}
 ];
 function _styleActuel(){
   for(var i=0;i<_STYLES.length;i++){ if(_STYLES[i].v && document.body.classList.contains('skin-'+_STYLES[i].v)) return _STYLES[i].v; }
