@@ -9,7 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Noctra Finance">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Noctra Finance</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -3382,17 +3383,17 @@ body.skin-melange #records-panel .rk-note svg{width:12px;height:12px;flex:none;c
 body.skin-melange #records-panel .rk-vide{padding:14px 16px;border-radius:var(--mx-r-md);font-size:13px;line-height:1.5;color:var(--ink-3);
   background:var(--inset);border:1px dashed var(--line-2)}
 
-/* ── IMPÔTS + PAXUM : impôts + Paxum = à garder de côté (ardoise, la couleur de la tuile « Impôts + Paxum ») ── */
+/* ── IMPÔTS À GARDER DE CÔTÉ (v2, 14/10) : le 1 % à garder en ardoise (la couleur de la tuile « Impôts + Paxum ») ; Paxum en information ── */
 body.skin-melange #impots-panel{display:grid;grid-template-columns:minmax(0,1fr);row-gap:14px}
 body.skin-melange #impots-panel .ip-eq{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--mx-gap)}
 body.skin-melange #impots-panel .ip-c{position:relative;display:flex;flex-direction:column;min-width:0;padding:var(--mx-pad-s);
   border-radius:var(--mx-r-md);background-color:var(--surf-2);box-shadow:inset 0 0 0 1px var(--mx-edge)}
 body.skin-melange #impots-panel .ip-l{font-size:12px;font-weight:600;line-height:1.3;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
-/* le chiffre à la même hauteur dans les trois tuiles, quelle que soit la longueur du détail dessous */
+/* le chiffre à la même hauteur dans les deux tuiles, quelle que soit la longueur du détail dessous */
 body.skin-melange #impots-panel .ip-v{margin-top:16px;font-size:20px;font-weight:700;line-height:1.1;letter-spacing:-.02em;
   color:var(--ink-1);font-variant-numeric:tabular-nums;white-space:nowrap}
 body.skin-melange #impots-panel .ip-s{display:flex;align-items:center;min-height:24px;margin-top:4px;font-size:12px;line-height:1.4;color:var(--ink-4)}
-@media (min-width:641px){body.skin-melange #impots-panel .ip-eq{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.25fr)}}
+@media (min-width:641px){body.skin-melange #impots-panel .ip-eq{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
 body.skin-melange #impots-panel .ip-tot{background-color:var(--bc-fr-m);background-image:linear-gradient(155deg,var(--bc-fr-a),var(--bc-fr-b));
   box-shadow:var(--mx-lift),inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-b) 70%,transparent),0 12px 24px -20px color-mix(in srgb,var(--bc-fr-b) 75%,transparent)}
 body.skin-melange.light #impots-panel .ip-tot{box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 12%,transparent),0 12px 26px -20px color-mix(in srgb,var(--bc-fr-on) 45%,transparent)}
@@ -3401,13 +3402,6 @@ body.skin-melange #impots-panel .ip-tot .ip-v{color:var(--bc-fr-on)}
 body.skin-melange #impots-panel .ip-moitie{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 10px;border-radius:999px;white-space:nowrap;
   color:var(--bc-fr-on);background-color:color-mix(in srgb,var(--bc-fr-v) 22%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 20%,transparent)}
 body.skin-melange #impots-panel .ip-moitie b{font-weight:700}
-/* les signes + et = : de petites pastilles à cheval entre deux tuiles (comme le relevé de la Part de la modèle) */
-body.skin-melange #impots-panel .ip-pax::before,body.skin-melange #impots-panel .ip-tot::before{position:absolute;z-index:2;left:-19px;top:50%;
-  display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin-top:-13px;border-radius:50%;
-  background:var(--surf-3);box-shadow:0 0 0 1px var(--mx-edge-2),0 4px 10px -4px rgba(0,0,0,.5);color:var(--ink-3);font-size:15px;font-weight:600;line-height:1}
-body.skin-melange.light #impots-panel .ip-pax::before,body.skin-melange.light #impots-panel .ip-tot::before{box-shadow:0 0 0 1px var(--mx-edge-2),0 3px 8px -4px rgba(16,24,40,.25)}
-body.skin-melange #impots-panel .ip-pax::before{content:"+"}
-body.skin-melange #impots-panel .ip-tot::before{content:"="}
 body.skin-melange #impots-panel .ip-phrase{margin:0;font-size:13px;line-height:1.5;color:var(--ink-2)}
 body.skin-melange #impots-panel .ip-phrase b{font-weight:600;color:var(--ink-1)}
 body.skin-melange #impots-panel .ip-per{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:10px 12px;
@@ -3419,7 +3413,7 @@ body.skin-melange #impots-panel .ip-per-n{font-size:12px;color:var(--ink-4)}
 body.skin-melange #impots-panel .ip-note{font-size:12px;line-height:1.45;color:var(--ink-4)}
 body.skin-melange #impots-panel .ip-vide{padding:14px 16px;border-radius:var(--mx-r-md);font-size:13px;line-height:1.5;color:var(--ink-3);
   background:var(--inset);border:1px dashed var(--line-2)}
-/* l'ordre de lecture : titre, l'addition, la phrase sur sa moitié, la période, la note */
+/* l'ordre de lecture : titre, les impôts à garder (et Paxum, pour information), les deux gestes, la période, la note */
 body.skin-melange #impots-panel{grid-template-areas:"t" "e" "x" "p" "n";row-gap:12px}
 body.skin-melange #impots-panel .ip-tete{grid-area:t;margin-bottom:2px}
 body.skin-melange #impots-panel .ip-eq{grid-area:e}
@@ -3429,7 +3423,7 @@ body.skin-melange #impots-panel .ip-note{grid-area:n;margin-top:0}
 body.skin-melange #impots-panel .ip-vide{grid-area:e}
 body.skin-melange #impots-panel.ip-0{grid-template-areas:"t" "e"!important;grid-template-columns:minmax(0,1fr)!important}
 body.skin-melange #impots-panel.ip-0 .ip-tete .panel-sub{display:none}
-/* ordinateur : l'addition à gauche (7/12), ce qu'elle veut dire à droite ; la période sous l'addition */
+/* ordinateur : les tuiles à gauche (7/12), les deux gestes à droite ; la période sous les tuiles */
 @media (min-width:1100px){
   body.skin-melange #impots-panel{grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-areas:"t t" "e x" "p n";column-gap:28px;row-gap:14px;align-items:start}
   body.skin-melange #impots-panel .ip-phrase{align-self:center;max-width:46ch}
@@ -3441,7 +3435,7 @@ body.skin-melange #impots-panel.ip-0 .ip-tete .panel-sub{display:none}
   body.skin-melange #records-panel .rk-grille{grid-template-columns:repeat(2,minmax(0,1fr))}
   body.skin-melange #records-panel .rk-der{grid-column:1 / -1}
 }
-/* téléphone : impôts | Paxum, puis le total sur toute la largeur ; Records : une rangée par tuile
+/* téléphone : les impôts à garder, puis Paxum (information), l'un sous l'autre ; Records : une rangée par tuile
    (étiquette à gauche, chiffre à droite, détail dessous) */
 @media (max-width:640px){
   body.skin-melange #records-panel .rk-grille{grid-template-columns:minmax(0,1fr);gap:10px}
@@ -3455,9 +3449,7 @@ body.skin-melange #impots-panel.ip-0 .ip-tete .panel-sub{display:none}
   body.skin-melange #records-panel .rk-lx{display:none}
   body.skin-melange #records-panel .rk-nom{font-size:18px}
   body.skin-melange #records-panel .rk-sens svg{width:18px;height:18px}
-  body.skin-melange #impots-panel .ip-eq{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  body.skin-melange #impots-panel .ip-tot{grid-column:1 / -1;min-height:0}
-  body.skin-melange #impots-panel .ip-tot::before{left:50%;top:-18px;margin:0 0 0 -13px}
+  body.skin-melange #impots-panel .ip-eq{grid-template-columns:minmax(0,1fr);gap:10px}
   body.skin-melange #impots-panel .ip-v{font-size:20px}
 }
 
@@ -3722,6 +3714,98 @@ body.skin-melange #login-overlay .lg-scene > .lg-foot .pg-i{flex:none;color:var(
 @keyframes lg-monte{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes lg-tourne{to{transform:rotate(360deg)}}
 
+
+/* ── feat2_rappel (rappel de fin / début de mois, 14/10) ── */
+/* ══ RAPPEL DU BILAN (14/10) : fin de mois / début de mois, en haut de l'accueil ══
+   Une tuile du Mélange (rayon, bord, ombre), teinte « à faire » (--todo, l'orange des choses à faire)
+   lavée depuis la gauche ; l'icône dans un rond de verre orange ; le bouton fait le geste du mois en
+   violet LÉGER (le violet plein reste au bouton du mois : une seule action pleine par écran) ;
+   « Plus tard » discret. Aucun montant dans ce bloc (l'œil n'a rien à y cacher). */
+#rappel-bilan{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"i x a";align-items:center;column-gap:14px;
+  margin:0 0 var(--mx-gap,12px);padding:14px 14px 14px 16px;
+  border-radius:var(--mx-r,20px);border:1px solid var(--mx-edge,var(--line-1));
+  background-color:var(--surf-1);
+  background-image:linear-gradient(100deg,color-mix(in srgb,var(--todo) 13%,transparent),color-mix(in srgb,var(--todo) 3%,transparent) 46%,transparent 72%);
+  box-shadow:var(--mx-hl,inset 0 0 0 0 transparent),var(--mx-sh,var(--sh-1))}
+#rappel-bilan .rb-ico{grid-area:i;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;
+  color:var(--todo);background:color-mix(in srgb,var(--todo) 15%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--todo) 30%,transparent)}
+#rappel-bilan .rb-ico svg{width:19px;height:19px}
+#rappel-bilan .rb-x{grid-area:x;min-width:0}
+#rappel-bilan .rb-t{font-size:15px;line-height:21px;font-weight:500;letter-spacing:-.01em;color:var(--ink-1)}
+#rappel-bilan .rb-t b{font-weight:700}
+#rappel-bilan .rb-s{margin-top:2px;font-size:13px;line-height:19px;color:var(--ink-3)}
+#rappel-bilan .rb-a{grid-area:a;display:flex;flex-direction:row-reverse;align-items:center;gap:4px}
+#rappel-bilan .rb-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;
+  border-radius:12px;border:1px solid var(--acc-22);background:var(--acc-12);color:var(--acc-txt);box-shadow:none;
+  font-family:inherit;font-size:14px;font-weight:600;line-height:1.2;letter-spacing:-.005em;white-space:nowrap;cursor:pointer;
+  transition:background-color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
+#rappel-bilan .rb-go:hover{background:color-mix(in srgb,var(--acc) 20%,transparent);border-color:var(--acc-45)}
+#rappel-bilan .rb-go:active{transform:translateY(1px)}
+#rappel-bilan .rb-go svg{flex:none;width:16px;height:16px}
+#rappel-bilan .rb-court{display:none}
+#rappel-bilan .rb-tard{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 12px;
+  border-radius:12px;border:1px solid transparent;background:transparent;box-shadow:none;color:var(--ink-3);
+  font-family:inherit;font-size:13px;font-weight:500;line-height:1.2;white-space:nowrap;cursor:pointer;
+  transition:background-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
+#rappel-bilan .rb-tard:hover{background:var(--hover);color:var(--ink-1)}
+body.readonly #rappel-bilan{display:none!important}
+/* dans la grille du Mélange : la rangée pleine largeur entre l'en-tête et « Résultat » (celle de
+   l'écran de bienvenue, vide dès qu'il y a un bilan ; le rappel ne s'affiche jamais sur un compte neuf) */
+body.skin-melange #page-ca > #rappel-bilan{grid-area:em;margin-top:6px}
+/* tablette : la colonne de texte était trop étroite à côté des boutons → les boutons passent dessous */
+@media (min-width:641px) and (max-width:1099px){
+  #rappel-bilan{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"i x" ". a";align-items:start}
+  #rappel-bilan .rb-a{flex-direction:row;justify-content:flex-start;margin:12px 0 0 -2px}
+}
+@media (max-width:640px){
+  #rappel-bilan{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"i x" "a a";align-items:start;column-gap:12px;
+    padding:14px 14px 12px;background-image:linear-gradient(160deg,color-mix(in srgb,var(--todo) 13%,transparent),color-mix(in srgb,var(--todo) 3%,transparent) 55%,transparent 85%)}
+  body.skin-melange #page-ca > #rappel-bilan{margin:12px 0 2px}
+  #rappel-bilan .rb-ico{width:36px;height:36px}
+  #rappel-bilan .rb-ico svg{width:18px;height:18px}
+  #rappel-bilan .rb-a{gap:6px;margin-top:12px}
+  #rappel-bilan .rb-go{flex:1 1 auto;min-width:0;min-height:44px;font-size:15px}
+  #rappel-bilan .rb-tard{flex:none;min-height:44px;padding:0 14px}
+  #rappel-bilan .rb-long{display:none}
+  #rappel-bilan .rb-court{display:inline}
+}
+
+/* ── feat_chiffres v2 (Impôts à garder de côté : Paxum en information) ── */
+/* ══ chiffres v2 (14/10) : « Impôts à garder de côté ». Paxum n'est plus « à garder » : sa tuile devient
+   une information, hachurée comme « Gardé par OnlyFans » (déjà pris, rien à payer) ; les deux gestes
+   d'André sont numérotés (pastilles ardoise, la couleur des impôts). ══ */
+body.skin-melange #impots-panel .ip-pax{background-color:transparent;
+  background-image:repeating-linear-gradient(135deg,transparent 0 9px,var(--mx-hatch) 9px 10px);
+  box-shadow:none;outline:1px dashed var(--line-2);outline-offset:-1px}
+/* le chiffre à garder domine ; Paxum, simple information, plus petit et plus pâle */
+body.skin-melange #impots-panel .ip-tot .ip-v{font-size:32px;letter-spacing:-.03em}
+body.skin-melange #impots-panel .ip-pax .ip-v{font-size:16px;color:var(--ink-2)}
+body.skin-melange #impots-panel .ip-pax .ip-s{color:var(--ink-3)}
+body.skin-melange #impots-panel .ip-rien{white-space:nowrap;font-weight:600;color:var(--ink-2)}
+@media (max-width:640px){
+  body.skin-melange #impots-panel .ip-tot .ip-v{font-size:24px}
+  /* Paxum en une rangée : l'étiquette à gauche, le montant à droite, la phrase dessous */
+  body.skin-melange #impots-panel .ip-pax{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l v" "s s";column-gap:12px;align-items:center;padding:12px 14px}
+  body.skin-melange #impots-panel .ip-pax .ip-l{grid-area:l}
+  body.skin-melange #impots-panel .ip-pax .ip-v{grid-area:v;margin:0;font-size:16px}
+  body.skin-melange #impots-panel .ip-pax .ip-s{grid-area:s;min-height:0;margin-top:6px}
+}
+body.skin-melange #impots-panel .ip-etapes{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:ipe}
+body.skin-melange #impots-panel .ip-etapes li{position:relative;min-height:24px;padding-left:36px;counter-increment:ipe}
+body.skin-melange #impots-panel .ip-etapes li::before{content:counter(ipe);position:absolute;left:0;top:-2px;display:flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;font-size:12px;font-weight:700;line-height:1;color:var(--bc-fr-on);
+  background:linear-gradient(155deg,var(--bc-fr-a),var(--bc-fr-b));box-shadow:var(--mx-lift),inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 14%,transparent)}
+body.skin-melange #impots-panel .ip-mt{font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (min-width:1100px){body.skin-melange #impots-panel .ip-etapes{max-width:50ch}}
+
+
+/* ── test Safari (14/10) ── */
+/* (14/10) Les boutons et les champs prennent la police du site : sans cette règle, les onglets
+   (Accueil, Récap, Historique) et la recherche de l'Historique s'affichaient dans la police du
+   navigateur (Arial sur ordinateur, celle du système sur iPhone), vu au test façon Safari. */
+button,input,select,textarea{font-family:inherit}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -3857,6 +3941,14 @@ body.skin-melange #login-overlay .lg-scene > .lg-foot .pg-i{flex:none;color:var(
     <button type="button" onclick="ouvrirBilanDuMois()" class="es-b"><svg class="pg-i" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg><span>Saisir mon premier bilan</span></button>
   </div>
   <div class="kpi-sec">Résultat</div>
+  <section id="rappel-bilan" aria-labelledby="rb-t" hidden>
+    <span class="rb-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M16.5 16.5h.01" stroke-width="3"/></svg></span>
+    <div class="rb-x"><div class="rb-t" id="rb-t"></div><div class="rb-s" id="rb-s"></div></div>
+    <div class="rb-a">
+      <button type="button" class="rb-go" id="rb-go" onclick="rappelOuvrir()">Mettre à jour le bilan du mois</button>
+      <button type="button" class="rb-tard" onclick="rappelPlusTard()" title="Masquer ce rappel jusqu’à demain">Plus tard</button>
+    </div>
+  </section>
   <div class="kpi-hero-grid">
     <div class="kpi kpi-hero"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Bénéfice<i class="tip-icon">i</i><span class="tip-box">Ton net moins toutes les dépenses, AVANT la part de la modèle : la moitié lui revient (voir « Part de la modèle »).</span></span><span class="kpi-apercu" id="kpi-apercu" hidden>aperçu, pas encore enregistré</span></div><div class="kpi-value" id="vpr">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvpr"></span><span class="kpi-pct" id="ppr">—</span></div><div class="kpi-moitie" id="pmoitie" hidden title="La moitié du bénéfice te revient, l’autre moitié à la modèle (règle des 50 %)."></div></div>
     <div class="kpi kpi-net"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span class="tip">Net total<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement : OnlyFans, commission de 20 % déjà déduite, et Telegram, sans aucune commission.</span></span></div><div class="kpi-value" id="pn">—</div><div class="kpi-meta"><span class="kpi-pct" id="de">—</span></div><div class="kpi-nets"><div class="kn"><span class="kn-l">OnlyFans</span><span class="kn-v" id="vb">—</span><span class="kpi-delta" id="dvb"></span></div><div class="kn"><span class="kn-l">Telegram</span><span class="kn-v" id="vn">—</span><span class="kpi-delta" id="dvn"></span></div></div></div>
@@ -3995,7 +4087,7 @@ body.skin-melange #login-overlay .lg-scene > .lg-foot .pg-i{flex:none;color:var(
     <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">IA<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting automatisé par IA</span></span></div><div class="kpi-value" id="vci">—</div><div class="kpi-pct" id="pci">—</div></div>
     <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">humain<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting fait par des humains</span></span></div><div class="kpi-value" id="vch">—</div><div class="kpi-pct" id="pch">—</div></div>
     <div class="kpi"><div class="kpi-label"><span class="tip">Dépenses <span class="tip-nw">diverses<i class="tip-icon">i</i></span><span class="tip-box">Dépenses ponctuelles (pub, outils, etc.)</span></span></div><div class="kpi-value" id="val">—</div><div class="kpi-pct" id="pal">—</div></div>
-    <div class="kpi"><div class="kpi-label"><span class="tip">Impôts + <span class="tip-nw">Paxum<i class="tip-icon">i</i></span><span class="tip-box">Sur l'argent OnlyFans seulement : 1 % d'impôts + 3,5 % de frais Paxum → crypto. Payés par l'agence, avant le partage avec la modèle. Telegram n'a aucun frais.</span></span></div><div class="kpi-value" id="vfr">—</div><div class="kpi-pct" id="pfr">—</div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">Impôts + <span class="tip-nw">Paxum<i class="tip-icon">i</i></span><span class="tip-box">Sur l'argent OnlyFans seulement : 1 % d'impôts + 3,5 % de frais Paxum → crypto. Retirés avant le partage : la modèle et toi en payez chacun la moitié. Telegram n'a aucun frais.</span></span></div><div class="kpi-value" id="vfr">—</div><div class="kpi-pct" id="pfr">—</div></div>
     <div class="kpi kpi-total"><div class="kpi-label"><span class="tip">Total <span class="tip-nw">dépenses<i class="tip-icon">i</i></span><span class="tip-box">VA + Modèle + Chat IA + Chat humain + Dépenses diverses + Impôts et Paxum</span></span></div><div class="kpi-value" id="vdep">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvdep"></span><span class="kpi-pct" id="pdep">—</span></div></div>
     <div class="kpi kpi-info"><div class="kpi-label"><span class="tip">Gardé par <span class="tip-nw">OnlyFans<i class="tip-icon">i</i></span><span class="tip-box">Les 20 % qu'OnlyFans garde sur le brut. Déjà retirés de ton net : ce n'est pas une dépense à payer.</span></span></div><div class="kpi-value" id="vof">—</div><div class="kpi-pct">déjà déduit de ton net</div></div>
   </div>
@@ -7896,7 +7988,7 @@ function renderModelShare(){
     +_op('=')
     +`<div class="ms-res ms-res-${st}">${box('','=',rl,Math.abs(reste),rs)}</div></div>`;
   html+=_det;
-  html+=`<div class="ms-frais">Bénéfice après 1 % d’impôts et 3,5 % de frais Paxum → crypto sur l’argent OnlyFans (payés par l’agence, avant le partage). Telegram : aucun frais.</div>`;
+  html+=`<div class="ms-frais">Bénéfice après 1 % d’impôts et 3,5 % de frais Paxum → crypto sur l’argent OnlyFans (retirés avant le partage : moitié chacun). Telegram : aucun frais.</div>`;
   _VIR_AFFICHES=(virements||[]).slice();
   const n=(virements||[]).length;
   if(n){
@@ -8703,10 +8795,15 @@ function _texteDoublon(d){
   };
 }
 // « mis à jour aujourd'hui à 10:12 », lu dans l'historique des modifications.
+// La dernière ligne « Ajout… » / « Modification… » de l'Historique pour ce bilan (le journal est rangé
+// du plus récent au plus ancien). SEULE source de « mis à jour … » et du rappel de fin de mois (14/10).
+function _journalMajBilan(e){
+  var cle=dl(e.date);
+  return (editLog||[]).find(function(x){ return x && /^(Ajout|Modification)/.test(String(x.action||'')) && String(x.detail||'').indexOf(cle)===0; })||null;
+}
 function _majDepuisJournal(e){
   try{
-    var cle=dl(e.date);
-    var l=(editLog||[]).find(function(x){ return x && /^(Ajout|Modification)/.test(String(x.action||'')) && String(x.detail||'').indexOf(cle)===0; });
+    var l=_journalMajBilan(e);
     if(!l) return '';
     var t=new Date(l.ts); if(isNaN(t.getTime())) return '';
     var hh=t.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
@@ -8956,7 +9053,7 @@ function _majSaisie(){
     if(liste.length>1) sousHtml='<span class="sl sl-avert">'+_ic('alerte')+'<span>'+liste.length+" bilans ce mois-ci : ils s'additionnent</span></span>";
   } else if(rythme){
     titre='Bilan '+de; sous=nb ? 'Pas encore de bilan ce mois-ci.' : "Aucun bilan pour l'instant.";
-    if(prec) sous+=' '+_majuscule(_nomMois(prec.ym))+' est fini : finalise son bilan avec tes chiffres définitifs.';
+    if(prec && !_rappelDebutVisible()) sous+=' '+_majuscule(_nomMois(prec.ym))+' est fini : finalise son bilan avec tes chiffres définitifs.';
   } else {
     titre='Nouveau bilan';
     var der=(ents||[]).reduce(function(m,e){ var d=String(e.date||''); return d>m?d:m; },'');
@@ -8982,6 +9079,7 @@ function _majSaisie(){
   var a=document.getElementById('saisie-autre'); if(a) a.hidden=!(replie && rythme && nb>0);
   var bp=document.getElementById('saisie-prec');
   if(bp){ bp.hidden=!(replie && prec); if(prec) ecrire(bp, _ic('edit')+'<span>'+esc('Finaliser le bilan '+_deMois(prec.ym))+'</span>'); }
+  try{ _majRappel(); }catch(e){}
   var plus=document.querySelector('.topbar [onclick="openQuickAdd()"]');
   if(plus && plus.title!==geste){ plus.title=geste; plus.setAttribute('aria-label',geste); }
   var st=document.getElementById('sbtn-text');
@@ -9539,14 +9637,18 @@ function renderRecords(){
   el.innerHTML = _chNb(tete + '<div class="rk-grille">' + t1 + t2 + t3 + '</div>' + noteCours);
 }
 
-// ── Impôts + Paxum à garder de côté : le modèle ──────────────────────────
-// Parties : impôts = 1 % du net OnlyFans ; total = fraisOF() (exactement le chiffre de la tuile) ;
-// Paxum = total − impôts, au centime affiché (les deux parties font le total à l'écran).
+// ── Impôts à garder de côté : le modèle (v2, 14/10 : le circuit réel d'André) ──────────
+// OnlyFans → Paxum (déclaré aux impôts) → tout part en crypto, et Paxum prend SES 3,5 % lui-même à ce
+// moment-là : rien à garder pour Paxum. Les impôts (1 % du net OnlyFans) sont partagés moitié-moitié
+// (déjà dans le bénéfice : sa moitié est retirée de « Reste à envoyer »), et André les paie en personne.
+// Parties : impôts = 1 % du net OnlyFans ; total = fraisOF() (le chiffre de la tuile « Impôts + Paxum ») ;
+// Paxum = total − impôts, au centime affiché (information seulement) ; moitie = sa moitié DES IMPÔTS, la
+// moitié du montant affiché, au centime (un demi-centime monte : $10.01 -> $5.01, jamais « $5.00 »).
 function _chFrais(es){
   var br = (es || []).reduce(function(s, e){ return s + (e.brut || 0); }, 0);   // même somme que uk()
   var n = br * _TAUX, tot = fraisOF(n), imp = n * _IMPOTS_OF;
   var cT = _chCtsAff(tot), cI = _chCtsAff(imp);
-  return {br: br, net: n, tot: tot, imp: imp, pax: (cT - cI) / 100, paxExact: n * _PAXUM_OF, moitie: tot * 0.5};
+  return {br: br, net: n, tot: tot, imp: imp, pax: (cT - cI) / 100, paxExact: n * _PAXUM_OF, moitie: Math.round(cI / 2) / 100};
 }
 function chImpots(){
   var cour = _pgMoisCourant();
@@ -9564,15 +9666,16 @@ function chImpots(){
   return o;
 }
 function renderImpots(){
+  // (v2, 14/10) Seuls les impôts (1 %) sont à garder : Paxum prend ses 3,5 % lui-même au passage en crypto.
   var el = document.getElementById('impots-panel'); if(!el) return;
   if(!(ents || []).length){ el.hidden = true; el.innerHTML = ''; return; }
   el.hidden = false;
   var I = chImpots(), T = I.total;
-  el.className = 'panel ip-panel' + (T.tot > 0 ? '' : ' ip-0');
-  var tete = '<div class="ip-tete"><div class="panel-title ip-titre"><span class="ip-rond" aria-hidden="true"></span>Impôts + Paxum à garder de côté</div>'
-    + '<div class="panel-sub">depuis le début · moitié-moitié avec la modèle, c’est toi qui les paies</div></div>';
-  if(!(T.tot > 0)){
-    el.innerHTML = _chNb(tete + '<div class="ip-vide">Rien à garder de côté : pas encore d’argent OnlyFans dans tes bilans (Telegram n’a aucun frais).</div>');
+  el.className = 'panel ip-panel' + (T.imp > 0 ? '' : ' ip-0');
+  var tete = '<div class="ip-tete"><div class="panel-title ip-titre"><span class="ip-rond" aria-hidden="true"></span>Impôts à garder de côté</div>'
+    + '<div class="panel-sub">depuis le début · 1 % du net OnlyFans, moitié-moitié avec la modèle</div></div>';
+  if(!(T.imp > 0)){
+    el.innerHTML = _chNb(tete + '<div class="ip-vide">Aucun impôt à garder : pas encore d’argent OnlyFans dans tes bilans (Telegram n’en a pas).</div>');
     return;
   }
   var tuile = function(cls, lbl, val, sous){
@@ -9580,22 +9683,24 @@ function renderImpots(){
       + (sous ? '<div class="ip-s">' + sous + '</div>' : '') + '</div>';
   };
   var eq = '<div class="ip-eq">'
-    + tuile('ip-imp', 'Impôts · 1 %', fmtC(T.imp), 'du net OnlyFans')
-    + tuile('ip-pax', 'Paxum · 3,5 %', fmtC(T.pax), 'passage en crypto')
-    + tuile('ip-tot', 'À garder de côté', fmtC(T.tot), '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(T.moitie) + '</b></span>')
+    + tuile('ip-tot', 'À garder pour les impôts', fmtC(T.imp), '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(T.moitie) + '</b></span>')
+    + tuile('ip-pax', 'Paxum · 3,5 %', fmtC(T.pax), '<span>déjà pris par Paxum au passage en crypto : <span class="ip-rien">rien à garder</span></span>')
     + '</div>';
-  var phrase = '<p class="ip-phrase"><b>Sa moitié est déjà retirée de « Reste à envoyer ».</b> Cet argent reste donc chez toi, sur le compte crypto : c’est toi qui paies les impôts et Paxum pour vous deux.</p>';
+  var etapes = '<ol class="ip-phrase ip-etapes">'
+    + '<li><b>Envoie à la modèle le montant « Reste à envoyer »</b>, pas la moitié de la crypto : sa moitié des impôts y est déjà retirée.</li>'
+    + '<li><b>Garde <span class="ip-mt">' + fmtC(T.imp) + '</span> sur le compte crypto</b> : c’est toi qui paieras les impôts, pour vous deux.</li>'
+    + '</ol>';
   var per = '';
   if(I.periode && I.lib){
     var P = I.periode;
     var apercu = (function(){ var a = document.getElementById('kpi-apercu'); return !!(a && !a.hidden); })();
     per = '<div class="ip-per"><span class="ip-per-l">' + esc(I.lib) + '</span>'
-      + (P.tot > 0 ? '<span class="ip-per-v">impôts <b>' + fmtC(P.imp) + '</b> + Paxum <b>' + fmtC(P.pax) + '</b> = <b>' + fmtC(P.tot) + '</b></span>'
-        : '<span class="ip-per-v">aucun frais : pas d’argent OnlyFans sur cette période</span>')
+      + (P.imp > 0 ? '<span class="ip-per-v">impôts à garder : <b>' + fmtC(P.imp) + '</b>, dont sa moitié <b>' + fmtC(P.moitie) + '</b></span>'
+        : '<span class="ip-per-v">aucun impôt : pas d’argent OnlyFans sur cette période</span>')
       + (apercu ? '<span class="ip-per-n">bilans enregistrés seulement</span>' : '') + '</div>';
   }
   var note = '<div class="ip-note">Les impôts déjà payés ne se notent pas encore ici : ce total compte tout, depuis ton premier bilan.</div>';
-  el.innerHTML = _chNb(tete + eq + phrase + per + note);
+  el.innerHTML = _chNb(tete + eq + etapes + per + note);
 }
 // typographie : espace insécable devant « : » et dans « … » (plus de deux-points seul en début de ligne)
 function _chNb(h){ return String(h).replace(/ :/g, ' :').replace(/« /g, '« ').replace(/ »/g, ' »'); }
@@ -9933,6 +10038,115 @@ function renderChiffres(){
   } catch (e) {}
 })();
 
+
+// ── feat2_rappel (rappel de fin / début de mois, 14/10) ──
+// ══ RAPPEL DU BILAN (14/10) ══════════════════════════════════════════════════
+// André fait UN bilan par mois, qu'il met à jour au fil du mois. Le rappel, en haut de l'accueil :
+//  • les 3 derniers jours du mois : le bilan du mois n'existe pas, ou n'a pas été mis à jour depuis
+//    plus de 3 jours (jours de calendrier) → « Fin du mois : pense à mettre à jour le bilan d'octobre » ;
+//  • du 1er au 7 (la fenêtre de « Finaliser ») : le bilan du mois précédent n'a pas été mis à jour
+//    APRÈS la fin de ce mois → « Septembre est fini : finalise son bilan ».
+// AUCUNE règle parallèle : rythme mensuel = _rythmeBilan (la détection de la prévision), bilan du
+// mois = _bilansMois(...)[0] (celui qu'ouvre le bouton du mois), bilan à finaliser = _bilanAFinaliser,
+// date de mise à jour = _journalMajBilan (la même ligne d'Historique que « mis à jour … »).
+// Les boutons font les MÊMES gestes : ouvrirBilanDuMois() (le bouton du mois) et
+// finaliserMoisPrecedent() (« Finaliser ») — aucun nouveau chemin d'enregistrement.
+// Jamais en lecture seule (ni pour l'associé, dont le formulaire est caché). Compte neuf : rien
+// (l'écran de bienvenue le dit déjà). « Plus tard » ne garde QUE la date du jour, dans CE
+// navigateur (cleLocale('rappel_bilan')) : rien en base, rien dans l'Historique.
+var _rappelMasqueLe=null;   // repli si le stockage du navigateur est refusé (navigation privée)
+// Écart en jours de calendrier entre deux dates « AAAA-MM-JJ » (le changement d'heure n'y joue pas).
+function _joursEntre(a, b){
+  var p=function(s){ var x=String(s||'').split('-'); return Date.UTC(+x[0], (+x[1]||1)-1, +x[2]||1); };
+  return Math.round((p(b)-p(a))/864e5);
+}
+// Heure de la dernière mise à jour notée dans l'Historique (null : aucune trace lisible).
+function _tsMajBilan(e){
+  var l=e ? _journalMajBilan(e) : null;
+  var t=l ? new Date(l.ts) : null;
+  return (t && !isNaN(t.getTime())) ? t : null;
+}
+// Le rappel dû aujourd'hui, ou null. {type:'fin'|'debut', ym, e (null : pas encore de bilan), reste}
+function _rappelBilan(){
+  if(document.body.classList.contains('readonly')) return null;
+  try{ if(typeof _role!=='undefined' && _role==='assoc') return null; }catch(err){}
+  if(!(ents||[]).length) return null;
+  var a=new Date(), j=a.getDate(), nbj=new Date(a.getFullYear(), a.getMonth()+1, 0).getDate();
+  if(j>nbj-3){
+    var ym=_ymLocal();
+    if(!_rythmeBilan(ym)) return null;
+    var e=_bilansMois(ym)[0]||null, r={type:'fin', ym:ym, e:e, reste:nbj-j};
+    if(!e) return r;
+    var t=_tsMajBilan(e);
+    return (t && _joursEntre(_ymd(t), _aujLocal())<=3) ? null : r;
+  }
+  var p=_bilanAFinaliser();
+  if(!p) return null;
+  var t2=_tsMajBilan(p.e), finMois=new Date(a.getFullYear(), a.getMonth(), 1).getTime();
+  return (t2 && t2.getTime()>=finMois) ? null : {type:'debut', ym:p.ym, e:p.e, reste:null};
+}
+function _rappelRepousse(){
+  var auj=_aujLocal();
+  if(_rappelMasqueLe===auj) return true;
+  try{ return localStorage.getItem(cleLocale('rappel_bilan'))===auj; }catch(err){ return false; }
+}
+// Ce qui est montré : rien pendant qu'un bilan est ouvert (on est déjà en train de le faire),
+// rien après « Plus tard » le même jour.
+function _rappelAffiche(){
+  if(_panneauOuvert() || _rappelRepousse()) return null;
+  return _rappelBilan();
+}
+// Le rappel de début de mois est-il à l'écran ? (la tuile du mois ne répète alors pas sa phrase)
+function _rappelDebutVisible(){
+  try{ var r=_rappelAffiche(); return !!r && r.type==='debut'; }catch(err){ return false; }
+}
+function rappelPlusTard(){
+  _rappelMasqueLe=_aujLocal();
+  try{ localStorage.setItem(cleLocale('rappel_bilan'), _rappelMasqueLe); }catch(err){}
+  try{ _majSaisie(); }catch(err){ _majRappel(); }
+}
+function rappelOuvrir(){
+  var r=_rappelBilan();
+  if(!r){ _majRappel(); return; }
+  return r.type==='debut' ? finaliserMoisPrecedent() : ouvrirBilanDuMois();
+}
+function _majRappel(){
+  var box=document.getElementById('rappel-bilan'); if(!box) return;
+  var r=null; try{ r=_rappelAffiche(); }catch(err){ r=null; }
+  if(!r){ if(!box.hidden) box.hidden=true; return; }
+  // g : le texte du bouton (celui du bouton du mois / de « Finaliser ») ; gc : sa forme courte au téléphone,
+  // où le titre juste au-dessus nomme déjà le mois (les deux boutons tiennent alors sur une ligne).
+  var de=_deMois(r.ym), t, s, g, gc, ico='edit';
+  var fin=r.reste===0 ? 'le mois se termine ce soir' : (r.reste===1 ? 'le mois se termine demain' : 'le mois se termine dans '+r.reste+' jours');
+  // « le 12 oct. à 10:12 » ne se coupe pas entre « à » et l'heure (le texte vient de « mis à jour … »)
+  var maj=r.e ? _majDepuisJournal(r.e).replace(/ à (\d)/, ' à $1') : '';
+  if(r.type==='debut'){
+    t='<b>'+esc(_majuscule(_nomMois(r.ym))+' est fini :')+'</b> finalise son bilan';
+    // (le point médian reste collé au mot d'avant : une ligne ne commence jamais par « · »)
+    s='Reporte tes chiffres définitifs, puis enregistre'+(maj ? ' · dernière mise à jour '+maj : '');
+    g='Finaliser le bilan '+de; gc='Finaliser';
+  } else if(r.e){
+    t='<b>Fin du mois :</b> '+esc('pense à mettre à jour le bilan '+de);
+    s=(maj ? 'Dernière mise à jour '+maj : "Aucune mise à jour notée dans l'Historique")+' · '+fin;
+    g='Mettre à jour le bilan '+de; gc='Mettre à jour';
+  } else {
+    t='<b>Fin du mois :</b> '+esc('pense à saisir le bilan '+de);
+    s=_majuscule(fin)+' : ton net du mois, puis tes dépenses';
+    g='Saisir le bilan '+de; gc='Saisir le bilan'; ico='plus';
+  }
+  var h=r.type+'|'+t+'|'+s+'|'+g;
+  if(box._h!==h){
+    var q=function(id){ return document.getElementById(id); };
+    if(q('rb-t')) q('rb-t').innerHTML=t;
+    if(q('rb-s')) q('rb-s').textContent=s;
+    if(q('rb-go')){ q('rb-go').innerHTML=_ic(ico)+'<span class="rb-long">'+esc(g)+'</span><span class="rb-court">'+esc(gc)+'</span>'; q('rb-go').setAttribute('aria-label', g); }
+    box.setAttribute('data-rappel', r.type);
+    box._h=h;
+  }
+  if(box.hidden) box.hidden=false;
+}
+// Page laissée ouverte (téléphone en veille) : en revenant, le rappel suit la date du jour.
+document.addEventListener('visibilitychange', function(){ if(!document.hidden){ try{ _majRappel(); }catch(err){} } });
 </script>
 </body>
 </html>
