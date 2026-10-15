@@ -3731,6 +3731,124 @@ body.skin-melange #impots-panel .ip-cout-det b{font-weight:600;color:var(--bc-fr
 /* Paxum (information) ne s'étire plus sur toute la hauteur de la tuile ardoise, devenue plus haute */
 @media (min-width:641px){body.skin-melange #impots-panel .ip-pax{align-self:start}}
 
+
+/* ── feat2_objectif v2 (EXEMPLE jauge de l'objectif : B2 · Anneau, en mieux) ── */
+/* ══ objectif v2 (14/10) — EXEMPLE : l'objectif du mois DANS la tuile Bénéfice ══
+   Dessin du Mélange : tout à l'encre du widget (--bc-on sur le dégradé violet, rouge si perte), le « verre » (--bc-v)
+   pour les pistes et les pastilles, des hachures ou un trait fin et léger pour ce qui n'est qu'une prévision.
+   La jauge (#obj-jauge) est en « display:contents » : chaque morceau se range DIRECTEMENT dans la grille de la tuile
+   (zones nommées par dessin), sans boîte en plus qui pousserait la tuile. */
+body.skin-melange #obj-jauge[hidden]{display:none!important}
+body.skin-melange #obj-jauge{color:var(--bc-on)}
+body.skin-melange #obj-jauge.obj-on{display:contents}
+body.skin-melange #page-ca .kpi-hero #obj-jauge.obj-on > *{position:relative;z-index:1;min-width:0;pointer-events:none}
+body.skin-melange #obj-jauge b{font-weight:700;color:var(--bc-on);font-variant-numeric:tabular-nums;letter-spacing:-.005em;white-space:nowrap}
+body.skin-melange #obj-jauge .o-nw{white-space:nowrap}
+body.skin-melange #obj-jauge .o-ok{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--bc-on);white-space:nowrap}
+body.skin-melange #obj-jauge .o-ok > svg{flex:none;box-sizing:border-box;width:18px;height:18px;padding:3.5px;border-radius:50%;color:var(--bc-b);background:var(--bc-on)}
+/* hachures = la prévision (barre, rail, bord) */
+body.skin-melange #obj-jauge .o-proj{position:absolute;top:0;bottom:0;border-radius:inherit;
+  background:repeating-linear-gradient(-45deg,color-mix(in srgb,var(--bc-on) 46%,transparent) 0 3px,transparent 3px 7px)}
+body.skin-melange #obj-jauge .o-plein{position:absolute;left:0;top:0;bottom:0;border-radius:inherit;background:var(--bc-on);
+  box-shadow:0 0 14px -3px color-mix(in srgb,var(--bc-on) 70%,transparent)}
+
+/* l'anneau (B2, D) : le tour = l'objectif ; plein = le bénéfice ; trait fin et léger = la prévision ; 2e tour au-delà */
+body.skin-melange #obj-jauge .o-ring{display:block;flex:none}
+body.skin-melange #obj-jauge .o-a-svg{display:block;width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+body.skin-melange #obj-jauge .o-a-svg circle{fill:none;stroke-width:10}
+body.skin-melange #obj-jauge .o-a-fond{stroke:color-mix(in srgb,var(--bc-v) 24%,transparent)}
+body.skin-melange #obj-jauge .o-a-svg circle.o-a-prev{stroke:color-mix(in srgb,var(--bc-on) 55%,transparent);stroke-width:3.5;stroke-linecap:round}
+body.skin-melange #obj-jauge .o-a-plein{stroke:var(--bc-on);stroke-linecap:round}
+body.skin-melange #obj-jauge .o-ring-paliers .o-a-svg circle{stroke-linecap:butt}
+body.skin-melange #obj-jauge .o-a-svg circle.o-a-plein-1{stroke:color-mix(in srgb,var(--bc-on) 58%,transparent)}
+body.skin-melange #obj-jauge .o-a-tour2{stroke:var(--bc-on);stroke-linecap:round;filter:drop-shadow(0 0 2.5px color-mix(in srgb,var(--bc-b) 85%,transparent))}
+body.skin-melange #obj-jauge .o-a-c{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--bc-on);font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+body.skin-melange #obj-jauge .o-a-u{font-size:12px;font-weight:700;letter-spacing:0;align-self:center;margin-top:.15em}
+body.skin-melange #obj-jauge .o-a-c-ok > svg{width:44%;height:44%}
+
+/* pas d'objectif : une petite pastille de verre en haut à droite de la tuile, rien d'autre (le même geste que
+   « Fixer un objectif mensuel » de la Prévision) */
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > #obj-jauge.obj-invite{position:absolute;z-index:2;top:16px;right:18px;display:block;margin:0}
+body.skin-melange #obj-jauge .obj-fixer{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:32px;margin:0;padding:0 12px 0 10px;
+  border:0;border-radius:999px;cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.01em;white-space:nowrap;color:var(--bc-on);
+  background:color-mix(in srgb,var(--bc-v) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 22%,transparent);
+  transition:background-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+body.skin-melange #obj-jauge .obj-fixer::before{content:"";position:absolute;inset:-6px -4px}
+body.skin-melange #obj-jauge .obj-fixer:hover{background:color-mix(in srgb,var(--bc-v) 28%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on) 40%,transparent)}
+body.skin-melange #obj-jauge .obj-fixer:focus-visible{outline:2px solid var(--bc-on);outline-offset:2px}
+body.skin-melange #obj-jauge .obj-fixer > svg{flex:none;color:var(--bc-on)}
+@media (max-width:640px){
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > #obj-jauge.obj-invite{top:10px;right:12px}
+}
+@media (max-width:640px) and (max-height:700px){
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > #obj-jauge.obj-invite{top:8px}
+}
+/* la jauge se remplit une seule fois, à sa première apparition (jamais si le mouvement est réduit) */
+@media (prefers-reduced-motion:no-preference){
+  body.skin-melange #obj-jauge.obj-entree .o-plein{animation:obj-pousse .7s var(--ease) both}
+  body.skin-melange #obj-jauge.obj-entree .o-proj,body.skin-melange #obj-jauge.obj-entree .o-a-prev{animation:obj-apparait .7s var(--ease) both}
+  body.skin-melange #obj-jauge.obj-entree .o-a-plein,body.skin-melange #obj-jauge.obj-entree .o-a-tour2{animation:obj-trace .7s var(--ease) both}
+}
+@keyframes obj-pousse{from{width:0}}
+@keyframes obj-apparait{from{opacity:0}}
+@keyframes obj-trace{from{stroke-dasharray:0 100}}
+
+/* B2 et D · la place de l'anneau : à DROITE, en bas de la tuile, sur la ligne de la marge (il ne la fait pas grandir pour
+   lui) ; la phrase sous le chiffre, à gauche. Tuile large (ordinateur) : la phrase se pose dans le vide qui existait déjà
+   entre le chiffre et la marge → +0 px ; tablette (tuile basse et très large) : l'anneau monte à côté du chiffre. */
+body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero:has(> #obj-jauge.obj-on:is(.o-b2,.o-d)){grid-template-columns:auto minmax(0,1fr) auto;
+  grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"l l l" "v m m" "g g r" "k k r"}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-ring{grid-area:r;align-self:end;justify-self:end;width:62px;height:62px;margin:10px 0 0}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-txt{grid-area:g;align-self:end;display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+  margin:10px 12px 0 0}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-sur{font-size:15px;font-weight:600;line-height:1.25;letter-spacing:-.005em;color:var(--bc-on)}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-dr{font-size:13px;font-weight:500;line-height:1.35;color:var(--bc-on2)}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-dr .o-ok > svg{width:16px;height:16px;padding:3px}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c2{font-size:20px}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c3{font-size:16px}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c4{font-size:13px}
+body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c1{font-size:20px}
+@container (min-width:480px){
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-ring{width:84px;height:84px;margin:4px 0 0}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-svg circle{stroke-width:9}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-svg circle.o-a-prev{stroke-width:3}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-txt{gap:4px;margin:10px 16px 2px 0}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-sur{font-size:17px}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-dr{font-size:13.5px}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c1,body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c2{font-size:28px}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c3{font-size:23px}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-c4{font-size:19px}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-a-u{font-size:14px}
+}
+/* tablette (tuile large et basse, sans vide sous le chiffre) : de l'air sous la virgule du grand chiffre */
+@container (min-width:620px){
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-txt{margin-top:14px}
+}
+@container (min-width:640px){
+  /* (la tuile ne peut pas s'interroger elle-même : c'est l'anneau qui s'étend sur la rangée du chiffre) */
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-ring{grid-area:2 / 3 / 5 / 4;align-self:center;width:112px;height:112px;margin:8px 0 0}
+}
+@media (max-width:640px) and (max-height:700px){
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-ring{width:58px;height:58px;margin-top:8px}
+  body.skin-melange #obj-jauge:is(.o-b2,.o-d) .o-txt{margin-top:8px}
+}
+/* le décor de la tuile (ses deux cercles discrets) se recentre sur l'anneau : deux ondes autour de la mesure.
+   centre = marge de la tuile + demi-anneau ; le décor fait 340 px (centre à 170 px de ses bords). */
+body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero:has(> #obj-jauge.obj-on:is(.o-b2,.o-d))::after{right:-123px;bottom:-126px}
+@container (min-width:480px){
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero:has(> #obj-jauge.obj-on:is(.o-b2,.o-d))::after{right:-108px;bottom:-110px}
+}
+@container (min-width:640px){
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero:has(> #obj-jauge.obj-on:is(.o-b2,.o-d))::after{right:-94px;bottom:auto;top:calc(50% - 170px)}
+}
+@media (max-width:640px) and (max-height:700px){
+  body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero:has(> #obj-jauge.obj-on:is(.o-b2,.o-d))::after{right:-125px;bottom:-130px}
+}
+
+/* B2 · ANNEAU, en mieux : même place que D (voir anneau.css) ; un seul tour plein, 2e tour au-delà de 100 %. */
+body.skin-melange #obj-jauge.o-b2 .o-dr{max-width:100%}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -3874,7 +3992,7 @@ body.skin-melange #impots-panel .ip-cout-det b{font-weight:600;color:var(--bc-fr
     </div>
   </section>
   <div class="kpi-hero-grid">
-    <div class="kpi kpi-hero"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Bénéfice<i class="tip-icon">i</i><span class="tip-box">Ton net moins toutes les dépenses, AVANT la part de la modèle : la moitié lui revient (voir « Part de la modèle »).</span></span><span class="kpi-apercu" id="kpi-apercu" hidden>aperçu, pas encore enregistré</span></div><div class="kpi-value" id="vpr">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvpr"></span><span class="kpi-pct" id="ppr">—</span></div><div class="kpi-moitie" id="pmoitie" hidden title="La moitié du bénéfice te revient, l’autre moitié à la modèle (règle des 50 %)."></div></div>
+    <div class="kpi kpi-hero"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Bénéfice<i class="tip-icon">i</i><span class="tip-box">Ton net moins toutes les dépenses, AVANT la part de la modèle : la moitié lui revient (voir « Part de la modèle »).</span></span><span class="kpi-apercu" id="kpi-apercu" hidden>aperçu, pas encore enregistré</span></div><div class="kpi-value" id="vpr">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvpr"></span><span class="kpi-pct" id="ppr">—</span></div><div class="kpi-moitie" id="pmoitie" hidden title="La moitié du bénéfice te revient, l’autre moitié à la modèle (règle des 50 %)."></div><div class="obj-j" id="obj-jauge" hidden></div></div>
     <div class="kpi kpi-net"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span class="tip">Net total<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement : OnlyFans, commission de 20 % déjà déduite, et Telegram, sans aucune commission.</span></span></div><div class="kpi-value" id="pn">—</div><div class="kpi-meta"><span class="kpi-pct" id="de">—</span></div><div class="kpi-nets"><div class="kn"><span class="kn-l">OnlyFans</span><span class="kn-v" id="vb">—</span><span class="kpi-delta" id="dvb"></span></div><div class="kn"><span class="kn-l">Telegram</span><span class="kn-v" id="vn">—</span><span class="kpi-delta" id="dvn"></span></div></div></div>
   </div>
   <div id="insights-banner" style="display:none"></div>
@@ -5103,7 +5221,7 @@ function renderForecast(){
   const moisFini=joursEcoules>=daysInMonth;
   const moyenneJour=parseFloat((profitCumule/Math.max(1,modeBilan?joursEcoules:joursSaisis)).toFixed(2));
   const forecast=Math.round(modeBilan&&moisFini?profitCumule:moyenneJour*daysInMonth);
-  const daysLeft=daysInMonth-joursEcoules;
+  const daysLeft=daysInMonth-joursEcoules;if(typeof window!=='undefined')window._objFc={mois:monthStart.slice(0,7),forecast:forecast,moisFini:moisFini};
 
   card.style.display='block';
   const fv=document.getElementById('forecast-val');
@@ -5148,8 +5266,8 @@ function renderForecast(){
   if(card.classList)card.classList.toggle('fc-replie',goal<=0&&!(typeof window!=='undefined'&&window._fcObjOuvert));
   const gdet=document.getElementById('forecast-goal-detail');
   if(goal>0){
-    const pctAtteint=Math.round((profitCumule/goal)*100);
-    const pctForecast=Math.min(999,Math.round((forecast/goal)*100));
+    const pctAtteint=(typeof _objPctHonnete==='function')?_objPctHonnete(profitCumule,goal):Math.max(0,Math.round((profitCumule/goal)*100));
+    const pctForecast=Math.min(999,(typeof _objPctHonnete==='function')?_objPctHonnete(forecast,goal):Math.max(0,Math.round((forecast/goal)*100)));
     const c=pctForecast>=100?'var(--pos)':pctForecast>=70?'var(--todo)':'var(--neg)';
     if(fg)fg.innerHTML=`<span style="color:${c};font-weight:500">${fmtPct(pctForecast)} prévu</span> <span style="color:var(--ink-4)">· ${fmtPct(pctAtteint)} atteint</span>`;
     if(fb){fb.style.width=Math.min(100,pctForecast)+'%';fb.style.background=c;}
@@ -5163,8 +5281,9 @@ function renderForecast(){
     if(rg){
       // (2e tour) plus d'emoji ni de blanc écrit en dur ; vert = objectif atteint.
       const _ok=(typeof ICO!=='undefined'&&ICO&&ICO.ok)||'';
-      if(reste<=0){rg.innerHTML=`<span class="fc-ok">${_ok}Objectif dépassé de ${fmtR(Math.abs(reste))}</span>`;}
-      else{rg.innerHTML=`Il reste <strong>${fmtR(reste)}</strong> pour atteindre l'objectif`;}
+      const _rR=(typeof _objReste==='function')?_objReste(reste):(reste>0?{etat:'reste',txt:fmtR(reste)}:{etat:Math.round(-reste)>=1?'depasse':'atteint'});
+      if(_rR.etat!=='reste'){rg.innerHTML=`<span class="fc-ok">${_ok}${_rR.etat==='atteint'?'Objectif atteint':'Objectif dépassé de '+fmtR(Math.abs(reste))}</span>`;}
+      else{rg.innerHTML=`Il reste <strong>${_rR.txt||fmtR(reste)}</strong> pour atteindre l'objectif`;}
     }
     if(dg){
       if(reste<=0){dg.textContent='';}
@@ -5338,7 +5457,7 @@ function uk(){
   // Le bénéfice s'écrit AU DOLLAR, comme chaque bilan l'enregistre (e.profit est arrondi à la
   // sauvegarde) : c'est le même chiffre que la liste, le Récap et la Part de la modèle.
   // Une PERTE se voit : vrai signe « − » et rouge (classe .neg ; plus de couleur en dur).
-  set('vpr',brTot?((pr<0?'−':'')+fmtR(pr)):'—');
+  set('vpr',brTot?((pr<0?'−':'')+fmtR(pr)):'—');if(typeof window!=='undefined')window._objPr=brTot?pr:null;
   const _vprEl=document.getElementById('vpr');
   if(_vprEl){_vprEl.style.color='';_vprEl.classList.toggle('neg',pr<0);}
   // ⚠️ Les % se calculent sur le NET (OF net + Telegram), comme la marge de
@@ -9155,6 +9274,188 @@ function _majRappel(){
 }
 // Page laissée ouverte (téléphone en veille) : en revenant, le rappel suit la date du jour.
 document.addEventListener('visibilitychange', function(){ if(!document.hidden){ try{ _majRappel(); }catch(err){} } });
+
+// ── feat2_objectif v2 (EXEMPLE jauge de l'objectif : B2 · Anneau, en mieux) ──
+// ══ objectif v2 (14/10) — EXEMPLE, PAS EN LIGNE : l'objectif du mois en jauge sur la tuile Bénéfice ══
+// AFFICHAGE SEULEMENT : aucune écriture, aucun stockage, aucun calcul parallèle.
+//  - Bénéfice : LE chiffre de la tuile. uk() le pose dans window._objPr juste après l'avoir écrit ;
+//    on le prend AU DOLLAR, comme la tuile l'écrit et comme chaque bilan l'enregistre (e.profit arrondi).
+//  - Objectif : le champ #monthly-goal, lu comme renderForecast (« 0 » ou vide = pas d'objectif).
+//  - Prévision : celle de renderForecast (window._objFc, posé juste après son calcul), seulement si
+//    elle porte sur le MÊME mois, que le mois n'est pas fini et qu'aucun brouillon n'est en aperçu.
+//  - Seulement quand la période affichée est le mois EN COURS : l'objectif est mensuel.
+//  - Règles honnêtes, UNE seule écriture, aussi employées par la carte Prévision :
+//      _objPctHonnete : jamais « 100 % » tant que l'objectif n'est pas atteint, jamais négatif ;
+//      _objResteTxt   : « Objectif atteint » quand il ne manque rien et que rien ne dépasse au dollar
+//                       (plus de « dépassé de zéro dollar »), « moins de 1 dollar » au lieu de « il reste zéro ».
+//  - « Fixer un objectif » = le MÊME geste que le bouton de la Prévision (window._fcObjOuvert puis
+//    renderForecast) + on amène le champ à l'écran. Rien n'est enregistré ici.
+var OBJ_VARIANTE = 'b2';
+var OBJ_DESSINS = {};
+function _objPctHonnete(v, goal){
+  if(!(goal > 0) || !(v > 0)) return 0;
+  var r = Math.round(v / goal * 100);
+  if(v < goal && r >= 100) r = 99;      // pas encore atteint : jamais « 100 % »
+  return r;
+}
+// reste = objectif − bénéfice. Renvoie {etat, txt} : 'reste' (il manque), 'atteint', 'depasse'.
+function _objReste(reste){
+  if(reste > 0) return { etat: 'reste', txt: reste < 0.5 ? 'moins de ' + fmtR(1) : fmtR(reste) };
+  return Math.round(-reste) >= 1 ? { etat: 'depasse', txt: fmtR(-reste) } : { etat: 'atteint', txt: '' };
+}
+function _objVariante(){
+  var v = document.body.getAttribute('data-obj-v');
+  return (v && OBJ_DESSINS[v]) ? v : OBJ_VARIANTE;
+}
+var _OI = (function(){
+  var s = function(p, t){ return '<svg viewBox="0 0 24 24" width="' + t + '" height="' + t + '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + '</svg>'; };
+  return {
+    cible: s('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>', 14),
+    ok: s('<path d="M20 6 9 17l-5-5"/>', 14),
+    okGras: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>',
+    drapeau: s('<path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/>', 14)
+  };
+})();
+function _objBorne(x){ return Math.max(0, Math.min(100, x)); }
+function _objArg(v){ return (v < 0 ? '−' : '') + fmtR(v); }        // même écriture que la tuile (vrai « − »)
+
+function _objEtat(){
+  var auj = new Date(), p2 = function(n){ return String(n).padStart(2, '0'); };
+  var d0 = auj.getFullYear() + '-' + p2(auj.getMonth() + 1) + '-01';
+  var dn = new Date(auj.getFullYear(), auj.getMonth() + 1, 0);
+  var d1 = dn.getFullYear() + '-' + p2(dn.getMonth() + 1) + '-' + p2(dn.getDate());
+  // « Ce mois-ci » = exactement la plage que pose spMois(0) (1er -> dernier jour du mois en cours).
+  var ceMois = !ap && acd === d0 && acdEnd === d1;
+  var nom = auj.toLocaleDateString('fr-FR', { month: 'long' });
+  var deM = (/^[aeiouyéè]/i.test(nom) ? "d'" : 'de ') + nom;     // comme la Prévision : « d'octobre »
+  var pr = window._objPr;
+  var gi = document.getElementById('monthly-goal');
+  var goal = parseFloat(gi && gi.value) || 0;
+  var lecture = document.body.classList.contains('readonly');
+  var apEl = document.getElementById('kpi-apercu'), apercu = !!(apEl && !apEl.hidden);
+  if(!ceMois || pr == null || !isFinite(pr)) return { mode: 'cache' };
+  if(!(goal > 0)) return { mode: (lecture || apercu) ? 'cache' : 'invite' };
+  var v = (pr < 0 ? -1 : 1) * Math.round(Math.abs(pr));
+  var fc = window._objFc;
+  var fcOk = !!(fc && fc.mois === d0.slice(0, 7) && !fc.moisFini && !apercu && isFinite(fc.forecast) && fc.forecast > 0);
+  var R = _objReste(goal - v);
+  var etat = R.etat === 'reste' ? 'enroute' : R.etat;
+  var k = 1; while(k < 4 && v >= goal * k / 4) k++;            // prochain palier (1 à 4 ; 4 = l'objectif)
+  return { mode: 'jauge', variante: _objVariante(), deM: deM, v: v, goal: goal, pct: _objPctHonnete(v, goal), etat: etat,
+    f: _objBorne(v / goal * 100), tour2: etat === 'enroute' ? 0 : _objBorne(v / goal * 100 - 100),
+    fc: fcOk ? fc.forecast : null, g: fcOk ? _objBorne(fc.forecast / goal * 100) : null,
+    resteTxt: R.txt, k: k, palier: goal * k / 4, encore: goal * k / 4 - v, perte: v < 0, apercu: apercu };
+}
+
+// Morceaux de texte communs (les montants toujours dans un <b> : l'œil ne floute qu'eux)
+function _objSur(S){ return '<b>' + _objArg(S.v) + '</b> sur <b>' + fmtC(S.goal) + '</b> visés'; }
+function _objPrev(S){ return '≈ <b>' + fmtR(S.fc) + '</b> prévu'; }
+// (chaque montant reste collé à ses mots : si une ligne doit passer à la ligne, elle se coupe ENTRE deux groupes)
+function _objIlReste(S){ return '<span class="o-nw">il reste <b>' + S.resteTxt + '</b></span>'; }
+function _objFait(S){
+  return '<span class="o-ok">' + _OI.okGras + '<span>' + (S.etat === 'depasse' ? 'Dépassé de <b>' + S.resteTxt + '</b>' : 'Objectif atteint') + '</span></span>';
+}
+// prochain palier : « Prochain palier X · encore Y » ; dernier quart : « Encore Y pour l’objectif »
+function _objPalier(S, court){
+  if(S.k >= 4) return '<span class="o-nw">Encore <b>' + _objResteTxtEncore(S) + '</b></span> pour l\'objectif';
+  return '<span class="o-nw">' + (court ? 'Palier ' : 'Prochain palier ') + '<b>' + fmtC(S.palier) + '</b></span> · <span class="o-nw">encore <b>'
+    + _objResteTxtEncore(S) + '</b></span>';
+}
+function _objResteTxtEncore(S){ return S.k >= 4 ? S.resteTxt : fmtR(S.encore); }
+function _objAria(S){
+  return 'Objectif ' + S.deM + ' : ' + _objArg(S.v) + ' sur ' + fmtC(S.goal) + ', ' + fmtPct(S.pct)
+    + (S.etat === 'depasse' ? ', dépassé' : (S.etat === 'atteint' ? ', atteint' : ''))
+    + (S.fc != null ? ', environ ' + fmtR(S.fc) + ' prévu' : '');
+}
+function _objPc(S, cls){ return '<span class="' + (cls || 'o-pc') + '">' + fmtPct(S.pct) + '</span>'; }
+
+// Anneau SVG commun (B2, D) : le tour = l'objectif ; plein = le bénéfice ; trait fin et léger = la prévision ;
+// au-delà de 100 %, un 2e tour par-dessus. paliers=true : 4 arcs séparés (25 / 50 / 75 / 100 %).
+function _objSvgAnneau(S, paliers){
+  var C = ' cx="50" cy="50" r="42" pathLength="100"';
+  var arc = function(cls, debut, long){
+    if(!(long > 0.05)) return '';
+    return '<circle class="' + cls + '"' + C + ' stroke-dasharray="' + long.toFixed(2) + ' ' + (100 - long + 0.001).toFixed(3)
+      + '" stroke-dashoffset="' + (-debut).toFixed(2) + '"/>';
+  };
+  var o = '';
+  if(!paliers){
+    o += '<circle class="o-a-fond"' + C + '/>';
+    if(S.g != null && S.g > S.f + 2) o += arc('o-a-prev', S.f, S.g - S.f);
+    o += arc('o-a-plein' + (S.tour2 > 0 ? ' o-a-plein-1' : ''), 0, S.f >= 100 ? 99.999 : S.f);
+    if(S.tour2 > 0) o += arc('o-a-tour2', 0, Math.min(S.tour2, 99.999));
+  } else {
+    var ec = 3.4;                              // écart entre deux paliers (en % du tour)
+    for(var i = 0; i < 4; i++){
+      var a = i * 25 + ec / 2, L = 25 - ec;
+      o += arc('o-a-fond', a, L);
+      var pl = Math.max(0, Math.min(L, S.f - a));
+      if(S.g != null){ var gd = Math.max(a, S.f), gf = Math.min(a + L, S.g); if(gf > gd + 1) o += arc('o-a-prev', gd, gf - gd); }
+      if(pl > 0) o += arc('o-a-plein', a, pl);
+    }
+  }
+  return '<svg class="o-a-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + o + '</svg>';
+}
+// le centre de l'anneau : le % (une coche si l'objectif est pile atteint)
+function _objCentre(S){
+  if(S.etat === 'atteint') return '<span class="o-a-c o-a-c-ok">' + _OI.okGras + '</span>';
+  var n = String(S.pct).length;      // le chiffre en grand, le « % » plus petit (même texte que fmtPct : « 55 % »)
+  return '<span class="o-a-c o-a-c' + Math.min(4, n) + '"><span class="o-a-n">' + S.pct + '</span><span class="o-a-u"> %</span></span>';
+}
+
+var _objSig = null, _objVu = false;
+function renderObjectif(forcer){
+  var el = document.getElementById('obj-jauge'); if(!el) return;
+  var S = _objEtat(), sig = JSON.stringify(S);
+  if(!forcer && sig === _objSig) return;              // rien n'a changé : pas de redessin (ni d'animation)
+  _objSig = sig;
+  el.className = 'obj-j';
+  el.removeAttribute('role'); el.removeAttribute('aria-label');
+  if(S.mode === 'cache'){ el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  if(S.mode === 'invite'){
+    el.classList.add('obj-invite');
+    el.innerHTML = '<button type="button" class="obj-fixer" onclick="objFixer()">' + _OI.cible + '<span>Fixer un objectif</span></button>';
+    return;
+  }
+  el.classList.add('obj-on', 'o-' + S.variante, 'o-' + S.etat);
+  if(S.perte) el.classList.add('o-perte');
+  if(S.apercu) el.classList.add('o-apercu');
+  if(S.fc != null && S.fc >= S.goal && S.etat === 'enroute') el.classList.add('o-en-vue');
+  el.innerHTML = OBJ_DESSINS[S.variante](S);
+  if(!_objVu){ _objVu = true; el.classList.add('obj-entree'); }   // la jauge se remplit une fois, à sa 1re apparition
+}
+// Le MÊME geste que « Fixer un objectif mensuel » de la Prévision, puis le champ vient à l'écran.
+function objFixer(){
+  window._fcObjOuvert = true;
+  try { renderForecast(); } catch (e) {}
+  var c = document.getElementById('forecast-card'), g = document.getElementById('monthly-goal');
+  var doux = true; try { doux = !window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  if(c && c.scrollIntoView) c.scrollIntoView({ behavior: doux ? 'smooth' : 'auto', block: 'center' });
+  if(g){ try { g.focus({ preventScroll: true }); } catch (e) { g.focus(); } }
+}
+
+// B2 · ANNEAU, en mieux : l'anneau à DROITE de la tuile (en bas, sur la ligne de la marge : il ne fait pas grandir
+// la tuile pour lui), la phrase d'André sous le chiffre ; le % (ou une coche) au centre ; la prévision en trait fin et
+// léger ; au-delà de 100 %, un 2e tour par-dessus.
+OBJ_DESSINS.b2 = function(S){
+  var dr = S.etat !== 'enroute' ? _objFait(S)
+    : _objIlReste(S) + (S.fc != null ? '<span class="o-sep"> · </span><span class="o-nw">' + _objPrev(S) + '</span>' : '');
+  return '<span class="o-ring" role="img" aria-label="' + _objAria(S) + '">' + _objSvgAnneau(S, false) + _objCentre(S) + '</span>'
+    + '<span class="o-txt"><span class="o-sur">' + _objSur(S) + '</span><span class="o-dr">' + dr + '</span></span>';
+};
+
+// Redessin : renderForecast() termine chaque uk() (période, bilan, brouillon) et suit le bouton de la
+// Prévision ; la fonction d'origine est appelée telle quelle, avant. La saisie de l'objectif passe par
+// onGoalChange -> uk() : la jauge suit la frappe.
+(function(){
+  if(typeof renderForecast === 'function'){
+    var _rfObj = renderForecast;
+    renderForecast = function(){ window._objFc = null; var r = _rfObj.apply(this, arguments); try { renderObjectif(); } catch (e) { console.warn('objectif', e); } return r; };
+  }
+  try { renderObjectif(); } catch (e) { console.warn('objectif', e); }
+})();
+
 </script>
 </body>
 </html>
