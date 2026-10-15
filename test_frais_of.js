@@ -9,7 +9,8 @@
 //
 // EXEMPLE DE REFERENCE (14/10) : net OnlyFans 10 000 $, aucune depense, pas de Telegram
 //   -> Paxum 350 $ + impots gardes en crypto 102,04 $ = 452,04 $ de frais ; benefice 9 547,96 $
-//      (la page l'enregistre AU DOLLAR : 9 548 $) ; cout reel des impots 105,74 $.
+//      (15/10 : la page l'enregistre AU CENTIME, 9 547,96 $ — avant : au dollar, 9 548 $) ;
+//      sa part 4 773,98 $ ; cout reel des impots 105,74 $, partage moitie-moitie : 52,87 $ chacun.
 //
 // ⚠️ Aucune connexion : les fonctions sont extraites du VRAI index.html et tournent en
 // memoire. (Regle de la maison : on ne teste jamais sur la base reelle.)
@@ -81,24 +82,38 @@ if (api) {
     cts(cout) === 10574 && cts(garde) - 10000 === 204 && cts(cout) - cts(garde) === 370,
     'cout = ' + cout + ' ; retrait ' + (cts(garde) - 10000) + ' cts ; Paxum ' + (cts(cout) - cts(garde)) + ' cts');
   const pEx = api.profitEntree({ brut: 12500 });
-  V('exemple : benefice 9 547,96 $, enregistre au dollar -> 9 548 $ (sa part : 4 774 $)', pEx === 9548,
-    'profit = ' + pEx + ' (attendu 9 548 ; ancienne regle : 9 550)');
+  V('exemple : benefice 9 547,96 $, enregistre AU CENTIME (15/10 ; avant : 9 548 $)', pEx === 9547.96,
+    'profit = ' + pEx + ' (attendu 9 547,96 ; au dollar : 9 548 ; ancienne regle des frais : 9 550)');
+  V('exemple : sa part (moitie) = 4 773,98 $', pEx * 0.5 === 4773.98, 'moitie = ' + pEx * 0.5);
+  V('exemple : cout reel des impots partage moitie-moitie = 52,87 $ chacun (51,02 $ gardes en crypto + 1,85 $ de Paxum)',
+    Math.round(cts(cout) / 2) === 5287 && Math.round(cts(garde) / 2) === 5102 && Math.round(cts(cout) / 2) - Math.round(cts(garde) / 2) === 185,
+    'chacun ' + Math.round(cts(cout) / 2) + ' cts');
+
+  // ── Le benefice d'un bilan : AU CENTIME, jamais plus (15/10) ──
+  const deux = (x) => typeof x === 'number' && Math.abs(Math.round(x * 100) - x * 100) < 1e-6;
+  V('le benefice garde ses centimes : 17,50 $ de depenses restent 17,50 $ (1 000 $ Telegram -> 982,50 $, pas 983 $)',
+    api.profitEntree({ brut: 0, tgNet: 1000, alT: 17.5 }) === 982.5, 'profit = ' + api.profitEntree({ brut: 0, tgNet: 1000, alT: 17.5 }));
+  V('une perte garde ses centimes (99,99 $ de VA seuls -> −99,99 $)', api.profitEntree({ va: 99.99 }) === -99.99,
+    'profit = ' + api.profitEntree({ va: 99.99 }));
+  V('jamais plus de 2 decimales (le reste est arrondi au centime : 9 547,959… -> 9 547,96)',
+    [12500, 8500, 1250, 777.77, 123456.78, 3.33].every((b) => deux(api.profitEntree({ brut: b, va: 0.01 }))),
+    [12500, 8500, 1250, 777.77, 123456.78, 3.33].map((b) => api.profitEntree({ brut: b, va: 0.01 })).join(' ; '));
 
   // ── D'autres valeurs explicites ──
   // 1 000 $ nets OnlyFans (brut 1 250), 200 $ Telegram, 100 $ de VA :
-  //   Paxum 35 + impots 10 / 0,98 = 10,204… -> frais 45,204… -> profit 1 000 - 45,20 + 200 - 100 = 1 054,80 -> 1 055
+  //   Paxum 35 + impots 10 / 0,98 = 10,204… -> frais 45,204… -> profit 1 000 - 45,204… + 200 - 100 = 1 054,795… -> 1 054,80
   V('1 000 $ nets -> 45,20 $ de frais (35 + 10,20)', proche(api.fraisOF(1000), 35 + 10 / 0.98) && cts(api.fraisOF(1000)) === 4520,
     'fraisOF(1000) = ' + api.fraisOF(1000));
   const p = api.profitEntree({ brut: 1250, tgNet: 200, va: 100 });
-  V('profit d’un bilan mixte : 1 000 $ OF + 200 $ Telegram - 100 $ VA -> 1 055 $', p === 1055, 'profit = ' + p + ' (attendu 1 055)');
-  // Un cas ou l'ancienne et la nouvelle regle ne tombent PAS sur le meme dollar :
-  //   6 800 $ nets : ancienne 306 $ de frais ; nouvelle 238 + 69,39 = 307,39 $ ->
-  //   profit 7 310 - 790 - 699 - 1 129,70 - 307,39 = 4 383,91 -> 4 384 (ancienne : 4 385)
+  V('profit d’un bilan mixte : 1 000 $ OF + 200 $ Telegram - 100 $ VA -> 1 054,80 $ (au dollar : 1 055 $)', p === 1054.8,
+    'profit = ' + p + ' (attendu 1 054,80)');
+  // Le bilan de demonstration d'octobre :
+  //   6 800 $ nets : 238 + 69,39 = 307,39 $ de frais -> profit 7 310 - 790 - 699 - 1 129,70 - 307,387… = 4 383,912… -> 4 383,91
   const pOct = api.profitEntree({ brut: 8500, tgNet: 510, va: 790, ci: 699, alT: 1129.7 });
-  V('bilan de demonstration d’octobre : 6 800 $ nets -> 307,39 $ de frais, profit 4 384 $ (ancienne regle 4 385 $)',
-    cts(api.fraisOF(6800)) === 30739 && pOct === 4384, 'fraisOF(6800) = ' + api.fraisOF(6800) + ' ; profit = ' + pOct);
-  V('Telegram n’a aucun frais', api.profitEntree({ brut: 0, tgNet: 500 }) === 500 && api.fraisOF(0) === 0,
-    'profit Telegram seul = ' + api.profitEntree({ brut: 0, tgNet: 500 }));
+  V('bilan de demonstration d’octobre : 6 800 $ nets -> 307,39 $ de frais, profit 4 383,91 $ (au dollar : 4 384 $)',
+    cts(api.fraisOF(6800)) === 30739 && pOct === 4383.91, 'fraisOF(6800) = ' + api.fraisOF(6800) + ' ; profit = ' + pOct);
+  V('Telegram n’a aucun frais (500,25 $ Telegram -> 500,25 $)', api.profitEntree({ brut: 0, tgNet: 500.25 }) === 500.25 && api.fraisOF(0) === 0,
+    'profit Telegram seul = ' + api.profitEntree({ brut: 0, tgNet: 500.25 }));
   V('les frais suivent l’argent OnlyFans (proportionnels : 2 x le net -> 2 x les frais)',
     proche(api.fraisOF(20000), 2 * api.fraisOF(10000), 1e-9), 'fraisOF(20000) = ' + api.fraisOF(20000));
   V('un montant illisible ne casse rien (fraisOF(undefined) = 0)', api.fraisOF(undefined) === 0 && api.fraisOF('abc') === 0,
@@ -106,8 +121,12 @@ if (api) {
   // Depuis le debut : une saisie ancienne dont le profit STOCKE suivait l'ANCIENNE formule (4,5 %)
   const e = api.entryFromDb({ id: 1, date: '2026-07-30', brut: 12500, va: 0, mo: 0, ci: 0, ch: 0, al_total: 0,
     profit: 9550, tg_net: 0, of_net: 10000 });
-  V('une saisie ancienne est recalculee a la lecture (depuis le debut) : stocke 9 550 -> lu 9 548', e.profit === 9548,
+  V('une saisie ancienne est recalculee a la lecture (depuis le debut) : stocke 9 550 -> lu 9 547,96', e.profit === 9547.96,
     'profit lu = ' + e.profit + ' (stocke 9 550)');
+  // Un bilan enregistre au dollar (avant le 15/10) prend ses centimes A LA LECTURE, sans rien reecrire en base
+  const e2 = api.entryFromDb({ id: 2, date: '2026-10-01', brut: 8500, va: 790, mo: 0, ci: 699, ch: 0, al_total: 1129.7,
+    profit: 4384, tg_net: 510, of_net: 6800 });
+  V('un bilan enregistre au dollar (4 384 $) est relu au centime : 4 383,91 $', e2.profit === 4383.91, 'profit lu = ' + e2.profit);
 }
 
 V('les trois enregistrements utilisent la regle (plus de profit calcule a la main)',

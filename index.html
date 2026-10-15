@@ -3849,6 +3849,32 @@ body.skin-melange #page-ca .kpi-hero-grid > .kpi-hero:has(> #obj-jauge.obj-on:is
 /* B2 · ANNEAU, en mieux : même place que D (voir anneau.css) ; un seul tour plein, 2e tour au-delà de 100 %. */
 body.skin-melange #obj-jauge.o-b2 .o-dr{max-width:100%}
 
+
+/* ── feat_chiffres v4 (le bénéfice au centime, 15/10) ── */
+/* ══ chiffres v4 (15/10) : le bénéfice AU CENTIME ══
+   1) Le grand chiffre de la carte Bénéfice s'allonge (« $29,618.54 » au lieu de « $29,629 ») : sa taille s'ajuste à sa
+      LONGUEUR (--kv-n, posé par uk()) pour que le chiffre et la pastille « dont ta moitié » tiennent côte à côte dans la
+      carte, sans jamais grossir au-delà de la taille d'origine. Mesuré (calibrer_hero.py) : un caractère ≈ 0,53 em ;
+      la pastille ≈ 11 px par caractère au téléphone (≥ 119 px), 13 px + 31 à l'ordinateur (≥ 133 px) ; + 6 px d'air.
+      Perte : pas de pastille, le chiffre peut prendre toute la largeur. */
+@media (min-width:641px){
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > #vpr{font-size:min(15cqi,84px,calc((100cqi - max(140px, var(--kv-n,7) * 13px + 38px)) / (var(--kv-n,7) * .54)))}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero:has(#vpr.neg) > #vpr{font-size:min(12cqi,70px,calc((100cqi - 8px) / (var(--kv-n,7) * .54)))}
+}
+@media (max-width:640px){
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > #vpr{font-size:min(13cqi,44px,calc((100cqi - max(126px, var(--kv-n,7) * 11px + 12px)) / (var(--kv-n,7) * .54)))}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero:has(#vpr.neg) > #vpr{font-size:min(13cqi,44px,calc((100cqi - 8px) / (var(--kv-n,7) * .54)))}
+}
+@media (max-width:640px) and (max-height:700px){
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > #vpr{font-size:min(12cqi,40px,calc((100cqi - max(126px, var(--kv-n,7) * 11px + 12px)) / (var(--kv-n,7) * .54)))}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero:has(#vpr.neg) > #vpr{font-size:min(12cqi,40px,calc((100cqi - 8px) / (var(--kv-n,7) * .54)))}
+}
+/* 2) Bloc impôts : « partagé moitié-moitié : X chacun » sous le coût réel, puis de quoi est faite sa moitié (gardée en
+      crypto + déjà prise par Paxum). Même relevé que les deux lignes du dessus. */
+body.skin-melange #impots-panel .ip-rel-2{margin-top:10px;padding-top:10px}
+body.skin-melange #impots-panel .ip-r-chacun dd{font-weight:700}
+body.skin-melange #impots-panel .ip-chacun-det b{white-space:nowrap}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -4724,8 +4750,11 @@ const _IMPOTS_OF=0.01, _PAXUM_OF=0.035, _RETRAIT_LIQUIDE=0.02;
 function fraisOF(netOF){ const n=Number(netOF)||0; return n*_PAXUM_OF+n*_IMPOTS_OF/(1-_RETRAIT_LIQUIDE); }
 function profitEntree(e){
   const n=(Number(e.brut)||0)*_TAUX;
-  return Math.round(n-fraisOF(n)+(Number(e.tgNet)||0)-(Number(e.va)||0)-(Number(e.mo)||0)
-    -(Number(e.ci)||0)-(Number(e.ch)||0)-(Number(e.alT)||0));
+  // (15/10) AU CENTIME (André : « je veux voir même les centimes ») ; avant : au dollar (9 547,96 -> 9 548).
+  // Comme la règle du 14/10 : recalculé à la lecture (entryFromDb) et à l'enregistrement, jamais réécrit en douce.
+  const p=n-fraisOF(n)+(Number(e.tgNet)||0)-(Number(e.va)||0)-(Number(e.mo)||0)
+    -(Number(e.ci)||0)-(Number(e.ch)||0)-(Number(e.alT)||0);
+  return Math.round(p*100)/100;
 }
 // ─────────────────────────────────────────────────────────────────────────────
 // GARDE-FOUS DE SAISIE · AUTOCOMPLÉTION · CHARGES HABITUELLES · DÉPENSES PAR MOIS
@@ -5199,7 +5228,7 @@ function renderForecast(){
   const monthEntries=ents.filter(e=>e.date>=monthStart&&e.date<=refStr);
   if(!monthEntries.length||joursEcoules===0){card.style.display='none';return;}
 
-  const profitCumule=monthEntries.reduce((s,e)=>s+(e.profit||0),0);
+  const profitCumule=Math.round(monthEntries.reduce((s,e)=>s+(e.profit||0),0)*100)/100;   // (15/10) au centime
   // ⚠️ DEUX FACONS DE SAISIR, DEUX CALCULS (12/10).
   // - Une ligne par JOUR : moyenne des jours REELLEMENT saisis x jours du mois
   //   (correctif du 25/09 : diviser par le jour du calendrier rendait une
@@ -5220,7 +5249,7 @@ function renderForecast(){
   const modeBilan=joursSaisis<=2&&(_passes.length===0||_mediane<=2);
   const moisFini=joursEcoules>=daysInMonth;
   const moyenneJour=parseFloat((profitCumule/Math.max(1,modeBilan?joursEcoules:joursSaisis)).toFixed(2));
-  const forecast=Math.round(modeBilan&&moisFini?profitCumule:moyenneJour*daysInMonth);
+  const forecast=modeBilan&&moisFini?profitCumule:Math.round(moyenneJour*daysInMonth);
   const daysLeft=daysInMonth-joursEcoules;if(typeof window!=='undefined')window._objFc={mois:monthStart.slice(0,7),forecast:forecast,moisFini:moisFini};
 
   card.style.display='block';
@@ -5233,14 +5262,14 @@ function renderForecast(){
     // Une PRÉVISION, pas de l'argent gagné : « ≈ $X » en encre neutre (avant : « +$X » en
     // bleu 32 px, lu comme un gain). Mois terminé : c'est le bilan lui-même, sans « ≈ ».
     const _exact=modeBilan&&moisFini;
-    fv.textContent=(_exact?'':'≈ ')+(forecast<0?'−':'')+fmtR(forecast);
+    fv.textContent=(_exact?'':'≈ ')+(forecast<0?'−':'')+(_exact?fmtC(forecast):fmtR(forecast));
     fv.style.color=forecast>=0?'var(--ink-1)':'var(--neg)';
     const fh=document.getElementById('forecast-hint'); if(fh) fh.textContent=_exact?'':'si le rythme continue';
   }
   const _s=n=>n>1?'s':'';
   if(fs){
     // Textes (2e tour) : le mois en toutes lettres, « à ce jour », de vrais pluriels,
-    // une icône au lieu du « ⚠ » tapé. (Montant du bilan : au dollar, comme le bilan.)
+    // une icône au lieu du « ⚠ » tapé. (Montant du bilan : au centime, comme le bilan, 15/10.)
     const _nomM=refDate.toLocaleDateString('fr-FR',{month:'long'});
     const _deM=(/^[aeiouyéè]/i.test(_nomM)?"d'":'de ')+_nomM;
     if(modeBilan){
@@ -5248,7 +5277,7 @@ function renderForecast(){
       // ou deja complet se voit tout de suite, au lieu d'etre multiplie en silence.
       fs.innerHTML=moisFini
         ? `Mois terminé : c'est ton bilan ${_deM}`
-        : `Ton bilan ${_deM} à ce jour : <strong>${fmtS(profitCumule)}</strong> en <strong>${joursEcoules}</strong> jour${_s(joursEcoules)} · même rythme sur <strong>${daysInMonth} jours</strong> · <span class="fc-nw">${daysLeft} jour${_s(daysLeft)} restant${_s(daysLeft)}</span>`;
+        : `Ton bilan ${_deM} à ce jour : <strong>${(profitCumule<0?'−':'')+fmtC(profitCumule)}</strong> en <strong>${joursEcoules}</strong> jour${_s(joursEcoules)} · même rythme sur <strong>${daysInMonth} jours</strong> · <span class="fc-nw">${daysLeft} jour${_s(daysLeft)} restant${_s(daysLeft)}</span>`;
     } else {
       // « jours sans saisie » n'a de sens QUE pour quelqu'un qui saisit chaque jour.
       const _manquants=Math.max(0,joursEcoules-joursSaisis);
@@ -5273,7 +5302,7 @@ function renderForecast(){
     if(fb){fb.style.width=Math.min(100,pctForecast)+'%';fb.style.background=c;}
     // Enhanced goal detail panel
     if(gdet) gdet.style.display='block';
-    const reste=goal-profitCumule;
+    const reste=Math.round((goal-profitCumule)*100)/100;   // (15/10) au centime
     const rg=document.getElementById('forecast-rest-goal');
     const dg=document.getElementById('forecast-date-goal');
     const ba=document.getElementById('forecast-bar-actual');
@@ -5281,9 +5310,9 @@ function renderForecast(){
     if(rg){
       // (2e tour) plus d'emoji ni de blanc écrit en dur ; vert = objectif atteint.
       const _ok=(typeof ICO!=='undefined'&&ICO&&ICO.ok)||'';
-      const _rR=(typeof _objReste==='function')?_objReste(reste):(reste>0?{etat:'reste',txt:fmtR(reste)}:{etat:Math.round(-reste)>=1?'depasse':'atteint'});
-      if(_rR.etat!=='reste'){rg.innerHTML=`<span class="fc-ok">${_ok}${_rR.etat==='atteint'?'Objectif atteint':'Objectif dépassé de '+fmtR(Math.abs(reste))}</span>`;}
-      else{rg.innerHTML=`Il reste <strong>${_rR.txt||fmtR(reste)}</strong> pour atteindre l'objectif`;}
+      const _rR=(typeof _objReste==='function')?_objReste(reste):(reste>0?{etat:'reste',txt:fmtC(reste)}:{etat:reste<0?'depasse':'atteint'});
+      if(_rR.etat!=='reste'){rg.innerHTML=`<span class="fc-ok">${_ok}${_rR.etat==='atteint'?'Objectif atteint':'Objectif dépassé de '+fmtC(Math.abs(reste))}</span>`;}
+      else{rg.innerHTML=`Il reste <strong>${_rR.txt||fmtC(reste)}</strong> pour atteindre l'objectif`;}
     }
     if(dg){
       if(reste<=0){dg.textContent='';}
@@ -5454,12 +5483,19 @@ function uk(){
   // « − » sous l'étiquette « Dépenses » : la tuile dit déjà que c'est une dépense.
   set('vb',(br*_TAUX)?fmtC(br*_TAUX):'—');set('vof',br?fmtC(of):'—');set('vn',tg?fmtC(tg):'—');
   set('vva',va?fmtC(va):'—');set('vmo',mo?fmtC(mo):'—');set('vci',ci?fmtC(ci):'—');set('vch',ch?fmtC(ch):'—');set('val',al?fmtC(al):'—');set('vdep',dep?fmtC(dep):'—');set('vfr',fr?fmtC(fr):'—');
-  // Le bénéfice s'écrit AU DOLLAR, comme chaque bilan l'enregistre (e.profit est arrondi à la
-  // sauvegarde) : c'est le même chiffre que la liste, le Récap et la Part de la modèle.
+  // (15/10) Le bénéfice s'écrit AU CENTIME (centimes affichés s'ils ne sont pas nuls) : c'est la SOMME des
+  // bénéfices enregistrés des bilans de la période (chacun arrondi au centime à la sauvegarde) + celui du
+  // brouillon en aperçu -> au centime près le même chiffre que la liste, le Récap et la Part de la modèle
+  // (net − dépenses, arrondi d'un coup, pourrait différer d'un centime). Les % gardent net − dépenses.
   // Une PERTE se voit : vrai signe « − » et rouge (classe .neg ; plus de couleur en dur).
-  set('vpr',brTot?((pr<0?'−':'')+fmtR(pr)):'—');if(typeof window!=='undefined')window._objPr=brTot?pr:null;
+  const _prB=_brouillon?profitEntree({brut:(_gv('ib')>0?_gv('ib')/_TAUX:0),tgNet:_gv('itg'),va:_tl('va'),mo:_tl('mo'),ci:_tl('ci'),ch:_tl('ch'),alT:gat()}):0;
+  const prAff=Math.round((f.reduce((s,e)=>s+(e.profit||0),0)+_prB)*100)/100;
+  set('vpr',brTot?((prAff<0?'−':'')+fmtC(prAff)):'—');if(typeof window!=='undefined')window._objPr=brTot?prAff:null;
   const _vprEl=document.getElementById('vpr');
-  if(_vprEl){_vprEl.style.color='';_vprEl.classList.toggle('neg',pr<0);}
+  if(_vprEl){_vprEl.style.color='';_vprEl.classList.toggle('neg',prAff<0);
+    // (15/10) longueur du montant écrit : la taille du grand chiffre s'y ajuste (CSS « --kv-n ») pour que le chiffre
+    // et « dont ta moitié » tiennent côte à côte, même avec les centimes ($29,618.54)
+    _vprEl.style.setProperty('--kv-n',String(Math.max(2,(_vprEl.textContent||'').length)));}
   // ⚠️ Les % se calculent sur le NET (OF net + Telegram), comme la marge de
   // chaque ligne et le bandeau d'analyses. Avant, CETTE carte divisait par le
   // brut (« 58 % du CA ») pendant que le bandeau, juste dessous, divisait par
@@ -5476,7 +5512,7 @@ function uk(){
   // Seulement si le bénéfice est positif.
   const _moiEl=document.getElementById('pmoitie');
   if(_moiEl){
-    const _bR=Math.round(pr), _ok=!!brTot&&pr>0&&mo<=_bR;
+    const _bR=prAff, _ok=!!brTot&&prAff>0&&mo<=_bR;
     _moiEl.hidden=!_ok;
     _moiEl.innerHTML=_ok?'dont ta moitié : <b>'+fmtC((_bR+mo)*0.5)+'</b>':'';
   }
@@ -5518,7 +5554,7 @@ function uk(){
     // Ordre FIXE (le bénéfice d'abord) : deux couleurs voisines restent toujours
     // distinguables (violet du bénéfice jamais collé au fuchsia des divers).
     const its=[
-      {l:'Bénéfice',         v:marge, p:marge/net, c:'var(--acc)', pr:true},
+      {l:'Bénéfice',         v:Math.max(0,prAff), p:marge/net, c:'var(--acc)', pr:true},   // (15/10) montant = la carte
       {l:'VA',               v:va,    p:va/net,    c:'var(--m-va)'},
       {l:'Modèle',           v:mo,    p:mo/net,    c:'var(--m-mo)'},
       {l:'Chat IA',          v:ci,    p:ci/net,    c:'var(--m-ci)'},
@@ -6527,7 +6563,7 @@ function checkGoalReached(profitBefore, profitAfter, goal) {
   if (!goal || goal <= 0) return;
   if (profitBefore < goal && profitAfter >= goal) {
     const mois = new Date().toLocaleString('fr-FR', { month: 'long', year: 'numeric' });
-    sendDiscordNotif(`🎉 **Objectif mensuel atteint !** Profit de **$${Math.round(profitAfter).toLocaleString('en-US')}** sur un objectif de **$${Math.round(goal).toLocaleString('en-US')}** — ${mois} ✅`);
+    sendDiscordNotif(`🎉 **Objectif mensuel atteint !** Profit de **${fmtC(profitAfter)}** sur un objectif de **${fmtC(goal)}** — ${mois} ✅`);
     launchConfetti();
   }
 }
@@ -7470,7 +7506,7 @@ function grafInfobulle(ctx){
   var k = document.createElement('i'); k.className = 'nfg-tip-k'; k.style.background = info.couleur || ''; r.appendChild(k);
   var l = document.createElement('span'); l.className = 'nfg-tip-l'; l.textContent = 'Bénéfice'; r.appendChild(l);
   var v = document.createElement('b'); v.className = 'nfg-tip-v';
-  v.textContent = fmtS(info.v != null ? info.v : pts[0].parsed.y); r.appendChild(v);
+  v.textContent = _mS(info.v != null ? info.v : pts[0].parsed.y); r.appendChild(v);   // (15/10) au centime
   el.appendChild(r);
   if (info.sous) { var s = document.createElement('div'); s.className = 'nfg-tip-s'; s.textContent = info.sous; el.appendChild(s); }
   el.classList.add('on');
@@ -7621,7 +7657,7 @@ function grafEvolution(cv, d, ps){
   });
   ch.$graf = { points: points, p: p, etroit: etroit };
   cv.setAttribute('role', 'img');
-  cv.setAttribute('aria-label', 'Évolution du bénéfice : ' + points.map(function (x){ return x.titre + ' ' + fmtS(x.v); }).join(', '));
+  cv.setAttribute('aria-label', 'Évolution du bénéfice : ' + points.map(function (x){ return x.titre + ' ' + _mS(x.v); }).join(', '));
   var der = points[n - 1];
   grafNote(zone, der && der.enCours ? { type: 'ligne', texte: grafCap(grafMoisLong(+cles[n - 1].slice(5, 7) - 1)) + ' est en cours : son chiffre bougera encore.' } : null);
   return ch;
@@ -7665,7 +7701,7 @@ function grafProfitMois(cv, cd, ancien){
   });
   ch.$graf = { points: points, p: p, etroit: etroit };
   cv.setAttribute('role', 'img');
-  cv.setAttribute('aria-label', 'Bénéfice par mois : ' + points.map(function (x){ return x.titre + ' ' + fmtS(x.v); }).join(', '));
+  cv.setAttribute('aria-label', 'Bénéfice par mois : ' + points.map(function (x){ return x.titre + ' ' + _mS(x.v); }).join(', '));
   var der = points[points.length - 1];
   grafNote(zone, der && der.enCours ? { type: 'barre', texte: grafCap(grafMoisLong(+String(cd[cd.length - 1].key).slice(5, 7) - 1)) + ' est en cours : son chiffre bougera encore.' } : null);
   return ch;
@@ -8759,6 +8795,8 @@ function renderRecords(){
 //   cout    coût réel des impôts = garde ÷ (1 − 3,5 %)           paxImp  = cout − garde (Paxum sur cet argent)
 //   tot     fraisOF() = le chiffre de la tuile « Impôts + Paxum » ; pax = tot − garde (information)
 //   moitie  sa moitié de ce qui est gardé, au centime (un demi-centime monte : $10.01 -> $5.01)
+//   chacun  (15/10) la moitié du coût réel (le coût réel est partagé moitié-moitié) ;
+//           paxMoitie = chacun − moitie : sa moitié du Paxum pris sur l'argent des impôts
 function _chFrais(es){
   var br = (es || []).reduce(function(s, e){ return s + (e.brut || 0); }, 0);   // même somme que uk()
   var n = br * _TAUX, tot = fraisOF(n), imp = n * _IMPOTS_OF;
@@ -8766,7 +8804,7 @@ function _chFrais(es){
   var cT = _chCtsAff(tot), cI = _chCtsAff(imp), cG = _chCtsAff(garde), cC = _chCtsAff(cout);
   return {br: br, net: n, tot: tot, imp: imp, garde: garde, cout: cout,
     retrait: (cG - cI) / 100, paxImp: (cC - cG) / 100, pax: (cT - cG) / 100, paxExact: n * _PAXUM_OF,
-    moitie: Math.round(cG / 2) / 100};
+    moitie: Math.round(cG / 2) / 100, chacun: Math.round(cC / 2) / 100, paxMoitie: (Math.round(cC / 2) - Math.round(cG / 2)) / 100};
 }
 function chImpots(){
   var cour = _pgMoisCourant();
@@ -8806,7 +8844,10 @@ function renderImpots(){
     + '<div class="ip-r ip-r-imp"><dt>Impôts à payer, en liquide</dt><dd>' + fmtC(T.imp) + '</dd></div>'
     + '<div class="ip-r ip-r-cout"><dt>Coût réel des impôts</dt><dd>' + fmtC(T.cout) + '</dd></div>'
     + '</dl>'
-    + '<div class="ip-cout-det">= ' + fmtC(T.imp) + ' + <b>' + fmtC(T.retrait) + '</b> de retrait (2 %) + <b>' + fmtC(T.paxImp) + '</b> de Paxum (3,5 %)</div>';
+    + '<div class="ip-cout-det">= ' + fmtC(T.imp) + ' + <b>' + fmtC(T.retrait) + '</b> de retrait (2 %) + <b>' + fmtC(T.paxImp) + '</b> de Paxum (3,5 %)</div>'
+    + '<dl class="ip-rel ip-rel-2"><div class="ip-r ip-r-chacun"><dt>Partagé moitié-moitié</dt><dd>' + fmtC(T.chacun) + ' chacun</dd></div></dl>'
+    + '<div class="ip-cout-det ip-chacun-det">sa moitié : <b>' + fmtC(T.moitie) + '</b> gardés en crypto + <b>' + fmtC(T.paxMoitie)
+    + '</b> déjà pris par Paxum</div>';
   var eq = '<div class="ip-eq">'
     + tuile('ip-tot', 'À garder en crypto', fmtC(T.garde), '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(T.moitie) + '</b></span>', rel)
     + tuile('ip-pax', 'Paxum · 3,5 %', fmtC(T.pax), '<span>déjà pris par Paxum au passage en crypto : <span class="ip-rien">rien à garder</span></span>')
@@ -9279,15 +9320,15 @@ document.addEventListener('visibilitychange', function(){ if(!document.hidden){ 
 // ══ objectif v2 (14/10) — EXEMPLE, PAS EN LIGNE : l'objectif du mois en jauge sur la tuile Bénéfice ══
 // AFFICHAGE SEULEMENT : aucune écriture, aucun stockage, aucun calcul parallèle.
 //  - Bénéfice : LE chiffre de la tuile. uk() le pose dans window._objPr juste après l'avoir écrit ;
-//    on le prend AU DOLLAR, comme la tuile l'écrit et comme chaque bilan l'enregistre (e.profit arrondi).
+//    on le prend AU CENTIME (15/10), comme la tuile l'écrit et comme chaque bilan l'enregistre.
 //  - Objectif : le champ #monthly-goal, lu comme renderForecast (« 0 » ou vide = pas d'objectif).
 //  - Prévision : celle de renderForecast (window._objFc, posé juste après son calcul), seulement si
 //    elle porte sur le MÊME mois, que le mois n'est pas fini et qu'aucun brouillon n'est en aperçu.
 //  - Seulement quand la période affichée est le mois EN COURS : l'objectif est mensuel.
 //  - Règles honnêtes, UNE seule écriture, aussi employées par la carte Prévision :
 //      _objPctHonnete : jamais « 100 % » tant que l'objectif n'est pas atteint, jamais négatif ;
-//      _objResteTxt   : « Objectif atteint » quand il ne manque rien et que rien ne dépasse au dollar
-//                       (plus de « dépassé de zéro dollar »), « moins de 1 dollar » au lieu de « il reste zéro ».
+//      _objResteTxt   : « Objectif atteint » quand il ne manque rien et que rien ne dépasse, au centime
+//                       (15/10 : plus de « moins de 1 dollar » : les centimes se lisent, « il reste $0.40 »).
 //  - « Fixer un objectif » = le MÊME geste que le bouton de la Prévision (window._fcObjOuvert puis
 //    renderForecast) + on amène le champ à l'écran. Rien n'est enregistré ici.
 var OBJ_VARIANTE = 'b2';
@@ -9300,8 +9341,9 @@ function _objPctHonnete(v, goal){
 }
 // reste = objectif − bénéfice. Renvoie {etat, txt} : 'reste' (il manque), 'atteint', 'depasse'.
 function _objReste(reste){
-  if(reste > 0) return { etat: 'reste', txt: reste < 0.5 ? 'moins de ' + fmtR(1) : fmtR(reste) };
-  return Math.round(-reste) >= 1 ? { etat: 'depasse', txt: fmtR(-reste) } : { etat: 'atteint', txt: '' };
+  reste = Math.round(reste * 100) / 100;             // (15/10) au centime, comme le bénéfice
+  if(reste > 0) return { etat: 'reste', txt: fmtC(reste) };
+  return reste < 0 ? { etat: 'depasse', txt: fmtC(-reste) } : { etat: 'atteint', txt: '' };
 }
 function _objVariante(){
   var v = document.body.getAttribute('data-obj-v');
@@ -9317,7 +9359,7 @@ var _OI = (function(){
   };
 })();
 function _objBorne(x){ return Math.max(0, Math.min(100, x)); }
-function _objArg(v){ return (v < 0 ? '−' : '') + fmtR(v); }        // même écriture que la tuile (vrai « − »)
+function _objArg(v){ return (v < 0 ? '−' : '') + fmtC(v); }        // même écriture que la tuile (vrai « − »)
 
 function _objEtat(){
   var auj = new Date(), p2 = function(n){ return String(n).padStart(2, '0'); };
@@ -9335,7 +9377,7 @@ function _objEtat(){
   var apEl = document.getElementById('kpi-apercu'), apercu = !!(apEl && !apEl.hidden);
   if(!ceMois || pr == null || !isFinite(pr)) return { mode: 'cache' };
   if(!(goal > 0)) return { mode: (lecture || apercu) ? 'cache' : 'invite' };
-  var v = (pr < 0 ? -1 : 1) * Math.round(Math.abs(pr));
+  var v = (pr < 0 ? -1 : 1) * Math.round(Math.abs(pr) * 100) / 100;
   var fc = window._objFc;
   var fcOk = !!(fc && fc.mois === d0.slice(0, 7) && !fc.moisFini && !apercu && isFinite(fc.forecast) && fc.forecast > 0);
   var R = _objReste(goal - v);
@@ -9361,7 +9403,7 @@ function _objPalier(S, court){
   return '<span class="o-nw">' + (court ? 'Palier ' : 'Prochain palier ') + '<b>' + fmtC(S.palier) + '</b></span> · <span class="o-nw">encore <b>'
     + _objResteTxtEncore(S) + '</b></span>';
 }
-function _objResteTxtEncore(S){ return S.k >= 4 ? S.resteTxt : fmtR(S.encore); }
+function _objResteTxtEncore(S){ return S.k >= 4 ? S.resteTxt : fmtC(S.encore); }
 function _objAria(S){
   return 'Objectif ' + S.deM + ' : ' + _objArg(S.v) + ' sur ' + fmtC(S.goal) + ', ' + fmtPct(S.pct)
     + (S.etat === 'depasse' ? ', dépassé' : (S.etat === 'atteint' ? ', atteint' : ''))

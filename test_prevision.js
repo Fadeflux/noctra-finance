@@ -40,6 +40,12 @@ global.document = { getElementById: el };
 global.fmtR = (v) => '$' + Math.round(Math.abs(v)).toLocaleString('en-US');
 global.fmtS = (v) => (v < 0 ? '-' : '') + global.fmtR(v);
 global.fmt = (v) => '$' + Math.abs(v).toFixed(2);
+// (15/10, benefice AU CENTIME) renderForecast ecrit le bilan du mois avec fmtC (centimes s'il y en a) : on prend fmt et
+// fmtC DANS la page quand ils y sont (une valeur recopiee a la main derive) ; une ancienne page reste testable.
+for (const nom of ['fmt', 'fmtC']) {
+  const m = SRC.match(new RegExp('\\nconst ' + nom + '=(v=>[^\\n]*);\\n'));
+  if (m) global[nom] = new Function('fmtR', 'fmt', 'return ' + m[1])(global.fmtR, global.fmt);
+}
 Object.assign(global, new Function(extraire('renderForecast') + ';return{renderForecast};')());
 
 function lancer({ ents, acd = null, acdEnd = null, auj = '2026-10-12' }) {
@@ -89,6 +95,17 @@ console.log('\n-- un BILAN par mois, mis a jour au fil du mois --');
   const r = lancer({ ents: BILANS, acd: '2026-09-01', acdEnd: '2026-09-30' });
   V(r.valeur === 6000, 'mois TERMINE : la prevision est le bilan lui-meme', 'obtenu ' + r.valeur);
   V(/termin/i.test(r.base), '... et le texte le dit', r.base);
+}
+if (/\nconst fmtC=/.test(SRC) && /forecast=modeBilan&&moisFini\?profitCumule:/.test(SRC)) {
+  // (15/10) le bilan est enregistre AU CENTIME : un mois termine affiche le bilan exact, centimes compris
+  const B2 = BILANS.map((x) => Object.assign({}, x)); B2[3].profit = 6000.55;
+  lancer({ ents: B2, acd: '2026-09-01', acdEnd: '2026-09-30' });
+  V(el('forecast-val').textContent === '$6,000.55', 'mois TERMINE au centime : « $6,000.55 » (pas « $6,001 »)', el('forecast-val').textContent);
+  // ... et en cours de mois, « ton bilan a ce jour » garde ses centimes ; la prevision reste une estimation au dollar
+  const B3 = BILANS.map((x) => Object.assign({}, x)); B3[4].profit = 6200.4;
+  const r3 = lancer({ ents: B3 });
+  V(/6,200\.40 en 12 jours/.test(r3.base) && /^≈ \$[\d,]+$/.test(el('forecast-val').textContent),
+    'en cours : « ton bilan a ce jour » au centime ($6,200.40), prevision « ≈ » au dollar', r3.base + ' | ' + el('forecast-val').textContent);
 }
 {
   const r = lancer({ ents: [ligne('2026-10-01', 1200)] });
