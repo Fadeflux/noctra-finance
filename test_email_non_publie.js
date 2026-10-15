@@ -38,7 +38,12 @@ V('SUPA_EMAIL a disparu du code', !/const SUPA_EMAIL\s*=/.test(SRC));
 
 console.log('\n-- aucun mot de passe non plus (le depot est PUBLIC) --');
 // Un identifiant publié ne coûte presque rien ; un mot de passe publié coûte tout.
-const MOTS_INTERDITS = [/andre2026/i, /manon2026/i, /test12/, /password\s*[:=]\s*['"][^'"]{4,}['"]/];
+// (15/10) Ce banc ne cite AUCUN mot de passe réel, même pour l'interdire : le dépôt est public,
+// le nommer ici, c'était le publier. On cherche donc la FORME d'un mot de passe écrit en dur.
+const MOTS_INTERDITS = [
+  /(password|passwd|mot_?de_?passe|mdp)\s*[:=]\s*['"][^'"]{4,}['"]/i,
+  /signInWithPassword\(\s*\{[^}]*password\s*:\s*['"][^'"]+['"]/i,
+];
 const trouves = MOTS_INTERDITS.filter((r) => r.test(SRC)).map(String);
 V('aucun mot de passe en clair dans la page', trouves.length === 0, trouves.join(', '));
 
@@ -91,7 +96,8 @@ console.log('\n-- les controles savent echouer --');
     FORME_MAIL.test("const SUPA_EMAIL = 'quelquun@exemple.com';"),
     'si ce n est plus vrai, ce test ne mesure plus ce qu il surveille');
   V('un mot de passe en clair serait attrape',
-    MOTS_INTERDITS.some((r) => r.test("const mdp = 'andre2026#';")));
+    MOTS_INTERDITS.some((r) => r.test("const mdp = 'exemple-invente-42';")) &&
+    MOTS_INTERDITS.some((r) => r.test("sb.auth.signInWithPassword({ email: x, password: 'exemple-invente-42' })")));
   V('un domaine reel serait attrape',
     !/\.(invalid|test|example|localhost)$/.test('noctra.app'));
   V('un champ identifiant cache serait attrape',
