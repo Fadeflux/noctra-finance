@@ -2011,17 +2011,24 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
   html body #page-editlog .hl-outil .hl-btn{width:100%;justify-content:center;}
 }
 
-/* (13/10) téléphone : « Mettre à jour » écrit en toutes lettres (André), neutre, sans crayon pour tenir
-   dans la ligne ; sous 375 px, le crayon seul (44 × 44, l'étiquette reste pour la lecture vocale) */
+/* (15/10) téléphone — « Tes bilans » sur deux étages (relecture D1). Avec les centimes (« +$4,383.91 »), la date, le
+   bénéfice et « Mettre à jour » ne tenaient plus sur une seule ligne : de 375 à 430 px le bénéfice recouvrait la date.
+   Étage du haut : date | bénéfice. Étage du bas : le net puis la marge, l'un sous l'autre | « Mettre à jour », écrit en
+   toutes lettres à TOUTES les largeurs (avant : le crayon seul sous 375 px ; André voulait le mot). La ligne partage ses
+   colonnes avec son résumé (subgrid) : la colonne de droite prend la largeur du bouton ou du bénéfice, le plus large des
+   deux, et rien ne peut passer dessous. Ordinateur et tablette : inchangés. */
 @media (max-width:640px){
-  html body #hist-panel .tx-mod{width:auto;min-width:44px;padding:0 10px;gap:6px;font-size:13px}
+  html body #hist-panel .txrow{grid-template-columns:16px minmax(0,1fr) auto;grid-template-areas:none}
+  html body #hist-panel .txrow > .tx-sum{grid-column:1 / -1;grid-row:1;
+    grid-template-columns:16px minmax(0,1fr) auto;grid-template-columns:subgrid;
+    grid-template-rows:auto minmax(20px,auto) minmax(20px,auto);grid-template-areas:"cv when pr" "cv net ." "cv mg .";row-gap:4px}
+  html body #hist-panel .txrow .tx-mg{justify-self:start}
+  html body #hist-panel .txrow > .tx-mod{grid-column:3;grid-row:1;align-self:end;justify-self:end;margin-bottom:12px;z-index:1;
+    width:auto;min-width:44px;padding:0 10px;gap:6px;font-size:13px}
   html body #hist-panel .tx-mod > span{display:inline;white-space:nowrap}
   html body #hist-panel .tx-mod svg{display:none}
-}
-@media (max-width:374px){
-  html body #hist-panel .tx-mod{width:44px;padding:0}
-  html body #hist-panel .tx-mod > span{display:none}
-  html body #hist-panel .tx-mod svg{display:block;width:16px;height:16px}
+  html body #hist-panel .txrow > .tx-det{grid-column:1 / -1;grid-row:2}
+  html body.readonly #hist-panel .txrow > .tx-sum{grid-template-rows:auto auto auto}
 }
 
 /* ── finitions finales ── */
@@ -2912,14 +2919,21 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-value{margin-top:10px;font-size:min(14cqi,23px);letter-spacing:-.03em;line-height:1}
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-meta{justify-self:auto;margin-top:4px}
   /* OnlyFans / Telegram : deux pastilles pleines empilées (la couleur dit le canal : pas de point en plus) */
-  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kpi-nets{display:flex;flex:1 1 auto;flex-direction:column;gap:6px;margin-top:0;padding-top:10px;border-top:0}
-  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn{display:flex;flex:1 1 0;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:space-between;
-    gap:4px;min-height:30px;padding:4px 9px;border-radius:var(--mx-r-sm)}
+  /* (15/10, relecture D2) elles restent DANS la tuile « Net total » : la colonne des pastilles prend la largeur de la tuile
+     (avant : celle de son contenu, jusqu'à 217 px dans une tuile de 143 à 194 px : la pastille d'évolution passait sous
+     « Reste à envoyer »), et le contenu passe à la ligne au lieu de déborder. Période terminée (pastilles d'évolution
+     visibles, classe « kn-evo » posée par uk()) : l'étiquette, le montant puis sa pastille, l'un sous l'autre, comme à
+     l'ordinateur (montant et pastille côte à côte ne tenaient pas dans les deux pastilles à la fois sous 414 px). */
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kpi-nets{display:flex;flex:1 1 auto;flex-direction:column;align-self:stretch;min-width:0;gap:6px;margin-top:0;padding-top:10px;border-top:0}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn{display:flex;flex:1 0 auto;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    gap:4px;min-height:30px;min-width:0;padding:4px 9px;border-radius:var(--mx-r-sm)}
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-l{gap:5px}
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-l::before{display:block;width:12px;height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
-  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-l{flex:1 1 auto;min-width:0;font-size:12px;line-height:18px}
-  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-v{font-size:14px;line-height:18px}
-  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn > .kpi-delta{display:none}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-l{flex:1 0 auto;min-width:0;font-size:12px;line-height:18px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net .kn-v{font-size:14px;line-height:18px;margin-left:auto}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net.kn-evo .kn{row-gap:3px}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net.kn-evo .kn-l,
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net.kn-evo .kn-v{flex-basis:100%;margin-left:0}
   body.skin-melange #page-ca #model-share .ms-res{grid-area:auto;grid-column:rs;grid-row:rs-start / rd-end;display:flex;container-type:inline-size}
   body.skin-melange #page-ca #model-share .ms-res:not(.ms-res-ok) .ms-c{background-color:var(--bc-b)!important;
     background-image:linear-gradient(180deg,var(--bc-a) 0,var(--bc-b) 64px)!important}
@@ -3875,6 +3889,16 @@ body.skin-melange #impots-panel .ip-rel-2{margin-top:10px;padding-top:10px}
 body.skin-melange #impots-panel .ip-r-chacun dd{font-weight:700}
 body.skin-melange #impots-panel .ip-chacun-det b{white-space:nowrap}
 
+
+/* ── feat3_correctifs (relecture du 15/10 : D1 à D6) ── */
+/* (15/10, D3) Records : la pastille « à finaliser » du dernier mois (le dessin neutre de « en cours », placé comme
+   « nouveau record ») */
+body.skin-melange #records-panel .rk-afin-pill{align-self:flex-start;margin-top:10px}
+@media (max-width:640px){body.skin-melange #records-panel .rk-afin-pill{grid-area:p;justify-self:start}}
+/* (15/10) ordinateur et tablette, mois encore vide (les 8 tuiles de dépenses affichées) : « déjà déduit de ton net »
+   restait sur une ligne et sortait de 9 px de la tuile « Gardé par OnlyFans » (vu par la sonde de superposition ;
+   déjà présent dans final14). Il passe à la ligne dans sa tuile ; rien ne bouge quand il tient. */
+@media (min-width:641px){#page-ca .kpi-dep-grid > .kpi-info .kpi-pct{max-width:100%;min-width:0}}
 </style>
 </head>
 <body class="skin-melange">
@@ -4031,7 +4055,7 @@ body.skin-melange #impots-panel .ip-chacun-det b{white-space:nowrap}
     <div id="edit-banner" role="status">
       <span class="eb-ico" id="edit-banner-ico" aria-hidden="true"></span>
       <span class="eb-txt"><span id="edit-banner-lbl">Tu mets à jour le bilan du</span> <b id="edit-banner-date"></b><span class="eb-note" id="edit-banner-note"></span></span>
-      <button type="button" class="eb-x" onclick="cancelEdit()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span>Annuler</span></button>
+      <button type="button" class="eb-x" onclick="annulerSaisie()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span>Annuler</span></button>
     </div>
     <div style="margin-bottom:10px"><label class="ilbl" for="entry-date-input" style="display:block">Date</label><input class="ifield" type="date" id="entry-date-input" style="width:160px" oninput="uk()" onchange="uk()"><div class="date-aide" id="date-aide">Choisis d’abord sa date : elle décide du mois où ce bilan compte.</div></div>
     <div id="entry-doublon" style="display:none" role="status"></div>
@@ -4909,60 +4933,81 @@ function renderDepensesParMois(){
   const ajout=(nom,mois,val)=>{ if(!val||val<=0) return; const k=_depKey(nom); if(!k) return;
     if(!lignes[k]) lignes[k]={label:nom,par:{},total:0};
     lignes[k].par[mois]=(lignes[k].par[mois]||0)+val; lignes[k].total+=val; };
+  // (15/10, relecture D5) Impôts + Paxum, mois par mois : fraisOF du net OnlyFans de chaque bilan, le MÊME calcul que la
+  // colonne « Impôts + Paxum » du Récap. « Dépenses 6 mois » compte ainsi la même chose que « Dépenses » en haut de la page.
+  const frPar={}; let frTot=0;
   let caTotal=0;
   (ents||[]).forEach(e=>{
     const m=(e.date||'').slice(0,7); if(moisList.indexOf(m)<0) return;
     caTotal+=(e.brut||0)+(e.tgNet||0);
     ajout('VA',m,e.va||0); ajout('Modèle',m,e.mo||0); ajout('Chat IA',m,e.ci||0); ajout('Chat humain',m,e.ch||0);
     (e.alI||[]).forEach(x=>ajout(String(x.name||'Divers').trim()||'Divers',m,x.val||0));
+    const fr=fraisOF((e.brut||0)*_TAUX); if(fr>0){ frPar[m]=(frPar[m]||0)+fr; frTot+=fr; }
   });
   const rows=Object.values(lignes).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
+  // la ligne « Impôts + Paxum » en dernier : elle suit ce qui rentre, ce n'est pas une dépense qu'on peut couper
+  if(frTot>0) rows.push({label:'Impôts + Paxum',par:frPar,total:frTot,fr:true});
   if(!rows.length){ el.innerHTML='<div class="emsg">Aucune dépense sur les 6 derniers mois</div>'; return; }
 
   const dernier=moisList[moisList.length-1], avant=moisList[moisList.length-2];
+  // (15/10, relecture D5) « Évolution » : le dernier mois TERMINÉ face au mois d'avant. Jamais le mois en cours, ni un mois
+  // « à finaliser » (la règle du rappel : _moisAFinaliser) ; « nouveau » seulement pour un poste absent de TOUS les mois
+  // d'avant du tableau (présent plus tôt, absent le mois d'avant : « de retour »).
+  const _af=(typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
+  const _finis=moisList.filter(m=>m<dernier&&m!==_af);
+  const evA=_finis[_finis.length-1], evB=_finis[_finis.length-2];
+  const _nomM=m=>grafMoisLong(+String(m).slice(5,7)-1), _courtM=m=>grafMoisCourt(+String(m).slice(5,7)-1);
   const corps=rows.map(r=>{
     const cur=r.par[dernier]||0, prev=r.par[avant]||0;
     // Moyenne calculée UNIQUEMENT sur les mois qui ont des données : sinon les mois
     // vides du début diluaient la moyenne et faisaient passer une dépense parfaitement
     // stable (300/300/300) pour une dépense qui dérape.
-    const _prec=moisList.slice(-4,-1).map(m=>r.par[m]||0).filter(v=>v>0);
+    // (15/10, D3) un mois « à finaliser » n'entre pas dans la moyenne, et « Arrêtées » attend qu'il soit finalisé
+    const _prec=moisList.slice(-4,-1).filter(m=>m!==_af).map(m=>r.par[m]||0).filter(v=>v>0);
     const moy3=_prec.length?_prec.reduce((a,b)=>a+b,0)/_prec.length:0;
-    const derape = _prec.length>=2 && cur>moy3*1.3;
-    const arretee = cur===0 && prev===0 && r.total>0;
-    const delta = prev>0 ? Math.round((cur-prev)/prev*100) : (cur>0?null:0);
+    const derape = !r.fr && _prec.length>=2 && cur>moy3*1.3;
+    const arretee = !r.fr && !_af && cur===0 && prev===0 && r.total>0;
+    const a=r.par[evA]||0, b=r.par[evB]||0;
+    const deja=moisList.some(m=>m<evA&&(r.par[m]||0)>0);
+    const delta = b>0 ? Math.round((a-b)/b*100) : (a>0?null:0);
     const annuel = Math.round(r.total/MOIS*12);
     const cells=moisList.map(m=>{const v=r.par[m]||0;
       return v?'<td class="nfm-n'+(derape&&m===dernier?' nfm-chaud':'')+'">'+fmtC(v)+'</td>':'<td class="nfm-n nfm-vide"><i aria-hidden="true"></i></td>';}).join('');
-    const nomCol='<td class="nfm-nom'+(arretee?' nfm-arretee':'')+'">'
-      +(derape?'<span class="nfm-ic nfm-ic-derape" title="Dépasse de +30 % sa moyenne 3 mois">'+grafIcone('derape')+'</span>':'')
+    const nomCol='<td class="nfm-nom'+(arretee?' nfm-arretee':'')+'"'
+      +(r.fr?' title="1 % d’impôts (payés en liquide, retrait de 2 % compris) et 3,5 % de frais Paxum, sur le net OnlyFans : ça suit ce qui rentre"':'')+'>'
+      +(derape?'<span class="nfm-ic nfm-ic-derape" title="Dépasse de +30 % sa moyenne 3 mois">'+grafIcone('derape')+'</span>':'')
       +(arretee?'<span class="nfm-ic nfm-ic-arret" title="Plus rien depuis 2 mois : abonnement encore payé ?">'+grafIcone('arret')+'</span>':'')
       +esc(r.label)+'</td>';
-    const dCol='<td class="nfm-n '+(delta===null?'nfm-doux':(delta>0?'nfm-hausse':(delta<0?'nfm-baisse':'nfm-doux')))+'">'
-      +(delta===null?'nouveau':(delta===0?'—':(delta>0?'+':'−')+fmtPct(Math.abs(delta))))+'</td>';
-    return '<tr'+(derape?' class="nfm-derape"':'')+'>'+nomCol+cells
+    const dCol='<td class="nfm-n '+(r.fr||delta===null?'nfm-doux':(delta>0?'nfm-hausse':(delta<0?'nfm-baisse':'nfm-doux')))+'">'
+      +(delta===null?(deja?'de retour':'nouveau'):(delta===0?'—':(delta>0?'+':'−')+fmtPct(Math.abs(delta))))+'</td>';
+    return '<tr'+(derape?' class="nfm-derape"':(r.fr?' class="nfm-fr"':''))+'>'+nomCol+cells
       +'<td class="nfm-n nfm-total">'+fmtC(r.total)+'</td>'
       +'<td class="nfm-n nfm-doux" title="Coût sur 12 mois à ce rythme">'+fmtR(annuel)+'</td>'
       +dCol+'</tr>';
   }).join('');
 
   const totalGen=rows.reduce((s,r)=>s+r.total,0);
-  const nbDerape=rows.filter(r=>{const cur=r.par[dernier]||0;const p=moisList.slice(-4,-1).map(m=>r.par[m]||0).filter(v=>v>0);const mo=p.length?p.reduce((a,b)=>a+b,0)/p.length:0;return p.length>=2&&cur>mo*1.3;}).length;
-  const nbArret=rows.filter(r=>(r.par[dernier]||0)===0&&(r.par[avant]||0)===0).length;
+  const nbDerape=rows.filter(r=>{if(r.fr) return false;const cur=r.par[dernier]||0;const p=moisList.slice(-4,-1).filter(m=>m!==_af).map(m=>r.par[m]||0).filter(v=>v>0);const mo=p.length?p.reduce((a,b)=>a+b,0)/p.length:0;return p.length>=2&&cur>mo*1.3;}).length;
+  const nbArret=_af?0:rows.filter(r=>!r.fr&&(r.par[dernier]||0)===0&&(r.par[avant]||0)===0).length;
+  const _pas=[(_af?_nomM(_af)+' est à finaliser':''),_nomM(dernier)+' est en cours'].filter(Boolean);
+  const _note='« Évolution » : '+_nomM(evA)+' par rapport à '+_nomM(evB)+', les deux derniers mois terminés. '
+    +grafCap(_pas.join(' et '))+' : '+(_pas.length>1?'leurs colonnes bougeront':'sa colonne bougera')+' encore. '
+    +'Le total compte les impôts et Paxum, comme « Dépenses » en haut de la page.';
 
   el.innerHTML=
     '<div class="nfm-kpis">'
-    +'<div class="nfm-kpi"><div class="nfm-kl">Dépenses 6 mois</div><div class="nfm-kv nfm-neg">'+fmtC(totalGen)+'</div><div class="nfm-ks">soit '+fmtR(Math.round(totalGen/MOIS*12))+' / an à ce rythme</div></div>'
+    +'<div class="nfm-kpi"><div class="nfm-kl">Dépenses 6 mois</div><div class="nfm-kv nfm-neg">'+fmtC(totalGen)+'</div><div class="nfm-ks">impôts et Paxum compris · soit '+fmtR(Math.round(totalGen/MOIS*12))+' / an à ce rythme</div></div>'
     +(nbDerape?'<div class="nfm-kpi nfm-kpi-derape"><div class="nfm-kl"><span class="nfm-ic nfm-ic-derape">'+grafIcone('derape')+'</span>Qui dérapent</div><div class="nfm-kv">'+nbDerape+'</div><div class="nfm-ks">+30\u00a0% par rapport à leur moyenne</div></div>':'')
     +(nbArret?'<div class="nfm-kpi"><div class="nfm-kl"><span class="nfm-ic nfm-ic-arret">'+grafIcone('arret')+'</span>Arrêtées</div><div class="nfm-kv nfm-doux">'+nbArret+'</div><div class="nfm-ks">rien depuis 2 mois</div></div>':'')
     +'</div>'
     +'<div class="nfm-defil"><div class="nfm-scroll"><table class="nfm-table">'
     +'<thead><tr>'
     +'<th class="nfm-nom">Dépense</th>'
-    +moisList.map(m=>'<th class="nfm-n">'+(m===dernier?'<small>en cours</small>':'')+libMois(m)+'</th>').join('')
+    +moisList.map(m=>'<th class="nfm-n">'+(m===dernier?'<small>en cours</small>':(m===_af?'<small>à finaliser</small>':''))+libMois(m)+'</th>').join('')
     +'<th class="nfm-n">Total</th><th class="nfm-n" title="Coût sur 12 mois à ce rythme">/ an</th>'
-    +'<th class="nfm-n" title="Mois en cours comparé au mois précédent">Évolution</th>'
+    +'<th class="nfm-n" title="'+grafCap(_nomM(evA))+' par rapport à '+_nomM(evB)+' : les deux derniers mois terminés"><small>'+_courtM(evB)+' → '+_courtM(evA)+'</small>Évolution</th>'
     +'</tr></thead><tbody>'+corps+'</tbody></table></div></div>'
-    +'<div class="nfm-note">Le mois en cours n\'est pas fini : sa colonne et son évolution bougeront encore.</div>';
+    +'<div class="nfm-note">'+_note+'</div>';
   grafDefilement(el);
 }
 
@@ -5276,7 +5321,7 @@ function renderForecast(){
       // On DIT sur quoi repose le chiffre : un bilan saisi tot dans le mois
       // ou deja complet se voit tout de suite, au lieu d'etre multiplie en silence.
       fs.innerHTML=moisFini
-        ? `Mois terminé : c'est ton bilan ${_deM}`
+        ? (monthStart.slice(0,7)===(typeof _moisAFinaliser==='function'?_moisAFinaliser():null) ? `Mois terminé, bilan à finaliser : c'est ton bilan ${_deM} à ce jour` : `Mois terminé : c'est ton bilan ${_deM}`)
         : `Ton bilan ${_deM} à ce jour : <strong>${(profitCumule<0?'−':'')+fmtC(profitCumule)}</strong> en <strong>${joursEcoules}</strong> jour${_s(joursEcoules)} · même rythme sur <strong>${daysInMonth} jours</strong> · <span class="fc-nw">${daysLeft} jour${_s(daysLeft)} restant${_s(daysLeft)}</span>`;
     } else {
       // « jours sans saisie » n'a de sens QUE pour quelqu'un qui saisit chaque jour.
@@ -5361,7 +5406,11 @@ function periodDelta(){
   } else { pEnd=addD(start,-1); pStart=addD(pEnd,-(days-1)); }
   const sums=(a,b)=>{let br=0,tg=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;tg+=e.tgNet||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.80+tg,dep=va+mo+ci+ch+al+fraisOF(br*.80);return{br,tg,net,dep,pr:net-dep};};
   const enCours=!ap&&ts()<end;
-  return {curr:sums(start,end),prev:sums(pStart,pEnd),start,end,pStart,pEnd,days,mois,enCours};
+  // (15/10) Du 1er au 7, le mois précédent PAS ENCORE FINALISÉ (règle du rappel : _moisAFinaliser) n'est pas comparé
+  // non plus : ses chiffres sont ceux de la mi-mois. Pastilles « à finaliser », pas de pourcentage.
+  const _mf=(enCours||ap)?null:(typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
+  const aFinaliser=!!_mf&&start<=_mf+'-31'&&end>=_mf+'-01';
+  return {curr:sums(start,end),prev:sums(pStart,pEnd),start,end,pStart,pEnd,days,mois,enCours,aFinaliser,moisAFinaliser:aFinaliser?_mf:null};
 }
 // Nom de la période d'avant, pour « par rapport à … » (affichage seulement).
 function _pdLibelle(pd){
@@ -5382,10 +5431,10 @@ function setDelta(id,curr,prev,inverse,ctx){
   // Période pas finie : pastille neutre « en cours » (jamais de −68 % en cours de mois).
   const el=document.getElementById(id);if(!el)return;
   el.style.color='';el.style.background='';
-  if(ctx&&ctx.enCours){
+  if(ctx&&(ctx.enCours||ctx.aFinaliser)){
     el.className='kpi-delta pill-encours';
-    el.innerHTML=_pillIco()+'en cours';
-    el.title='Période pas finie : elle sera comparée une fois terminée';
+    el.innerHTML=_pillIco()+(ctx.enCours?'en cours':'à finaliser');
+    el.title=ctx.enCours?'Période pas finie : elle sera comparée une fois terminée':'Bilan pas encore finalisé : la comparaison reviendra une fois ses chiffres définitifs enregistrés';
     el.removeAttribute('aria-label');
     el.style.display='inline-flex';return;
   }
@@ -5426,6 +5475,10 @@ function renderInsights(){
       const j=Math.max(0,Math.round((auj-new Date(pd.start+'T00:00:00'))/864e5)+1);
       it={ic:'horloge',c:'var(--ink-3)',t:'<b>Période en cours</b> : '+Math.min(j,pd.days)+' jour'+(j>1?'s':'')+' sur '+pd.days};
     }
+  } else if(pd.aFinaliser){
+    // (15/10) mois fini mais bilan pas encore finalisé (règle du rappel) : rien à comparer pour l'instant
+    it={ic:'horloge',c:'var(--ink-3)',t:'<b>'+esc(_majuscule(_nomMois(pd.moisAFinaliser)))+' à finaliser</b>'
+      +'<span class="ins-m">comparaison '+L.court+' une fois son bilan finalisé</span>'};
   } else if(pd.prev.pr){
     const evo=Math.round((pd.curr.pr-pd.prev.pr)/Math.abs(pd.prev.pr)*100);
     it={ic:evo>=0?'hausse':'baisse',c:evo>0?'var(--pos)':(evo<0?'var(--neg)':'var(--ink-3)'),
@@ -5526,12 +5579,16 @@ function uk(){
     if(_gi)_gi.classList.toggle('kpi-large',_nv%2===1);})();
   // Pastilles d'évolution : période pas finie -> « en cours » ; finie -> mois civils d'avant.
   const _pd=periodDelta();
-  if(_pd&&gf().length){const _c={enCours:_pd.enCours,lib:_pdLibelle(_pd)};
+  if(_pd&&gf().length){const _c={enCours:_pd.enCours,aFinaliser:_pd.aFinaliser,lib:_pdLibelle(_pd)};
     setDelta('dvpr',_pd.curr.pr,_pd.prev.pr,false,_c);
-    // Mois en cours : UNE pastille « en cours » (sur le bénéfice) suffit, le bandeau dit le reste.
-    if(_pd.enCours)['dvb','dvn','dvdep'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    // Mois en cours (ou mois à finaliser, 15/10) : UNE pastille sur le bénéfice suffit, le bandeau dit le reste.
+    if(_pd.enCours||_pd.aFinaliser)['dvb','dvn','dvdep'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
     else{setDelta('dvb',_pd.curr.br,_pd.prev.br,false,_c);setDelta('dvn',_pd.curr.tg,_pd.prev.tg,false,_c);setDelta('dvdep',_pd.curr.dep,_pd.prev.dep,true,_c);}}
   else{['dvb','dvn','dvdep','dvpr'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});}
+  // (15/10, D2) pastilles d'évolution OnlyFans / Telegram visibles (période terminée) : au téléphone, la tuile « Net total »
+  // range chaque pastille sur deux lignes (classe kn-evo, dessin seulement)
+  {const _kn=document.querySelector('#page-ca .kpi-hero-grid .kpi-net');
+    if(_kn)_kn.classList.toggle('kn-evo',['dvb','dvn'].some(id=>{const el=document.getElementById(id);return !!el&&el.style.display!=='none';}));}
   // Totaux des listes de versements + suggestions de libelles deja utilises.
   (function(){
     // ATTENTION : afficher le total des LIGNES DU FORMULAIRE (totLP), surtout pas
@@ -6300,11 +6357,13 @@ function renderRecap(){
       const a = data[0], b = data[1];
       const dep_a = a.va + a.mo + a.ci + a.ch + a.al + (a.fr || 0), dep_b = b.va + b.mo + b.ci + b.ch + b.al + (b.fr || 0);
       const enCours = a.key === _pgMoisCourant();
+      // (15/10) mois fini mais bilan pas encore finalisé (règle du rappel, _moisAFinaliser) : pas comparé non plus
+      const aFin = !enCours && a.key === (typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
       // On ne compare JAMAIS un mois pas fini a un mois complet. Meme detection que la
       // prevision : <= 2 bilans ce mois-ci et mediane des mois passes <= 2 (bilan mensuel).
       const _passes = data.slice(1).map(r => r.count).sort((x, y) => x - y);
       const _med = _passes.length ? _passes[Math.floor(_passes.length / 2)] : 0;
-      const neutre = enCours && a.count <= 2 && (_passes.length === 0 || _med <= 2);
+      const neutre = aFin || (enCours && a.count <= 2 && (_passes.length === 0 || _med <= 2));
       // (13/10) Mois en cours : « en cours » est dit UNE fois (pastille du titre + sous-titre),
       // plus à côté de chacune des quatre valeurs (six répétitions dans la même carte).
       const _enc = '';
@@ -6324,8 +6383,8 @@ function renderRecap(){
         + '<div class="rc-cmpv"><span style="color:' + cv + '">' + val + '</span>' + pastille + '</div>'
         + '<div class="rc-cmpb">' + esc(_rcMois(b.key, true)) + ' : ' + avant + '</div></div>';
       cp.innerHTML = '<div class="panel rc-cmp-p">'
-        + '<div class="panel-title">' + esc(_rcMois(a.key)) + ' par rapport à ' + esc(_rcMois(b.key).toLowerCase()) + (enCours ? '<span class="pill-encours">' + _pillIco() + 'en cours</span>' : '') + '</div>'
-        + '<div class="panel-sub">' + (neutre ? esc(grafCap(grafMoisLong(+a.key.slice(5, 7) - 1))) + ' en cours : ' + _pl(_auj.getDate(), 'jour', 'jours') + ' sur ' + _nbj + '. On comparera une fois le mois fini.'
+        + '<div class="panel-title">' + esc(_rcMois(a.key)) + ' par rapport à ' + esc(_rcMois(b.key).toLowerCase()) + (enCours ? '<span class="pill-encours">' + _pillIco() + 'en cours</span>' : aFin ? '<span class="pill-encours">' + _pillIco() + 'à finaliser</span>' : '') + '</div>'
+        + '<div class="panel-sub">' + (aFin ? esc(grafCap(grafMoisLong(+a.key.slice(5, 7) - 1))) + ' est fini, son bilan pas encore finalisé. On comparera une fois ses chiffres définitifs enregistrés.' : neutre ? esc(grafCap(grafMoisLong(+a.key.slice(5, 7) - 1))) + ' en cours : ' + _pl(_auj.getDate(), 'jour', 'jours') + ' sur ' + _nbj + '. On comparera une fois le mois fini.'
             : enCours ? 'le mois en cours n’est pas fini : les écarts vont encore bouger' : 'le mois le plus récent face au précédent') + '</div>'
         + '<div class="rc-cmp">'
         + bloc('Net total', fmtC(a.net), 'var(--ink-1)', puce(ev(a.net, b.net), false), fmtC(b.net))
@@ -6347,7 +6406,8 @@ function renderRecap(){
   if(_rcVue === 'tableau'){
     const R = v => fmtC(v);
     const sorted = [...data].sort((a, b) => a.key.localeCompare(b.key));
-    const tend = r => { const i = sorted.findIndex(x => x.key === r.key); if(i < 1) return '';
+    const _afT = (typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
+    const tend = r => { const i = sorted.findIndex(x => x.key === r.key); if(i < 1 || r.key === _afT) return '';
       const d = r.margin - sorted[i-1].margin;
       if(Math.abs(d) < 1) return '<span class="rc-tr" style="color:var(--ink-4)" title="marge stable">' + _pgIco('right', 12) + '</span>';
       return d > 0 ? '<span class="rc-tr" style="color:var(--pos)" title="marge en hausse">' + _pgIco('up', 12) + '</span>' : '<span class="rc-tr" style="color:var(--neg)" title="marge en baisse">' + _pgIco('dn', 12) + '</span>'; };
@@ -6381,7 +6441,7 @@ function renderRecap(){
   }
 
   // ── Vue LISTE (par defaut) : un panneau, une ligne par mois, colonnes alignees ──
-  const _moisCourant = _pgMoisCourant();
+  const _moisCourant = _pgMoisCourant(), _rcAFin = (typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
   const _vus = _RC_POSTES.filter(p => data.some(r => (r[p[0]] || 0) > 0));
   const _legende = '<span class="rc-lg"><b style="background:var(--acc)"></b>Bénéfice</span>'
     + _vus.map(p => '<span class="rc-lg"><b style="background:' + p[2] + '"></b>' + p[1] + '</span>').join('');
@@ -6436,7 +6496,7 @@ function renderRecap(){
       + '<div class="rc-mh" role="button" tabindex="0" aria-expanded="' + (ouvert ? 'true' : 'false') + '" aria-controls="rcd-' + esc(r.key) + '"'
       + ' onclick="rcTog(\'' + esc(r.key) + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();rcTog(\'' + esc(r.key) + '\')}">'
       + '<span class="rc-cv">' + _pgIco('chev', 16) + '</span>'
-      + '<span class="rc-mt"><span class="rc-mn">' + esc(_rcMois(r.key)) + (enCours ? '<span class="pill-encours">' + _pillIco() + 'en cours</span>' : '') + '</span>'
+      + '<span class="rc-mt"><span class="rc-mn">' + esc(_rcMois(r.key)) + (enCours ? '<span class="pill-encours">' + _pillIco() + 'en cours</span>' : r.key === _rcAFin ? '<span class="pill-encours">' + _pillIco() + 'à finaliser</span>' : '') + '</span>'
       + '<span class="rc-me"><span class="rc-me-n">' + _pl(r.count, 'bilan', 'bilans') + '</span>'
       + '<span class="rc-me-m"><span class="rc-me-g">Net ' + fmtC(r.net) + '</span> · <span class="rc-me-g">Dépenses ' + fmtC(dep) + '</span></span></span></span>'
       + '<span class="rc-bar">' + segProfit + segs + '</span>'
@@ -7170,7 +7230,9 @@ function addModelPayment(){
   // Conséquence : virement à l'écran, absent de la base → au rechargement
   // « reste à envoyer » remonte → **la modèle est payée deux fois**.
   const _envoi = _saveVirements();        // pose aussi le drapeau `_dirty`
-  try{saveData();}catch(e){}
+  // (15/10) l'ajout laisse sa ligne dans l'Historique, comme la suppression : logEdit (même journal, même stockage,
+  // format « date - montant », montant exact). logEdit enregistre aussi (saveData) : il REMPLACE l'appel d'avant.
+  try{ logEdit('Ajout paiement modele', dl(date)+' - '+fmtC(amount)); }catch(e){ try{saveData();}catch(_){} }
   document.getElementById('mp-amount').value='';document.getElementById('mp-note').value='';
   renderModelShare();
   Promise.resolve(_envoi).then(function(ok){
@@ -7946,7 +8008,7 @@ function _texteDoublon(d){
 // du plus récent au plus ancien). SEULE source de « mis à jour … » et du rappel de fin de mois (14/10).
 function _journalMajBilan(e){
   var cle=dl(e.date);
-  return (editLog||[]).find(function(x){ return x && /^(Ajout|Modification)/.test(String(x.action||'')) && String(x.detail||'').indexOf(cle)===0; })||null;
+  return (editLog||[]).find(function(x){ return x && /^(Ajout|Modification)(?! paiement)/.test(String(x.action||'')) && String(x.detail||'').indexOf(cle)===0; })||null;
 }
 function _majDepuisJournal(e){
   try{
@@ -8485,6 +8547,7 @@ function _hlTitre(l){
   if (/^ajout entr/i.test(a)) return b ? 'Bilan ' + dm + ' créé' : 'Bilan créé';
   if (/^suppression entr/i.test(a)) return b ? 'Bilan ' + dm + ' supprimé' : 'Bilan supprimé';
   if (/^note$/i.test(a)) return b ? 'Note du bilan ' + dm + ' modifiée' : 'Note modifiée';
+  if (/^ajout paiement mod/i.test(a)) return 'Paiement à la modèle ajouté';
   if (/^suppression paiement mod/i.test(a)) return 'Paiement à la modèle supprimé';
   if (/^restauration virements/i.test(a)) return 'Paiements à la modèle remis dans le cloud';
   if (/^restauration sauvegarde/i.test(a)) return 'Sauvegarde restaurée';
@@ -8672,8 +8735,12 @@ function _chPct(p){ return (p > 0 ? '+' : p < 0 ? '−' : '') + fmtPct(Math.abs(
 // ── Records : le modèle (lecture seule) ──────────────────────────────────
 function chRecords(){
   var cour = _pgMoisCourant(), tous = getMonthlyRecap();
-  var finis = tous.filter(function(r){ return r.key < cour; });
+  // (15/10) le mois précédent PAS ENCORE FINALISÉ (règle du rappel, _moisAFinaliser) n'est ni classé ni comparé :
+  // ses chiffres sont ceux de la mi-mois ; il s'affiche « à finaliser » à la place du dernier mois terminé.
+  var aFin = (typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
+  var finis = tous.filter(function(r){ return r.key < cour && r.key !== aFin; });
   var o = {tous: tous, finis: finis, n: finis.length, cour: cour,
+    aFinaliser: aFin ? (tous.filter(function(r){ return r.key === aFin; })[0] || null) : null,
     enCours: tous.some(function(r){ return r.key === cour; })};
   if(!finis.length) return o;
   var max = finis.reduce(function(m, r){ return Math.max(m, r.profit); }, -Infinity);
@@ -8726,8 +8793,10 @@ function renderRecords(){
   var noteCours = R.enCours ? '<div class="rk-note">' + _pillIco() + '<span>' + esc(grafCap(_chMoisSeul(R.cour)))
     + ' est en cours : il comptera dans tes records une fois le mois fini.</span></div>' : '';
   if(!R.n){
-    el.innerHTML = _chNb(tete + '<div class="rk-vide">Pas encore de mois terminé. Ton meilleur mois et ta progression apparaîtront ici à la fin de '
-      + esc(_chMoisSeul(R.cour)) + '.</div>');
+    el.innerHTML = _chNb(tete + '<div class="rk-vide">' + (R.aFinaliser
+      ? esc(grafCap(_chMoisSeul(R.aFinaliser.key))) + ' est à finaliser : ton meilleur mois et ta progression apparaîtront ici une fois son bilan finalisé.'
+      : 'Pas encore de mois terminé. Ton meilleur mois et ta progression apparaîtront ici à la fin de '
+      + esc(_chMoisSeul(R.cour)) + '.') + '</div>');
     el.className = 'panel rk-panel rk-0';
     return;
   }
@@ -8759,7 +8828,11 @@ function renderRecords(){
   var d = R.dernier, p = R.precedent, t3, lblD = 'Dernier mois terminé', record = '';
   if(R.n >= 2 && R.meilleur.key === d.key && d.profit > 0)
     record = '<span class="rk-pill">' + (R.meilleurs.length > 1 ? 'égale ton record' : 'nouveau record') + '</span>';
-  if(!p){
+  if(R.aFinaliser){
+    t3 = tuile('rk-der rk-attente rk-afin', lblD, '<span class="rk-nom">' + esc(_chNom(R.aFinaliser.key)) + '</span>',
+      'bilan pas encore finalisé : comparé à ' + esc(_chMoisSeul(_chMoisAvant(R.aFinaliser.key))) + ' une fois ses chiffres définitifs enregistrés',
+      '<span class="pill-encours rk-afin-pill">' + _pillIco() + 'à finaliser</span>');
+  } else if(!p){
     t3 = tuile('rk-der rk-attente', lblD, '<span class="rk-nom">' + esc(_chNom(d.key)) + '</span>',
       R.n === 1 ? 'ton premier mois terminé : rien à comparer encore'
         : 'pas de bilan en ' + esc(_chNomMin(R.kPrec)) + ' : rien à comparer', record);
@@ -9248,10 +9321,9 @@ function _rappelBilan(){
     var t=_tsMajBilan(e);
     return (t && _joursEntre(_ymd(t), _aujLocal())<=3) ? null : r;
   }
-  var p=_bilanAFinaliser();
-  if(!p) return null;
-  var t2=_tsMajBilan(p.e), finMois=new Date(a.getFullYear(), a.getMonth(), 1).getTime();
-  return (t2 && t2.getTime()>=finMois) ? null : {type:'debut', ym:p.ym, e:p.e, reste:null};
+  // (15/10) la règle « pas encore finalisé » est PARTAGÉE (Records, accueil, Récap) : _bilanNonFinalise, même code
+  var p=_bilanNonFinalise();
+  return p ? {type:'debut', ym:p.ym, e:p.e, reste:null} : null;
 }
 function _rappelRepousse(){
   var auj=_aujLocal();
@@ -9498,6 +9570,26 @@ OBJ_DESSINS.b2 = function(S){
   try { renderObjectif(); } catch (e) { console.warn('objectif', e); }
 })();
 
+
+// ── feat3_correctifs (relecture du 15/10 : D1 à D6) ──
+// ══ CORRECTIFS DE LA RELECTURE DU 15/10 (D3, D6) — affichage seulement, aucune écriture nouvelle ══════════════
+// D3 : le bilan du mois précédent PAS ENCORE FINALISÉ (du 1er au 7). C'est EXACTEMENT la règle du rappel de début de
+// mois (« Octobre est fini : finalise son bilan ») : _bilanAFinaliser() (fenêtre du 1er au 7, rythme d'un bilan par mois)
+// et sa dernière mise à jour notée dans l'Historique AVANT la fin du mois (_tsMajBilan). Elle est sortie ici pour être
+// PARTAGÉE, sans règle parallèle : le rappel, Records, le bandeau et les pastilles de l'accueil, le Récap (comparaison,
+// liste des mois, tableau, dépenses poste par poste) et la Prévision lisent la même réponse. Tant qu'un mois est « à
+// finaliser », il n'est ni comparé, ni classé, ni annoncé en baisse ; dès qu'il est finalisé, tout redevient normal.
+function _bilanNonFinalise(){
+  var p=_bilanAFinaliser(); if(!p) return null;
+  var a=new Date(), t=_tsMajBilan(p.e), debut=new Date(a.getFullYear(), a.getMonth(), 1).getTime();
+  return (t && t.getTime()>=debut) ? null : p;
+}
+// 'AAAA-MM' du mois à finaliser, ou null (un affichage ne doit jamais casser à cause de cette question)
+function _moisAFinaliser(){ try{ var p=_bilanNonFinalise(); return p ? p.ym : null; }catch(e){ return null; } }
+// D6 : « Annuler » (bandeau « Tu mets à jour le bilan du … ») pose la MÊME question que « Replier » quand quelque chose
+// a été tapé (_abandonnerSiBesoin) ; rien de tapé : il ferme tout de suite, comme avant. cancelEdit() reste tel quel
+// (la suppression du bilan ouvert l'appelle après sa propre confirmation : pas de deuxième question).
+function annulerSaisie(){ return _apres(_abandonnerSiBesoin(), function(ok){ if(ok) cancelEdit(); return ok; }); }
 </script>
 </body>
 </html>
