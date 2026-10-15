@@ -2149,7 +2149,7 @@ body.skin-melange{
   --ic-garde:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 5 5 19'/%3E%3Ccircle cx='6.5' cy='6.5' r='2.5'/%3E%3Ccircle cx='17.5' cy='17.5' r='2.5'/%3E%3C/svg%3E");
   --ic-of:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z'/%3E%3C/svg%3E");
   --ic-tg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 2-7 20-4-9-9-4z'/%3E%3Cpath d='M22 2 11 13'/%3E%3C/svg%3E");
-  --ic-envoi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m13 6 6 6-6 6'/%3E%3C/svg%3E");
+  --ic-billet:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='12' rx='2'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3Cpath d='M6 12h.01M18 12h.01'/%3E%3C/svg%3E");
   --ic-ok:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
   --ic-prev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 17 6-6 4 4 8-8'/%3E%3Cpath d='M14 7h7v7'/%3E%3C/svg%3E");
 }
@@ -2585,7 +2585,7 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
     background:color-mix(in srgb,var(--bc-v,var(--ink-1)) 28%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on,var(--ink-1)) 20%,transparent)}
   body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child::after{content:"";position:absolute;left:0;top:50%;width:var(--mx-ico);height:var(--mx-ico);
     margin-top:calc(var(--mx-ico) / -2);pointer-events:none;background:var(--bc-on,var(--ink-2));
-    -webkit-mask:var(--ic-envoi) center/15px 15px no-repeat;mask:var(--ic-envoi) center/15px 15px no-repeat}
+    -webkit-mask:var(--ic-billet) center/15px 15px no-repeat;mask:var(--ic-billet) center/15px 15px no-repeat}
   body.skin-melange #page-ca #model-share .ms-res-ok .ms-l > span:last-child::before{background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
   body.skin-melange #page-ca #model-share .ms-res-ok .ms-l > span:last-child::after{background:var(--pos);-webkit-mask-image:var(--ic-ok);mask-image:var(--ic-ok)}
   body.skin-melange #page-ca #model-share .ms-res .ms-v{margin-top:14px;font-size:min(13cqi,34px);line-height:1;letter-spacing:-.04em;text-align:left}
@@ -2730,7 +2730,7 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
       "rk rk rk rk rk rk rk rk rk rk rk rk"
       "s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi hi hi hi hi hi hi"}
-  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto minmax(104px,auto)}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto minmax(118px,auto)}
   /* formulaire du bilan ouvert : il prend toute la largeur sous la rangée du haut */
   body.skin-melange #page-ca.active:has(> #ca-entry-panel:not(.replie)){
     grid-template-areas:
@@ -2835,7 +2835,7 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
       "rk rk rk rk rk rk"
       "s4 s4 s4 s4 s4 s4"
       "hi hi hi hi hi hi"}
-  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto minmax(104px,auto)}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto minmax(118px,auto)}
   body.skin-melange #page-ca > #insights-banner{grid-area:in;margin:0 0 var(--mx-gap)!important}
   body.skin-melange #page-ca #model-share .ms-frais{margin-bottom:var(--mx-gap)}
   /* dépenses : 3 par rangée */
@@ -2861,7 +2861,7 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
       "s2 s2" "dg dg" "dt dt"
       "mt mt" "mu mu" "ca ca" "cb cb" "cc cc" "mx mx" "py py" "ip ip"
       "s3 s3" "gr gr" "nr nr" "rk rk" "s4 s4" "hi hi"}
-  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto auto minmax(74px,auto)}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res){grid-template-rows:auto auto auto auto auto auto minmax(88px,auto)}
   body.skin-melange #page-ca.active > *{grid-column:1 / -1}
   body.skin-melange #page-ca.active > .kpi-hero-grid,body.skin-melange #page-ca.active > .g2-tend,
   body.skin-melange #page-ca.active > #model-share-panel,body.skin-melange #page-ca.active > #model-share-panel > #model-share,
@@ -2915,7 +2915,8 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-meta{margin-top:9px}
   /* net total et reste à envoyer : deux widgets carrés côte à côte */
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net{display:flex;flex-direction:column;grid-area:nt;min-height:0}
-  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-label .kpi-ico{display:block;position:absolute;top:10px;right:10px;margin:0}
+  body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-label .kpi-ico{display:block;position:absolute;top:10px;right:10px;margin:0;
+    padding:3px;color:var(--ink-4);background:none;box-shadow:none}
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-value{margin-top:10px;font-size:min(14cqi,23px);letter-spacing:-.03em;line-height:1}
   body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-meta{justify-self:auto;margin-top:4px}
   /* OnlyFans / Telegram : deux pastilles pleines empilées (la couleur dit le canal : pas de point en plus) */
@@ -2945,16 +2946,14 @@ body.skin-melange #hist-panel .tx-pr{font-variant-numeric:tabular-nums}
   body.skin-melange #page-ca #model-share .ms-res .ms-c > *{position:relative;z-index:1}
   body.skin-melange #page-ca #model-share .ms-res .ms-sg{display:none}
   body.skin-melange #page-ca #model-share .ms-res .ms-l{font-size:12px;font-weight:600;text-transform:uppercase;line-height:1.3}
-  /* son rond en haut à droite du widget : il ne prend pas de place sur la ligne de l'étiquette */
-  body.skin-melange #page-ca #model-share .ms-res .ms-c::before{content:"";position:absolute;z-index:2;top:10px;right:10px;width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;
-    background:color-mix(in srgb,var(--bc-v,var(--ink-1)) 28%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-on,var(--ink-1)) 20%,transparent)}
+  /* son icône en haut à droite du widget, SANS rond (15/10, P8 : un rond dans le coin avait l'air d'un bouton) ;
+     elle ne prend pas de place sur la ligne de l'étiquette */
   body.skin-melange #page-ca #model-share .ms-res .ms-l{padding-right:20px;letter-spacing:.02em}
   body.skin-melange #page-ca #model-share .ms-res .ms-l,body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child{position:static}
   body.skin-melange #page-ca #model-share .ms-res .ms-l > span:last-child::after{content:"";position:absolute;z-index:3;top:10px;right:10px;width:var(--mx-ico);height:var(--mx-ico);
-    pointer-events:none;background:var(--bc-on,var(--ink-2));-webkit-mask:var(--ic-envoi) center/12px 12px no-repeat;mask:var(--ic-envoi) center/12px 12px no-repeat}
-  body.skin-melange #page-ca #model-share .ms-res-ok .ms-c::before{background:var(--surf-3);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+    pointer-events:none;background:var(--bc-on2,var(--ink-3));-webkit-mask:var(--ic-billet) center/17px 17px no-repeat;mask:var(--ic-billet) center/17px 17px no-repeat}
   body.skin-melange #page-ca #model-share .ms-res-ok .ms-l > span:last-child::after{background:var(--pos);-webkit-mask-image:var(--ic-ok);mask-image:var(--ic-ok)}
-  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res-perte){grid-template-rows:auto auto auto auto auto auto minmax(92px,auto)}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res-perte){grid-template-rows:auto auto auto auto auto auto minmax(106px,auto)}
   body.skin-melange #page-ca #model-share .ms-res .ms-v{margin-top:10px;font-size:min(14cqi,23px);line-height:1;letter-spacing:-.03em;text-align:left}
   body.skin-melange #page-ca #model-share .ms-res .ms-s{margin-top:auto;padding:8px 0 0;font-size:12px;line-height:1.35}
   /* bilan du mois */
@@ -3899,6 +3898,203 @@ body.skin-melange #records-panel .rk-afin-pill{align-self:flex-start;margin-top:
    restait sur une ligne et sortait de 9 px de la tuile « Gardé par OnlyFans » (vu par la sonde de superposition ;
    déjà présent dans final14). Il passe à la ligne dans sa tuile ; rien ne bouge quand il tient. */
 @media (min-width:641px){#page-ca .kpi-dep-grid > .kpi-info .kpi-pct{max-width:100%;min-width:0}}
+
+/* ── feat3_annee ── */
+/* ══ feat3_annee (15/10) : « L'année » au Récap — dans l'esprit du Mélange : tuiles neutres, rond d'icône au trait,
+   chiffres tabulaires ; violet = la famille du bénéfice (titre, bénéfice, meilleur trimestre), rouge = une vraie
+   perte, vert / rouge des pastilles = le sens (comme la comparaison du Récap). Jetons seulement, deux thèmes. ══ */
+body.skin-melange #recap-annee[hidden]{display:none!important}
+body.skin-melange #recap-annee .an-p{display:flex;flex-direction:column;gap:14px;margin:0}
+
+/* ── en-tête : rond violet (calendrier), titre, période ; choix de l'année à droite ── */
+body.skin-melange #recap-annee .an-tete{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 16px}
+body.skin-melange #recap-annee .an-tg{display:flex;align-items:center;gap:12px;min-width:0}
+body.skin-melange #recap-annee .an-rond{position:relative;flex:none;width:var(--mx-ico);height:var(--mx-ico);border-radius:50%;
+  background:linear-gradient(155deg,var(--bc-pr-a),var(--bc-pr-b));box-shadow:var(--mx-lift)}
+body.skin-melange #recap-annee .an-rond::after{content:"";position:absolute;inset:0;background:var(--bc-pr-on);
+  -webkit-mask:var(--ic-cal) center/15px 15px no-repeat;mask:var(--ic-cal) center/15px 15px no-repeat}
+body.skin-melange #recap-annee .an-tt{min-width:0}
+body.skin-melange #recap-annee .an-titre{margin:0}
+body.skin-melange #recap-annee .an-sous{margin:2px 0 0;font-size:13px;line-height:1.45;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-an{min-width:64px;font-variant-numeric:tabular-nums}
+body.skin-melange #recap-annee .an-an:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* ── les totaux : le bénéfice en grand (teinte violette), puis net, dépenses, marge, envoyé ── */
+body.skin-melange #recap-annee .an-tot{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.78fr) minmax(0,1.22fr);gap:var(--mx-gap)}
+body.skin-melange #recap-annee .an-c,body.skin-melange #recap-annee .an-t,body.skin-melange #recap-annee .an-ci{position:relative;display:flex;flex-direction:column;
+  min-width:0;padding:var(--mx-pad-s);border-radius:var(--mx-r-md);background-color:var(--surf-2);box-shadow:inset 0 0 0 1px var(--mx-edge)}
+body.skin-melange #recap-annee .an-l{display:flex;align-items:center;gap:10px;min-height:24px;font-size:12px;font-weight:600;line-height:1.3;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-si{display:inline-flex;flex:none;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;
+  color:var(--ink-3);background:var(--surf-1);box-shadow:inset 0 0 0 1px var(--mx-edge-2)}
+body.skin-melange.light #recap-annee .an-si{background:var(--surf-1)}
+body.skin-melange #recap-annee .an-si svg{display:block;width:13px;height:13px}
+/* le chiffre se règle sur la largeur de sa tuile et sur sa longueur (--an-n, posé par le JS) : une grosse année
+   ($150,190.30) tient aussi au petit téléphone ; plafond = la taille du dessin */
+body.skin-melange #recap-annee .an-c,body.skin-melange #recap-annee .an-t,body.skin-melange #recap-annee .an-ci{container-type:inline-size}
+body.skin-melange #recap-annee .an-v{margin-top:12px;font-size:clamp(13px,calc(100cqi / (.72 * var(--an-n,10))),22px);font-weight:700;line-height:1.15;
+  letter-spacing:-.025em;color:var(--ink-1);font-variant-numeric:tabular-nums;white-space:nowrap}
+body.skin-melange #recap-annee .an-s{margin-top:auto;padding-top:8px;font-size:12px;line-height:1.5;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-s .an-m,body.skin-melange #recap-annee .an-cb .an-m{font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+body.skin-melange #recap-annee .an-s2,body.skin-melange #recap-annee .an-avant{display:block}
+body.skin-melange #recap-annee .an-nw{white-space:nowrap}
+/* le bénéfice de l'année : teinte violette légère, chiffre violet (rouge si perte) */
+body.skin-melange #recap-annee .an-c-pr{background-color:color-mix(in srgb,var(--acc) 9%,var(--surf-2));box-shadow:inset 0 0 0 1px var(--acc-22)}
+body.skin-melange #recap-annee .an-c-pr .an-si{color:var(--acc-txt);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+body.skin-melange #recap-annee .an-c-pr .an-v{font-size:clamp(18px,calc(100cqi / (.7 * var(--an-n,10))),32px);letter-spacing:-.035em;color:var(--acc-txt)}
+body.skin-melange #recap-annee .an-c-pr.an-neg{background-color:color-mix(in srgb,var(--neg) 8%,var(--surf-2));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 28%,transparent)}
+body.skin-melange #recap-annee .an-c-pr.an-neg .an-v,body.skin-melange #recap-annee .an-c-pr.an-neg .an-si{color:var(--neg)}
+body.skin-melange #recap-annee .an-c-pr.an-neg .an-si{background:color-mix(in srgb,var(--neg) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 30%,transparent)}
+body.skin-melange #recap-annee .an-moitie{display:block;width:max-content;max-width:100%;margin-top:8px;padding:5px 12px 6px;border-radius:999px;
+  font-size:12px;line-height:1.4;color:var(--ink-2);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+body.skin-melange #recap-annee .an-moitie b{font-weight:700;color:var(--acc-txt);font-variant-numeric:tabular-nums}
+
+/* ── titres de section (trimestres, comparaison) : un filet au-dessus ── */
+body.skin-melange #recap-annee .an-sec{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px 16px;
+  margin-top:4px;padding-top:16px;border-top:1px solid var(--line-1)}
+body.skin-melange #recap-annee .an-sec-t{font-size:12px;font-weight:600;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-best,body.skin-melange #recap-annee .an-cmp-per{font-size:13px;line-height:1.45;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-best b{font-weight:700;color:var(--acc-txt)}
+body.skin-melange #recap-annee .an-best .an-m{font-weight:600;color:var(--ink-1);font-variant-numeric:tabular-nums}
+
+/* ── les quatre trimestres ── */
+body.skin-melange #recap-annee .an-trims{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--mx-gap)}
+body.skin-melange #recap-annee .an-t-h{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;min-height:24px}
+body.skin-melange #recap-annee .an-t-n{font-size:15px;font-weight:700;line-height:1.2;color:var(--ink-1)}
+body.skin-melange #recap-annee .an-t-m{font-size:12px;line-height:1.3;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-t-star{display:inline-flex;align-items:center;gap:4px;height:22px;margin-left:auto;padding:0 8px 0 6px;border-radius:999px;
+  font-size:12px;font-weight:600;line-height:1;color:var(--acc-txt);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+body.skin-melange #recap-annee .an-t-star::before{content:"";flex:none;width:12px;height:12px;background:currentColor;
+  -webkit-mask:var(--ic-etoile) center/12px 12px no-repeat;mask:var(--ic-etoile) center/12px 12px no-repeat}
+body.skin-melange #recap-annee .an-t-v{margin-top:10px;font-size:clamp(13px,calc(100cqi / (.72 * var(--an-n,10))),20px);font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--ink-1);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+body.skin-melange #recap-annee .an-t-best .an-t-v{color:var(--acc-txt)}
+body.skin-melange #recap-annee .an-t.an-neg .an-t-v{color:var(--neg)}
+body.skin-melange #recap-annee .an-t-rien{color:var(--ink-4);font-weight:600}
+body.skin-melange #recap-annee .an-t-bar{height:4px;margin-top:10px;border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--ink-1) 8%,transparent)}
+body.skin-melange #recap-annee .an-t-bar i{display:block;height:100%;border-radius:inherit;background:var(--acc)}
+body.skin-melange #recap-annee .an-t.an-neg .an-t-bar i{background:var(--neg)}
+body.skin-melange #recap-annee .an-t-cours .an-t-bar i,body.skin-melange #recap-annee .an-t-afin .an-t-bar i{background:repeating-linear-gradient(135deg,var(--acc) 0 4px,color-mix(in srgb,var(--acc) 45%,transparent) 4px 7px)}
+body.skin-melange #recap-annee .an-t-s{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin-top:auto;padding-top:10px;font-size:12px;line-height:1.4}
+body.skin-melange #recap-annee .an-t-mg{font-weight:600}
+body.skin-melange #recap-annee .an-t-part{color:var(--ink-3)}
+body.skin-melange #recap-annee .an-t-best{background-color:color-mix(in srgb,var(--acc) 7%,var(--surf-2));box-shadow:inset 0 0 0 1px var(--acc-45)}
+body.skin-melange #recap-annee .an-t-avenir,body.skin-melange #recap-annee .an-t-vide{background-color:transparent;box-shadow:inset 0 0 0 1px var(--line-2)}
+
+/* ── par rapport à l'année d'avant : quatre petites tuiles, pastille du sens (dessin des pastilles du Récap) ── */
+body.skin-melange #recap-annee .an-cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--mx-gap)}
+body.skin-melange #recap-annee .an-cl{font-size:12px;font-weight:600;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-cv{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin-top:8px;font-size:20px;font-weight:700;line-height:1.2;
+  letter-spacing:-.02em;color:var(--ink-1);font-variant-numeric:tabular-nums}
+body.skin-melange #recap-annee .an-cv > span:first-child{white-space:nowrap;font-size:clamp(13px,calc(100cqi / (.72 * var(--an-n,10))),20px)}
+body.skin-melange #recap-annee .an-cb{margin-top:auto;padding-top:6px;font-size:12px;line-height:1.45;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-d{--an-c:var(--ink-3);display:inline-flex;align-items:center;gap:2px;height:22px;padding:0 8px 0 6px;border-radius:999px;
+  font-size:12px;font-weight:600;letter-spacing:0;line-height:1;white-space:nowrap;
+  color:color-mix(in srgb,var(--an-c) 82%,var(--ink-1));background:color-mix(in srgb,var(--an-c) 13%,transparent)}
+body.skin-melange #recap-annee .an-d svg{flex:none}
+body.skin-melange #recap-annee .an-d-ok{--an-c:var(--pos)}
+body.skin-melange #recap-annee .an-d-ko{--an-c:var(--neg)}
+body.skin-melange #recap-annee .an-d-eq{padding:0 8px}
+body.skin-melange #recap-annee .an-notes{display:flex;flex-direction:column;gap:6px}
+body.skin-melange #recap-annee .an-n{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.45;color:var(--ink-3)}
+body.skin-melange #recap-annee .an-n svg{flex:none;width:14px;height:14px;margin-top:1px;color:var(--ink-4)}
+body.skin-melange #recap-annee .an-vide{padding:14px 16px;border-radius:var(--mx-r-md);font-size:13px;line-height:1.5;color:var(--ink-3);
+  background:var(--inset);border:1px dashed var(--line-2)}
+
+/* ── tablette (641 -> 1099 px) : le bénéfice sur deux colonnes à côté du net, puis dépenses, marge, envoyé ;
+      comparaison en 2 x 2 ── */
+@media (min-width:641px) and (max-width:1099px){
+  body.skin-melange #recap-annee .an-tot{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"pr pr ne" "de mg mo"}
+  body.skin-melange #recap-annee .an-c-pr{grid-area:pr}
+  body.skin-melange #recap-annee .an-c-net{grid-area:ne}
+  body.skin-melange #recap-annee .an-c-dep{grid-area:de}
+  body.skin-melange #recap-annee .an-c-mg{grid-area:mg}
+  body.skin-melange #recap-annee .an-c-mo{grid-area:mo}
+  /* « Envoyé à la modèle » passe sur deux lignes : la rangée garde la même hauteur d'étiquette */
+  body.skin-melange #recap-annee .an-c-dep .an-l,body.skin-melange #recap-annee .an-c-mg .an-l,body.skin-melange #recap-annee .an-c-mo .an-l{min-height:34px;align-items:flex-start}
+  body.skin-melange #recap-annee .an-c-dep .an-si,body.skin-melange #recap-annee .an-c-mg .an-si,body.skin-melange #recap-annee .an-c-mo .an-si{margin-top:1px}
+  body.skin-melange #recap-annee .an-c-dep .an-l > span:last-child,body.skin-melange #recap-annee .an-c-mg .an-l > span:last-child{padding-top:5px}
+  body.skin-melange #recap-annee .an-cmp{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* ── téléphone : le bénéfice en pleine largeur, puis 2 x 2 ; les trimestres en rangées ── */
+@media (max-width:640px){
+  body.skin-melange #recap-annee .an-p{gap:12px}
+  body.skin-melange #recap-annee .an-ans{width:100%;display:flex}
+  body.skin-melange #recap-annee .an-an{flex:1 1 0;min-width:0}
+  body.skin-melange #recap-annee .an-tot{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  body.skin-melange #recap-annee .an-c-pr{grid-column:1 / -1}
+  body.skin-melange #recap-annee .an-c-pr .an-v{font-size:clamp(18px,calc(100cqi / (.7 * var(--an-n,10))),30px)}
+  body.skin-melange #recap-annee .an-v{font-size:clamp(13px,calc(100cqi / (.72 * var(--an-n,10))),19px)}
+  body.skin-melange #recap-annee .an-l{gap:8px;letter-spacing:.05em}
+  /* « Envoyé à la modèle » passe sur deux lignes : la marge à côté garde la même hauteur d'étiquette,
+     et le détail suit le chiffre (pas de trou au milieu de la tuile la plus courte) */
+  body.skin-melange #recap-annee .an-c-mg .an-l,body.skin-melange #recap-annee .an-c-mo .an-l{min-height:34px;align-items:flex-start}
+  body.skin-melange #recap-annee .an-c-mg .an-si,body.skin-melange #recap-annee .an-c-mo .an-si{margin-top:1px}
+  body.skin-melange #recap-annee .an-c-mg .an-l > span:last-child{padding-top:5px}
+  body.skin-melange #recap-annee .an-c-mg .an-s,body.skin-melange #recap-annee .an-c-mo .an-s{margin-top:0;padding-top:6px}
+  body.skin-melange #recap-annee .an-trims{grid-template-columns:minmax(0,1fr);gap:10px}
+  body.skin-melange #recap-annee .an-t{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"h v" "b b" "s s";column-gap:12px;align-items:center}
+  body.skin-melange #recap-annee .an-t-h{grid-area:h}
+  body.skin-melange #recap-annee .an-t-v{grid-area:v;margin:0;font-size:clamp(13px,calc(55cqi / (.72 * var(--an-n,10))),18px);text-align:right}
+  body.skin-melange #recap-annee .an-t-bar{grid-area:b}
+  body.skin-melange #recap-annee .an-t-s{grid-area:s;padding-top:8px}
+  body.skin-melange #recap-annee .an-t-star{margin-left:0}
+  body.skin-melange #recap-annee .an-cmp{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  body.skin-melange #recap-annee .an-cv{font-size:18px}
+  body.skin-melange #recap-annee .an-cv > span:first-child{font-size:clamp(13px,calc(100cqi / (.72 * var(--an-n,10))),18px)}
+}
+/* ── très petit téléphone (< 360 px) : une tuile par rangée, pour que les gros montants gardent une taille lisible ── */
+@media (max-width:359px){
+  body.skin-melange #recap-annee .an-tot,body.skin-melange #recap-annee .an-cmp{grid-template-columns:minmax(0,1fr)}
+  body.skin-melange #recap-annee .an-c-mg .an-l,body.skin-melange #recap-annee .an-c-mo .an-l{min-height:24px;align-items:center}
+  body.skin-melange #recap-annee .an-c-mg .an-l > span:last-child{padding-top:0}
+}
+
+/* ── feat3_petits (P7 P8 P9 P10 P12 P13, 15/10) ── */
+/* P7 (15/10) · « Reste à envoyer » dit sa portée, juste sous son montant : « depuis le début » (comme « 1 bilan » sous le
+   Net total). Les trois montants du haut restent sur la même ligne ; la 1re sous-rangée de la tuile grandit d'autant. */
+#model-share .ms-db{grid-column:1/-1;margin-top:2px;padding-left:20px;font-size:12px;line-height:16px;color:var(--ink-3)}
+body.skin-melange #model-share .ms-res-du .ms-db,body.skin-melange #model-share .ms-res-perte .ms-db,
+body.skin-melange #model-share .ms-res-trop .ms-db{color:var(--bc-on2)!important}
+body.skin-melange #page-ca #model-share .ms-res .ms-db{margin-top:4px;padding-left:0;font-size:12px;line-height:16px}
+@media (min-width:641px){body.skin-melange #page-ca #model-share .ms-res .ms-db{margin-top:6px;font-size:12.5px}}
+/* quand la tuile porte AUSSI sa phrase sous le montant (« à déduire de ton prochain envoi », « rien à envoyer pour l'instant »,
+   « inclut octobre… ») : ordinateur et tablette, sa 1re sous-rangée grandit encore d'une ligne (la phrase ne passe jamais
+   sous le détail ni sous le bouton) */
+@media (min-width:1100px){body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res .ms-s){grid-template-rows:auto auto auto minmax(142px,auto)}}
+@media (min-width:641px) and (max-width:1099px){body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) .ms-res .ms-s){grid-template-rows:auto auto auto auto auto minmax(142px,auto)}}
+/* téléphone, « trop envoyé » (la tuile a sa phrase ET le détail dessous) : la phrase « à déduire de ton prochain envoi » suit
+   « depuis le début » au lieu d'aller au pied de la tuile, où le détail la recouvrait déjà avant (trouvé en mesurant les
+   4 états de la tuile) ; la 1re sous-rangée grandit d'autant (2 lignes de phrase au plus étroit) */
+@media (max-width:640px){
+  body.skin-melange #page-ca #model-share:has(> .ms-det) .ms-res .ms-s{margin-top:4px;padding-top:0}
+  body.skin-melange #page-ca.active:has(> #model-share-panel:not([style*="none"]) #model-share > .ms-det):has(.ms-res .ms-s){grid-template-rows:auto auto auto auto auto auto minmax(124px,auto)}
+}
+
+/* P8 (15/10) · très petit téléphone (< 360 px) : le portefeuille du Net total se pousse dans le coin, un peu plus petit,
+   pour laisser de l'air au rond ⓘ de l'étiquette (avant : le rond ⓘ touchait le rond ⤓ à 320 px) */
+@media (max-width:359px){body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-net > .kpi-label .kpi-ico{right:6px;padding:4px}}
+
+/* P12 (15/10) · menu Exporter : « Renvoyer au cloud maintenant » et, dessous, ce que ça fait (déjà automatique) */
+.topbar .export-menu .menu-2l{align-items:flex-start;min-height:46px;padding-top:7px;padding-bottom:7px;white-space:normal}
+.topbar .export-menu .menu-2l svg{margin-top:2px}
+.topbar .export-menu .menu-2l > span{display:flex;flex-direction:column;gap:1px}
+.topbar .export-menu .menu-sous{font-size:12px;font-weight:400;line-height:16px;color:var(--ink-3)}
+/* P12 · Historique : ce qu'est une sauvegarde datée (une copie qu'on peut restaurer) */
+#page-editlog .hl-rec-expl{margin:8px 0 0;font-size:13px;line-height:20px;color:var(--ink-3)}
+
+/* P13 (15/10) · TÉLÉPHONE : « Répartition du net » garde la barre colorée, sa légende (les noms, pour lire les couleurs)
+   et le plus gros poste ; le net (« Sur $… de net ») et les pourcentages sont déjà dans les tuiles juste au-dessus.
+   Le détail reste au survol de chaque morceau et dans l'étiquette de la barre (lecteurs d'écran). Ordinateur et tablette :
+   inchangés (la liste y remplit sa colonne à côté du graphique). */
+@media (max-width:640px){
+  #page-ca .nfr-seul #bars .nfr-sur{display:none}
+  #page-ca .nfr-seul #bars .nfr-base:not(:has(.nfr-gros)){display:none}
+  #page-ca .nfr-seul #bars .nfr-p{display:none}
+  #page-ca .nfr-seul #bars .nfr-liste{gap:6px 14px;margin-top:10px}
+  #page-ca .nfr-seul #bars .nfr-l{gap:6px;font-size:12.5px;line-height:18px}
+}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -3999,7 +4195,7 @@ body.skin-melange #records-panel .rk-afin-pill{align-self:flex-start;margin-top:
         <button onclick="exportRecapCSV()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span>Télécharger le récap (tableur)</span></button>
         <button onclick="exportData()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span>Télécharger une copie de secours</span></button>
         <div class="menu-sep ordi-seul" role="separator"></div>
-        <button class="ordi-seul" onclick="saveData()" title="L’enregistrement est automatique : ceci renvoie tout de suite une copie au cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 16.6A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/><path d="M12 12v9M8 16l4-4 4 4"/></svg><span>Sauvegarder maintenant</span></button>
+        <button class="ordi-seul menu-2l" onclick="saveData()" title="L’enregistrement au cloud est déjà automatique : ceci renvoie tout de suite tes derniers changements. Ce n’est pas une sauvegarde à restaurer : celles-là sont dans Historique."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 16.6A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/><path d="M12 12v9M8 16l4-4 4 4"/></svg><span>Renvoyer au cloud maintenant<small class="menu-sous">ça se fait déjà tout seul</small></span></button>
       </div>
     </div>
     <button onclick="openGSearch()" class="icon-btn" title="Recherche globale (Ctrl+Shift+F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
@@ -4043,11 +4239,11 @@ body.skin-melange #records-panel .rk-afin-pill{align-self:flex-start;margin-top:
   </section>
   <div class="kpi-hero-grid">
     <div class="kpi kpi-hero"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Bénéfice<i class="tip-icon">i</i><span class="tip-box">Ton net moins toutes les dépenses, AVANT la part de la modèle : la moitié lui revient (voir « Part de la modèle »).</span></span><span class="kpi-apercu" id="kpi-apercu" hidden>aperçu, pas encore enregistré</span></div><div class="kpi-value" id="vpr">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvpr"></span><span class="kpi-pct" id="ppr">—</span></div><div class="kpi-moitie" id="pmoitie" hidden title="La moitié du bénéfice te revient, l’autre moitié à la modèle (règle des 50 %)."></div><div class="obj-j" id="obj-jauge" hidden></div></div>
-    <div class="kpi kpi-net"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span class="tip">Net total<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement : OnlyFans, commission de 20 % déjà déduite, et Telegram, sans aucune commission.</span></span></div><div class="kpi-value" id="pn">—</div><div class="kpi-meta"><span class="kpi-pct" id="de">—</span></div><div class="kpi-nets"><div class="kn"><span class="kn-l">OnlyFans</span><span class="kn-v" id="vb">—</span><span class="kpi-delta" id="dvb"></span></div><div class="kn"><span class="kn-l">Telegram</span><span class="kn-v" id="vn">—</span><span class="kpi-delta" id="dvn"></span></div></div></div>
+    <div class="kpi kpi-net"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2"/><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M21 11.5h-4a2 2 0 0 0 0 4h4"/></svg><span class="tip">Net total<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement : OnlyFans, commission de 20 % déjà déduite, et Telegram, sans aucune commission.</span></span></div><div class="kpi-value" id="pn">—</div><div class="kpi-meta"><span class="kpi-pct" id="de">—</span></div><div class="kpi-nets"><div class="kn"><span class="kn-l">OnlyFans</span><span class="kn-v" id="vb">—</span><span class="kpi-delta" id="dvb"></span></div><div class="kn"><span class="kn-l">Telegram</span><span class="kn-v" id="vn">—</span><span class="kpi-delta" id="dvn"></span></div></div></div>
   </div>
   <div id="insights-banner" style="display:none"></div>
   <div class="panel replie" id="ca-entry-panel">
-    <div class="panel-title"><span class="pt-ico"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span><span id="saisie-titre">Bilan du mois</span></div>
+    <div class="panel-title"><span class="pt-ico"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13.5h10M7 17h6"/></svg></span><span id="saisie-titre">Bilan du mois</span></div>
     <div class="panel-sub" id="edlbl"></div>
     <button type="button" class="saisie-bascule" id="saisie-bascule" onclick="saisieBouton()" aria-expanded="false" aria-controls="ca-entry-panel">Saisir le bilan du mois</button>
     <button type="button" class="btn-sec saisie-prec" id="saisie-prec" onclick="finaliserMoisPrecedent()" hidden>Finaliser le bilan du mois dernier</button>
@@ -4233,6 +4429,7 @@ body.skin-melange #records-panel .rk-afin-pill{align-self:flex-start;margin-top:
     <div class="panel-sub">chaque barre = le b&#233;n&#233;fice du mois, avant la part de la mod&#232;le</div>
     <div class="nfg nfg-recap"><canvas id="recap-chart" role="img" aria-label="Profit par mois"></canvas><div class="nfg-vide">Le graphique apparaîtra après ton premier bilan.</div></div>
   </div>
+  <div id="recap-annee" hidden></div>
   <div id="recap-content"><div class="emsg">Aucune donn&#233;e</div></div>
   <div class="panel">
     <div class="panel-title nfm-titre"><span class="nfm-titre-ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>D&#233;penses poste par poste</div>
@@ -5234,7 +5431,8 @@ function renderSnapshots(){
   const tous = _snapTous();
   let html = '<div class="hl-rec-top">'
     + '<div class="hl-rec-h">Sauvegardes automatiques <span>(les 7 dernières)</span></div>'
-    + '<button class="hl-btn" onclick="snapshotManuel()">' + _pgIco('save', 15) + 'Faire une sauvegarde maintenant</button></div>';
+    + '<button class="hl-btn" onclick="snapshotManuel()">' + _pgIco('save', 15) + 'Faire une sauvegarde datée</button></div>'
+    + '<div class="hl-rec-expl">Une copie datée de tes bilans et paiements, que tu peux restaurer. L’envoi au cloud, lui, se fait tout seul.</div>';
   if (!tous.length){
     html += '<div class="hl-rec-vide">Aucune sauvegarde pour l’instant. La première se fera toute seule, puis une par jour.</div>';
   } else {
@@ -6411,28 +6609,29 @@ function renderRecap(){
       const d = r.margin - sorted[i-1].margin;
       if(Math.abs(d) < 1) return '<span class="rc-tr" style="color:var(--ink-4)" title="marge stable">' + _pgIco('right', 12) + '</span>';
       return d > 0 ? '<span class="rc-tr" style="color:var(--pos)" title="marge en hausse">' + _pgIco('up', 12) + '</span>' : '<span class="rc-tr" style="color:var(--neg)" title="marge en baisse">' + _pgIco('dn', 12) + '</span>'; };
-    const th = '<th>Mois</th><th>Net</th>' + (avecTg ? '<th>dont Telegram</th>' : '')
+    const _bfT = _rcBenefTel(), bfTot = '<td style="color:' + _rcCoul(T.profit) + '">' + _mS(T.profit) + '</td>';
+    const th = '<th>Mois</th>' + (_bfT ? '<th>Bénéfice</th>' : '') + '<th>Net</th>' + (avecTg ? '<th>dont Telegram</th>' : '')
       + '<th>VA</th><th>Modèle</th><th>Chat IA</th><th>Chat humain</th><th>Dépenses diverses</th><th>Impôts + Paxum</th>'
-      + '<th>Bénéfice</th><th>Marge</th>'
+      + (_bfT ? '' : '<th>Bénéfice</th>') + '<th>Marge</th>'
       + (avecAsso ? '<th>Avancé par moi</th><th>Avancé par l’associé</th>' : '')
       + '<th class="rc-brut" title="Avant la commission de 20 % d’OnlyFans">Brut OnlyFans</th>';
     el.innerHTML = '<div class="panel rc-tab-p"><div class="rc-ph"><div><div class="panel-title">Tableau complet</div>'
       + '<div class="panel-sub">un mois par ligne, le total en bas<span class="rc-glisse"> · fais glisser vers la gauche pour tout voir</span></div></div></div>'
       + '<div class="rc-tw"><table class="recap-table">'
       + '<thead><tr>' + th + '</tr></thead><tbody>'
-      + data.map(r => { const m = _rcPct(r.profit, r.net); return '<tr>'
-          + '<td>' + esc(_rcMois(r.key, true)) + '</td>'
+      + data.map(r => { const m = _rcPct(r.profit, r.net), bf = '<td style="color:' + _rcCoul(r.profit) + '">' + _mS(r.profit) + '</td>'; return '<tr>'
+          + '<td>' + esc(_rcMois(r.key, true)) + '</td>' + (_bfT ? bf : '')
           + '<td class="rc-tn">' + R(r.net) + '</td>' + (avecTg ? '<td>' + R(r.tg || 0) + '</td>' : '')
           + '<td>' + R(r.va) + '</td><td>' + R(r.mo) + '</td><td>' + R(r.ci) + '</td><td>' + R(r.ch) + '</td><td>' + R(r.al) + '</td><td>' + R(r.fr || 0) + '</td>'
-          + '<td style="color:' + _rcCoul(r.profit) + '">' + _mS(r.profit) + '</td>'
+          + (_bfT ? '' : bf)
           + '<td style="color:' + _rcMargeCoul(m) + ';font-weight:500">' + m + ' %' + tend(r) + '</td>'
           + (avecAsso ? '<td>' + R(r.myAdv || 0) + '</td><td>' + R(r.assocAdv || 0) + '</td>' : '')
           + '<td class="rc-brut">' + R(r.brut) + '</td>'
           + '</tr>'; }).join('')
-      + '<tr class="rc-trow"><td>Total</td><td class="rc-tn">' + R(T.net) + '</td>'
+      + '<tr class="rc-trow"><td>Total</td>' + (_bfT ? bfTot : '') + '<td class="rc-tn">' + R(T.net) + '</td>'
       + (avecTg ? '<td>' + R(T.tg) + '</td>' : '')
       + '<td>' + R(T.va) + '</td><td>' + R(T.mo) + '</td><td>' + R(T.ci) + '</td><td>' + R(T.ch) + '</td><td>' + R(T.al) + '</td><td>' + R(T.fr) + '</td>'
-      + '<td style="color:' + _rcCoul(T.profit) + '">' + _mS(T.profit) + '</td>'
+      + (_bfT ? '' : bfTot)
       + '<td style="color:' + _rcMargeCoul(margeT) + ';font-weight:500">' + margeT + ' %</td>'
       + (avecAsso ? '<td>' + R(T.myAdv) + '</td><td>' + R(T.assocAdv) + '</td>' : '')
       + '<td class="rc-brut">' + R(T.brut) + '</td>'
@@ -7185,7 +7384,7 @@ function renderModelShare(){
   }
   const rs={du:_det?'':(_avecMois?'inclut '+_nm+', mois pas encore fini':''),trop:'à déduire de ton prochain envoi',perte:'',ok:'rien à envoyer pour l’instant'}[st];
   const m=v=>(v<0?'−':'')+fmtC(v);
-  const box=(cls,sg,lbl,val,sub)=>`<div class="ms-c${cls?' '+cls:''}"><div class="ms-l"><span class="ms-sg" aria-hidden="true">${sg}</span><span>${lbl}</span></div><div class="ms-v${val<0?' neg':''}">${m(val)}</div>${sub?`<div class="ms-s">${sub}</div>`:''}</div>`;
+  const box=(cls,sg,lbl,val,sub,db)=>`<div class="ms-c${cls?' '+cls:''}"><div class="ms-l"><span class="ms-sg" aria-hidden="true">${sg}</span><span>${lbl}</span></div><div class="ms-v${val<0?' neg':''}">${m(val)}</div>${db?`<div class="ms-db">${db}</div>`:''}${sub?`<div class="ms-s">${sub}</div>`:''}</div>`;
   const _op=t=>`<div class="ms-op" aria-hidden="true">${t}</div>`;
   let html=`<div class="ms-eq">`
     +box('ms-c-base','','Bénéfice depuis le début',base,moPaid?'avant les '+fmtC(moPaid)+' déjà versés dans les bilans':'')
@@ -7194,9 +7393,9 @@ function renderModelShare(){
     +_op('−')
     +box('ms-c-paid','−','Déjà envoyé',paid,moPaid&&envoye?fmtC(envoye)+' + '+fmtC(moPaid)+' (bilans)':(moPaid?'noté dans les bilans':''))
     +_op('=')
-    +`<div class="ms-res ms-res-${st}">${box('','=',rl,Math.abs(reste),rs)}</div></div>`;
+    +`<div class="ms-res ms-res-${st}">${box('','=',rl,Math.abs(reste),rs,'depuis le début')}</div></div>`;
   html+=_det;
-  html+=`<div class="ms-frais">Bénéfice après 1 % d’impôts payés en liquide (retrait de 2 % compris) et 3,5 % de frais Paxum → crypto sur l’argent OnlyFans (retirés avant le partage : moitié chacun). Telegram : aucun frais.</div>`;
+  html+=`<div class="ms-frais">Impôts et Paxum déjà retirés de ce bénéfice, moitié-moitié avec la modèle${(ents||[]).length?' : détail plus bas':''}.</div>`;
   _VIR_AFFICHES=(virements||[]).slice();
   const n=(virements||[]).length;
   if(n){
@@ -7786,7 +7985,7 @@ function grafRepartition(net, its, gros){
     return '<div class="nfr-l' + (i.pr ? ' nfr-l-pr' : '') + '"><span class="nfr-pt" style="background:' + i.c + '"></span>'
       + '<span class="nfr-n">' + esc(i.l) + '</span><span class="nfr-p">' + pc(i) + '</span></div>';
   }).join('');
-  return '<div class="nfr-base">Sur <b>' + fmtC(net) + '</b> de net, après commission OnlyFans'
+  return '<div class="nfr-base"><span class="nfr-sur">Sur <b>' + fmtC(net) + '</b> de net, après commission OnlyFans</span>'
     + (gros ? '<span class="nfr-gros">plus gros poste : <b>' + esc(gros) + '</b></span>' : '') + '</div>'
     + '<div class="nfr-barre" role="img" aria-label="' + esc('Répartition du net : ' + its.map(function (i){ return i.l + ' ' + pc(i); }).join(', ')) + '">' + barre + '</div>'
     + '<div class="nfr-liste">' + lignes + '</div>';
@@ -9590,6 +9789,275 @@ function _moisAFinaliser(){ try{ var p=_bilanNonFinalise(); return p ? p.ym : nu
 // a été tapé (_abandonnerSiBesoin) ; rien de tapé : il ferme tout de suite, comme avant. cancelEdit() reste tel quel
 // (la suppression du bilan ouvert l'appelle après sa propre confirmation : pas de deuxième question).
 function annulerSaisie(){ return _apres(_abandonnerSiBesoin(), function(ok){ if(ok) cancelEdit(); return ok; }); }
+
+// ── feat3_annee ──
+// ══ feat3_annee (15/10) : « L'année » au Récap — AFFICHAGE SEULEMENT ══
+// André : « le Récap de l'année : le total de l'année, le meilleur trimestre, et la comparaison avec
+// l'an dernier une fois qu'il y aura 12 mois de bilans ». Aucune écriture, aucun stockage, aucune règle neuve :
+//  - tout vient de getMonthlyRecap(), les MÊMES agrégats par mois que le Récap ; une somme de mois est
+//    l'addition des lignes « Mois par mois » au centime (chaque mois tel qu'il est écrit), écrite par fmtC / _mS
+//    (centimes seulement s'ils ne sont pas nuls) ; la marge et le « % du net » par _rcPct ;
+//  - « dont ta moitié » : _rcMoitie() du Récap lui-même (même règle, même écriture) ;
+//  - « Envoyé à la modèle » : la règle de « Déjà envoyé » (Part de la modèle) limitée à l'année : les
+//    paiements notés (virements) DATÉS de l'année + les paiements modèle notés dans les bilans de l'année ;
+//  - le mois en cours compte dans les totaux « à ce jour », mais il n'est JAMAIS comparé : seuls les mois
+//    finis (clé < _pgMoisCourant(), comme les Records) entrent dans la comparaison et le meilleur trimestre ;
+//  - comparaison « mois par mois comparables » : les mois finis de l'année choisie qui ont AUSSI un bilan
+//    l'année d'avant, face aux mêmes mois de l'année d'avant (jamais 9 mois contre 12) ;
+//  - (15/10, règle D3 du site) le mois « à finaliser » (_moisAFinaliser() : du 1er au 7, bilan du mois précédent
+//    pas encore finalisé) compte dans les totaux, mais n'entre ni dans la comparaison ni dans le meilleur trimestre,
+//    et son trimestre n'est pas « fini » tant qu'il n'est pas finalisé ; le bloc dit « à finaliser », comme le site.
+var _anChoix = null;   // l'année choisie : en mémoire de la page seulement
+
+function _anCle(a, m){ return a + '-' + String(m).padStart(2, '0'); }
+function _anMois(k){ return +String(k).slice(5, 7); }
+function _anAn(k){ return +String(k).slice(0, 4); }
+// Un montant du mois en CENTIMES, tel que la ligne du Récap l'écrit (fmtC / _mS : arrondi au centime, signe à part).
+function _anCts(v){ var a = Math.round(Math.abs(Number(v) || 0) * 100); return (Number(v) || 0) < 0 ? -a : a; }
+// Somme de mois = l'addition des LIGNES du Récap (« Mois par mois ») au centime près : chaque mois est pris tel
+// qu'il est écrit (net, dépenses = va + mo + ci + ch + al + fr comme la ligne du mois, bénéfice), puis additionné en
+// centimes. (Additionner les mois avant l'arrondi, comme la tuile « Depuis le début », peut tomber à 1 centime de
+// la somme des lignes que tu lis : 27 117,64 $ au lieu de 27 117,65 $ sur le jeu fictif de deux ans.)
+function _anSomme(rows){
+  var c = {net:0, tg:0, dep:0, mo:0, profit:0}, count = 0;
+  rows.forEach(function(r){
+    c.net += _anCts(r.net); c.tg += _anCts(r.tg || 0); c.mo += _anCts(r.mo);
+    c.dep += _anCts(r.va + r.mo + r.ci + r.ch + r.al + (r.fr || 0));
+    c.profit += _anCts(r.profit); count += r.count;
+  });
+  var t = {net: c.net / 100, tg: c.tg / 100, dep: c.dep / 100, mo: c.mo / 100, profit: c.profit / 100, count: count, mois: rows.length};
+  t.marge = _rcPct(t.profit, t.net);
+  return t;
+}
+// Des numéros de mois en plages lisibles : [1..9] -> « janv.–sept. » ; [1, 3, 4] -> « janv., mars–avr. »
+function _anPlages(nums){
+  var s = nums.slice().sort(function(a, b){ return a - b; }), out = [], i = 0;
+  while(i < s.length){
+    var j = i; while(j + 1 < s.length && s[j + 1] === s[j] + 1) j++;
+    out.push(i === j ? grafMoisCourt(s[i] - 1) : grafMoisCourt(s[i] - 1) + '–' + grafMoisCourt(s[j] - 1));
+    i = j + 1;
+  }
+  return out.join(', ');
+}
+// « dont ta moitié » : la fonction du Récap elle-même (si elle ne dit rien, on ne dit rien)
+function _anMoitie(pr, mo){
+  var m = /<b>([^<]*)<\/b>/.exec(_rcMoitie(pr, mo) || '');
+  return m ? m[1] : '';
+}
+
+// ── le modèle (lecture seule) ─────────────────────────────────────────────
+function anModele(choix){
+  var data = getMonthlyRecap();               // du plus récent au plus ancien, comme le Récap
+  if(!data.length) return null;
+  var cour = _pgMoisCourant(), anCour = _anAn(cour), ans = [];
+  data.forEach(function(r){ var a = _anAn(r.key); if(ans.indexOf(a) < 0) ans.push(a); });
+  ans.sort(function(x, y){ return x - y; });
+  var a = (choix != null && ans.indexOf(+choix) >= 0) ? +choix : (ans.indexOf(anCour) >= 0 ? anCour : ans[ans.length - 1]);
+  var rows = data.filter(function(r){ return _anAn(r.key) === a; });
+  var o = {ans: ans, an: a, cour: cour, rows: rows, T: _anSomme(rows)};
+  o.avecCour = rows.some(function(r){ return r.key === cour; });
+  // le mois « à finaliser » du site (même fonction que Records, bandeau, Prévision et Récap ; aucune règle parallèle)
+  var aFin = (typeof _moisAFinaliser === 'function' ? _moisAFinaliser() : null);
+  o.aFin = rows.some(function(r){ return r.key === aFin; }) ? aFin : null;
+  o.finis = rows.filter(function(r){ return r.key < cour && r.key !== aFin; });
+  // Envoyé à la modèle (règle de « Déjà envoyé », sur l'année)
+  var vir = (virements || []).filter(function(v){ return String(v.date || '').slice(0, 4) === String(a); });
+  o.nVir = vir.length;
+  o.envoye = (vir.reduce(function(s, v){ return s + _anCts(v.amount || 0); }, 0) + Math.round(o.T.mo * 100)) / 100;
+  // Trimestres : « fini » (ses 3 mois sont passés), « cours » (pas fini), « avenir » (pas commencé, sans bilan), « vide »
+  o.trims = [1, 2, 3, 4].map(function(q){
+    var m1 = q * 3 - 2, m3 = q * 3, k1 = _anCle(a, m1), k3 = _anCle(a, m3);
+    var rq = rows.filter(function(r){ var m = _anMois(r.key); return m >= m1 && m <= m3; });
+    var ec = 0; for(var m = m1; m <= m3; m++){ if(_anCle(a, m) <= cour) ec++; }
+    var afinQ = !!o.aFin && _anMois(o.aFin) >= m1 && _anMois(o.aFin) <= m3;
+    var etat = k3 < cour ? (rq.length ? (afinQ ? 'afin' : 'fini') : 'vide') : (k1 <= cour || rq.length ? 'cours' : 'avenir');
+    return {q: q, m1: m1, m3: m3, n: rq.length, etat: etat, ecoules: ec, T: rq.length ? _anSomme(rq) : null};
+  });
+  var cand = o.trims.filter(function(t){ return t.etat === 'fini'; });
+  o.nFinis = cand.length;
+  o.meilleurs = [];
+  if(cand.length){
+    var max = Math.max.apply(null, cand.map(function(t){ return t.T.profit; }));
+    if(max > 0) o.meilleurs = cand.filter(function(t){ return Math.abs(t.T.profit - max) < 0.005; });
+  }
+  // Comparaison avec l'année d'avant : mois finis de l'année choisie qui ont AUSSI un bilan l'année d'avant
+  var prev = a - 1;
+  var rp = data.filter(function(r){ return _anAn(r.key) === prev; });
+  var mp = rp.map(function(r){ return _anMois(r.key); });
+  var comp = o.finis.filter(function(r){ return mp.indexOf(_anMois(r.key)) >= 0; });
+  var cm = comp.map(function(r){ return _anMois(r.key); });
+  o.cmp = {prev: prev, avecPrev: rp.length > 0, mois: cm, premierPrev: mp.length ? Math.min.apply(null, mp) : 0,
+    sansPrev: o.finis.filter(function(r){ return mp.indexOf(_anMois(r.key)) < 0; }).map(function(r){ return _anMois(r.key); }),
+    A: comp.length ? _anSomme(comp) : null,
+    B: comp.length ? _anSomme(rp.filter(function(r){ return cm.indexOf(_anMois(r.key)) >= 0; })) : null};
+  return o;
+}
+
+// ── l'affichage ───────────────────────────────────────────────────────────
+// Pastille d'évolution : même écriture que la comparaison du Récap (« = » sous 0,5 %, pourcentage arrondi) ;
+// si l'année d'avant n'était pas positive, l'écart en dollars (un pourcentage sur une perte ne veut rien dire).
+function _anEvo(a, b, inverse){
+  var sens, txt;
+  if(b > 0){
+    var v = (a - b) / b * 100;
+    if(!isFinite(v) || Math.abs(v) < 0.5) return '<span class="an-d an-d-eq">=</span>';
+    sens = v > 0 ? 1 : -1; txt = Math.abs(Math.round(v)) + ' %';
+  } else {
+    var d = Math.round((a - b) * 100) / 100;
+    if(Math.abs(d) < 0.005) return '<span class="an-d an-d-eq">=</span>';
+    sens = d > 0 ? 1 : -1; txt = '<span class="an-m">' + fmtC(Math.abs(d)) + '</span>';
+  }
+  var bon = inverse ? sens < 0 : sens > 0;
+  return '<span class="an-d ' + (bon ? 'an-d-ok' : 'an-d-ko') + '"><span class="sr-only">' + (sens > 0 ? 'en hausse de ' : 'en baisse de ') + '</span>'
+    + _pgIco(sens > 0 ? 'up' : 'dn', 12) + txt + '</span>';
+}
+// Longueur du chiffre écrit (« $150,190.30 » = 11) : le CSS ajuste la taille du chiffre à la largeur de sa tuile
+// (--an-n), pour qu'une grosse année tienne aussi au petit téléphone. Présentation seulement.
+function _anN(html){ return '--an-n:' + String(html).replace(/<[^>]*>/g, '').length; }
+// Un pourcentage, avec LE signe moins du site (U+2212) quand il est négatif (une marge sur une perte)
+function _anPct(m){ return (m < 0 ? '−' : '') + Math.abs(m) + ' %'; }
+function _anMargeQual(m){ return m >= 50 ? 'très bonne' : m >= 20 ? 'correcte' : 'les dépenses pèsent lourd'; }
+
+function renderAnnee(){
+  var el = document.getElementById('recap-annee'); if(!el) return;
+  var o = anModele(_anChoix);
+  if(!o){ el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  var a = o.an, T = o.T, moisCour = grafMoisLong(_anMois(o.cour) - 1), moisAFin = o.aFin ? grafMoisLong(_anMois(o.aFin) - 1) : '';
+  var k0 = o.rows[o.rows.length - 1].key, k1 = o.rows[0].key;
+  var per = k0 === k1 ? grafMoisLong(_anMois(k0) - 1) + ' ' + a : grafMoisCourt(_anMois(k0) - 1) + '–' + grafMoisCourt(_anMois(k1) - 1) + ' ' + a;
+
+  // en-tête : titre, période, choix de l'année
+  var h = '<div class="panel an-p">'
+    + '<div class="an-tete"><div class="an-tg"><span class="an-rond" aria-hidden="true"></span><div class="an-tt">'
+    + '<div class="panel-title an-titre">L’année ' + a + '</div>'
+    + '<div class="panel-sub an-sous">' + per + (o.aFin ? ' · ' + moisAFin + ' à finaliser' : '') + (o.avecCour ? ' · ' + moisCour + ' en cours compris' : '') + '</div></div></div>'
+    + (o.ans.length > 1 ? '<div class="rc-switch an-ans" role="group" aria-label="Choisir l’année">'
+      + o.ans.map(function(x){ return '<button type="button" class="rc-sw an-an' + (x === a ? ' on' : '') + '" data-an="' + x + '" aria-pressed="' + (x === a) + '" onclick="anChoisir(' + x + ')">' + x + '</button>'; }).join('')
+      + '</div>' : '')
+    + '</div>';
+
+  // les totaux de l'année
+  var tuile = function(cls, ico, lbl, val, sous, style){
+    return '<div class="an-c ' + cls + '"><div class="an-l"><span class="an-si" aria-hidden="true">' + _pgIco(ico, 14) + '</span><span>' + lbl + '</span></div>'
+      + '<div class="an-v" style="' + (style ? style + ';' : '') + _anN(val) + '">' + val + '</div>' + (sous ? '<div class="an-s">' + sous + '</div>' : '') + '</div>';
+  };
+  var moitie = _anMoitie(T.profit, T.mo);
+  h += '<div class="an-tot">'
+    + tuile('an-c-pr' + (T.profit < 0 ? ' an-neg' : ''), 'dollar', 'Bénéfice ' + a, '<span class="an-m">' + _mS(T.profit) + '</span>',
+        '<span class="an-avant">avant la part de la modèle (50 %)</span>' + (moitie ? '<span class="an-moitie">dont ta moitié : <b>' + moitie + '</b></span>' : ''))
+    + tuile('an-c-net', 'in', 'Net total', '<span class="an-m">' + fmtC(T.net) + '</span>',
+        _pl(T.mois, 'mois', 'mois') + ' · ' + _pl(T.count, 'bilan', 'bilans') + (T.tg > 0 ? '<span class="an-s2">dont Telegram <span class="an-m">' + fmtC(T.tg) + '</span></span>' : ''))
+    + tuile('an-c-dep', 'out', 'Dépenses', '<span class="an-m">' + fmtC(T.dep) + '</span>', _anPct(_rcPct(T.dep, T.net)) + ' du net')
+    + tuile('an-c-mg', 'pct', 'Marge', _anPct(T.marge), _anMargeQual(T.marge), 'color:' + _rcMargeCoul(T.marge))
+    + tuile('an-c-mo', 'user', 'Envoyé à la modèle', '<span class="an-m">' + fmtC(o.envoye) + '</span>',
+        (o.nVir ? _pl(o.nVir, 'paiement noté', 'paiements notés') : 'aucun paiement noté') + ' en ' + a
+        + (T.mo > 0 ? '<span class="an-s2">+ <span class="an-m">' + fmtC(T.mo) + '</span> dans les bilans</span>' : ''))
+    + '</div>';
+
+  // par trimestre
+  var maxAbs = Math.max.apply(null, o.trims.map(function(t){ return t.T ? Math.abs(t.T.profit) : 0; })) || 1;
+  var meil = o.meilleurs.map(function(t){ return t.q; });
+  var best;
+  if(o.meilleurs.length === 1){
+    var tb = o.meilleurs[0];
+    best = 'Meilleur trimestre : <b>T' + tb.q + '</b> · ' + _anPlages([tb.m1, tb.m1 + 1, tb.m3]) + ' · <span class="an-m">' + _mS(tb.T.profit) + '</span>';
+  } else if(o.meilleurs.length > 1){
+    best = 'Meilleurs trimestres, à égalité : <b>' + o.meilleurs.map(function(t){ return 'T' + t.q; }).join(' et ') + '</b> · <span class="an-m">' + _mS(o.meilleurs[0].T.profit) + '</span> chacun';
+  } else if(o.nFinis){
+    best = 'Aucun trimestre fini en bénéfice';
+  } else if(o.trims.some(function(t){ return t.etat === 'afin'; })){
+    best = 'Meilleur trimestre : connu une fois le bilan de ' + moisAFin + ' finalisé';
+  } else {
+    var tc = o.trims.filter(function(t){ return t.etat === 'cours'; })[0];
+    best = tc ? 'Meilleur trimestre : connu à la fin de T' + tc.q + ' (fin ' + grafMoisLong(tc.m3 - 1) + ')' : 'Meilleur trimestre : aucun trimestre fini avec un bilan';
+  }
+  h += '<div class="an-sec"><div class="an-sec-t">Par trimestre</div><div class="an-best">' + best + '</div></div>'
+    + '<div class="an-trims">' + o.trims.map(function(t){
+      var estMeil = meil.indexOf(t.q) >= 0, neg = t.T && t.T.profit < 0;
+      var tete = '<div class="an-t-h"><span class="an-t-n">T' + t.q + '</span><span class="an-t-m">' + _anPlages([t.m1, t.m1 + 1, t.m3]) + '</span>'
+        + (estMeil ? '<span class="an-t-star">meilleur</span>' : '') + '</div>';
+      var val = t.T ? '<div class="an-t-v" style="' + _anN(_mS(t.T.profit)) + '"><span class="an-m">' + _mS(t.T.profit) + '</span></div>'
+        + '<div class="an-t-bar" aria-hidden="true"><i style="width:' + (Math.abs(t.T.profit) / maxAbs * 100).toFixed(1) + '%"></i></div>'
+        : '<div class="an-t-v an-t-rien" aria-hidden="true">—</div>';
+      var mg = t.T ? '<span class="an-t-mg" style="color:' + _rcMargeCoul(t.T.marge) + '">' + _anPct(t.T.marge) + ' de marge</span>' : '';
+      var etat = t.etat === 'fini' ? (t.n < 3 ? '<span class="an-t-part">' + _pl(t.n, 'mois', 'mois') + ' de bilans sur 3</span>' : '')
+        : t.etat === 'cours' ? '<span class="pill-encours">' + _pillIco() + 'en cours</span><span class="an-t-part">' + (t.ecoules === 1 ? '1er' : t.ecoules + 'e') + ' mois sur 3' + (t.n ? '' : ' · pas encore de bilan') + '</span>'
+        : t.etat === 'afin' ? '<span class="pill-encours">' + _pillIco() + 'à finaliser</span>'
+        : t.etat === 'avenir' ? '<span class="an-t-part">à venir</span>' : '<span class="an-t-part">aucun bilan</span>';
+      return '<div class="an-t an-t-' + t.etat + (estMeil ? ' an-t-best' : '') + (neg ? ' an-neg' : '') + '">' + tete + val
+        + ((mg || etat) ? '<div class="an-t-s">' + mg + etat + '</div>' : '') + '</div>';
+    }).join('') + '</div>';
+
+  // par rapport à l'année d'avant
+  var C = o.cmp, p = C.prev;
+  h += '<div class="an-sec"><div class="an-sec-t">Par rapport à ' + p + '</div>'
+    + (C.A ? '<div class="an-cmp-per">' + _anPlages(C.mois) + ' ' + a + ' face à ' + _anPlages(C.mois) + ' ' + p + '</div>' : '') + '</div>';
+  if(C.A){
+    var A = C.A, B = C.B;
+    var cel = function(lbl, va, pil, vb, style){ return '<div class="an-ci"><div class="an-cl">' + lbl + '</div>'
+      + '<div class="an-cv"><span style="' + (style ? style + ';' : '') + _anN(va) + '">' + va + '</span>' + pil + '</div>'
+      + '<div class="an-cb">' + p + ' : <span class="an-m">' + vb + '</span></div></div>'; };
+    var dM = A.marge - B.marge;
+    var pM = '<span class="an-d ' + (dM > 0 ? 'an-d-ok' : dM < 0 ? 'an-d-ko' : 'an-d-eq') + '">'
+      + (dM === 0 ? '=' : '<span class="sr-only">' + (dM > 0 ? 'en hausse de ' : 'en baisse de ') + '</span>' + _pgIco(dM > 0 ? 'up' : 'dn', 12) + _pl(Math.abs(dM), 'point', 'points')) + '</span>';
+    h += '<div class="an-cmp">'
+      + cel('Net total', fmtC(A.net), _anEvo(A.net, B.net, false), fmtC(B.net))
+      + cel('Dépenses', fmtC(A.dep), _anEvo(A.dep, B.dep, true), fmtC(B.dep))
+      + cel('Bénéfice', _mS(A.profit), _anEvo(A.profit, B.profit, false), _mS(B.profit), 'color:' + _rcCoul(A.profit))
+      + cel('Marge', _anPct(A.marge), pM, _anPct(B.marge), 'color:' + _rcMargeCoul(A.marge))
+      + '</div>';
+    var notes = [];
+    if(o.aFin) notes.push(grafCap(moisAFin) + ' est à finaliser : pas compté, on comparera une fois son bilan finalisé.');
+    if(o.avecCour) notes.push(grafCap(moisCour) + ' en cours : pas compté, on comparera une fois le mois fini.');
+    if(C.sansPrev.length) notes.push(grafCap(_anPlages(C.sansPrev)) + ' : pas de bilan en ' + p + ', ' + (C.sansPrev.length > 1 ? 'pas comparés.' : 'pas comparé.'));
+    if(notes.length) h += '<div class="an-notes">' + notes.map(function(n){ return '<div class="an-n">' + _pgIco('info', 14) + '<span>' + n + '</span></div>'; }).join('') + '</div>';
+  } else {
+    var phrase;
+    if(!C.avecPrev){
+      phrase = 'Pas de bilan en ' + p + ' : rien à comparer.' + (a === _anAn(o.cour) ? ' L’an prochain, chaque mois de ' + (a + 1) + ' sera comparé au même mois de ' + a + '.' : '');
+    } else if(!o.finis.length && o.aFin){
+      phrase = grafCap(moisAFin) + ' est à finaliser : la comparaison avec ' + p + ' commencera une fois son bilan finalisé.';
+    } else if(!o.finis.length){
+      phrase = 'Pas encore de mois fini en ' + a + ' : la comparaison avec ' + p + ' commencera quand ' + moisCour + ' sera fini.';
+    } else {
+      phrase = 'Pas de bilan en ' + p + ' pour ' + _anPlages(o.finis.map(function(r){ return _anMois(r.key); })) + ' : rien à comparer pour l’instant'
+        + (C.premierPrev ? ' (tes bilans de ' + p + ' commencent en ' + grafMoisLong(C.premierPrev - 1) + ').' : '.');
+    }
+    h += '<div class="an-vide">' + phrase + '</div>';
+  }
+  h += '</div>';
+  el.innerHTML = h;
+}
+function anChoisir(x){
+  _anChoix = +x; renderAnnee();
+  var b = document.querySelector('#recap-annee .an-an[data-an="' + (+x) + '"]'); if(b){ try{ b.focus(); }catch(e){} }
+}
+// Le bloc se redessine avec le Récap (tab, thème, bilan modifié) : renderRecap d'origine d'abord, tel quel.
+(function(){
+  if(typeof renderRecap !== 'function') return;
+  var _rcAn = renderRecap;
+  renderRecap = function(){
+    var r = _rcAn.apply(this, arguments);
+    try{ renderAnnee(); }catch(e){ try{ console.warn('annee', e); }catch(_){} }
+    return r;
+  };
+})();
+
+// ── feat3_petits (P7 P8 P9 P10 P12 P13, 15/10) ──
+// (15/10, feat3_petits · P9) Récap, vue « Tableau » : au TÉLÉPHONE (≤ 640 px, la limite du site), la colonne Bénéfice
+// vient juste après Mois (visible sans faire glisser) ; tablette et ordinateur : l'ordre ne change pas. Affichage seulement.
+function _rcBenefTel(){ try{ return !!(window.matchMedia && window.matchMedia('(max-width:640px)').matches); }catch(e){ return false; } }
+(function(){
+  // le téléphone tourné, une fenêtre élargie : le tableau déjà affiché se redessine dans le bon ordre
+  if(!window.matchMedia) return;
+  var mq = window.matchMedia('(max-width:640px)');
+  var maj = function(){
+    try{ if(_rcVue === 'tableau' && document.querySelector('#recap-content .recap-table') && typeof renderRecap === 'function') renderRecap(); }catch(e){}
+  };
+  if(mq.addEventListener) mq.addEventListener('change', maj); else if(mq.addListener) mq.addListener(maj);
+})();
+
 </script>
 </body>
 </html>
