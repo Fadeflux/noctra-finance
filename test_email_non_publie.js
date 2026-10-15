@@ -8,7 +8,7 @@
 // n'importe qui et tous les chiffres.
 //
 // ⚠️ 30/09 — LE DESSIN A CHANGÉ, LA PROPRIÉTÉ NON.
-// On ne tape plus une adresse mais un IDENTIFIANT (« andre », « manon ») ;
+// On ne tape plus une adresse mais un IDENTIFIANT (son prénom) ;
 // l'adresse est DÉRIVÉE à l'exécution. Ce banc était rouge parce qu'il décrivait
 // l'ancien écran, pas parce que le produit avait cassé. Il a donc été réécrit
 // pour tester la même chose sur le nouvel écran — et non supprimé : ce qu'il

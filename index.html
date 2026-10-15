@@ -12,9 +12,9 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Noctra Finance</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" integrity="sha384-BWcjm9OdFth9TbhCxZPdm+gAOUMAzQy9nmTs12ioXdCcbVnJaPMn+fMUoQCLt60R" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" integrity="sha384-dug+JxfBvklEQdJ4AYuBBAIScUz0bVN73xpy273gcAwHjb3qI0fXmuYNaNfdyYJG" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 :root{--acc:#a855f7;--acc-ink:#ffffff;--acc-hover:#9333ea}#virements-panel,#activity-panel,[data-pb]{display:none !important}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -4095,6 +4095,99 @@ body.skin-melange #page-ca #model-share .ms-res .ms-db{margin-top:4px;padding-le
   #page-ca .nfr-seul #bars .nfr-l{gap:6px;font-size:12.5px;line-height:18px}
 }
 
+
+/* ── feat4_securite (15/10 : mot de passe, S-1, S-4, S-5, S-6, S-7) ── */
+/* « Changer mon mot de passe » (15/10) : la même tuile flottante que les fenêtres de l'application (#bilan-dlg),
+   jetons du thème seulement. Jamais en lecture seule (entrées cachées, la fonction refuse aussi). */
+body.readonly #mdp-btn,body.readonly .topbar .export-menu .mob-mdp{display:none!important}
+@media (max-width:640px){html body .dash > .topbar #mdp-btn{display:none!important}
+  /* lecture seule au téléphone (pas de menu « ⋯ ») : le badge du prénom poussait « Se déconnecter » HORS de l'écran
+     (page de 414 px pour 390 : défaut déjà présent dans final15) ; l'en-tête garde « Lecture seule » */
+  html body.readonly .dash > .topbar #role-badge{display:none!important}}
+#mdp-btn svg{width:18px;height:18px}
+#mdp-dlg{position:fixed;inset:0;z-index:10002;display:none;align-items:center;justify-content:center;padding:16px;
+  overflow-y:auto;overscroll-behavior:contain;background:var(--scrim);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#mdp-dlg.open{display:flex}
+#mdp-dlg [hidden]{display:none!important}
+#mdp-dlg .md-box{box-sizing:border-box;width:min(440px,100%);margin:auto;padding:24px 24px 20px;text-align:left;
+  background:var(--surf-1);border:1px solid var(--line-2);border-radius:24px;color:var(--ink-1);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
+body.skin-melange #mdp-dlg .md-box{border-color:var(--mx-edge-2);box-shadow:var(--mx-hl),0 40px 80px -30px rgba(0,0,0,.8)}
+body.skin-melange.light #mdp-dlg .md-box{box-shadow:var(--mx-hl),0 30px 60px -28px rgba(16,24,40,.32)}
+#mdp-dlg .md-tete{display:flex;align-items:center;gap:14px;margin:0 0 22px}
+#mdp-dlg .md-ico{flex:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;
+  color:var(--acc-txt);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+#mdp-dlg .md-tt{flex:1 1 auto;min-width:0}
+#mdp-dlg .md-t{font-size:17px;font-weight:650;line-height:24px;letter-spacing:-.01em;color:var(--ink-1)}
+#mdp-dlg .md-s{margin-top:2px;font-size:13px;line-height:18px;color:var(--ink-3)}
+#mdp-dlg .md-x{flex:none;align-self:flex-start;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;
+  margin:-8px -10px 0 0;padding:0;border:0;border-radius:12px;background:transparent;color:var(--ink-3);cursor:pointer;
+  transition:background-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
+#mdp-dlg .md-x:hover{background:var(--hover);color:var(--ink-1)}
+#mdp-dlg .md-user{display:none}
+#mdp-dlg .md-f{margin:0 0 16px}
+#mdp-dlg .md-l{display:block;margin:0 0 8px;font-size:13px;font-weight:600;line-height:16px;letter-spacing:.01em;color:var(--ink-2)}
+#mdp-dlg .md-c{position:relative}
+#mdp-dlg .md-in{box-sizing:border-box;display:block;width:100%;height:48px;margin:0;padding:0 54px 0 14px;
+  background:var(--field);border:1px solid var(--line-2);border-radius:12px;color:var(--ink-1);
+  font-family:inherit;font-size:16px;font-weight:500;letter-spacing:0;outline:none;
+  transition:border-color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+#mdp-dlg .md-in:hover:not(:focus){border-color:var(--line-3)}
+#mdp-dlg .md-in:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-ring)}
+#mdp-dlg .md-in[aria-invalid="true"]{border-color:var(--neg);box-shadow:0 0 0 3px color-mix(in srgb,var(--neg) 22%,transparent)}
+#mdp-dlg .md-in[readonly]{opacity:.7}
+#mdp-dlg .md-oeil{position:absolute;right:4px;top:4px;display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;padding:0;border:0;border-radius:10px;background:transparent;color:var(--ink-3);cursor:pointer;
+  transition:background-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
+#mdp-dlg .md-oeil:hover{background:var(--hover);color:var(--ink-1)}
+#mdp-dlg .md-oeil.on{color:var(--acc-txt)}
+#mdp-dlg .md-oeil .md-oe-c,#mdp-dlg .md-oeil.on .md-oe-v{display:none}
+#mdp-dlg .md-oeil.on .md-oe-c,#mdp-dlg .md-oeil .md-oe-v{display:inline-flex}
+#mdp-dlg .md-x:focus-visible,#mdp-dlg .md-oeil:focus-visible,#mdp-dlg .md-b:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#mdp-dlg .md-regles{list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin:-6px 0 18px;padding:0}
+#mdp-dlg .md-regles li{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:18px;color:var(--ink-3)}
+#mdp-dlg .md-regles .md-r-i{display:inline-flex;color:var(--ink-4)}
+#mdp-dlg .md-regles .md-r-oui,#mdp-dlg .md-regles li.ok .md-r-non{display:none}
+#mdp-dlg .md-regles li.ok .md-r-oui{display:inline-flex;color:var(--acc-txt)}
+#mdp-dlg .md-regles li.ok{color:var(--ink-2)}
+#mdp-dlg .md-msg:empty{display:none}
+#mdp-dlg .md-msg{display:flex;align-items:flex-start;gap:10px;margin:4px 0 0;padding:11px 14px;border-radius:12px;
+  font-size:14px;line-height:20px}
+#mdp-dlg .md-msg.ko{color:var(--neg);background:color-mix(in srgb,var(--neg) 9%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 28%,transparent)}
+body.light #mdp-dlg .md-msg.ko{color:color-mix(in srgb,var(--neg) 82%,var(--ink-1))}
+#mdp-dlg .md-msg.attente{color:var(--ink-2);background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--line-2)}
+#mdp-dlg .md-msg-i{flex:none;display:inline-flex;margin-top:2px}
+#mdp-dlg .md-fini{display:flex;flex-direction:column;align-items:center;text-align:center;padding:6px 4px 2px}
+#mdp-dlg .md-fini-ico{display:flex;align-items:center;justify-content:center;width:56px;height:56px;margin:0 0 14px;border-radius:50%;
+  color:var(--acc-txt);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+#mdp-dlg .md-fini-t{font-size:18px;font-weight:650;line-height:26px;color:var(--ink-1)}
+#mdp-dlg .md-fini-x{margin:8px 0 0;max-width:340px;font-size:14px;line-height:21px;color:var(--ink-2)}
+#mdp-dlg .md-btns{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:22px}
+#mdp-dlg .md-b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:96px;min-height:44px;padding:0 18px;
+  border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;line-height:1.2;cursor:pointer;
+  transition:filter var(--t-fast) var(--ease),background-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+#mdp-dlg .md-annuler{background:transparent;border:1px solid var(--line-2);color:var(--ink-2)}
+#mdp-dlg .md-annuler:hover{background:var(--hover);color:var(--ink-1)}
+#mdp-dlg .md-ok,#mdp-dlg .md-fermer{background:var(--acc-btn);border:1px solid transparent;color:var(--acc-ink);box-shadow:var(--sh-1)}
+#mdp-dlg .md-ok:hover,#mdp-dlg .md-fermer:hover{filter:brightness(1.08)}
+#mdp-dlg .md-ok:active,#mdp-dlg .md-fermer:active{transform:translateY(1px)}
+#mdp-dlg.occupe .md-ok{cursor:progress;filter:saturate(.7)}
+#mdp-dlg button:disabled{cursor:default}
+@media (max-width:640px){
+  /* en haut de l'écran : le clavier du téléphone ne recouvre jamais le champ tapé */
+  #mdp-dlg{align-items:flex-start;padding:max(12px,env(safe-area-inset-top,0px)) 12px max(12px,env(safe-area-inset-bottom,0px))}
+  #mdp-dlg .md-box{margin:0 auto;padding:20px 18px 18px;border-radius:22px}
+  #mdp-dlg .md-tete{margin-bottom:18px}
+  #mdp-dlg .md-in{height:52px}
+  #mdp-dlg .md-oeil{top:6px}
+  #mdp-dlg .md-btns{flex-direction:column-reverse;margin-top:18px}
+  #mdp-dlg .md-b{width:100%;min-height:48px;font-size:15px}
+}
+@media (prefers-reduced-motion:no-preference){
+  #mdp-dlg.open .md-box{animation:md-monte .22s var(--ease) both}
+  @keyframes md-monte{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -4906,7 +4999,7 @@ function verifierMontants(ids){
   }
   return "";
 }
-function addAF(n='',v='',pb='moi'){const id=++afc;afs.push(id);const d=document.createElement('div');d.className='arow';d.id='ar-'+id;const cls=pb==='associe'?'pb-btn assoc':'pb-btn';const txt=pb==='associe'?'Asso.':'Moi';d.innerHTML=`<input class="ifield" style="flex:1" type="text" id="an-${id}" placeholder="Nom (ex. pub Meta)" value="${esc(n)}" list="dep-names" autocomplete="off" oninput="uk()"><input class="ifield" style="width:90px;flex-shrink:0" type="number" id="av-${id}" placeholder="$" value="${v}" oninput="uk()"><button class="${cls}" data-pb="${pb}" onclick="tpb(this);uk()" type="button">${txt}</button><button class="arm" onclick="ra(${id})">×</button>`;document.getElementById('ainps').appendChild(d);}
+function addAF(n='',v='',pb='moi'){const id=++afc;afs.push(id);const d=document.createElement('div');d.className='arow';d.id='ar-'+id;const cls=pb==='associe'?'pb-btn assoc':'pb-btn';const txt=pb==='associe'?'Asso.':'Moi';d.innerHTML=`<input class="ifield" style="flex:1" type="text" id="an-${id}" placeholder="Nom (ex. pub Meta)" value="${esc(n)}" list="dep-names" autocomplete="off" oninput="uk()"><input class="ifield" style="width:90px;flex-shrink:0" type="number" id="av-${id}" placeholder="$" value="${esc(v)}" oninput="uk()"><button class="${cls}" data-pb="${esc(pb)}" onclick="tpb(this);uk()" type="button">${txt}</button><button class="arm" onclick="ra(${id})">×</button>`;document.getElementById('ainps').appendChild(d);}
 function ra(id){const r=document.getElementById('ar-'+id);if(r)r.remove();afs=afs.filter(f=>f!==id);uk();}
 function gat(){return afs.reduce((s,id)=>s+(parseFloat(document.getElementById('av-'+id)?.value)||0),0);}
 // ---- Listes de versements (Paiement VA / Paiement Modele) ----
@@ -4925,10 +5018,10 @@ function addLP(k, n='', v='', pb='moi', dt=''){
   // Chaque versement porte SA date : on sait ainsi quand chaque virement est parti,
   // meme si l entree regroupe tout un mois. Par defaut = la date de l entree.
   const dte = dt || (document.getElementById('entry-date-input')?.value || ts());
-  d.innerHTML='<input class="ifield lp-date" type="date" id="ld-'+k+'-'+id+'" value="'+dte+'" title="Date de ce versement" oninput="uk()">'
+  d.innerHTML='<input class="ifield lp-date" type="date" id="ld-'+k+'-'+id+'" value="'+esc(dte)+'" title="Date de ce versement" oninput="uk()">'
     +'<input class="ifield" style="flex:1;min-width:90px" type="text" id="ln-'+k+'-'+id+'" placeholder="'+(_LP_PH[k]||'Libellé')+'" value="'+esc(n)+'" list="'+k+'-names" autocomplete="off" oninput="uk()">'
-    +'<input class="ifield" style="width:90px;flex-shrink:0" type="number" id="lv-'+k+'-'+id+'" placeholder="$" value="'+v+'" oninput="uk()">'
-    +'<button class="'+cls+'" data-pb="'+pb+'" onclick="tpb(this);uk()" type="button">'+txt+'</button>'
+    +'<input class="ifield" style="width:90px;flex-shrink:0" type="number" id="lv-'+k+'-'+id+'" placeholder="$" value="'+esc(v)+'" oninput="uk()">'
+    +'<button class="'+cls+'" data-pb="'+esc(pb)+'" onclick="tpb(this);uk()" type="button">'+txt+'</button>'
     +'<button class="arm" onclick="rmLP(&#39;'+k+'&#39;,'+id+')">×</button>';
   const c=document.getElementById(L.c); if(c) c.appendChild(d);
 }
@@ -5990,12 +6083,12 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 // sont, et c'est normal -- cette clé est faite pour être publique. L'EMAIL,
 // lui, ne l'est pas : publié à côté, il donne la moitié de la clef et désigne
 // exactement quel compte essayer. C'est le même défaut que le champ
-// « Identifiant (andre / manon) » retiré des tableaux de bord le 12/09.
+// champ « Identifiant (…) », qui citait les deux comptes, retiré des tableaux de bord le 12/09.
 // Il vit maintenant dans le navigateur : demandé une fois, retenu ensuite.
 // Rien n'est plus publié, et l'usage quotidien ne change pas.
 function retenirMail(m){ try{ localStorage.setItem('ccn_mail', m); }catch(e){} }
 // ─────────────────────────────────────────────────────────────────────────
-// CONNEXION PAR IDENTIFIANT (30/09) — « andre » / « manon », plus d'e-mail.
+// CONNEXION PAR IDENTIFIANT (30/09) — le prénom en minuscules, plus d'e-mail.
 // GoTrue, l'authentification de Supabase, ne sait se connecter qu'avec une
 // ADRESSE. On en garde donc une cote base, mais personne ne la tape : elle
 // est DERIVEE de l'identifiant.
@@ -6010,19 +6103,22 @@ const DOMAINE_IDENT = 'noctra.invalid';
 function identVersMail(v){
   const s = String(v || '').trim().toLowerCase().replace(/\s+/g, '');
   if (!s) return '';
-  return s.includes('@') ? s : (s + '@' + DOMAINE_IDENT);
+  // (15/10) « André », « ANDRÉ » : les comptes s'écrivent sans accent ; on retire les accents de l'IDENTIFIANT,
+  // jamais d'une adresse complète (gardée telle quelle).
+  return s.includes('@') ? s : (s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') + '@' + DOMAINE_IDENT);
 }
 function identRetenu(){
   try{ return localStorage.getItem('ccn_ident') || localStorage.getItem('ccn_mail') || ''; }
   catch(e){ return ''; }
 }
-function retenirIdent(v){ try{ localStorage.setItem('ccn_ident', String(v||'').toLowerCase()); }catch(e){} }
+function retenirIdent(v){ try{ const s=String(v||'').trim().toLowerCase();
+  localStorage.setItem('ccn_ident', s.includes('@') ? s : s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')); }catch(e){} }
 // Nom affiche et SIGNATURE des entrees : la base savait « Moi », elle saura
 // maintenant qui a saisi.
 function nomAffiche(ident){
   const s = String(ident || '').split('@')[0].toLowerCase();
   // Un prenom, pas n'importe quoi : une ancienne adresse complete donnait
-  // « Fadefluxagency » comme signature d'entree. Tout ce qui n'est pas un
+  // le début de l'adresse comme signature d'entree. Tout ce qui n'est pas un
   // prenom simple retombe sur l'ancien comportement.
   if (!/^[a-z\u00e0-\u00ff-]{2,12}$/.test(s)) return 'Moi';
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -6091,9 +6187,11 @@ async function doLogin() {
   }
   retenirIdent(ident);
   retenirMail(mail);
-  try { setUser(nomAffiche(ident)); } catch(e){}
+  try { setUser(nomAffiche(mail)); } catch(e){}
   localStorage.setItem('ccn_role', 'owner');
   err.textContent = '';
+  // (15/10) le mot de passe tapé ne reste pas dans la page toute la session (2 s : le temps d'un gestionnaire de mots de passe)
+  setTimeout(function(){ try { const c = document.getElementById('login-input'); if (c) { c.value = ''; c.type = 'password'; } } catch(e){} }, 2000);
   document.getElementById('login-overlay').style.display = 'none';
   applyRoleUI();
   majBadgeIdentite();
@@ -6101,8 +6199,14 @@ async function doLogin() {
 }
 
 async function doLogout() {
+  // (15/10, S-5) Vérifie d'abord que tout est enregistré (voir « SÉCURITÉ DU COMPTE » en fin de script), puis
+  // efface de CE navigateur les copies des comptes. En cas de doute, la copie est GARDÉE (rien n'est perdu).
+  let choix = 'effacer';
+  try { if (typeof _decoVerifier === 'function') choix = await _decoVerifier(); } catch (e) { choix = 'garder'; }
+  if (choix === 'attendre') return;
   try { await sb.auth.signOut(); } catch (e) {}
   localStorage.removeItem('ccn_token');
+  if (choix === 'effacer') { try { _effacerCopiesLocales(); } catch (e) {} }
   location.reload();
 }
 
@@ -8112,7 +8216,7 @@ function _pgOeil(b){
     setTimeout(function(){ if (dd) dd.classList.remove('open'); }, 0);
   });
   function nommer(){
-    if (mq && mq.matches) btn.setAttribute('aria-label', 'Plus d’options : télécharger, thème, déconnexion');
+    if (mq && mq.matches) btn.setAttribute('aria-label', 'Plus d’options : télécharger, thème, mot de passe, déconnexion');
     else btn.removeAttribute('aria-label');
   }
   nommer();
@@ -10056,6 +10160,377 @@ function _rcBenefTel(){ try{ return !!(window.matchMedia && window.matchMedia('(
     try{ if(_rcVue === 'tableau' && document.querySelector('#recap-content .recap-table') && typeof renderRecap === 'function') renderRecap(); }catch(e){}
   };
   if(mq.addEventListener) mq.addEventListener('change', maj); else if(mq.addListener) mq.addListener(maj);
+})();
+
+
+// ── feat4_securite (15/10 : mot de passe, S-1, S-4, S-5, S-6, S-7) ──
+// ── feat4_securite (sécurité du compte, 15/10) ──
+// ══ SÉCURITÉ DU COMPTE (15/10) ════════════════════════════════════════════════════════════════════════════════
+// Des chaînes en forme de mots de passe ont été publiées par erreur dans le dépôt PUBLIC (retirées le 15/10 ;
+// l'historique git les garde). Les adresses de connexion finissent en .invalid : AUCUN e-mail n'y arrive, donc
+// « mot de passe oublié » est impossible. Chacun change donc le sien ICI, une fois connecté.
+//
+// 1. « Changer mon mot de passe » : menu « ⋯ » au téléphone, clé de l'en-tête à l'ordinateur ; jamais en lecture
+//    seule. L'actuel est vérifié en se RECONNECTANT (signInWithPassword avec l'adresse de la SESSION : rien n'est
+//    tapé ni deviné), puis sb.auth.updateUser. Règles : 10 caractères au moins (72 au plus, limite de Supabase),
+//    différent de l'actuel, sans le prénom du compte, confirmation identique. Les espaces au début et à la fin
+//    sont retirés, comme sur l'écran de connexion (doLogin les retire : un mot de passe qui en garderait ne
+//    marcherait plus jamais).
+//    ⛔ Aucun mot de passe ne sort de la fenêtre : rien dans la console, le stockage du navigateur, l'Historique,
+//    une adresse, un export. Les champs n'ont pas d'attribut « name » (un envoi de formulaire raté ne mettrait
+//    rien dans l'adresse) ; ils sont vidés et remis en « masqué » dès la réussite et à chaque fermeture.
+// 2. « Se déconnecter » (S-5) efface de CE navigateur les copies des comptes (bilans, VA, paiements, modèles,
+//    journal, sauvegarde locale) et la session — jamais le thème ni les préférences de confort. Avant : on attend
+//    la fin d'un enregistrement en cours ; si quelque chose n'est pas enregistré, on prévient (« Attendre » ou
+//    « Me déconnecter quand même », et alors la copie de cet appareil est GARDÉE : rien n'est perdu de ce côté).
+// Ce bloc ne lit ni n'écrit AUCUNE donnée de la base (seulement l'authentification).
+
+// ── Échanges en cours avec la base : compteur posé sur apiFetch (passe-plat, aucun comportement changé) ──
+// TOUTES les requêtes comptent, lectures comprises : noter un paiement RELIT la liste avant de l'écrire, et entre
+// les deux le compteur des seules écritures retombait à 0 (la déconnexion serait partie au milieu).
+var _requetesEnCours = 0;
+(function(){
+  var f = window.apiFetch;
+  if (typeof f !== 'function' || f._compteRequetes) return;
+  var g = function(){
+    _requetesEnCours++;
+    var fini = false, moins = function(){ if (!fini) { fini = true; _requetesEnCours = Math.max(0, _requetesEnCours - 1); } };
+    var p;
+    try { p = f.apply(this, arguments); } catch (e) { moins(); throw e; }
+    return Promise.resolve(p).then(function(r){ moins(); return r; }, function(e){ moins(); throw e; });
+  };
+  g._compteRequetes = true;
+  window.apiFetch = g;
+})();
+// Attend que plus rien ne parte ni n'arrive (deux relevés calmes à 200 ms d'écart ; 12 s au plus).
+async function _attendreCalme(){
+  var calme = 0, annonce = false;
+  for (var i = 0; i < 60 && calme < 2; i++) {
+    if (_requetesEnCours > 0) {
+      calme = 0;
+      if (!annonce) { annonce = true; try { showSaveStatus('⏳ Enregistrement en cours… la déconnexion attend qu’il soit fini.'); } catch (e) {} }
+    } else calme++;
+    if (calme < 2) await new Promise(function(ok){ setTimeout(ok, 200); });
+  }
+}
+
+// ── Déconnexion (S-5) ──
+// Copies des COMPTES gardées par ce navigateur (cleLocale) et traces de session : effacées.
+var _CLES_COPIES = ['ents', 'vas', 'virements', 'modeles', 'editlog', 'snapshot_local'];
+var _CLES_SESSION = ['ccn_token', 'ccn_mail', 'ccn_user', 'ccn_role'];
+// GARDÉES : ccn_theme, ccn_tab, ccn_ro (le garde-fou de lecture seule de cet appareil), ccn_ident (pré-remplir
+// l'identifiant), cleLocale('masque' | 'periode' | 'recap_vue' | 'rappel_bilan' | 'pb_defaults') : du confort, aucun
+// chiffre. Une file d'envoi en attente (cleLocale('a_envoyer'), si elle existe un jour) n'est jamais effacée ici.
+function _effacerCopiesLocales(){
+  var faits = [];
+  var ote = function(k){ try { if (localStorage.getItem(k) !== null) { localStorage.removeItem(k); faits.push(k); } } catch (e) {} };
+  _CLES_COPIES.forEach(function(n){ ote(cleLocale(n)); });
+  _CLES_SESSION.forEach(ote);
+  // La session de supabase-js (jeton d'accès + de renouvellement) : signOut() la retire déjà ; si l'appel n'a pas
+  // pu se faire, on retire NOTRE clé (sb-<projet>-…), jamais celle d'un autre site servi par le même domaine.
+  try {
+    var pre = 'sb-' + new URL(SUPABASE_URL).hostname.split('.')[0] + '-';
+    for (var i = localStorage.length - 1; i >= 0; i--) { var k = localStorage.key(i); if (k && k.indexOf(pre) === 0) ote(k); }
+  } catch (e) {}
+  return faits;
+}
+// Ce qui n'est PAS encore dans le cloud (liste vide = tout est enregistré).
+function _decoRaisons(){
+  var r = [];
+  if (_requetesEnCours > 0) r.push('un enregistrement n’a pas encore répondu');
+  if (document.body.classList.contains('sauve-ko')) r.push('le dernier enregistrement a échoué (l’en-tête dit « Non enregistré »)');
+  try { if (typeof _saisieModifiee === 'function' && _saisieModifiee()) r.push('un bilan est en cours de saisie dans le formulaire'); } catch (e) {}
+  try {
+    var q = JSON.parse(localStorage.getItem(cleLocale('a_envoyer')) || '[]');
+    if (Array.isArray(q) && q.length) r.push(q.length + (q.length > 1 ? ' éléments attendent' : ' élément attend') + ' encore d’être envoyé' + (q.length > 1 ? 's' : '') + ' au cloud');
+  } catch (e) {}
+  return r;
+}
+// Rend 'effacer' (tout est enregistré), 'garder' (déconnexion quand même, copie gardée) ou 'attendre'.
+async function _decoVerifier(){
+  if (document.body.classList.contains('readonly')) return 'effacer';   // rien n'est écrit depuis cet appareil
+  await _attendreCalme();
+  var raisons = _decoRaisons();
+  if (!raisons.length) return 'effacer';
+  var r = await _fenetre({ ico: 'alerte', ton: 'avert', titre: 'Tout n’est pas encore enregistré',
+    texte: 'Avant de te déconnecter : ' + raisons.join(' ; ') + '.',
+    detail: 'Le mieux : attends que l’en-tête dise « Enregistré » (vérifie ta connexion), puis déconnecte-toi. '
+      + 'Si tu te déconnectes quand même, la copie de cet appareil n’est PAS effacée : rien n’est perdu de ce côté.',
+    boutons: [{ l: 'Me déconnecter quand même', v: 'garder', cls: 'ghost' }, { l: 'Attendre', v: 'attendre', cls: 'pri' }] });
+  return r && r.choix === 'garder' ? 'garder' : 'attendre';
+}
+
+// ── « Changer mon mot de passe » ──
+var _MDP = { occupe: false, avant: null, ident: '' };
+var _MDP_MIN = 10, _MDP_MAX = 72;
+function _mdpIco(p, t){ return '<svg viewBox="0 0 24 24" width="' + (t || 18) + '" height="' + (t || 18) + '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + '</svg>'; }
+var _MDP_I = {
+  cle: '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>',
+  oeil: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  barre: '<path d="M9.9 4.2A9.6 9.6 0 0 1 12 4c6.5 0 10 8 10 8a17.6 17.6 0 0 1-2.4 3.4"/><path d="M6.6 6.6C3.9 8.4 2 12 2 12s3.5 8 10 8a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M2 2l20 20"/>',
+  ok: '<path d="M20 6 9 17l-5-5"/>',
+  rond: '<circle cx="12" cy="12" r="4"/>',
+  croix: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  alerte: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16h.01"/>'
+};
+// Les règles, sans rien écrire nulle part (sert à l'affichage en direct ET à la vérification finale).
+function _mdpSansAccents(s){ return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function _mdpRegles(actuel, nouveau, confirmation, ident){
+  var a = String(actuel || '').trim(), n = String(nouveau || '').trim(), c = String(confirmation || '').trim();
+  var id = _mdpSansAccents(ident);
+  return {
+    long: n.length >= _MDP_MIN && n.length <= _MDP_MAX,
+    diff: n.length > 0 && n !== a,
+    prenom: n.length > 0 && !(id.length >= 3 && _mdpSansAccents(n).indexOf(id) >= 0),
+    pareil: n.length > 0 && c === n
+  };
+}
+function _mdpChamp(id, label, auto, touche, aide){
+  return '<div class="md-f"><label class="md-l" for="' + id + '">' + label + '</label>'
+    + '<div class="md-c"><input id="' + id + '" class="md-in" type="password" autocomplete="' + auto + '" autocapitalize="off"'
+    + ' autocorrect="off" spellcheck="false" enterkeyhint="' + touche + '" maxlength="128"' + (aide ? ' aria-describedby="' + aide + '"' : '') + '>'
+    + '<button type="button" class="md-oeil" data-pour="' + id + '" aria-pressed="false" aria-label="Afficher le mot de passe" title="Afficher le mot de passe">'
+    + '<span class="md-oe-v">' + _mdpIco(_MDP_I.oeil) + '</span><span class="md-oe-c">' + _mdpIco(_MDP_I.barre) + '</span></button></div></div>';
+}
+function _mdpRegle(r, txt){
+  return '<li data-r="' + r + '"><span class="md-r-i md-r-non">' + _mdpIco(_MDP_I.rond, 14) + '</span><span class="md-r-i md-r-oui">' + _mdpIco(_MDP_I.ok, 14) + '</span><span>' + txt + '</span></li>';
+}
+function _mdpConstruire(){
+  var ov = document.getElementById('mdp-dlg');
+  if (ov) return ov;
+  ov = document.createElement('div');
+  ov.id = 'mdp-dlg';
+  ov.innerHTML = '<form class="md-box" role="dialog" aria-modal="true" aria-labelledby="md-t" aria-describedby="md-s" novalidate>'
+    + '<div class="md-tete"><span class="md-ico" aria-hidden="true">' + _mdpIco(_MDP_I.cle, 20) + '</span>'
+    +   '<div class="md-tt"><div class="md-t" id="md-t">Changer mon mot de passe</div><div class="md-s" id="md-s"></div></div>'
+    +   '<button type="button" class="md-x" aria-label="Fermer" title="Fermer">' + _mdpIco(_MDP_I.croix) + '</button></div>'
+    + '<div class="md-corps">'
+    +   '<input type="text" class="md-user" autocomplete="username" tabindex="-1" aria-hidden="true" readonly>'
+    +   _mdpChamp('md-actuel', 'Mot de passe actuel', 'current-password', 'next')
+    +   _mdpChamp('md-nouveau', 'Nouveau mot de passe', 'new-password', 'next', 'md-regles')
+    +   '<ul class="md-regles" id="md-regles">' + _mdpRegle('long', '10 caractères ou plus') + _mdpRegle('diff', 'Différent de l’actuel')
+    +     _mdpRegle('prenom', 'Sans ton prénom') + '</ul>'
+    +   _mdpChamp('md-confirm', 'Confirme le nouveau mot de passe', 'new-password', 'done', 'md-pareil')
+    +   '<ul class="md-regles md-pareil" id="md-pareil">' + _mdpRegle('pareil', 'Les deux sont identiques') + '</ul>'
+    +   '<div class="md-msg" id="md-msg" role="alert" aria-live="assertive"></div>'
+    + '</div>'
+    + '<div class="md-fini" hidden><span class="md-fini-ico" aria-hidden="true">' + _mdpIco(_MDP_I.ok, 26) + '</span>'
+    +   '<div class="md-fini-t">Mot de passe changé</div>'
+    +   '<p class="md-fini-x">Il marche dès maintenant. Range-le dans un gestionnaire de mots de passe : ne l’écris dans aucun fichier ni aucun message.</p>'
+    +   '<p class="md-fini-x">Chaque compte a le sien : l’autre personne change le sien depuis sa propre session.</p></div>'
+    + '<div class="md-btns"><button type="button" class="md-b md-annuler">Annuler</button>'
+    +   '<button type="submit" class="md-b md-ok"><span class="md-ok-t">Changer le mot de passe</span></button>'
+    +   '<button type="button" class="md-b md-fermer" hidden>Fermer</button></div>'
+    + '</form>';
+  document.body.appendChild(ov);
+  var q = function(s){ return ov.querySelector(s); };
+  q('form').addEventListener('submit', _mdpEnvoyer);
+  q('.md-x').addEventListener('click', function(){ _mdpFermer(); });
+  q('.md-annuler').addEventListener('click', function(){ _mdpFermer(); });
+  q('.md-fermer').addEventListener('click', function(){ _mdpFermer(); });
+  [].forEach.call(ov.querySelectorAll('.md-oeil'), function(b){ b.addEventListener('click', function(){ _mdpOeil(b); }); });
+  var champs = [].slice.call(ov.querySelectorAll('.md-in'));
+  champs.forEach(function(i, k){
+    i.addEventListener('input', function(){ i.removeAttribute('aria-invalid'); _mdpMajRegles(); });
+    // Entrée (« Suivant » au téléphone) passe au champ suivant ; sur le dernier, elle envoie.
+    i.addEventListener('keydown', function(e){
+      if (e.key !== 'Enter' || k === champs.length - 1 || e.isComposing) return;
+      e.preventDefault();
+      try { champs[k + 1].focus(); } catch (x) {}
+    });
+  });
+  // Un appui à côté de la fenêtre ne ferme que si rien n'est tapé (au téléphone, un doigt qui glisse ne perd rien).
+  ov.addEventListener('click', function(e){
+    if (e.target !== ov || _MDP.occupe) return;
+    var tape = [].some.call(ov.querySelectorAll('.md-in'), function(i){ return i.value; });
+    if (!tape) _mdpFermer();
+  });
+  return ov;
+}
+function _mdpChamps(){
+  var ov = document.getElementById('mdp-dlg');
+  return ov ? [].slice.call(ov.querySelectorAll('.md-in')) : [];
+}
+function _mdpOeil(b){
+  var i = document.getElementById(b.getAttribute('data-pour')); if (!i) return;
+  var voir = i.type === 'password';
+  i.type = voir ? 'text' : 'password';
+  b.classList.toggle('on', voir);
+  b.setAttribute('aria-pressed', voir ? 'true' : 'false');
+  var t = voir ? 'Masquer le mot de passe' : 'Afficher le mot de passe';
+  b.setAttribute('aria-label', t); b.title = t;
+  try { i.focus(); } catch (e) {}
+}
+function _mdpMajRegles(){
+  var ov = document.getElementById('mdp-dlg'); if (!ov) return;
+  var v = function(id){ var e = document.getElementById(id); return e ? e.value : ''; };
+  var R = _mdpRegles(v('md-actuel'), v('md-nouveau'), v('md-confirm'), _MDP.ident);
+  [].forEach.call(ov.querySelectorAll('.md-regles li'), function(li){ li.classList.toggle('ok', !!R[li.getAttribute('data-r')]); });
+  var pr = ov.querySelector('.md-regles li[data-r="prenom"]'); if (pr) pr.hidden = _mdpSansAccents(_MDP.ident).length < 3;
+}
+function _mdpMsg(txt, ton){
+  var m = document.getElementById('md-msg'); if (!m) return;
+  m.className = 'md-msg' + (txt ? ' ' + (ton || 'ko') : '');
+  m.innerHTML = txt ? '<span class="md-msg-i" aria-hidden="true">' + _mdpIco(ton === 'attente' ? _MDP_I.rond : _MDP_I.alerte, 16) + '</span><span></span>' : '';
+  if (txt) m.lastChild.textContent = txt;
+}
+function _mdpOccupe(oui, txt){
+  _MDP.occupe = !!oui;
+  var ov = document.getElementById('mdp-dlg'); if (!ov) return;
+  ov.classList.toggle('occupe', !!oui);
+  _mdpChamps().forEach(function(i){ i.readOnly = !!oui; });
+  [].forEach.call(ov.querySelectorAll('.md-b, .md-x, .md-oeil'), function(b){ b.disabled = !!oui; });
+  var t = ov.querySelector('.md-ok-t'); if (t) t.textContent = oui ? (txt || 'Vérification…') : 'Changer le mot de passe';
+  if (oui) _mdpMsg(txt || 'Vérification…', 'attente'); else if (/attente/.test((document.getElementById('md-msg') || {}).className || '')) _mdpMsg('');
+}
+// Remet la fenêtre à zéro : AUCUNE valeur ne reste dans la page (ni mot de passe, ni identifiant).
+function _mdpVider(){
+  var ov = document.getElementById('mdp-dlg'); if (!ov) return;
+  _mdpChamps().forEach(function(i){ i.value = ''; i.type = 'password'; i.readOnly = false; i.removeAttribute('aria-invalid'); });
+  [].forEach.call(ov.querySelectorAll('.md-oeil'), function(b){
+    b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); b.setAttribute('aria-label', 'Afficher le mot de passe'); b.title = 'Afficher le mot de passe';
+  });
+  var u = ov.querySelector('.md-user'); if (u) u.value = '';
+  _mdpMsg('');
+  _mdpMajRegles();
+}
+function _mdpVue(fini){
+  var ov = document.getElementById('mdp-dlg'); if (!ov) return;
+  ov.querySelector('.md-corps').hidden = !!fini;
+  ov.querySelector('.md-fini').hidden = !fini;
+  ov.querySelector('.md-annuler').hidden = !!fini;
+  ov.querySelector('.md-ok').hidden = !!fini;
+  ov.querySelector('.md-fermer').hidden = !fini;
+}
+function _mdpClavier(e){
+  var ov = document.getElementById('mdp-dlg');
+  if (!ov || !ov.classList.contains('open')) return;
+  if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); if (!_MDP.occupe) _mdpFermer(); return; }
+  if (e.key === 'Tab') {
+    var f = [].slice.call(ov.querySelectorAll('input.md-in, button')).filter(function(n){ return !n.disabled && n.getClientRects().length; });
+    if (!f.length) return;
+    var i = f.indexOf(document.activeElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && (i < 0 || i === f.length - 1)) { e.preventDefault(); f[0].focus(); }
+  }
+}
+async function ouvrirChangementMdp(){
+  if (document.body.classList.contains('readonly')) {
+    try { showSaveStatus('⚠ Lecture seule — le mot de passe ne se change pas depuis cet appareil.', '#ef4444'); } catch (e) {}
+    return false;
+  }
+  var ov = _mdpConstruire();
+  if (ov.classList.contains('open')) return true;
+  try { var dd = document.querySelector('.topbar .export-dropdown.open'); if (dd) dd.classList.remove('open'); } catch (e) {}
+  _MDP.avant = document.activeElement;
+  // Le compte : celui de la SESSION (pas le dernier nom laissé dans ce navigateur).
+  var ident = '';
+  try {
+    var s = (sb && sb.auth) ? await sb.auth.getSession() : null;
+    var mail = s && s.data && s.data.session && s.data.session.user && s.data.session.user.email;
+    if (mail) ident = String(mail).split('@')[0];
+  } catch (e) {}
+  _MDP.ident = ident;
+  _mdpVider(); _mdpVue(false); _mdpOccupe(false);
+  var u = ov.querySelector('.md-user'); if (u) u.value = ident;   // pour le gestionnaire de mots de passe
+  var nom = ident ? nomAffiche(ident) : '';
+  ov.querySelector('#md-s').textContent = ident ? 'Compte : ' + (nom === 'Moi' ? ident : nom) : 'Pour le compte connecté';
+  _mdpMajRegles();
+  ov.classList.add('open');
+  document.addEventListener('keydown', _mdpClavier, true);
+  setTimeout(function(){ try { document.getElementById('md-actuel').focus({ preventScroll: true }); } catch (e) {} }, 30);
+  return true;
+}
+function _mdpFermer(){
+  var ov = document.getElementById('mdp-dlg'); if (!ov || _MDP.occupe) return;
+  _mdpVider(); _mdpVue(false);
+  _MDP.ident = '';
+  ov.classList.remove('open');
+  document.removeEventListener('keydown', _mdpClavier, true);
+  try { if (_MDP.avant && _MDP.avant.focus && document.contains(_MDP.avant)) _mdpAvantFocus(); } catch (e) {}
+  _MDP.avant = null;
+}
+function _mdpAvantFocus(){ try { _MDP.avant.focus({ preventScroll: true }); } catch (e) {} }
+function _mdpReseau(e){
+  var m = String((e && (e.message || e.name)) || e || '');
+  return !!(e && (e.name === 'AuthRetryableFetchError' || e.status === 0)) || /fetch|network|timeout|load failed/i.test(m)
+    || (typeof navigator !== 'undefined' && navigator.onLine === false);
+}
+function _mdpErreur(e, etape, champ){
+  var code = String((e && e.code) || ''), st = e && e.status, m = String((e && e.message) || '');
+  var txt;
+  if (_mdpReseau(e)) txt = 'Connexion impossible, réessaie.' + (etape === 'nouveau' ? ' Ton mot de passe n’a PAS changé.' : '');
+  else if (st === 429 || /rate.?limit|too many/i.test(code + ' ' + m)) txt = 'Trop d’essais d’affilée : attends quelques minutes, puis réessaie.';
+  else if (etape === 'actuel') txt = (code === 'invalid_credentials' || st === 400 || /invalid login/i.test(m)) ? 'L’actuel est incorrect.' : 'Connexion impossible, réessaie.';
+  else if (code === 'same_password') txt = 'Le nouveau doit être différent de l’actuel.';
+  else if (code === 'weak_password' || (e && e.name === 'AuthWeakPasswordError')) txt = 'Mot de passe trop facile à deviner : allonge-le (plusieurs mots, des chiffres).';
+  else if (etape === 'session' || code === 'reauthentication_needed' || code === 'session_not_found' || st === 401 || st === 403 || (e && e.name === 'AuthSessionMissingError'))
+    txt = 'Ta session a expiré : déconnecte-toi, reconnecte-toi, puis réessaie.';
+  else txt = 'Le changement n’a pas pu se faire : ton mot de passe n’a PAS changé. Réessaie dans un instant.';
+  if (etape === 'actuel' && champ && /incorrect/.test(txt)) champ.value = '';
+  _mdpMsg(txt, 'ko');
+  if (champ) { champ.setAttribute('aria-invalid', 'true'); try { champ.focus(); } catch (x) {} }
+  _mdpMajRegles();
+  return false;
+}
+async function _mdpEnvoyer(ev){
+  if (ev && ev.preventDefault) ev.preventDefault();
+  if (_MDP.occupe) return false;
+  var ov = document.getElementById('mdp-dlg'); if (!ov || !ov.classList.contains('open')) return false;
+  var ca = document.getElementById('md-actuel'), cn = document.getElementById('md-nouveau'), cc = document.getElementById('md-confirm');
+  var a = ca.value.trim(), n = cn.value.trim(), c = cc.value.trim();
+  var R = _mdpRegles(a, n, c, _MDP.ident);
+  var faute = function(champ, txt){
+    _mdpChamps().forEach(function(i){ i.removeAttribute('aria-invalid'); });
+    _mdpMsg(txt, 'ko');
+    if (champ) { champ.setAttribute('aria-invalid', 'true'); try { champ.focus(); } catch (e) {} }
+    return false;
+  };
+  if (document.body.classList.contains('readonly')) return faute(null, 'Lecture seule : le mot de passe ne se change pas depuis cet appareil.');
+  if (!a) return faute(ca, 'Entre ton mot de passe actuel.');
+  if (!n) return faute(cn, 'Entre le nouveau mot de passe.');
+  if (n.length < _MDP_MIN) return faute(cn, 'Le nouveau mot de passe doit faire au moins 10 caractères.');
+  if (n.length > _MDP_MAX) return faute(cn, 'Le nouveau mot de passe est trop long (72 caractères au plus).');
+  if (!R.diff) return faute(cn, 'Le nouveau doit être différent de l’actuel.');
+  if (!R.prenom) return faute(cn, 'Le nouveau ne doit pas contenir ton prénom : c’est la première chose qu’on essaie.');
+  if (!c) return faute(cc, 'Confirme le nouveau mot de passe.');
+  if (!R.pareil) return faute(cc, 'La confirmation ne correspond pas au nouveau mot de passe.');
+  if (!sb || !sb.auth) return faute(null, 'Connexion impossible, réessaie.');
+  _mdpChamps().forEach(function(i){ i.removeAttribute('aria-invalid'); });
+  _mdpOccupe(true, 'Vérification de l’actuel…');
+  var etape = 'session', champ = null;
+  try {
+    var s = await sb.auth.getSession();
+    var mail = s && s.data && s.data.session && s.data.session.user && s.data.session.user.email;
+    if (!mail) { _mdpOccupe(false); return _mdpErreur({ name: 'AuthSessionMissingError' }, 'session', null); }
+    etape = 'actuel'; champ = ca;
+    var r1 = await sb.auth.signInWithPassword({ email: mail, password: a });
+    if (r1 && r1.error) { _mdpOccupe(false); return _mdpErreur(r1.error, 'actuel', ca); }
+    etape = 'nouveau'; champ = cn;
+    _mdpOccupe(true, 'Enregistrement du nouveau…');
+    var r2 = await sb.auth.updateUser({ password: n });
+    if (r2 && r2.error) { _mdpOccupe(false); return _mdpErreur(r2.error, 'nouveau', cn); }
+  } catch (e) {
+    _mdpOccupe(false);
+    return _mdpErreur(e, etape, champ);
+  }
+  _mdpOccupe(false);
+  _mdpVider();          // les valeurs quittent la page tout de suite
+  _mdpVue(true);
+  setTimeout(function(){ try { ov.querySelector('.md-fermer').focus({ preventScroll: true }); } catch (e) {} }, 30);
+  return true;
+}
+// Les deux entrées : téléphone (menu « ⋯ », avant « Se déconnecter ») et ordinateur (clé, avant la déconnexion).
+(function(){
+  try {
+    var menu = document.querySelector('.topbar .export-menu');
+    var deco = menu && menu.querySelector('.mob-only[onclick="doLogout()"]');
+    if (deco && !menu.querySelector('.mob-mdp'))
+      deco.insertAdjacentHTML('beforebegin', '<button type="button" class="mob-only mob-mdp" onclick="ouvrirChangementMdp()">' + _mdpIco(_MDP_I.cle) + '<span>Changer mon mot de passe</span></button>');
+    var b = document.querySelector('.dash > .topbar [onclick="doLogout()"].icon-btn');
+    if (b && !document.getElementById('mdp-btn'))
+      b.insertAdjacentHTML('beforebegin', '<button type="button" onclick="ouvrirChangementMdp()" id="mdp-btn" class="icon-btn" title="Changer mon mot de passe" aria-label="Changer mon mot de passe">' + _mdpIco(_MDP_I.cle) + '</button>');
+  } catch (e) {}
 })();
 
 </script>
