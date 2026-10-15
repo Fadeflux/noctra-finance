@@ -3383,7 +3383,7 @@ body.skin-melange #records-panel .rk-note svg{width:12px;height:12px;flex:none;c
 body.skin-melange #records-panel .rk-vide{padding:14px 16px;border-radius:var(--mx-r-md);font-size:13px;line-height:1.5;color:var(--ink-3);
   background:var(--inset);border:1px dashed var(--line-2)}
 
-/* ── IMPÔTS À GARDER DE CÔTÉ (v2, 14/10) : le 1 % à garder en ardoise (la couleur de la tuile « Impôts + Paxum ») ; Paxum en information ── */
+/* ── IMPÔTS À GARDER DE CÔTÉ (v3, 14/10) : ce qu'on garde en crypto pour les impôts (1 % ÷ 0,98) en ardoise (la couleur de la tuile « Impôts + Paxum ») ; Paxum en information ── */
 body.skin-melange #impots-panel{display:grid;grid-template-columns:minmax(0,1fr);row-gap:14px}
 body.skin-melange #impots-panel .ip-eq{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--mx-gap)}
 body.skin-melange #impots-panel .ip-c{position:relative;display:flex;flex-direction:column;min-width:0;padding:var(--mx-pad-s);
@@ -3806,6 +3806,23 @@ body.skin-melange #impots-panel .ip-mt{font-variant-numeric:tabular-nums;white-s
    navigateur (Arial sur ordinateur, celle du système sur iPhone), vu au test façon Safari. */
 button,input,select,textarea{font-family:inherit}
 
+
+/* ── feat_chiffres v3 (règle du 14/10 : impôts payés en liquide, retrait −2 %) ── */
+/* ══ chiffres v3 (14/10) : les impôts se paient en LIQUIDE. La tuile ardoise dit ce qu'André GARDE en crypto
+   (1 % ÷ 0,98 : le retrait en liquide coûte 2 %) ; dessous, un petit relevé : les impôts à payer au bureau et
+   leur coût réel (retrait et Paxum compris), avec le détail de l'addition. Paxum reste une information. ══ */
+body.skin-melange #impots-panel .ip-rel{display:grid;gap:6px;margin:14px 0 0;padding:12px 0 0;
+  border-top:1px solid color-mix(in srgb,var(--bc-fr-on) 16%,transparent)}
+body.skin-melange #impots-panel .ip-r{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0}
+body.skin-melange #impots-panel .ip-r dt{min-width:0;margin:0;font-size:13px;line-height:1.35;color:var(--bc-fr-on2)}
+body.skin-melange #impots-panel .ip-r dd{margin:0;font-size:14px;font-weight:600;line-height:1.35;color:var(--bc-fr-on);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+body.skin-melange #impots-panel .ip-r-cout dd{font-weight:700}
+body.skin-melange #impots-panel .ip-cout-det{margin-top:4px;font-size:12px;line-height:1.45;color:var(--bc-fr-on2);font-variant-numeric:tabular-nums}
+body.skin-melange #impots-panel .ip-cout-det b{font-weight:600;color:var(--bc-fr-on);white-space:nowrap}
+/* Paxum (information) ne s'étire plus sur toute la hauteur de la tuile ardoise, devenue plus haute */
+@media (min-width:641px){body.skin-melange #impots-panel .ip-pax{align-self:start}}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -4087,7 +4104,7 @@ button,input,select,textarea{font-family:inherit}
     <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">IA<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting automatisé par IA</span></span></div><div class="kpi-value" id="vci">—</div><div class="kpi-pct" id="pci">—</div></div>
     <div class="kpi"><div class="kpi-label"><span class="tip">Chat <span class="tip-nw">humain<i class="tip-icon">i</i></span><span class="tip-box">Coût du chatting fait par des humains</span></span></div><div class="kpi-value" id="vch">—</div><div class="kpi-pct" id="pch">—</div></div>
     <div class="kpi"><div class="kpi-label"><span class="tip">Dépenses <span class="tip-nw">diverses<i class="tip-icon">i</i></span><span class="tip-box">Dépenses ponctuelles (pub, outils, etc.)</span></span></div><div class="kpi-value" id="val">—</div><div class="kpi-pct" id="pal">—</div></div>
-    <div class="kpi"><div class="kpi-label"><span class="tip">Impôts + <span class="tip-nw">Paxum<i class="tip-icon">i</i></span><span class="tip-box">Sur l'argent OnlyFans seulement : 1 % d'impôts + 3,5 % de frais Paxum → crypto. Retirés avant le partage : la modèle et toi en payez chacun la moitié. Telegram n'a aucun frais.</span></span></div><div class="kpi-value" id="vfr">—</div><div class="kpi-pct" id="pfr">—</div></div>
+    <div class="kpi"><div class="kpi-label"><span class="tip">Impôts + <span class="tip-nw">Paxum<i class="tip-icon">i</i></span><span class="tip-box">Sur l'argent OnlyFans seulement : 3,5 % de frais Paxum → crypto, et 1 % d'impôts payés en liquide : retirer la crypto en liquide coûte 2 %, compté aussi (100 $ d'impôts = 102,04 $ de crypto). Retirés avant le partage : la modèle et toi en payez chacun la moitié. Telegram n'a aucun frais.</span></span></div><div class="kpi-value" id="vfr">—</div><div class="kpi-pct" id="pfr">—</div></div>
     <div class="kpi kpi-total"><div class="kpi-label"><span class="tip">Total <span class="tip-nw">dépenses<i class="tip-icon">i</i></span><span class="tip-box">VA + Modèle + Chat IA + Chat humain + Dépenses diverses + Impôts et Paxum</span></span></div><div class="kpi-value" id="vdep">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvdep"></span><span class="kpi-pct" id="pdep">—</span></div></div>
     <div class="kpi kpi-info"><div class="kpi-label"><span class="tip">Gardé par <span class="tip-nw">OnlyFans<i class="tip-icon">i</i></span><span class="tip-box">Les 20 % qu'OnlyFans garde sur le brut. Déjà retirés de ton net : ce n'est pas une dépense à payer.</span></span></div><div class="kpi-value" id="vof">—</div><div class="kpi-pct">déjà déduit de ton net</div></div>
   </div>
@@ -5052,13 +5069,18 @@ function avancesLigne(e, k){
 }
 function gai(){return afs.map(id=>({name:document.getElementById('an-'+id)?.value||'Dépense',val:parseFloat(document.getElementById('av-'+id)?.value)||0,paidBy:document.getElementById('ar-'+id)?.querySelector('[data-pb]')?.dataset.pb||'moi'})).filter(i=>i.val>0);}
 const _TAUX=0.80;   // part qui te reste apres commission plateforme
-// (12/10) RÈGLE D'ANDRÉ — sur l'argent ONLYFANS seulement (Telegram n'a aucun frais) :
-//   1 % d'impôts + 3,5 % de frais Paxum → crypto, payés par l'AGENCE, avant le partage
+// (12/10 ; circuit précisé par André le 14/10) RÈGLE D'ANDRÉ — sur l'argent ONLYFANS seulement
+//   (Telegram n'a aucun frais) : OnlyFans verse le net sur Paxum (0,25 $ fixe par virement :
+//   ignoré) ; André déclare aux impôts 1 % de ce qui arrive sur Paxum ; TOUT passe ensuite en
+//   crypto (Paxum prend 3,5 %) ; les impôts se paient EN LIQUIDE et retirer la crypto en liquide
+//   coûte 2 % : pour 100 $ d'impôts on garde 100 ÷ 0,98 = 102,04 $ en crypto (soit 105,74 $
+//   arrivés sur Paxum). Frais = net × 3,5 % + net × 1 % ÷ 0,98, retirés avant le partage
 //   50/50 avec la modèle. Calculés sur le net OnlyFans (« ce qui rentre », après les 20 %).
 //   Appliqués DEPUIS LE DÉBUT : le profit de chaque saisie est recalculé à la lecture
 //   (entryFromDb) et à chaque enregistrement — jamais réécrit en douce dans la base.
-const _IMPOTS_OF=0.01, _PAXUM_OF=0.035;
-function fraisOF(netOF){ return (Number(netOF)||0)*(_IMPOTS_OF+_PAXUM_OF); }
+// (14/10) _RETRAIT_LIQUIDE : coût du retrait de la crypto en liquide pour payer les impôts.
+const _IMPOTS_OF=0.01, _PAXUM_OF=0.035, _RETRAIT_LIQUIDE=0.02;
+function fraisOF(netOF){ const n=Number(netOF)||0; return n*_PAXUM_OF+n*_IMPOTS_OF/(1-_RETRAIT_LIQUIDE); }
 function profitEntree(e){
   const n=(Number(e.brut)||0)*_TAUX;
   return Math.round(n-fraisOF(n)+(Number(e.tgNet)||0)-(Number(e.va)||0)-(Number(e.mo)||0)
@@ -5813,7 +5835,7 @@ function uk(){
   const _nbB=f.length+(_brouillon&&(_editingId||_brouillonRempli())?1:0);
   set('de',_nbB?_nbB+' bilan'+(_nbB>1?'s':''):'aucun bilan');set('pn',net?fmtC(net):'—');const _parts=_partsArrondies(net,pr,{va,mo,ci,ch,al,fr}), _pp=(k,v)=>(net>0&&v>0&&_parts[k]!=null)?fmtPct(_parts[k])+' du net':pct(v,net);
   set('pva',_pp('va',va));set('pmo',_pp('mo',mo));set('pci',_pp('ci',ci));set('pch',_pp('ch',ch));
-  set('pal',al&&net?fmtPct(_parts.al!=null?_parts.al:Math.round(al/net*100))+' · '+ac+' dépense'+(ac>1?'s':''):'—');set('pdep',pct(dep,net));set('pfr',fr?'1\u00a0% + 3,5\u00a0% Paxum':'—');set('ppr',net?fmtPct(Math.round(pr/net*100))+' de marge':'—');
+  set('pal',al&&net?fmtPct(_parts.al!=null?_parts.al:Math.round(al/net*100))+' · '+ac+' dépense'+(ac>1?'s':''):'—');set('pdep',pct(dep,net));set('pfr',fr?'1\u00a0% + retrait + 3,5\u00a0%':'—');set('ppr',net?fmtPct(Math.round(pr/net*100))+' de marge':'—');
   // « dont ta moitié » : la règle des 50 % que la Part de la modèle applique déjà
   // ((bénéfice + paiements modèle notés dans les bilans) × 0,5), vue du côté d'André.
   // Seulement si le bénéfice est positif.
@@ -7064,7 +7086,7 @@ const _RC_POSTES = [
   ['ci', 'Chat IA',           'var(--m-ci)'],
   ['ch', 'Chat humain',       'var(--m-ch)'],
   ['al', 'Dépenses diverses', 'var(--m-fu)'],
-  ['fr', 'Impôts + Paxum',    'var(--m-fr)'],   // (12/10) 1 % + 3,5 % de l'argent OnlyFans
+  ['fr', 'Impôts + Paxum',    'var(--m-fr)'],   // Paxum 3,5 % + impôts 1 % ÷ 0,98 (règle du 14/10), sur l'argent OnlyFans
 ];
 const _RC_LBL = {va:'VA', mo:'Mod\u00e8le', ci:'Chat IA', ch:'Chat humain', al:'D\u00e9penses diverses', fr:'Imp\u00f4ts + Paxum'};
 let _rcVue = 'cartes';
@@ -7988,7 +8010,7 @@ function renderModelShare(){
     +_op('=')
     +`<div class="ms-res ms-res-${st}">${box('','=',rl,Math.abs(reste),rs)}</div></div>`;
   html+=_det;
-  html+=`<div class="ms-frais">Bénéfice après 1 % d’impôts et 3,5 % de frais Paxum → crypto sur l’argent OnlyFans (retirés avant le partage : moitié chacun). Telegram : aucun frais.</div>`;
+  html+=`<div class="ms-frais">Bénéfice après 1 % d’impôts payés en liquide (retrait de 2 % compris) et 3,5 % de frais Paxum → crypto sur l’argent OnlyFans (retirés avant le partage : moitié chacun). Telegram : aucun frais.</div>`;
   _VIR_AFFICHES=(virements||[]).slice();
   const n=(virements||[]).length;
   if(n){
@@ -9637,18 +9659,25 @@ function renderRecords(){
   el.innerHTML = _chNb(tete + '<div class="rk-grille">' + t1 + t2 + t3 + '</div>' + noteCours);
 }
 
-// ── Impôts à garder de côté : le modèle (v2, 14/10 : le circuit réel d'André) ──────────
-// OnlyFans → Paxum (déclaré aux impôts) → tout part en crypto, et Paxum prend SES 3,5 % lui-même à ce
-// moment-là : rien à garder pour Paxum. Les impôts (1 % du net OnlyFans) sont partagés moitié-moitié
-// (déjà dans le bénéfice : sa moitié est retirée de « Reste à envoyer »), et André les paie en personne.
-// Parties : impôts = 1 % du net OnlyFans ; total = fraisOF() (le chiffre de la tuile « Impôts + Paxum ») ;
-// Paxum = total − impôts, au centime affiché (information seulement) ; moitie = sa moitié DES IMPÔTS, la
-// moitié du montant affiché, au centime (un demi-centime monte : $10.01 -> $5.01, jamais « $5.00 »).
+// ── Impôts à garder de côté : le modèle (v3, 14/10 : impôts payés en liquide) ──────────
+// OnlyFans → Paxum (1 % déclaré aux impôts) → tout passe en crypto (Paxum prend SES 3,5 % lui-même :
+// rien à garder pour Paxum) → partage 50/50 en crypto → les impôts se paient EN LIQUIDE, et retirer la
+// crypto en liquide coûte 2 %. Les impôts sont partagés moitié-moitié (déjà dans le bénéfice : sa moitié
+// est retirée de « Reste à envoyer ») et André les paie pour les deux.
+// Parties, au centime AFFICHÉ (chaque addition tombe juste à l'écran) :
+//   imp     impôts à payer en liquide = 1 % du net OnlyFans
+//   garde   à garder en crypto = imp ÷ (1 − 2 %)                 retrait = garde − imp
+//   cout    coût réel des impôts = garde ÷ (1 − 3,5 %)           paxImp  = cout − garde (Paxum sur cet argent)
+//   tot     fraisOF() = le chiffre de la tuile « Impôts + Paxum » ; pax = tot − garde (information)
+//   moitie  sa moitié de ce qui est gardé, au centime (un demi-centime monte : $10.01 -> $5.01)
 function _chFrais(es){
   var br = (es || []).reduce(function(s, e){ return s + (e.brut || 0); }, 0);   // même somme que uk()
   var n = br * _TAUX, tot = fraisOF(n), imp = n * _IMPOTS_OF;
-  var cT = _chCtsAff(tot), cI = _chCtsAff(imp);
-  return {br: br, net: n, tot: tot, imp: imp, pax: (cT - cI) / 100, paxExact: n * _PAXUM_OF, moitie: Math.round(cI / 2) / 100};
+  var garde = imp / (1 - _RETRAIT_LIQUIDE), cout = garde / (1 - _PAXUM_OF);
+  var cT = _chCtsAff(tot), cI = _chCtsAff(imp), cG = _chCtsAff(garde), cC = _chCtsAff(cout);
+  return {br: br, net: n, tot: tot, imp: imp, garde: garde, cout: cout,
+    retrait: (cG - cI) / 100, paxImp: (cC - cG) / 100, pax: (cT - cG) / 100, paxExact: n * _PAXUM_OF,
+    moitie: Math.round(cG / 2) / 100};
 }
 function chImpots(){
   var cour = _pgMoisCourant();
@@ -9666,36 +9695,45 @@ function chImpots(){
   return o;
 }
 function renderImpots(){
-  // (v2, 14/10) Seuls les impôts (1 %) sont à garder : Paxum prend ses 3,5 % lui-même au passage en crypto.
+  // (v3, 14/10) Les impôts se paient en liquide : on garde 1 % ÷ 0,98 en crypto (le retrait coûte 2 %).
+  // Paxum prend ses 3,5 % lui-même au passage en crypto : information seulement.
   var el = document.getElementById('impots-panel'); if(!el) return;
   if(!(ents || []).length){ el.hidden = true; el.innerHTML = ''; return; }
   el.hidden = false;
   var I = chImpots(), T = I.total;
   el.className = 'panel ip-panel' + (T.imp > 0 ? '' : ' ip-0');
   var tete = '<div class="ip-tete"><div class="panel-title ip-titre"><span class="ip-rond" aria-hidden="true"></span>Impôts à garder de côté</div>'
-    + '<div class="panel-sub">depuis le début · 1 % du net OnlyFans, moitié-moitié avec la modèle</div></div>';
+    + '<div class="panel-sub">depuis le début · 1 % du net OnlyFans, payés en liquide, moitié-moitié avec la modèle</div></div>';
   if(!(T.imp > 0)){
     el.innerHTML = _chNb(tete + '<div class="ip-vide">Aucun impôt à garder : pas encore d’argent OnlyFans dans tes bilans (Telegram n’en a pas).</div>');
     return;
   }
-  var tuile = function(cls, lbl, val, sous){
+  var tuile = function(cls, lbl, val, sous, apres){
     return '<div class="ip-c ' + cls + '"><div class="ip-l">' + lbl + '</div><div class="ip-v">' + val + '</div>'
-      + (sous ? '<div class="ip-s">' + sous + '</div>' : '') + '</div>';
+      + (sous ? '<div class="ip-s">' + sous + '</div>' : '') + (apres || '') + '</div>';
   };
+  // le relevé, dans la tuile : ce qu'André paiera au bureau, et ce que ça coûte vraiment
+  var rel = '<dl class="ip-rel">'
+    + '<div class="ip-r ip-r-imp"><dt>Impôts à payer, en liquide</dt><dd>' + fmtC(T.imp) + '</dd></div>'
+    + '<div class="ip-r ip-r-cout"><dt>Coût réel des impôts</dt><dd>' + fmtC(T.cout) + '</dd></div>'
+    + '</dl>'
+    + '<div class="ip-cout-det">= ' + fmtC(T.imp) + ' + <b>' + fmtC(T.retrait) + '</b> de retrait (2 %) + <b>' + fmtC(T.paxImp) + '</b> de Paxum (3,5 %)</div>';
   var eq = '<div class="ip-eq">'
-    + tuile('ip-tot', 'À garder pour les impôts', fmtC(T.imp), '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(T.moitie) + '</b></span>')
+    + tuile('ip-tot', 'À garder en crypto', fmtC(T.garde), '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(T.moitie) + '</b></span>', rel)
     + tuile('ip-pax', 'Paxum · 3,5 %', fmtC(T.pax), '<span>déjà pris par Paxum au passage en crypto : <span class="ip-rien">rien à garder</span></span>')
     + '</div>';
   var etapes = '<ol class="ip-phrase ip-etapes">'
     + '<li><b>Envoie à la modèle le montant « Reste à envoyer »</b>, pas la moitié de la crypto : sa moitié des impôts y est déjà retirée.</li>'
-    + '<li><b>Garde <span class="ip-mt">' + fmtC(T.imp) + '</span> sur le compte crypto</b> : c’est toi qui paieras les impôts, pour vous deux.</li>'
+    + '<li><b>Garde <span class="ip-mt">' + fmtC(T.garde) + '</span> sur le compte crypto</b> : retirés en liquide (−2 %), ils font les '
+    + '<span class="ip-mt">' + fmtC(T.imp) + '</span> d’impôts à payer, pour vous deux.</li>'
     + '</ol>';
   var per = '';
   if(I.periode && I.lib){
     var P = I.periode;
     var apercu = (function(){ var a = document.getElementById('kpi-apercu'); return !!(a && !a.hidden); })();
     per = '<div class="ip-per"><span class="ip-per-l">' + esc(I.lib) + '</span>'
-      + (P.imp > 0 ? '<span class="ip-per-v">impôts à garder : <b>' + fmtC(P.imp) + '</b>, dont sa moitié <b>' + fmtC(P.moitie) + '</b></span>'
+      + (P.imp > 0 ? '<span class="ip-per-v">impôts à payer : <b>' + fmtC(P.imp) + '</b> · à garder en crypto : <b>' + fmtC(P.garde)
+          + '</b>, dont sa moitié <b>' + fmtC(P.moitie) + '</b></span>'
         : '<span class="ip-per-v">aucun impôt : pas d’argent OnlyFans sur cette période</span>')
       + (apercu ? '<span class="ip-per-n">bilans enregistrés seulement</span>' : '') + '</div>';
   }

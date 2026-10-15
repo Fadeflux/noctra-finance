@@ -73,8 +73,13 @@ global._TAUX = Number(_mTaux[1]);
 // (12/10) Depuis la regle « impots + Paxum », l'enregistrement calcule le profit avec
 // `profitEntree` et ses taux : on les prend DANS la page quand ils existent (une
 // ancienne version de la page, sans eux, reste testable).
-const _mFr = SRC.match(/const _IMPOTS_OF=([0-9.]+), _PAXUM_OF=([0-9.]+);/);
-if (_mFr) { global._IMPOTS_OF = Number(_mFr[1]); global._PAXUM_OF = Number(_mFr[2]); }
+// (14/10) + `_RETRAIT_LIQUIDE` (les impots se paient en liquide, le retrait coute 2 %) :
+// fraisOF s'en sert, le faux monde doit donc l'avoir aussi (sinon ReferenceError -> temoin rouge).
+const _mFr = SRC.match(/const _IMPOTS_OF=([0-9.]+), _PAXUM_OF=([0-9.]+)(?:, _RETRAIT_LIQUIDE=([0-9.]+))?;/);
+if (_mFr) {
+  global._IMPOTS_OF = Number(_mFr[1]); global._PAXUM_OF = Number(_mFr[2]);
+  if (_mFr[3] != null) global._RETRAIT_LIQUIDE = Number(_mFr[3]);
+}
 global._currentUser = 'banc';   // la page tamponne l'auteur de chaque entree
 // (12/10, design) `quickAddSave` sort tout de suite si une fenetre de confirmation est
 // deja ouverte (`_dlgOuvert`, variable de la page). Sans elle dans le faux monde, l'appel
