@@ -8540,6 +8540,10 @@ function addModelPayment(){
   if(!amount){flashMsg('mp-msg','⚠ Entre un montant','#f87171');return;}
   const date=document.getElementById('mp-date').value||ts();
   const note=(document.getElementById('mp-note').value||'').trim();
+  // (16/10, feat8 doublon) un paiement du même montant noté dans les 48 h (base relue, mémoire, file d'attente) ? La
+  // fenêtre demande d'abord ; RIEN n'est écrit avant la réponse. « Oui, le noter » rappelle cette fonction, qui écrit
+  // alors exactement comme avant (voir « feat8 · DOUBLON » plus bas dans le script). Lecture seule : rien ne change.
+  if(typeof _dbIntercepter==='function' && _dbIntercepter(amount,date,note)) return;
   const _nv={id:_nouvelIdVirement(),date,amount,note}; virements.push(_nv);
   if(typeof _attenteNoter==='function') _attenteNoter('virements','aj',_nv);
   // ⚠️ TROIS DÉFAUTS CUMULÉS ICI, tous silencieux :
@@ -14026,6 +14030,232 @@ function _ipSvRemettre(k){
 // ── J5 · élision : « à la fin d'octobre », « le bilan d'avril » (un nom de mois après « de ») ────────────────────
 // Même règle que _deMois (« d'octobre », « d'avril », « d'août », « de septembre »), pour un NOM de mois déjà écrit.
 function _deNomMois(n){ n = String(n == null ? '' : n); return (/^[aeiou]/i.test(n) ? "d'" : 'de ') + n; }
+
+// ── feat8_doublon (16/10 : alerte « paiement déjà noté ? », idée 7) ──
+// ══ feat8 · DOUBLON : « Ce paiement est-il déjà noté ? » (16/10, idée 7 choisie par le propriétaire) ══════════════════════════
+// Quand le propriétaire (ou l'associée, depuis son téléphone) enregistre un paiement à la modèle et qu'un paiement du MÊME montant
+// (au centime) a été NOTÉ dans les 48 h d'avant — dans la base relue juste avant (n'importe quel appareil), dans la mémoire
+// de cette page ou dans la file d'attente de cet appareil —, une fenêtre demande si c'est un autre paiement.
+//   « Annuler » = le choix par défaut (bouton mis en avant et sélectionné, Échap, toucher à côté) : RIEN n'est écrit, le
+//   formulaire reste tel quel. « Oui, le noter » : addModelPayment fait EXACTEMENT ce qu'il faisait avant (file d'attente,
+//   relecture, fusion, journal), par la fonction de la page telle qu'enveloppée (feat7_mois) : rien n'est réaffecté ici.
+// Rien n'est écrit pendant la question : ni la base, ni la file d'attente, ni le journal, ni le stockage de l'appareil.
+// FENÊTRE DE TEMPS = l'HEURE DE SAISIE du paiement déjà noté, lue dans son identifiant (« v » + millisecondes en base 36,
+// fabriqué par _nouvelIdVirement sur l'appareil qui l'a noté ; il voyage avec le paiement, le même partout). « Noté dans
+// les 48 h » parle du moment où il a été noté, pas de la date choisie dans le formulaire : cette date est un jour sans
+// heure, souvent passée (« pour le 1er ») ; un paiement noté le 2 pour le 1er paraîtrait vieux de 2 à 3 jours et serait
+// manqué. Paiement ancien sans cette heure (« L-… » : noté avant le 13/09, ou repris d'une copie) : sa DATE compte, toute
+// la journée (prudent : mieux vaut une question de trop qu'un paiement compté deux fois).
+// Lecture seule : rien ne change (la page refuse déjà plus loin). Hors ligne (ou base muette 6 s) : comparé à ce que
+// l'appareil connaît + sa file, et la fenêtre dit que l'autre appareil n'a pas pu être vérifié.
+// Une erreur ICI ne bloque jamais un paiement : on retombe sur l'enregistrement d'avant (celui de final28m).
+// (Une enveloppe d'addModelPayment doit appeler la fonction enveloppée tout de suite, comme celle de feat7_mois.)
+var _DB_FENETRE = 48 * 3600 * 1000;    // 48 h
+var _DB_ATTENTE = 6000;                // relecture de la base : au-delà, « l'autre appareil n'a pas pu être vérifié »
+var _dbEnCours = null;                 // { t, phase : 'relecture' | 'question', titre } pendant une vérification
+var _dbFeu = null;                     // { sig } : feu vert pour UN enregistrement (vérifié sans doublon, ou « Oui, le noter »)
+var _dbMiens = {};                     // identifiant -> 1 : paiements notés par CETTE page (cet appareil, cette visite)
+
+// Appelée par addModelPayment, APRÈS ses contrôles (montant lu, refus E1 inchangés) et AVANT toute écriture.
+// Rend true = « je m'en occupe » (addModelPayment s'arrête sans rien écrire) ; false = enregistrer comme avant.
+function _dbIntercepter(amount, date, note){
+  try {
+    if (document.body.classList.contains('readonly')) return false;   // lecture seule : comme avant (déjà refusé plus loin)
+    var ch = _dbChamps(), sig = _dbSig(ch);
+    if (_dbFeu && _dbFeu.sig === sig) { _dbFeu = null; return false; } // vérifié, ou « Oui, le noter » : on écrit
+    if (_dbEnCoursVivant()) return true;                              // 2e toucher / Entrée pendant la vérification : ignoré
+    _dbVerifier({ amount: amount, date: date, note: note, champs: ch, sig: sig });   // (ne rejette jamais : voir plus bas)
+    return true;
+  } catch (e) {
+    try { console.warn('[doublon] vérification impossible : enregistré comme avant', e); } catch (x) {}
+    _dbEnCours = null;
+    return false;
+  }
+}
+function _dbChamps(){
+  var v = function(id){ var el = document.getElementById(id); return el ? String(el.value == null ? '' : el.value) : ''; };
+  return { a: v('mp-amount'), d: v('mp-date'), n: v('mp-note') };
+}
+function _dbSig(ch){ return [ch.a, ch.d, ch.n].join('\u0001'); }
+function _dbEnCoursVivant(){
+  var e = _dbEnCours; if (!e) return false;
+  if (e.phase === 'question') {
+    // la fenêtre est-elle encore la nôtre ? (une autre fenêtre de la page a pu prendre sa place : on repart de zéro)
+    var ov = document.getElementById('bilan-dlg'), t = ov && ov.querySelector('.bd-t');
+    return !!(ov && ov.classList.contains('open') && t && t.textContent === e.titre);
+  }
+  return (Date.now() - e.t) < _DB_ATTENTE + 4000;
+}
+async function _dbVerifier(s){
+  // `decide` : une suite a été choisie (enregistrer, ou demander). Une erreur AVANT ce choix enregistre comme avant :
+  // une panne de cette vérification ne bloque jamais un paiement (elle ne fait que ne pas poser la question).
+  var decide = false, lent = null;
+  try {
+    _dbEnCours = { t: Date.now(), phase: 'relecture' };
+    // réseau lent : on le dit (rien n'est encore noté)
+    lent = setTimeout(function(){
+      try { if (_dbEnCours && _dbEnCours.phase === 'relecture') flashMsg('mp-msg', 'Vérification des paiements déjà notés…'); } catch (e) {}
+    }, 800);
+    var base = null;
+    try { base = await _dbLireBase(); } catch (e) { base = null; }
+    clearTimeout(lent);
+    var r = null;
+    try { r = _dbChercher(s, base); } catch (e) { try { console.warn('[doublon] comparaison impossible : enregistré comme avant', e); } catch (x) {} r = null; }
+    var o = (r && typeof _fenetre === 'function') ? _dbTextes(s, r, !base) : null;
+    if (!o) { _dbEnCours = null; decide = true; _dbNoter(s); return; }
+    var titre = o.titre;
+    try { if (typeof _insecable === 'function') titre = _insecable(o.titre); } catch (e) {}
+    _dbEnCours = { t: Date.now(), phase: 'question', titre: titre };
+    var rep = null, p = null;
+    try {
+      p = _fenetre({ ico: 'alerte', ton: 'avert', titre: o.titre, texte: o.texte, detail: o.detail,
+        // ordinateur : « Annuler » à droite, en avant ; téléphone (boutons empilés à l'envers) : « Annuler » en haut
+        boutons: [{ l: 'Oui, le noter', v: 'oui' }, { l: 'Annuler', v: 'annuler', cls: 'pri' }] });
+    } catch (e) { p = null; }
+    if (!p || typeof p.then !== 'function') {
+      try { console.warn('[doublon] fenêtre impossible : enregistré comme avant'); } catch (x) {}
+      _dbEnCours = null; decide = true; _dbNoter(s); return;
+    }
+    decide = true;                                    // la question est posée : seule la réponse décide
+    // (la fenêtre de la page ne rejette jamais ; si elle le faisait, c'est qu'elle n'a pas pu s'afficher : comme avant)
+    try { rep = await p; } catch (e) { rep = { choix: 'oui', panne: true }; try { console.warn('[doublon] fenêtre en panne : enregistré comme avant', e); } catch (x) {} }
+    if (_dbEnCours && _dbEnCours.phase === 'question') _dbEnCours = null;
+    if (rep && rep.choix === 'oui') _dbNoter(s);
+    // « Annuler », Échap, toucher à côté : RIEN n'est écrit ; le formulaire garde ce qui est tapé (corriger, ou « Fermer »)
+  } catch (e) {
+    try { clearTimeout(lent); } catch (x) {}
+    _dbEnCours = null;
+    try { console.warn('[doublon]', e); } catch (x) {}
+    if (!decide) { try { _dbNoter(s); } catch (x) { try { console.warn('[doublon]', x); } catch (y) {} } }
+  }
+}
+// L'enregistrement d'avant, tel quel : la fonction de la page (et ses enveloppes), avec les champs tels qu'au toucher
+// d'« Enregistrer » (ce que la fenêtre a montré est ce qui est noté).
+function _dbNoter(s){
+  try {
+    var a = document.getElementById('mp-amount'), d = document.getElementById('mp-date'), n = document.getElementById('mp-note');
+    if (a && a.value !== s.champs.a) a.value = s.champs.a;
+    if (d && d.value !== s.champs.d) d.value = s.champs.d;
+    if (n && n.value !== s.champs.n) n.value = s.champs.n;
+  } catch (e) {}
+  var avant = {};
+  try { (virements || []).forEach(function(v){ if (v && v.id) avant[String(v.id)] = 1; }); } catch (e) {}
+  var feu = { sig: s.sig }; _dbFeu = feu;
+  try { addModelPayment(); }
+  finally { if (_dbFeu === feu) _dbFeu = null; }        // pas atteint (refus de la page) : le feu vert ne sert à rien d'autre
+  try { (virements || []).forEach(function(v){ if (v && v.id && !avant[String(v.id)]) _dbMiens[String(v.id)] = 1; }); } catch (e) {}
+}
+// Relit les paiements EN BASE (et leurs pierres tombales) ; null si hors ligne, refusé ou trop lent.
+function _dbLireBase(){
+  if (typeof apiFetch !== 'function') return Promise.resolve(null);
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return Promise.resolve(null);
+  return new Promise(function(fin){
+    var fait = false;
+    var t = setTimeout(function(){ if (!fait) { fait = true; fin(null); } }, _DB_ATTENTE);
+    Promise.resolve().then(function(){ return apiFetch('/api/settings?cles=virements,virements_supprimes'); }).then(
+      function(d){ if (fait) return; fait = true; clearTimeout(t); fin((d && typeof d === 'object') ? d : null); },
+      function(){ if (fait) return; fait = true; clearTimeout(t); fin(null); });
+  });
+}
+// Heure de saisie d'un paiement : celle de son identifiant (« v » + Date.now() en base 36 + hasard) ; null si inconnue.
+function _dbHeureSaisie(v){
+  var m = /^v([0-9a-z]{8})[0-9a-z]{0,8}$/.exec(String((v && v.id) || ''));
+  if (!m) return null;
+  var t = parseInt(m[1], 36);
+  return (isFinite(t) && t >= Date.UTC(2025, 0, 1) && t <= Date.now() + 864e5) ? t : null;
+}
+function _dbJour(d){
+  var t = new Date(String(d || '').slice(0, 10) + 'T00:00:00').getTime();
+  return isFinite(t) ? t : null;
+}
+// Le paiement du même montant noté dans les 48 h, s'il y en a un (le plus récent) : { v, quand, ou, attente, n } ou null.
+function _dbChercher(s, base){
+  var cts = Math.round(Math.abs(Number(s.amount) || 0) * 100);
+  if (!cts) return null;
+  var now = Date.now();
+  var lireL = function(t){ try { var x = JSON.parse(t == null ? '[]' : t); return Array.isArray(x) ? x : []; } catch (e) { return []; } };
+  var ids = function(l){ return (typeof _virIds === 'function') ? _virIds(l) : l; };
+  var cle = function(v){ return String(_cleVirement(v)); };
+  var morts = {}, enBase = null, vieilles = {}, liste = [];
+  if (base) {
+    var l = lireL(base.virements), tb = lireL(base.virements_supprimes);
+    var A = (typeof _virAppliquerTombes === 'function') ? _virAppliquerTombes(l, tb) : { liste: ids(l), parId: {}, vieilles: {} };
+    Object.keys(A.parId || {}).forEach(function(k){ morts[k] = 1; });
+    if (typeof _virAppliquerTombes !== 'function') tb.forEach(function(t){ if (t && t.k != null && !t.avant) morts[String(t.k)] = 1; });
+    vieilles = A.vieilles || {};
+    enBase = {};
+    (A.liste || []).forEach(function(v){ if (v && typeof v === 'object') { enBase[cle(v)] = 1; liste.push({ v: v, ou: 'base' }); } });
+  }
+  try { if (typeof _VIREMENTS_SUPPRIMES !== 'undefined' && _VIREMENTS_SUPPRIMES) _VIREMENTS_SUPPRIMES.forEach(function(k){ morts[String(k)] = 1; }); } catch (e) {}
+  var file = [];
+  try {
+    if (typeof _fileLire === 'function') _fileLire().forEach(function(op){
+      if (!op || op.t !== 'liste' || op.cle !== 'virements') return;
+      (op.sup || []).forEach(function(x){ if (x) morts[cle(x)] = 1; });
+      (op.aj || []).forEach(function(x){ if (x && typeof x === 'object') file.push(x); });
+    });
+  } catch (e) {}
+  // (une ligne de la file marquée « vue en base » n'attend plus que le dernier regard : elle est dans le cloud)
+  ids(file).forEach(function(v){ liste.push({ v: v, ou: v._vu ? 'fileVu' : 'file' }); });
+  ids(((typeof virements !== 'undefined' && virements) || []).slice()).forEach(function(v){ liste.push({ v: v, ou: 'memoire' }); });
+  var vus = {}, cands = [];
+  liste.forEach(function(o){
+    var v = o.v; if (!v || typeof v !== 'object') return;
+    var k = cle(v);
+    if (morts[k]) return;
+    if (o.ou !== 'base' && typeof _virTombe === 'function' && _virTombe(v)) return;     // supprimé (pierre tombale connue ici)
+    // (R2) ligne ancienne absente de la base, retirée par une ancienne pierre tombale de son contenu
+    if (enBase && o.ou !== 'base' && !enBase[k] && typeof _virAncien === 'function' && _virAncien(v) && vieilles[_virSig(v)]) return;
+    var c = vus[k];
+    if (!c) { c = vus[k] = { v: v, k: k }; cands.push(c); }
+    c[o.ou] = true;
+  });
+  var res = [];
+  cands.forEach(function(c){
+    if (Math.round(Math.abs(Number(c.v.amount) || 0) * 100) !== cts) return;
+    var q = _dbHeureSaisie(c.v), recent;
+    if (q != null) recent = q >= now - _DB_FENETRE && q <= now + 864e5;
+    else { var j = _dbJour(c.v.date); recent = j != null && j + 864e5 > now - _DB_FENETRE && j <= now + 864e5; }   // toute la journée
+    if (!recent) return;
+    // qui / où : noté par cette page (ou en attente dans sa file) ; vu SEULEMENT dans la base relue = noté ailleurs depuis
+    // le chargement (un autre appareil, ou un autre onglet) ; sinon on ne sait pas (le paiement ne garde pas son auteur)
+    var ici = !!(_dbMiens[c.k] || c.file || c.fileVu);
+    var ou = ici ? 'ici' : ((enBase && c.base && !c.memoire) ? 'ailleurs' : '');
+    res.push({ v: c.v, quand: q, ou: ou, moi: !!_dbMiens[c.k], attente: !!(c.file && !c.base), tri: q != null ? q : _dbJour(c.v.date) });
+  });
+  if (!res.length) return null;
+  res.sort(function(a, b){ return b.tri - a.tri; });
+  var r = res[0]; r.n = res.length;
+  return r;
+}
+// « aujourd'hui à 10:42 », « hier à 21:05 », « le 14 oct. à 09:12 »
+function _dbQuand(t){
+  var d = new Date(t), h = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  var j0 = new Date(); j0.setHours(0, 0, 0, 0);
+  var j = new Date(d.getTime()); j.setHours(0, 0, 0, 0);
+  var ecart = Math.round((j0.getTime() - j.getTime()) / 864e5);
+  return (ecart === 0 ? 'aujourd’hui' : ecart === 1 ? 'hier' : 'le ' + _jourCourt(_ymd(d))) + ' à ' + h;
+}
+function _dbCourt(t){ t = String(t || '').trim(); return t.length > 48 ? t.slice(0, 47) + '…' : t; }
+function _dbTextes(s, r, horsLigne){
+  var nb = ' ', mt = fmtC(s.amount);
+  var nom = (typeof _currentUser !== 'undefined' && _currentUser && _currentUser !== 'Moi') ? String(_currentUser) : '';
+  var qui = r.ou === 'ici' ? ((r.moi && nom) ? 'par ' + nom + ', sur cet appareil' : 'sur cet appareil')
+          : r.ou === 'ailleurs' ? 'sur un autre appareil' : '';
+  var titre = (r.quand != null
+      ? 'Un paiement de ' + mt + ' a déjà été noté ' + _dbQuand(r.quand)
+      : 'Un paiement de ' + mt + ' daté du ' + _jourCourt(r.v.date) + ' est déjà noté')
+    + (qui ? ' (' + qui + ')' : '') + ' — c’est un autre paiement' + nb + '?';
+  var texte = (horsLigne ? 'Pas de réseau' + nb + ': l’autre appareil n’a pas pu être vérifié, seulement ce que celui-ci connaît. ' : '')
+    + 'Si c’est le même, choisis «' + nb + 'Annuler' + nb + '»' + nb + ': rien ne sera noté.';
+  var jour = function(d){ return /^\d{4}-\d{2}-\d{2}/.test(String(d || '')) ? 'envoyé le ' + _jourCourt(d) : 'date inconnue'; };
+  var ligne = function(d, n){ return jour(d) + ' · ' + (String(n || '').trim() ? '«' + nb + _dbCourt(n) + nb + '»' : 'sans note'); };
+  var detail = 'Déjà noté' + nb + ': ' + ligne(r.v.date, r.v.note) + (r.attente ? ' · pas encore dans le cloud' : '')
+    + '\nCelui-ci' + nb + ': ' + ligne(s.date, s.note)
+    + (r.n > 1 ? '\n' + r.n + ' paiements de ' + mt + ' notés en 48' + nb + 'h' : '');
+  return { titre: titre, texte: texte, detail: detail };
+}
+// ══ fin feat8 · DOUBLON ══
 
 // ── feat7_mois (16/10 : correctifs du mois d’André, D1 D2 D3 D5 D6 D9 D10 D11 D12 D13 D14) ──
 // ══ feat7_mois (16/10) : les correctifs du mois d'André (relecture « le mois vécu au téléphone », défauts 1, 2, 3, 5, 6,
