@@ -4511,6 +4511,35 @@ body.skin-melange #hist-panel .tx-mod.tx-mod-ic svg{display:block;width:18px;hei
 /* ── P1 · le formulaire de paiement dit d'où vient le montant proposé ── */
 #model-share-panel .ms-prop{flex:1 1 100%;margin:0;font-size:13px;line-height:1.45;color:var(--ink-2)}
 
+
+/* ── feat6_p4 (Impôts repliés au téléphone) ── */
+/* ══ P4 (16/10) : au TÉLÉPHONE (640 px et moins), « Impôts à garder de côté » replié sur UNE ligne + « Voir le calcul ».
+   Ordinateur et tablette : la ligne et le bouton n'existent pas à l'écran, le bloc est celui d'avant.
+   Replié : le titre et son sous-titre (« depuis le début… » : le chiffre n'est pas celui du mois), la ligne (bandeau
+   ardoise, la couleur des impôts, comme la tuile « À garder en crypto ») et le bouton ; le relevé est CACHÉ, jamais
+   retiré : « Voir le calcul » le rend tel quel, sous le bouton, qui ne bouge pas. Jetons du thème seulement. ══ */
+#impots-panel .ip-repli{display:none}
+@media (max-width:640px){
+  body.skin-melange #impots-panel:not(.ip-0){grid-template-areas:"t" "r" "e" "x" "p" "n"}
+  body.skin-melange #impots-panel.ip-suivi-on:not(.ip-0){grid-template-areas:"t" "r" "e" "s" "x" "p" "n"}
+  body.skin-melange #impots-panel.ip-replie.ip-panel:not(.ip-0){grid-template-areas:"t" "r"}
+  body.skin-melange #impots-panel.ip-replie:not(.ip-0) > :not(.ip-tete):not(.ip-repli){display:none}
+  body.skin-melange #impots-panel .ip-repli{grid-area:r;display:flex;flex-direction:column;gap:10px;min-width:0}
+  body.skin-melange #impots-panel .ip-repli-l{margin:0;padding:12px 14px;border-radius:var(--mx-r-md);
+    background-color:var(--bc-fr-m);background-image:linear-gradient(155deg,var(--bc-fr-a),var(--bc-fr-b));
+    box-shadow:var(--mx-lift),inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 12%,transparent);
+    font-size:15px;line-height:1.45;color:var(--bc-fr-on2);overflow-wrap:break-word}
+  body.skin-melange #impots-panel .ip-repli-l b{font-weight:700;color:var(--bc-fr-on)}
+  body.skin-melange #impots-panel .ip-repli-m{white-space:nowrap}
+  body.skin-melange #impots-panel .ip-repli-b{width:100%;min-height:44px;gap:8px}
+  body.skin-melange #impots-panel .ip-repli-b svg{width:15px;height:15px;flex:none;color:var(--ink-3)}
+  body.skin-melange #impots-panel .ip-repli-b .cv{display:inline-flex}
+  body.skin-melange #impots-panel .ip-repli-b[aria-expanded="true"] .cv{transform:rotate(180deg)}
+  body.skin-melange #impots-panel .ip-repli-b[aria-expanded="true"]{background:var(--surf-2);border-color:var(--line-3)}
+}
+@media (max-width:640px) and (prefers-reduced-motion:no-preference){
+  body.skin-melange #impots-panel .ip-repli-b .cv{transition:transform var(--t-fast,.15s) var(--ease,ease)}
+}
 </style>
 </head>
 <body class="skin-melange">
@@ -9843,7 +9872,7 @@ function renderImpots(){
       + (apercu ? '<span class="ip-per-n">bilans enregistrés seulement</span>' : '') + '</div>';
   }
   var note = '<div class="ip-note">Les impôts déjà payés ne se notent pas encore ici : ce total compte tout, depuis ton premier bilan.</div>';
-  el.innerHTML = _chNb(tete + eq + etapes + per + note);
+  var _ipFoc = _ipRepliFocus(); el.innerHTML = _chNb(tete + _ipRepliHtml(T) + eq + etapes + per + note); _ipRepliAppliquer(el, _ipFoc);
 }
 // typographie : espace insécable devant « : » et dans « … » (plus de deux-points seul en début de ligne)
 function _chNb(h){ return String(h).replace(/ :/g, ' :').replace(/« /g, '« ').replace(/ »/g, ' »'); }
@@ -12558,6 +12587,7 @@ function _impDecorer(){
   var d=document.createElement('div'); d.className='ip-suivi'; d.id='ip-suivi';
   d.innerHTML=_chNb(_impSuiviHtml(S));
   el.insertBefore(d, el.querySelector('.ip-per') || note || null);
+  try{ _ipRepliSuivi(el, S); }catch(e){ console.warn('impôts repliés', e); }
 }
 
 // ── 8. Redessin : après chaque uk() (via le rappel), chaque renderModelShare() (paiements), chaque renderImpots() ──
@@ -12765,6 +12795,89 @@ function _rk3Mois(R, tuile){
     '<b>' + _mS(m3 / 100) + '</b> en moyenne par mois ' + _rkPlage(r3) + ', contre <b>' + _mS(ma / 100) + '</b> ' + _rkPlage(a3));
 }
 
+
+// ── feat6_p4 (Impôts repliés au téléphone) ──
+// ══ P4 (16/10) : au TÉLÉPHONE, « Impôts à garder de côté » replié sur UNE ligne + « Voir le calcul » ══
+// Présentation seule : AUCUN chiffre n'est calculé ici. La ligne reprend les MÊMES variables que le bloc, au moment
+// même où le bloc les écrit :
+//   - aucun paiement d'impôts noté : T.garde et T.moitie de renderImpots (la tuile « À garder en crypto » et sa
+//     pastille « dont sa moitié ») ;
+//   - suivi commencé (un paiement noté) : S.garde et S.reste de _impDecorer (le geste ② « Garde … sur le compte crypto »).
+// « Voir le calcul » déplie le relevé TEL QUEL (rien retiré, rien recalculé) : seule une classe change sur le bloc.
+// Ordinateur et tablette (plus de 640 px) : rien ne change, la ligne et le bouton n'y sont pas affichés.
+// Le choix ouvert / fermé est retenu sur CET appareil (cleLocale('impots_calcul'), du confort : aucun chiffre) ;
+// replié par défaut. Bloc sans OnlyFans (« Aucun impôt à garder… ») : déjà court, ni ligne ni bouton.
+var _ipCalcEtat;                                   // true : ouvert ; autre chose : pas encore lu sur l'appareil
+function _ipCalcOuvert(){
+  if(_ipCalcEtat !== true && _ipCalcEtat !== false){
+    _ipCalcEtat = false;
+    try{ _ipCalcEtat = localStorage.getItem(cleLocale('impots_calcul')) === '1'; }catch(e){}
+  }
+  return _ipCalcEtat;
+}
+// la ligne, sans suivi : les chiffres de la tuile « À garder en crypto » (T.garde) et de sa pastille (T.moitie)
+function _ipRepliHtml(T){
+  try{
+    if(!T || !(T.imp > 0)) return '';
+    var o = _ipCalcOuvert(), chev = (typeof ICO === 'object' && ICO && ICO.chev) || '', recu = (typeof ICO === 'object' && ICO && ICO.recu) || '';
+    return '<div class="ip-repli">'
+      + '<p class="ip-repli-l" id="ip-repli-l">Garde <b class="ip-mt">' + fmtC(T.garde) + '</b> en crypto pour les impôts '
+      + '<span class="ip-repli-m">(dont sa moitié <b class="ip-mt">' + fmtC(T.moitie) + '</b>)</span></p>'
+      + '<button type="button" class="btn-sec ip-repli-b" id="ip-repli-b" aria-expanded="' + (o ? 'true' : 'false') + '" onclick="ipCalcBasculer()">'
+      + recu + '<span class="ip-repli-bt">' + (o ? 'Masquer le calcul' : 'Voir le calcul') + '</span><span class="cv">' + chev + '</span></button>'
+      + '</div>';
+  }catch(e){ try{ console.warn('impôts repliés', e); }catch(_){} return ''; }
+}
+// la ligne, suivi commencé : le chiffre du geste ② (S.garde, pour S.reste d'impôts qu'il reste à payer)
+function _ipRepliSuivi(el, S){
+  var l = el && el.querySelector('#ip-repli-l'); if(!l || !S) return;
+  l.innerHTML = _chNb(S.reste > 0
+    ? 'Garde <b class="ip-mt">' + fmtC(S.garde) + '</b> en crypto pour les <b class="ip-mt">' + fmtC(S.reste / 100) + '</b> d’impôts qu’il reste à payer'
+    : '<b>Rien à garder pour les impôts en ce moment</b> : tout ce qui est dû est payé');
+  l.classList.add('ip-repli-suivi');
+  _ipRepliControles(el);
+}
+// le bouton dit ce qu'il ouvre (aria-controls) : les parties du relevé, chacune avec son id
+// (la liste est DANS la fonction : le bloc peut se dessiner avant que la fin du script ait tourné)
+function _ipRepliControles(el){
+  var b = el && el.querySelector('#ip-repli-b'); if(!b) return;
+  var ids = [];
+  [['ip-eq', 'ip-calc-tuiles'], ['ip-suivi', 'ip-suivi'], ['ip-etapes', 'ip-calc-gestes'], ['ip-per', 'ip-calc-periode'], ['ip-note', 'ip-calc-note']].forEach(function(x){
+    var c = null;
+    for(var i = 0; i < el.children.length; i++){ if(el.children[i].classList.contains(x[0])){ c = el.children[i]; break; } }
+    if(!c) return;
+    if(!c.id) c.id = x[1];
+    ids.push(c.id);
+  });
+  if(ids.length) b.setAttribute('aria-controls', ids.join(' ')); else b.removeAttribute('aria-controls');
+}
+// le bouton avait-il le focus avant que le bloc se redessine ? (il le retrouve après)
+function _ipRepliFocus(){
+  try{ var a = document.activeElement; return !!(a && a.id === 'ip-repli-b'); }catch(e){ return false; }
+}
+// après chaque dessin du bloc : replié ou non, selon le choix gardé (jamais replié sans le bouton pour l'ouvrir)
+function _ipRepliAppliquer(el, foc){
+  try{
+    var b = el && el.querySelector('#ip-repli-b');
+    if(!b){ if(el) el.classList.remove('ip-replie'); return; }
+    var o = _ipCalcOuvert();
+    el.classList.toggle('ip-replie', !o);
+    b.setAttribute('aria-expanded', o ? 'true' : 'false');
+    _ipRepliControles(el);
+    if(foc){ try{ b.focus({preventScroll: true}); }catch(e){} }
+  }catch(e){ try{ console.warn('impôts repliés', e); }catch(_){} }
+}
+// « Voir le calcul » / « Masquer le calcul » : une classe et le bouton, rien d'autre (aucun redessin, aucun calcul)
+function ipCalcBasculer(){
+  var el = document.getElementById('impots-panel'), b = document.getElementById('ip-repli-b');
+  if(!el || !b) return;
+  var o = !_ipCalcOuvert();
+  _ipCalcEtat = o;
+  try{ if(o) localStorage.setItem(cleLocale('impots_calcul'), '1'); else localStorage.removeItem(cleLocale('impots_calcul')); }catch(e){}
+  el.classList.toggle('ip-replie', !o);
+  b.setAttribute('aria-expanded', o ? 'true' : 'false');
+  var t = b.querySelector('.ip-repli-bt'); if(t) t.textContent = o ? 'Masquer le calcul' : 'Voir le calcul';
+}
 </script>
 </body>
 </html>
