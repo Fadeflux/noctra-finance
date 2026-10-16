@@ -111,12 +111,16 @@ essayer('l’effacement se laisse extraire', () => {
     key: (i) => [...m.keys()][i] || null, get length() { return m.size; } };
   const f = new Function('localStorage', code + '\nreturn { _effacerCopiesLocales, cleLocale, SUPABASE_URL };')(localStorage);
   const ref = 'sb-' + new URL(f.SUPABASE_URL).hostname.split('.')[0] + '-';
-  const donnees = ['ents', 'vas', 'virements', 'modeles', 'editlog', 'snapshot_local'].map(f.cleLocale).concat(['ccn_token', 'ccn_mail', 'ccn_user', 'ccn_role', ref + 'auth-token']);
-  const confort = ['masque', 'periode', 'recap_vue', 'rappel_bilan', 'pb_defaults', 'a_envoyer'].map(f.cleLocale)
+  // (16/10) + 'impots_payes' : la copie locale des impôts payés notés (montants + dates), écrite par saveData depuis la
+  // liste du mois ; elle restait dans le navigateur après « Se déconnecter » (vu le 16/10 : absente de _CLES_COPIES).
+  const donnees = ['ents', 'vas', 'virements', 'modeles', 'editlog', 'snapshot_local', 'impots_payes'].map(f.cleLocale).concat(['ccn_token', 'ccn_mail', 'ccn_user', 'ccn_role', ref + 'auth-token']);
+  // (16/10) + 'impots_calcul' : le choix « Voir le calcul » des impôts au téléphone (P4), du confort sans chiffre : GARDÉ
+  const confort = ['masque', 'periode', 'recap_vue', 'rappel_bilan', 'pb_defaults', 'a_envoyer', 'impots_calcul'].map(f.cleLocale)
     .concat(['ccn_theme', 'ccn_tab', 'ccn_ro', 'ccn_ident', 'fin_autre_ents', 'crm_ents', 'sb-autreprojet-auth-token']);
   donnees.concat(confort).forEach((k) => localStorage.setItem(k, '[1]'));
   f._effacerCopiesLocales();
   V('copies des comptes et session effacées', donnees.every((k) => !m.has(k)), donnees.filter((k) => m.has(k)).join(', '));
+  V('la copie des impôts payés (montants, dates) est effacée aussi', !m.has(f.cleLocale('impots_payes')), f.cleLocale('impots_payes') + ' encore là');
   V('thème, confort, file d’envoi, lecture seule et AUTRES sites gardés', confort.every((k) => m.has(k)), confort.filter((k) => !m.has(k)).join(', '));
 });
 

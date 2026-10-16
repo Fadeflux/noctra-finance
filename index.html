@@ -4695,6 +4695,51 @@ body.readonly .dash > .topbar .tb-etat:not(.ko),body.readonly .dash > .topbar .t
 #page-recap:has(.nfg-recap > .nfg-vide) .rc-exp{display:none}
 #page-recap .nfg-recap:has(> .nfg-vide){height:120px}
 
+
+/* ── feat3_liste (retouche du 16/10 : lignes faites au téléphone + déconnexion) ── */
+/* ══ LA LISTE DU MOIS, retouche du 16/10 : au téléphone, le bouton du mois remonte au premier écran ══
+   Une ligne FAITE = une coche verte + un titre court, rangées dans l'en-tête (à la place de « pour clore septembre ») ;
+   le détail revient au toucher du résumé (classe lm-voir). Une ligne À FAIRE garde tout (échéance, montant, détail,
+   bouton de 44 px). Les marges intérieures se resserrent un peu. Ordinateur et tablette : rien ne change. */
+#liste-mois .lm-faits{display:none}
+@media (max-width:640px){
+  #liste-mois{padding:12px 14px 2px}
+  #liste-mois.lm-tout{padding-bottom:12px}
+  #liste-mois .lm-l{margin-top:8px}
+  #liste-mois .lm-i{padding:10px 0}
+  #liste-mois .lm-q{row-gap:2px}
+  #liste-mois .lm-n{margin-top:2px}
+  #liste-mois .lm-a,#liste-mois .lm-f{margin-top:8px}
+  /* l'en-tête : le compte (« 2/3 ») suit le titre, pour laisser toute la largeur au résumé dessous */
+  #liste-mois .lm-tete{display:grid;grid-template-columns:auto auto minmax(0,1fr);grid-template-areas:"i t k" "i s s" "i f f";
+    column-gap:10px;row-gap:0;align-items:center}
+  #liste-mois .lm-tx{display:contents}
+  #liste-mois .lm-ico{grid-area:i;margin-right:2px}
+  #liste-mois .lm-t{grid-area:t;min-width:0}
+  #liste-mois .lm-s{grid-area:s;min-width:0}
+  #liste-mois .lm-compte{grid-area:k;justify-self:start;padding:0 8px;font-size:14px;line-height:21px}
+  #liste-mois .lm-compte span{font-size:12px}
+  /* les lignes faites : rangées dans le résumé tant qu'on n'a pas demandé le détail */
+  #liste-mois:not(.lm-voir) .lm-l > .lm-fait{display:none}
+  #liste-mois .lm-s.lm-s-redite{display:none}
+  /* cible au doigt de 45 px de haut (13 px de marge intérieure dessus et dessous, rendus par une marge négative) :
+     le bouton est grand, l'en-tête ne grandit pas */
+  #liste-mois .lm-faits{grid-area:f;justify-self:start;position:relative;z-index:1;display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;
+    max-width:100%;margin:-13px 0;padding:13px 0;border:0;border-radius:8px;background:none;box-shadow:none;
+    font-family:inherit;font-size:13px;line-height:19px;font-weight:500;color:var(--ink-2);text-align:left;cursor:pointer;
+    -webkit-tap-highlight-color:transparent}
+  #liste-mois .lm-fc{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+  #liste-mois .lm-fc svg{flex:none;width:12px;height:12px;color:var(--pos)}
+  #liste-mois .lm-chev{display:inline-flex;align-items:center;color:var(--ink-3)}
+  #liste-mois .lm-chev svg{width:14px;height:14px;transition:transform var(--t-fast) var(--ease)}
+  #liste-mois.lm-voir .lm-chev svg{transform:rotate(180deg)}
+  /* l'anneau du clavier entoure le texte, pas la grande cible */
+  #liste-mois .lm-faits:focus-visible{outline:none}
+  #liste-mois .lm-faits:focus-visible::before{content:"";position:absolute;top:11px;bottom:11px;left:-4px;right:-4px;border-radius:6px;
+    box-shadow:0 0 0 2px var(--acc);pointer-events:none}
+}
+@media (max-width:640px) and (prefers-reduced-motion:reduce){#liste-mois .lm-chev svg{transition:none}}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -11021,7 +11066,8 @@ async function _attendreCalme(){
 
 // ── Déconnexion (S-5) ──
 // Copies des COMPTES gardées par ce navigateur (cleLocale) et traces de session : effacées.
-var _CLES_COPIES = ['ents', 'vas', 'virements', 'modeles', 'editlog', 'snapshot_local'];
+// (16/10) + 'impots_payes' : la copie locale des impôts payés notés (montants, dates), écrite par saveData.
+var _CLES_COPIES = ['ents', 'vas', 'virements', 'modeles', 'editlog', 'snapshot_local', 'impots_payes'];
 var _CLES_SESSION = ['ccn_token', 'ccn_mail', 'ccn_user', 'ccn_role'];
 // GARDÉES : ccn_theme, ccn_tab, ccn_ro (le garde-fou de lecture seule de cet appareil), ccn_ident (pré-remplir
 // l'identifiant), cleLocale('masque' | 'periode' | 'recap_vue' | 'rappel_bilan' | 'pb_defaults') : du confort, aucun
@@ -12458,7 +12504,7 @@ function _lmLigneBilan(F){
     if(r && r.type==='fin'){
       L.fait=false; L.etat=e ? 'à mettre à jour' : 'à saisir';
       L.sous=rapIci ? 'voir le rappel plus haut' : (e ? (maj ? 'dernière mise à jour '+maj : 'aucune mise à jour notée dans l’Historique') : 'pas encore de bilan ce mois-ci');
-    } else { L.fait=true; L.etat='à jour'; L.sous=maj ? 'mis à jour '+maj : ''; }
+    } else { L.fait=true; L.etat='à jour'; L.court='Bilan à jour'; L.sous=maj ? 'mis à jour '+maj : ''; }
     return L;
   }
   if(!e) return null;
@@ -12470,7 +12516,7 @@ function _lmLigneBilan(F){
   }
   // même test que _bilanNonFinalise (dernière mise à jour notée APRÈS la fin du mois), pour le mot seulement
   var t=_tsMajBilan(e), finM=new Date(+ym.slice(0,4), +ym.slice(5,7), 1).getTime();
-  L.fait=true; L.etat=(t && t.getTime()>=finM) ? 'finalisé' : 'à jour';
+  L.fait=true; L.etat=(t && t.getTime()>=finM) ? 'finalisé' : 'à jour'; L.court='Bilan '+L.etat;
   L.sous=maj ? (L.etat==='finalisé' ? 'mis à jour ' : 'dernière mise à jour ')+maj : '';
   return L;
 }
@@ -12498,6 +12544,7 @@ function _lmLigneModele(F){
   var depuis=_lmJour(apres,1);
   var envoye=!F.fin && (virements||[]).some(function(v){ return String(v.date||'')>=depuis && (v.amount||0)>0; });
   L.fait=true; L.titre=envoye ? 'Part '+_deMois(F.ym)+' envoyée' : 'Rien à envoyer à la modèle pour '+_nomMois(F.ym);
+  L.court=envoye ? 'Part envoyée' : 'Rien à envoyer';   // (16/10) titre court : « envoyer » = la part de la modèle, partout sur le site
   if(X<=-0.005) L.sous=P.paid>0 ? 'tu as envoyé <b>'+fmtC(-X)+'</b> de plus que sa part : à déduire de ton prochain envoi' : 'rien à lui envoyer : c’est une perte';
   else L.sous=envoye ? 'rien à lui envoyer de plus' : (F.fin ? 'à ce jour' : 'sa part des mois terminés est réglée');
   return L;
@@ -12511,13 +12558,13 @@ function _lmLigneImpots(F){
   if(paye>0 && paye>=du){
     var l=(impotsPayes||[]).filter(function(p){ return _impValide(p) && p.mois===F.ym; })
       .sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
-    L.fait=true; L.titre='Impôts '+_deMois(F.ym)+' payés'; L.montant=paye/100; L.date='';
+    L.fait=true; L.titre='Impôts '+_deMois(F.ym)+' payés'; L.montant=paye/100; L.date=''; L.court='Impôts payés';
     L.sous='payé le '+l.map(function(p){ return _jourCourt(p.date); }).filter(function(x,i,t){ return t.indexOf(x)===i; }).join(' et le ')
       +(paye>du ? ' · <b>'+fmtC((paye-du)/100)+'</b> de plus que l’impôt'+(du>0 ? ' ('+'<b>'+fmtC(du/100)+'</b>)' : '') : '');
     return L;
   }
   if(du===0){
-    L.fait=true; L.titre='Pas d’impôts '+_deMois(F.ym); L.date='';
+    L.fait=true; L.titre='Pas d’impôts '+_deMois(F.ym); L.date=''; L.court='Pas d’impôts';
     L.sous=F.fin ? 'pour l’instant : aucun net OnlyFans ce mois-ci' : 'aucun net OnlyFans en '+_nomMois(F.ym);
     return L;
   }
@@ -12603,18 +12650,21 @@ function _lmHtml(E){
   var fin=F.reste===0 ? 'ce soir' : (F.reste===1 ? 'demain' : 'dans '+F.reste+' jours');
   var sous=E.tout ? 'tout est fait' : (F.fin ? _majuscule(_nomMois(F.ym))+' finit '+fin : 'pour clore '+_nomMois(F.ym));
   var flash=_lmFlash ? '<div class="lm-flash lm-flash-'+_lmFlash.cls+'" role="status">'+(_lmFlash.cls==='ok' ? _LM_I.coche : (_lmFlash.cls==='ko' ? _LM_I.alerte : ''))+'<span>'+_lmFlash.t+'</span></div>' : '';
+  var faits=E.tout ? [] : E.lignes.filter(function(l){ return l.fait; });
+  var resume=faits.length ? _lmResumeHtml(faits) : '';                         // (16/10) téléphone seulement
   var tete='<div class="lm-tete"><span class="lm-ico" aria-hidden="true">'+(E.tout ? _LM_I.coche : _LM_I.liste)+'</span>'
-    +'<div class="lm-tx"><div class="lm-t" id="lm-t">'+esc('La liste '+_deMois(F.ym))+'</div><div class="lm-s">'+esc(sous)+'</div></div>'
+    +'<div class="lm-tx"><div class="lm-t" id="lm-t">'+esc('La liste '+_deMois(F.ym))+'</div>'
+    +'<div class="lm-s'+(resume && !F.fin ? ' lm-s-redite' : '')+'">'+esc(sous)+'</div>'+resume+'</div>'
     +'<span class="lm-compte" role="img" aria-label="'+E.faites+' sur '+n+' faites">'+E.faites+'<span>/'+n+'</span></span></div>';
   if(E.tout) return _chNb(tete+flash);
-  return _chNb(tete+flash+'<ol class="lm-l">'+E.lignes.map(_lmLi).join('')+'</ol>');
+  return _chNb(tete+flash+'<ol class="lm-l" id="lm-l">'+E.lignes.map(_lmLi).join('')+'</ol>');
 }
 function _majListe(){
   var box=document.getElementById('liste-mois'); if(!box) return;
   var E=null; try{ E=_lmEtat(); }catch(err){ console.warn('liste du mois', err); E=null; }
   if(!E){ _lmForm=null; if(!box.hidden){ box.hidden=true; box.innerHTML=''; box._h=''; } return; }
   var h=_lmHtml(E);
-  box.classList.toggle('lm-tout', E.tout);
+  box.classList.toggle('lm-tout', E.tout); box.classList.toggle('lm-voir', !!_lmVoir);
   if(box._h!==h){
     // le formulaire ouvert garde ce qui est tapé (un redessin ne doit jamais effacer une saisie)
     var mt=document.getElementById('lm-f-mt'), dt=document.getElementById('lm-f-date'), foc=document.activeElement;
@@ -13400,6 +13450,29 @@ function _insecable(s){
       function(m, j, mo, a){ return j + _NB + mo + (a ? _NB + a : ''); })
     .replace(/\b(net|bénéfice) ([−-]?\$)/g, '$1' + _NB + '$2');
 }
+
+
+// ── feat3_liste (retouche du 16/10 : lignes faites au téléphone + déconnexion) ──
+// ══ (16/10) LA LISTE DU MOIS, retouche : au téléphone, les lignes FAITES tiennent dans l'en-tête ══
+// Pourquoi : la carte faisait passer le bouton du mois (« Mettre à jour le bilan d'octobre ») sous le premier écran
+// (sonde de la jauge, volet J : −142 px à 390×844 un jour ordinaire). Au téléphone, chaque ligne faite devient
+// « coche + titre court » (« Bilan à jour », « Part envoyée »…), rangées dans l'en-tête à la place de
+// « pour clore septembre » (qui redisait le titre). Le détail de ces lignes revient au toucher : le résumé est un
+// bouton (aria-expanded) qui montre ou cache les lignes faites, entières, à leur place. Une ligne À FAIRE garde tout.
+// L'ordinateur et la tablette ne changent pas (le résumé y est caché, les lignes faites y restent entières).
+// Lecture seule : aucune écriture, aucun stockage ; l'état « détail affiché » vit le temps de la page.
+var _lmVoir=false;
+var _LM_CHEV='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>';
+// (le nom pour le lecteur d'écran est un aria-label qui reprend les titres visibles : pas de texte caché dans le bouton)
+function _lmResumeHtml(faits){
+  var noms=faits.map(function(l){ return l.court||l.titre; });
+  var nom=noms.join(', ')+' : déjà fait'+(faits.length>1 ? 's' : '')+', '+(_lmVoir ? 'masquer' : 'voir')+' le détail';
+  return '<button type="button" class="lm-faits" id="lm-voir-b" aria-expanded="'+(_lmVoir ? 'true' : 'false')+'" aria-controls="lm-l"'
+    +' aria-label="'+esc(nom)+'" onclick="listeVoirFaits()">'
+    +noms.map(function(t){ return '<span class="lm-fc">'+_LM_I.coche+'<span>'+esc(t)+'</span></span>'; }).join('')
+    +'<span class="lm-chev" aria-hidden="true">'+_LM_CHEV+'</span></button>';
+}
+function listeVoirFaits(){ _lmVoir=!_lmVoir; _majListe(); }
 
 </script>
 </body>
