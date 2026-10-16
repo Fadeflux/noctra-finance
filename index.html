@@ -4761,6 +4761,91 @@ body.readonly .dash > .topbar .tb-etat:not(.ko),body.readonly .dash > .topbar .t
   body.skin-melange #page-ca .g2-tend > #forecast-card > #goal-msg.fm-err{grid-area:m}
 }
 
+
+/* ── feat7_impots (16-17/10 : O1 une seule vérité + relevé qui ferme le compte, O4 noter un mois du suivi, J2 Records, J5 élision) ── */
+/* ══ feat7_impots (16/10) — O1 : le relevé de la tuile « À garder en crypto » quand le suivi a commencé ;
+   O4 : « Noter un paiement » (et le même formulaire que la liste du mois) dans chaque mois du suivi qui a un reste.
+   Jetons du thème seulement (aucune couleur écrite en dur), dans les deux thèmes. ══ */
+
+/* O1 · la tuile ardoise : le relevé garde le dessin de l'ancien (filet, lignes, montants à droite) */
+body.skin-melange #impots-panel .ip-rel-sv .ip-r dt{overflow-wrap:break-word}
+body.skin-melange #impots-panel .ip-rel-sv .ip-r-q{font-size:12px;color:var(--bc-fr-on2)}
+body.skin-melange #impots-panel .ip-rel-sv .ip-r-reste dd{font-weight:700}
+body.skin-melange #impots-panel .ip-moitie-ok{font-weight:600}
+
+/* O4 · le bouton du mois : celui de la liste du mois (« J'ai payé les impôts »), à la place des paiements */
+#impots-panel .ip-sv-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+#impots-panel .lm-b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 14px;
+  border-radius:12px;border:1px solid var(--line-2);background:var(--surf-2);color:var(--ink-1);box-shadow:none;
+  font-family:inherit;font-size:14px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer;
+  transition:background-color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
+#impots-panel .lm-b:hover{background:var(--surf-3);border-color:var(--line-3)}
+#impots-panel .lm-b svg{flex:none;width:16px;height:16px}
+#impots-panel .lm-b-pri{border-color:var(--acc-22);background:var(--acc-12);color:var(--acc-txt)}
+#impots-panel .lm-b-pri:hover{background:color-mix(in srgb,var(--acc) 20%,transparent);border-color:var(--acc-45)}
+#impots-panel .lm-b:active{transform:translateY(1px)}
+#impots-panel .lm-b:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#impots-panel .lm-b[disabled]{opacity:.6;cursor:default}
+body.readonly #impots-panel .ip-sv-a{display:none!important}
+
+/* O4 · le formulaire, dans la ligne du mois (le dessin de celui de la liste du mois) */
+#impots-panel .lm-f{margin-top:10px;padding:12px;border-radius:var(--mx-r-md,14px);background:var(--inset);border:1px solid var(--line-1)}
+#impots-panel .lm-f-t{margin-bottom:10px;font-size:12px;font-weight:600;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+#impots-panel .lm-f-r{display:flex;flex-wrap:wrap;gap:10px}
+#impots-panel .lm-ff{display:flex;flex-direction:column;min-width:0;flex:1 1 140px;margin:0}
+#impots-panel .lm-ff .ifield{width:100%;font-variant-numeric:tabular-nums}
+#impots-panel .lm-f .ifield{scroll-margin:96px 0 140px}
+#impots-panel .lm-f-n{margin-top:8px;font-size:12.5px;line-height:18px;color:var(--ink-3)}
+#impots-panel .lm-f-n b{font-weight:600;color:var(--ink-2);white-space:nowrap}
+#impots-panel .lm-f-a{display:flex;gap:8px;margin-top:10px}
+#impots-panel .lm-f-a .lm-ok{flex:1 1 auto}
+#impots-panel .lm-f-msg{display:flex;align-items:flex-start;gap:6px;margin-top:8px;font-size:13px;line-height:19px;color:var(--neg)}
+#impots-panel .lm-f-msg:empty{display:none}
+#impots-panel .lm-f-msg svg{flex:none;width:14px;height:14px;margin-top:3px}
+body.montants-caches #impots-panel #lm-f-mt:not(:focus){filter:blur(6px)}
+/* un refus (montant, date) se voit et reste, comme dans la liste du mois (E1) */
+#impots-panel #lm-f-msg.fm-err{display:block!important;position:relative;
+  text-align:left!important;font-size:13px!important;font-weight:600;line-height:1.4;
+  min-height:44px!important;margin:8px 0 12px!important;padding:9px 40px 9px 12px;
+  border-radius:var(--r-md);border:1px solid color-mix(in srgb,var(--neg) 55%,transparent);
+  background:color-mix(in srgb,var(--neg) 10%,var(--surf-1));color:var(--neg)!important;
+  opacity:1!important;cursor:pointer;box-shadow:var(--sh-1);overflow-wrap:anywhere;flex:1 1 100%}
+#impots-panel #lm-f-msg.fm-err > svg{float:left;margin:3px 7px 0 0}
+@media (max-width:359px){
+  #impots-panel #lm-f-msg.fm-err{line-height:1.3;padding:6px 36px 6px 10px;margin:6px 0 10px!important}
+}
+
+/* O4 · le message après « Enregistrer », dans la ligne du mois */
+#impots-panel .ip-sv-flash{display:flex;align-items:flex-start;gap:8px;margin-top:10px;padding:8px 12px;border-radius:12px;
+  font-size:13px;line-height:19px;color:var(--ink-2);background:var(--surf-2)}
+#impots-panel .ip-sv-flash svg{flex:none;width:14px;height:14px;margin-top:3px}
+#impots-panel .ip-sv-flash b{font-weight:700;white-space:nowrap}
+#impots-panel .ip-sv-flash-ok{color:var(--pos);background:color-mix(in srgb,var(--pos) 10%,transparent)}
+#impots-panel .ip-sv-flash-ko{color:var(--neg);background:color-mix(in srgb,var(--neg) 10%,transparent)}
+
+/* ordinateur : la ligne du mois dont le formulaire est ouvert prend toute la largeur du suivi */
+@media (min-width:1100px){
+  #impots-panel .ip-sv-r:has(.lm-f){grid-column:1 / -1}
+  #impots-panel .ip-sv-r .lm-f{max-width:560px}
+}
+/* téléphone : cibles au doigt (44 px), le bouton sur toute la largeur de sa ligne */
+@media (max-width:640px){
+  #impots-panel .lm-b{min-height:44px;font-size:15px}
+  #impots-panel .ip-sv-a .lm-b{flex:1 1 auto}
+}
+/* petit téléphone : le formulaire ouvert prend plus de largeur (marges du suivi et de la ligne resserrées, seulement
+   pendant qu'il est ouvert) — un refus long (« 1,000 ») et son champ tiennent ensemble au-dessus du clavier (mesuré, 320 px) */
+@media (max-width:400px){
+  body.skin-melange #impots-panel .ip-suivi:has(.lm-f){padding-left:10px;padding-right:10px}
+  #impots-panel .ip-sv-r:has(.lm-f){padding-left:8px;padding-right:8px}
+  #impots-panel .ip-sv-r .lm-f{padding:10px}
+}
+/* « Annuler » et « Enregistrer » : côte à côte quand ils tiennent (comme dans la liste du mois), sinon l'un sous l'autre,
+   chacun sur toute la largeur — jamais hors de la carte (mesuré : 320 à 400 px, Chrome et Safari) */
+#impots-panel .lm-f-a{flex-wrap:wrap}
+@media (max-width:359px){
+  #impots-panel .lm-f-a .lm-b{flex:1 1 100%}
+}
 </style>
 </head>
 <body class="skin-melange">
@@ -9959,7 +10044,9 @@ function _chMoisAvant(k){
 function _chNom(k){ return _rcMois(k); }                                   // « Septembre 2026 » (nom du Récap)
 function _chNomMin(k){ var s = _rcMois(k); return s.charAt(0).toLowerCase() + s.slice(1); }
 function _chMoisSeul(k){ return grafMoisLong(+String(k).slice(5, 7) - 1); }  // « août »
-function _chEvo(a, b){ return b > 0 ? Math.round((a - b) / b * 100) : null; }
+// (16/10, J2) LA règle d'évolution du site (accueil, Récap, « Tes 3 derniers mois ») : evolutionPct = l'écart divisé par la
+// valeur ABSOLUE d'avant (un mois d'avant en perte se compare aussi), arrondi au pour cent ; avant à zéro : null (écart en $).
+function _chEvo(a, b){ var e = evolutionPct(a, b); return isFinite(e) ? Math.round(e) : null; }
 function _chPct(p){ return (p > 0 ? '+' : p < 0 ? '−' : '') + fmtPct(Math.abs(p)); }
 
 // ── Records : le modèle (lecture seule) ──────────────────────────────────
@@ -10025,8 +10112,8 @@ function renderRecords(){
   if(!R.n){
     el.innerHTML = _chNb(tete + '<div class="rk-vide">' + (R.aFinaliser
       ? esc(grafCap(_chMoisSeul(R.aFinaliser.key))) + ' est à finaliser : ton meilleur mois et ta progression apparaîtront ici une fois son bilan finalisé.'
-      : 'Pas encore de mois terminé. Ton meilleur mois et ta progression apparaîtront ici à la fin de '
-      + esc(_chMoisSeul(R.cour)) + '.') + '</div>');
+      : 'Pas encore de mois terminé. Ton meilleur mois et ta progression apparaîtront ici à la fin '
+      + esc(_deNomMois(_chMoisSeul(R.cour))) + '.') + '</div>');   // (16/10, J5) « d'octobre »
     el.className = 'panel rk-panel rk-0';
     return;
   }
@@ -10122,7 +10209,7 @@ function renderImpots(){
   var el = document.getElementById('impots-panel'); if(!el) return;
   if(!(ents || []).length){ el.hidden = true; el.innerHTML = ''; return; }
   el.hidden = false;
-  var I = chImpots(), T = I.total;
+  var I = chImpots(), T = I.total; el._ipI = I;   // (16/10, O1) le MÊME I, relu par _ipVerite quand le suivi a commencé
   el.className = 'panel ip-panel' + (T.imp > 0 ? '' : ' ip-0');
   var tete = '<div class="ip-tete"><div class="panel-title ip-titre"><span class="ip-rond" aria-hidden="true"></span>Impôts à garder de côté</div>'
     + '<div class="panel-sub">depuis le début · 1 % du net OnlyFans, payés en liquide, moitié-moitié avec la modèle</div></div>';
@@ -10990,7 +11077,7 @@ function renderAnnee(){
   } else if(o.nFinis){
     best = 'Aucun trimestre fini en bénéfice';
   } else if(o.trims.some(function(t){ return t.etat === 'afin'; })){
-    best = 'Meilleur trimestre : connu une fois le bilan de ' + moisAFin + ' finalisé';
+    best = 'Meilleur trimestre : connu une fois le bilan ' + _deNomMois(moisAFin) + ' finalisé';   // (16/10, J5) élision
   } else {
     var tc = o.trims.filter(function(t){ return t.etat === 'cours'; })[0];
     best = tc ? 'Meilleur trimestre : connu à la fin de T' + tc.q + ' (fin ' + grafMoisLong(tc.m3 - 1) + ')' : 'Meilleur trimestre : aucun trimestre fini avec un bilan';
@@ -12696,7 +12783,7 @@ function _lmEtat(){
   if(!F.fin && !_bilansMois(F.ym).length) return null;                         // mois fini sans aucun bilan : rien à clore
   var lignes=[_lmLigneBilan(F), _lmLigneModele(F), _lmLigneImpots(F)].filter(Boolean);
   var faites=lignes.filter(function(l){ return l.fait; }).length, tout=faites===lignes.length;
-  if(tout && !_lmFaitAujourdhui(F) && !_lmFlash) return null;                 // tout est coché : la carte disparaît
+  if(tout && !_lmFaitAujourdhui(F) && !(_lmFlash && _lmFlashOu!=='suivi')) return null;   // (16/10, O4) message écrit dans le suivi                 // tout est coché : la carte disparaît
   return {F:F, lignes:lignes, faites:faites, tout:tout};
 }
 
@@ -12718,7 +12805,7 @@ function _lmLi(L){
     : (L.etat ? '<span class="lm-e">'+esc(L.etat)+'</span>' : '');
   var act='';
   if(L.action){
-    var ouvert=!!(L.action.form && _lmForm && _lmForm.ym===L.ym);
+    var ouvert=!!(L.action.form && _lmForm && _lmForm.ym===L.ym && _lmForm.ou!=='suivi');   // (16/10, O4) ouvert dans le suivi : pas ici
     act=ouvert ? _lmFormHtml(L)
       : '<div class="lm-a"><button type="button" class="lm-b'+(L.action.form ? ' lm-b-pri' : '')+'" id="lm-b-'+L.cle+'" onclick="'+L.action.f+'"'
         +(L.action.form ? ' aria-expanded="false" aria-controls="lm-f"' : '')+'>'+(L.action.form ? _LM_I.recu : _LM_I.envoi)+'<span>'+esc(L.action.l)+'</span></button></div>';
@@ -12746,7 +12833,7 @@ function _lmHtml(E){
   var F=E.F, n=E.lignes.length;
   var fin=F.reste===0 ? 'ce soir' : (F.reste===1 ? 'demain' : 'dans '+F.reste+' jours');
   var sous=E.tout ? 'tout est fait' : (F.fin ? _majuscule(_nomMois(F.ym))+' finit '+fin : 'pour clore '+_nomMois(F.ym));
-  var flash=_lmFlash ? '<div class="lm-flash lm-flash-'+_lmFlash.cls+'" role="status">'+(_lmFlash.cls==='ok' ? _LM_I.coche : (_lmFlash.cls==='ko' ? _LM_I.alerte : ''))+'<span>'+_lmFlash.t+'</span></div>' : '';
+  var flash=(_lmFlash && _lmFlashOu!=='suivi') ? '<div class="lm-flash lm-flash-'+_lmFlash.cls+'" role="status">'+(_lmFlash.cls==='ok' ? _LM_I.coche : (_lmFlash.cls==='ko' ? _LM_I.alerte : ''))+'<span>'+_lmFlash.t+'</span></div>' : '';
   var faits=E.tout ? [] : E.lignes.filter(function(l){ return l.fait; });
   var resume=faits.length ? _lmResumeHtml(faits) : '';                         // (16/10) téléphone seulement
   var tete='<div class="lm-tete"><span class="lm-ico" aria-hidden="true">'+(E.tout ? _LM_I.coche : _LM_I.liste)+'</span>'
@@ -12759,7 +12846,7 @@ function _lmHtml(E){
 function _majListe(){
   var box=document.getElementById('liste-mois'); if(!box) return;
   var E=null; try{ E=_lmEtat(); }catch(err){ console.warn('liste du mois', err); E=null; }
-  if(!E){ _lmForm=null; if(!box.hidden){ box.hidden=true; box.innerHTML=''; box._h=''; } return; }
+  if(!E){ if(!(_lmForm && _lmForm.ou==='suivi')) _lmForm=null; if(!box.hidden){ box.hidden=true; box.innerHTML=''; box._h=''; } return; }
   var h=_lmHtml(E);
   box.classList.toggle('lm-tout', E.tout); box.classList.toggle('lm-voir', !!_lmVoir);
   if(box._h!==h){
@@ -12890,7 +12977,7 @@ function _impSuiviHtml(S){
         +'<button type="button" class="ip-sv-x" onclick="supprimerImpotPaye(\''+esc(_cleImpot(p)).replace(/'/g,'&#39;')+'\')" title="Supprimer ce paiement d’impôts" aria-label="'+esc('Supprimer le paiement d’impôts du '+dlA(p.date)+' ('+_lmNomComplet(p.mois)+')')+'">'+_LM_I.x+'</button></span>';
     }).join('');
     return '<div class="ip-sv-r ip-sv-'+cls+'"><div class="ip-sv-h"><span class="ip-sv-m">'+esc(grafCap(_nomMois(r.ym)))+'</span><span class="ip-sv-e">'+esc(etat)+'</span></div>'
-      +'<div class="ip-sv-d">'+det+'</div>'+(pays ? '<div class="ip-sv-ps">'+pays+'</div>' : '')+'</div>';
+      +'<div class="ip-sv-d">'+det+'</div>'+(pays ? '<div class="ip-sv-ps">'+pays+'</div>' : '')+_ipSvAction(r, cls)+'</div>';
   };
   return '<div class="ip-sv-tete"><span class="ip-sv-t">Impôts payés</span><span class="ip-sv-s">'+esc('suivis depuis '+_lmNomComplet(S.m0))+'</span></div>'
     +'<dl class="ip-rel ip-sv-rel"><div class="ip-r"><dt>Déjà payé</dt><dd>'+fmtC(S.paye/100)+'</dd></div>'
@@ -12903,7 +12990,7 @@ function _impDecorer(){
   var S=_impSuivi(), note=el.querySelector('.ip-note');
   el.classList.toggle('ip-suivi-on', !!S && !el.classList.contains('ip-0'));
   if(note) note.innerHTML=_chNb(S
-    ? 'Le total du haut compte tout, depuis ton premier bilan. Le suivi des paiements commence en '+esc(_lmNomComplet(S.m0))+', ton premier paiement noté : les mois d’avant n’y sont pas.'
+    ? '« Impôts depuis le début » compte tout, depuis ton premier bilan. Les paiements sont suivis depuis '+esc(_lmNomComplet(S.m0))+', ton premier paiement noté : « déjà payés » et le reste à payer ne comptent pas les mois d’avant.'
     : 'Note chaque paiement d’impôts avec « J’ai payé les impôts », dans la liste du mois en haut de l’Accueil : ce qui reste à payer s’affichera ici. Ce total compte tout, depuis ton premier bilan.');
   if(!S || el.classList.contains('ip-0')) return;
   // le geste ② dit ce qu'il reste VRAIMENT à garder (les impôts déjà payés ne sont plus à garder)
@@ -12915,6 +13002,7 @@ function _impDecorer(){
   d.innerHTML=_chNb(_impSuiviHtml(S));
   el.insertBefore(d, el.querySelector('.ip-per') || note || null);
   try{ _ipRepliSuivi(el, S); }catch(e){ console.warn('impôts repliés', e); }
+  try{ _ipVerite(el, S); }catch(e){ console.warn('impôts : une seule vérité', e); }   // (16/10, O1) tuile, relevé, période = S
 }
 
 // ── 8. Redessin : après chaque uk() (via le rappel), chaque renderModelShare() (paiements), chaque renderImpots() ──
@@ -13710,6 +13798,198 @@ function _clesArchiveAnnees(){
   return cles;
 }
 
+
+// ── feat7_impots (16-17/10 : O1 une seule vérité + relevé qui ferme le compte, O4 noter un mois du suivi, J2 Records, J5 élision) ──
+// ══ feat7_impots (16/10) : correctifs de la relecture « argent » — O1, O4, J2, J5 ══════════════════════════════════
+// AFFICHAGE et GESTES seulement : aucun taux, aucun arrondi, aucun calcul d'impôts ici. Les montants viennent des
+// objets que la page calcule déjà : T et P (renderImpots : chImpots().total / .periode), S (_impSuivi, le suivi des
+// impôts payés), écrits avec fmtC et saMoitie (les fonctions du site). L'écriture des paiements reste celle de la
+// liste du mois : listeImpotsEnregistrer → _attenteNoter + _ecrireImpotsPayes (fonction générale des listes).
+
+// ── O1 · UNE seule vérité dans « Impôts à garder de côté » dès qu'un paiement d'impôts est noté ──────────────────
+// Avant : la grande tuile disait « À garder en crypto $504.08 / Impôts à payer, en liquide $494 » (TOUT depuis le
+// premier bilan, déjà payés compris) juste à côté de « Rien à garder : tout est payé » (le geste ②, la ligne repliée
+// du téléphone et le suivi lisaient S). Maintenant, quand le suivi existe, tout le bloc dit S :
+//   - la tuile « À garder en crypto » : S.garde (ce qu'il reste à garder pour ce qui reste à payer), sa moitié au
+//     centime = saMoitie(S.garde) ; rien à payer : « tout ce qui est dû est payé » ;
+//   - son relevé FERME LE COMPTE, au centime affiché (17/10) : « Impôts depuis le début » T.imp (le MÊME objet I que
+//     renderImpots, gardé sur le bloc) = « dont avant le suivi (avant <1er mois noté>), comptés comme payés »
+//     + « dont déjà payés depuis <1er mois noté> » S.paye − « moins le trop-payé (<mois>), pas déduit du reste »
+//     + « dont reste à payer, en liquide » S.reste. Avant le suivi = le total − les impôts des mois du suivi (S.rows[].du,
+//     ceux que le suivi affiche mois par mois) ; trop-payé = ce qui dépasse l'impôt de son mois (S.paye − (impôts des
+//     mois suivis − S.reste)), pas reporté (question J3). Une ligne à 0 n'est pas écrite. Sans bilan OnlyFans avant le
+//     suivi, l'écart du total arrondi et des mois arrondis (un centime ou deux) s'écrit « arrondi au centime, mois par
+//     mois ». Aucun impôt recalculé : seulement les centimes que T et S affichent déjà ;
+//   - la ligne de période dit les impôts de la période (P.imp), sans « à payer / à garder » (payés ou non : le suivi) ;
+//   - la note du bas : d'où partent « déjà payés » et le reste (texte dans _impDecorer).
+// Sans suivi : RIEN ne change (renderImpots n'est pas touché ; _ipVerite ne fait rien sans S).
+// Tout est préparé AVANT d'écrire dans la page : une faute ne laisse jamais une tuile à moitié réécrite.
+function _ipVeriteHtml(T, S, P){
+  if(!T || !S || !(T.imp > 0)) return null;
+  // le compte, en centimes AFFICHÉS (ceux que T et S écrivent déjà) : total = avant + déjà payés − trop-payé + reste
+  var total = _chCtsAff(T.imp);                                                   // « Impôts depuis le début », au centime affiché
+  var dusSuivis = S.rows.reduce(function(s, r){ return s + r.du; }, 0);          // les impôts des mois du suivi (ses lignes)
+  var avant = total - dusSuivis;                                                  // les mois d'avant le suivi (comptés comme payés)
+  var trop = S.paye - (dusSuivis - S.reste);                                      // ce qui dépasse l'impôt de son mois (pas reporté)
+  var m0 = esc(_lmNomComplet(S.m0));
+  var ofAvant = (ents || []).some(function(e){ return String(e.date || '').slice(0, 7) < S.m0 && (Number(e.brut) || 0) > 0; });
+  var moisTrop = S.rows.filter(function(r){ return r.pa > r.du; }).map(function(r){ return _nomMois(r.ym); }).reverse();
+  var ligne = function(cls, dt, dd){ return '<div class="ip-r ' + cls + '"><dt>' + dt + '</dt><dd>' + dd + '</dd></div>'; };
+  return {
+    valeur: fmtC(S.garde),
+    pastille: S.reste > 0
+      ? '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(saMoitie(S.garde)) + '</b></span>'
+      : '<span class="ip-moitie ip-moitie-ok">tout ce qui est dû est payé</span>',
+    releve: '<dl class="ip-rel ip-rel-sv">'
+      + ligne('ip-r-depuis', 'Impôts depuis le début', fmtC(T.imp))
+      + (avant !== 0 ? ligne('ip-r-avant', (avant > 0 && ofAvant)
+          ? 'dont avant le suivi <span class="ip-r-q">(avant ' + m0 + ')</span>, comptés comme payés'
+          : 'dont arrondi au centime, mois par mois', _mtS(avant / 100)) : '')
+      + ligne('ip-r-payes', 'dont déjà payés depuis ' + m0, fmtC(S.paye / 100))
+      + (trop > 0 ? ligne('ip-r-trop', 'moins le trop-payé <span class="ip-r-q">(' + esc(moisTrop.join(', ')) + ')</span>, pas déduit du reste',
+          _mtS(-trop / 100)) : '')
+      + ligne('ip-r-reste', 'dont reste à payer, en liquide', fmtC(S.reste / 100))
+      + '</dl>',
+    periode: (P && P.imp > 0) ? 'impôts : <b>' + fmtC(P.imp) + '</b>' : null
+  };
+}
+function _ipVerite(el, S){
+  if(!el || !S || el.classList.contains('ip-0')) return;
+  var I = el._ipI, T = I && I.total;
+  var H = _ipVeriteHtml(T, S, I && I.periode); if(!H) return;
+  var tot = el.querySelector('.ip-eq .ip-tot'), v = tot && tot.querySelector('.ip-v'), s = tot && tot.querySelector('.ip-s');
+  if(!tot || !v || !s) return;
+  var pv = el.querySelector('.ip-per-v');
+  // on écrit (ce qui suit ne peut plus échouer à moitié : textes déjà prêts)
+  v.textContent = H.valeur;
+  s.innerHTML = _chNb(H.pastille);
+  [].slice.call(tot.children).forEach(function(c){ if(c !== v && c !== s && !c.classList.contains('ip-l')) tot.removeChild(c); });
+  tot.insertAdjacentHTML('beforeend', _chNb(H.releve));
+  if(pv && H.periode !== null) pv.innerHTML = _chNb(H.periode);
+  tot.classList.add('ip-tot-sv');
+}
+
+// ── O4 · « Noter un paiement » sur chaque mois PASSÉ du suivi qui a un reste (« en retard », « à payer le 15 … ») ──
+// Avant : le seul bouton était dans la liste du mois, fixé au mois de la liste ; un mois oublié (septembre, vu le 29/10,
+// le 2/11, le 16/11) restait « en retard » à vie, et faussait « Reste à payer » et « à garder ».
+// Maintenant : dans la ligne du mois, le MÊME formulaire que « J'ai payé les impôts » (_lmFormHtml), ouvert pour CE mois
+// (_lmForm = {ym, ou:'suivi'}) ; « Enregistrer » = la même fonction (listeImpotsEnregistrer : lireMontant,
+// _attenteNoter, _ecrireImpotsPayes, Historique, refus en lecture seule). Un seul formulaire ouvert à la fois (liste OU
+// suivi : mêmes identifiants). Le message après « Enregistrer » s'écrit dans la ligne du mois, là où l'on regarde
+// (la carte de la liste ne s'ouvre pas pour lui : _lmFlashOu).
+var _lmFlashOu, _ipSvFlashYm;                // '' : message de la liste ; 'suivi' : message de la ligne _ipSvFlashYm
+function _ipSvPeutNoter(r){
+  if(!r || !(r.reste > 0) || r.cours) return false;                 // payé, payé en trop, ou mois en cours
+  if(document.body.classList.contains('readonly')) return false;    // lecture seule : jamais (comme la liste du mois)
+  try{ if(typeof _role !== 'undefined' && _role === 'assoc') return false; }catch(e){}   // associé : comme la liste du mois
+  return true;
+}
+function _ipSvFlashHtml(r){
+  if(!_lmFlash || _lmFlashOu !== 'suivi' || _ipSvFlashYm !== r.ym) return '';
+  var ico = _lmFlash.cls === 'ok' ? _LM_I.coche : (_lmFlash.cls === 'ko' ? _LM_I.alerte : '');
+  return '<div class="ip-sv-flash ip-sv-flash-' + esc(_lmFlash.cls) + '" role="status">' + ico + '<span>' + _lmFlash.t + '</span></div>';
+}
+// ce qui suit les paiements d'une ligne du suivi : le message, puis le bouton OU le formulaire ouvert pour ce mois
+function _ipSvAction(r, cls){
+  try{
+    var flash = _ipSvFlashHtml(r);
+    if(!_ipSvPeutNoter(r)) return flash;
+    if(_lmForm && _lmForm.ou === 'suivi' && _lmForm.ym === r.ym) return flash + _lmFormHtml({ym: r.ym, du: r.du, paye: r.pa});
+    return flash + '<div class="ip-sv-a"><button type="button" class="lm-b lm-b-pri ip-sv-noter" id="ip-sv-b-' + esc(r.ym) + '"'
+      + ' onclick="ipSuiviNoter(\'' + esc(r.ym) + '\')" aria-expanded="false" aria-controls="lm-f"'
+      + ' aria-label="' + esc('Noter un paiement des impôts ' + _lmDeComplet(r.ym)) + '">'
+      + _LM_I.recu + '<span>Noter un paiement</span></button></div>';
+  }catch(e){ try{ console.warn('impôts : noter un paiement', e); }catch(_){} return ''; }
+}
+// le geste : ouvrir le formulaire dans la ligne du mois (rien n'est écrit avant « Enregistrer »)
+function ipSuiviNoter(ym){
+  if(!/^\d{4}-\d{2}$/.test(String(ym || ''))) return;
+  var S = null; try{ S = _impSuivi(); }catch(e){ S = null; }
+  var r = S ? S.rows.filter(function(x){ return x.ym === ym; })[0] : null;
+  if(!_ipSvPeutNoter(r)) return;
+  if(_lmForm && _lmForm.ou !== 'suivi'){ _lmForm = null; try{ _majListe(); }catch(e){} }   // celui de la liste se referme
+  _lmForm = {ym: ym, ou: 'suivi'}; _lmFlash = null;
+  _impRedessiner();
+  var mt = document.getElementById('lm-f-mt');
+  if(mt){ try{ mt.focus({preventScroll: true}); }catch(e){ mt.focus(); } try{ mt.select(); }catch(e){} }
+  // le formulaire entier (jusqu'à « Enregistrer ») au-dessus de la barre d'onglets du téléphone
+  var f = document.getElementById('lm-f');
+  if(f){ try{ requestAnimationFrame(function(){ if(typeof _fmAmener === 'function') _fmAmener(f); else f.scrollIntoView({block: 'nearest'}); }); }catch(e){} }
+}
+// le message (« Enregistrement… », « notés », « gardé sur cet appareil ») amené à l'écran, dans la ligne du mois
+function _ipSvAmener(){
+  try{ requestAnimationFrame(function(){ var m = document.querySelector('#impots-panel .ip-sv-flash'); if(m && typeof _fmAmener === 'function') _fmAmener(m); }); }catch(e){}
+}
+// le formulaire ouvert DANS le suivi garde ce qui est tapé quand le bloc se redessine (comme celui de la liste)
+function _ipSvGarder(){
+  var el = document.getElementById('impots-panel'), f = el && el.querySelector('#lm-f');
+  if(!f) return null;
+  var mt = document.getElementById('lm-f-mt'), dt = document.getElementById('lm-f-date'), a = document.activeElement;
+  return {ym: _lmForm && _lmForm.ym, mt: mt ? mt.value : null, dt: dt ? dt.value : null, foc: (a && f.contains(a)) ? a.id : ''};
+}
+function _ipSvRemettre(k){
+  if(!k || !_lmForm || _lmForm.ou !== 'suivi' || _lmForm.ym !== k.ym) return;
+  var el = document.getElementById('impots-panel'), f = el && el.querySelector('#lm-f'); if(!f) return;
+  var mt = document.getElementById('lm-f-mt'), dt = document.getElementById('lm-f-date');
+  if(mt && k.mt !== null) mt.value = k.mt;
+  if(dt && k.dt !== null) dt.value = k.dt;
+  if(k.foc){ var x = document.getElementById(k.foc); if(x){ try{ x.focus({preventScroll: true}); }catch(e){} } }
+}
+(function(){
+  // la liste rouvre SON formulaire : celui du suivi se referme d'abord (un seul ouvert, mêmes identifiants)
+  if(typeof listeImpotsOuvrir === 'function'){
+    var _lio = listeImpotsOuvrir;
+    listeImpotsOuvrir = function(){
+      if(_lmForm && _lmForm.ou === 'suivi'){ _lmForm = null; try{ renderImpots(); }catch(e){} }
+      return _lio.apply(this, arguments);
+    };
+  }
+  // « Annuler » du formulaire ouvert dans le suivi : il se referme, le bouton du mois reprend le focus
+  if(typeof listeImpotsFermer === 'function'){
+    var _lif = listeImpotsFermer;
+    listeImpotsFermer = function(){
+      if(_lmForm && _lmForm.ou === 'suivi'){
+        var ym = _lmForm.ym; _lmForm = null;
+        try{ renderImpots(); }catch(e){}
+        var b = document.getElementById('ip-sv-b-' + ym); if(b){ try{ b.focus({preventScroll: true}); }catch(e){} }
+        return;
+      }
+      return _lif.apply(this, arguments);
+    };
+  }
+  // « Enregistrer » : la MÊME fonction ; on dit seulement où écrire son message (la ligne du mois, ou la carte)
+  if(typeof listeImpotsEnregistrer === 'function'){
+    var _lie = listeImpotsEnregistrer;
+    listeImpotsEnregistrer = function(){
+      var avant = _lmFlash, ouAvant = _lmFlashOu, ymAvant = _ipSvFlashYm;
+      var ici = !!(_lmForm && _lmForm.ou === 'suivi');
+      if(!_lmEnCours){ _lmFlashOu = ici ? 'suivi' : ''; _ipSvFlashYm = ici ? _lmForm.ym : null; }
+      var p = _lie.apply(this, arguments);
+      if(_lmFlash === avant){ _lmFlashOu = ouAvant; _ipSvFlashYm = ymAvant; }   // refusé (montant, date, lecture seule…) : rien n'a bougé
+      else if(ici){ _ipSvAmener(); Promise.resolve(p).then(_ipSvAmener, _ipSvAmener); }
+      return p;
+    };
+  }
+  if(typeof renderImpots === 'function'){
+    var _riV = renderImpots;
+    renderImpots = function(){
+      var k = null; try{ k = _ipSvGarder(); }catch(e){ k = null; }
+      // (mesuré, Chrome) un BOUTON du bloc qui a le focus (« Noter un paiement », « Annuler », « Enregistrer », « Voir le
+      // calcul ») et que le redessin retire fait sauter l'écran de ~1 400 px (ancrage du défilement) ; on le quitte avant,
+      // et on rend le focus au même bouton après (par son id) s'il existe encore
+      var el = document.getElementById('impots-panel'), a = document.activeElement, idB = null;
+      if(el && a && a !== el && a.tagName === 'BUTTON' && el.contains(a)){ idB = a.id || ''; try{ a.blur(); }catch(e){} }
+      var r = _riV.apply(this, arguments);
+      try{ _ipSvRemettre(k); }catch(e){}
+      if(idB){ var b = document.getElementById(idB); if(b && document.activeElement !== b){ try{ b.focus({preventScroll: true}); }catch(e){} } }
+      return r;
+    };
+  }
+})();
+
+// ── J5 · élision : « à la fin d'octobre », « le bilan d'avril » (un nom de mois après « de ») ────────────────────
+// Même règle que _deMois (« d'octobre », « d'avril », « d'août », « de septembre »), pour un NOM de mois déjà écrit.
+function _deNomMois(n){ n = String(n == null ? '' : n); return (/^[aeiou]/i.test(n) ? "d'" : 'de ') + n; }
 </script>
 </body>
 </html>

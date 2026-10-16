@@ -7,6 +7,9 @@
 // Ce qu'il surveille :
 //  1. La ligne est écrite là où les chiffres le sont : renderImpots passe T (l'objet de la tuile « À garder en crypto »)
 //     à _ipRepliHtml ; _impDecorer passe S (l'objet du geste ②) à _ipRepliSuivi, après avoir posé le suivi.
+//     (16/10, feat7_impots, O1 : la tuile écrit T SANS suivi seulement ; dès qu'un paiement d'impôts est noté,
+//      _impDecorer → _ipVerite y écrit le MÊME S que la ligne et le geste ② — une seule vérité, prouvée par
+//      test_impots_une_verite.js. La règle de CE banc ne change pas : la ligne dit toujours les chiffres du bloc.)
 //  2. Aucun calcul parallèle dans le code P4 : ni taux, ni 1 %, ni ÷ 0,98, ni arrondi (seulement fmtC de T / S).
 //  3. Les montants : T fabriqué par le VRAI _chFrais sur des bilans fictifs → la ligne = les montants recalculés ICI à
 //     part (1 % × 0,80 × bruts ÷ 0,98, sa moitié au centime qui monte) ; suivi : S.garde et S.reste ; « rien à garder ».
@@ -106,7 +109,7 @@ const texte = (h) => h.replace(/<[^>]+>/g, '').replace(/[  ]/g, ' ').replace(
 // ── 1. La ligne est écrite là où les chiffres le sont ───────────────────────────────────────────────────────────
 console.log('\n-- 1. la ligne prend les variables du bloc, là où il les écrit --');
 V(/var I = chImpots\(\), T = I\.total;/.test(R_IMP) && /tuile\('ip-tot', 'À garder en crypto', fmtC\(T\.garde\)/.test(R_IMP)
-  && /dont sa moitié : <b>' \+ fmtC\(T\.moitie\)/.test(R_IMP), 'renderImpots : la tuile « À garder en crypto » écrit fmtC(T.garde) et sa pastille fmtC(T.moitie)');
+  && /dont sa moitié : <b>' \+ fmtC\(T\.moitie\)/.test(R_IMP), 'renderImpots : SANS suivi, la tuile « À garder en crypto » écrit fmtC(T.garde) et sa pastille fmtC(T.moitie) (avec suivi : S, voir test_impots_une_verite.js)');
 V(/el\.innerHTML = _chNb\(tete \+ _ipRepliHtml\(T\) \+ eq \+ etapes \+ per \+ note\); _ipRepliAppliquer\(el, _ipFoc\);/.test(R_IMP),
   'renderImpots : la ligne est écrite avec CE T, dans le même innerHTML, puis le repli est appliqué');
 const brancheVide = (R_IMP.split("el.innerHTML = _chNb(tete + '<div class=\"ip-vide\">")[1] || '').split('return;')[0];
