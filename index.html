@@ -4740,6 +4740,27 @@ body.readonly .dash > .topbar .tb-etat:not(.ko),body.readonly .dash > .topbar .t
 }
 @media (max-width:640px) and (prefers-reduced-motion:reduce){#liste-mois .lm-chev svg{transition:none}}
 
+
+/* ── feat7_argent (16/10 : R1, R2, J1, J4) ── */
+/* ══ correctifs argent-données (16/10, relecture R1 frère) : le refus de l'objectif du mois se voit, sous lui ══
+   Même dessin que les refus d'« Enregistrer » (E1) ; rien n'est affiché tant qu'il n'y a pas d'erreur. Jetons du thème. */
+#forecast-card > #goal-msg:not(.fm-err){display:none}
+#forecast-card > #goal-msg.fm-err{display:block;position:relative;text-align:left;font-size:13px;font-weight:600;line-height:1.4;
+  min-height:44px;margin:12px 0 0;padding:9px 40px 9px 12px;border-radius:var(--r-md);
+  border:1px solid color-mix(in srgb,var(--neg) 55%,transparent);background:color-mix(in srgb,var(--neg) 10%,var(--surf-1));
+  color:var(--neg)!important;opacity:1!important;cursor:pointer;box-shadow:var(--sh-1);overflow-wrap:anywhere}
+/* le champ à corriger reste rouge, même sous le curseur (le style des champs de la carte est plus fort que .fm-champ) */
+#forecast-card #monthly-goal.fm-champ,#forecast-card #monthly-goal.fm-champ:focus,#forecast-card #monthly-goal.fm-champ:hover{
+  border-color:var(--neg)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--neg) 24%,transparent)!important}
+@media (max-width:359px){
+  #forecast-card > #goal-msg.fm-err{line-height:1.3;padding:6px 36px 6px 10px}
+}
+/* Mélange, carte en grille (≥ 641 px) : le message prend toute la largeur, juste sous la Prévision et l'objectif */
+@media (min-width:641px){
+  body.skin-melange #page-ca .g2-tend > #forecast-card:not(.fc-replie):has(> #goal-msg.fm-err){grid-template-areas:"t g" "v g" "s g" "m m" "b b" "d d" "x x"}
+  body.skin-melange #page-ca .g2-tend > #forecast-card > #goal-msg.fm-err{grid-area:m}
+}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -5015,6 +5036,7 @@ body.readonly .dash > .topbar .tb-etat:not(.ko),body.readonly .dash > .topbar .t
         <div style="font-size:12px;margin-top:6px" id="forecast-goal-pct">–</div>
       </div>
     </div>
+    <div id="goal-msg"></div>
     <div style="margin-top:12px;background:var(--inset);border-radius:6px;height:6px;overflow:hidden">
       <div id="forecast-bar" style="height:6px;border-radius:6px;background:var(--acc);width:0%;transition:width .4s"></div>
     </div>
@@ -5134,7 +5156,11 @@ const fmtS=v=>(v<0?'−':'')+fmtR(v);
 //   300 -> $300   |   17.5 -> $17.50
 // fmtR() arrondit au dollar et affichait 17,50 $ comme 18 $ : inacceptable sur
 // une ligne de detail, ou chaque centime saisi doit se relire tel quel.
-const fmtC=v=>{const a=Math.abs(Number(v)||0); return (Math.round(a*100)%100===0)?fmtR(a):fmt(a);};
+// (16/10, relecture J1) écrit depuis les MÊMES centimes entiers que les totaux : Math.round(a × 100), demi-centime vers le
+// haut (la règle du site). Avant : « centimes nuls ? » se décidait sur cet arrondi mais s'écrivait avec toFixed(2), qui
+// tranche autrement les demi-centimes : 80,005 -> « $80.00 » (centimes nuls écrits) au lieu de « $80.01 », et la colonne
+// « Brut OnlyFans » du Récap ne tombait plus sur sa ligne Total. Sans demi-centime, l'écriture est la même qu'avant.
+const fmtC=v=>{const a=Math.abs(Number(v)||0),c=Math.round(a*100);return c%100===0?'$'+(c/100).toLocaleString('en-US'):'$'+(c/100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');};
 // Échappe le HTML. Sans cela, un nom de dépense contenant par exemple
 // <img src=x onerror="..."> exécutait du code à chaque affichage de l'historique,
 // et un simple « < » (ex : « pub <10$ ») cassait la mise en page.
@@ -5396,6 +5422,8 @@ async function _saveVirements(){
   const supLoc = estVir ? _VIREMENTS_SUPPRIMES : (o.supprimes || new Set());
   const ress = f.ress || new Set();
   const cleT = cle + '_supprimes';
+  // (16/10, R2) un paiement ancien encore sans identifiant dans la mémoire de la page (chemin oublié) reçoit le sien
+  if (estVir && typeof _virIds === 'function' && Array.isArray(virements) && virements.some((v) => v && typeof v === 'object' && !v.id)) virements = _virIds(virements);
   const lireL = (t) => { try { const v = JSON.parse(t || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
   const qui = (typeof _currentUser !== 'undefined' && _currentUser) ? String(_currentUser) : '';
   const ecrire = (key, val) => apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: key, value: JSON.stringify(val) }) });
@@ -5405,16 +5433,36 @@ async function _saveVirements(){
       try { dist = (await apiFetch('/api/settings?cles=' + cle + ',' + cleT)) || {}; }
       catch (e) { console.warn('[' + cle + '] relecture impossible, ecriture annulee pour ne rien detruire', e); return false; }
     }
-    const sv = lireL(dist[cle]), tSrv = lireL(dist[cleT]);
+    const sv0 = lireL(dist[cle]), tSrv = lireL(dist[cleT]);
+    // (16/10, R2) les paiements ANCIENS (sans identifiant) reçoivent leur identifiant stable (_virIds : « L-… », le même sur
+    // tous les appareils) : la liste de la base n'est plus jamais dédoublonnée avec elle-même par « date|montant|note » ;
+    // deux paiements anciens identiques restent DEUX. (Un banc qui extrait cette fonction seule, sans _virIds, garde
+    // l'ancienne lecture.)
+    const R2 = estVir && typeof _virIds === 'function';
+    const sv = R2 ? _virIds(sv0) : sv0;
     const tombes = new Set(); let coupe = 0, repere = null;
-    tSrv.forEach((t) => { if (!t) return; if (t.avant) { const a = new Date(t.avant).getTime(); if (a > coupe) coupe = a; } else if (t.k != null && !ress.has(String(t.k))) tombes.add(String(t.k)); });
+    const vieilles = [];         // (R2) anciennes pierres tombales « date|montant|note » des paiements, pas encore attribuées
+    tSrv.forEach((t) => { if (!t) return; if (t.avant) { const a = new Date(t.avant).getTime(); if (a > coupe) coupe = a; }
+      else if (t.k != null && !ress.has(String(t.k))) {
+        if (R2 && _virVieilleCle(t.k)) { if (t.ok == null) vieilles.push(t); else if (!ress.has(String(t.ok))) tombes.add(String(t.ok)); }
+        else tombes.add(String(t.k)); } });
     const nouvelles = [];
     supLoc.forEach((x) => { x = String(x); if (!tombes.has(x) && !ress.has(x)) { tombes.add(x); nouvelles.push({ k: x, le: new Date().toISOString(), par: qui }); } });
     if (f.vide) { const a = new Date(f.vide).getTime(); if (a > coupe) { coupe = a; repere = { avant: new Date(a).toISOString(), par: qui, raison: 'vide' }; } }
+    // (R2) une ancienne pierre tombale retire UNE ligne ancienne de son contenu encore en base (la première), une seule fois :
+    // elle est marquée attribuée (ok = cet identifiant) et l'identifiant reçoit sa propre pierre tombale. Restée sans ligne
+    // en base, elle empêche seulement une copie périmée (autre appareil) de remettre ce paiement.
+    const attribuees = [], vieillesRestantes = new Set();
+    vieilles.forEach((t) => {
+      const v = sv.find((x) => _virAncien(x) && !tombes.has(String(x.id)) && _virSig(x) === String(t.k));
+      if (v) { tombes.add(String(v.id)); attribuees.push({ t: t, id: String(v.id) }); } else vieillesRestantes.add(String(t.k));
+    });
     const mort = (x) => tombes.has(k(x)) || (coupe > 0 && dateDe(x) <= coupe);
+    // (R2) une ligne ancienne de CET appareil qui n'est plus en base, dont le contenu a une ancienne pierre tombale : supprimée
+    const mortLoc = (x) => mort(x) || (vieillesRestantes.size > 0 && (_virAncien(x) || !(x && x.id)) && vieillesRestantes.has(_virSig(x)));
     const vus = new Set(), base = [], enPlus = [];
     sv.forEach((x) => { const c = k(x); if (vus.has(c) || mort(x)) return; vus.add(c); base.push(x); });
-    locale().forEach((x) => { const c = k(x); if (vus.has(c) || mort(x)) return; vus.add(c); enPlus.push(x); });
+    locale().forEach((x) => { const c = k(x); if (vus.has(c) || mortLoc(x)) return; vus.add(c); enPlus.push(x); });
     let fusion = o.devant ? enPlus.concat(base) : base.concat(enPlus);
     if (o.trier) fusion = fusion.slice().sort(o.trier);
     // au-delà de la limite (journal) : les plus anciens partent dans `${cle}_archive`, écrits AVANT d'être retirés
@@ -5425,24 +5473,31 @@ async function _saveVirements(){
       if (n < fusion.length) {
         const s = fusion.slice(n);
         let okA = true;
-        if (o.archive) okA = (await _saveVirements(cle + '_archive', s, { cleDe: cleDe, dateDe: dateDe, trier: o.trier, devant: true, limite: o.archiveMax || 3000, _tour: true })) !== false;
+        if (typeof o.archive === 'function') {
+          // (16/10, J4) l'archive d'une archive : chaque ligne qui sort rejoint le morceau de SON année (« …_2026 », sans
+          // plafond : une année de lignes), écrit AVANT d'être retirée ici — plus aucune ligne ne disparaît
+          const grp = {}; s.forEach((x) => { const c = String(o.archive(x)); (grp[c] = grp[c] || []).push(x); });
+          for (const c of Object.keys(grp)) okA = (await _saveVirements(c, grp[c], { cleDe: cleDe, dateDe: dateDe, trier: o.trier, devant: true, _tour: true })) !== false && okA;
+        } else if (o.archive) okA = (await _saveVirements(cle + '_archive', s, { cleDe: cleDe, dateDe: dateDe, trier: o.trier, devant: true, limite: o.archiveMax || 3000, marge: o.archiveMarge || 0, archive: o.archiveSuite, _tour: true })) !== false;
         if (okA) {
           sortants = s; fusion = fusion.slice(0, n);
           const a = dateDe(s[0]); if (a > coupe) { coupe = a; repere = { avant: new Date(a).toISOString(), par: qui, raison: o.archive ? 'archive' : 'limite' }; }
         }
       }
     }
-    let tl = tSrv.filter((t) => t && !(t.k != null && ress.has(String(t.k)))).concat(nouvelles);
+    let tl = tSrv.filter((t) => t && !(t.k != null && ress.has(String(t.k))) && !(t.ok != null && ress.has(String(t.ok))))
+      .map((t) => { const a = attribuees.find((z) => z.t === t); return a ? Object.assign({}, t, { ok: a.id }) : t; }).concat(nouvelles);
+    attribuees.forEach((a) => { if (!tl.some((t) => t && t.k != null && String(t.k) === a.id)) tl.push({ k: a.id, le: a.t.le || new Date().toISOString(), par: a.t.par || qui }); });
     if (repere) tl = tl.filter((t) => !t.avant).concat([repere]);
     const vieux = Date.now() - 400 * 864e5;            // les pierres tombales de plus de 400 jours partent (2 000 au plus)
     tl = tl.filter((t) => t.avant || !t.le || new Date(t.le).getTime() > vieux).slice(-2000);
     try {
       if (JSON.stringify(tl) !== JSON.stringify(tSrv)) await ecrire(cleT, tl);
-      if (JSON.stringify(fusion) !== JSON.stringify(sv)) await ecrire(cle, fusion);
+      if (JSON.stringify(fusion) !== JSON.stringify(sv0)) await ecrire(cle, fusion);   // (R2) sv0 = la base telle quelle : les identifiants des paiements anciens y sont écrits
     } catch (e) { console.warn('[' + cle + '] ecriture refusee', e); return false; }
     // la mémoire de la page : ce qu'on vient d'écrire + ce qui a été ajouté ICI pendant ce temps
     const dans = new Set(fusion.map(k)), sortis = new Set(sortants.map(k));
-    const extra = locale().filter((x) => !dans.has(k(x)) && !sortis.has(k(x)) && !mort(x));
+    const extra = locale().filter((x) => !dans.has(k(x)) && !sortis.has(k(x)) && !mortLoc(x));
     const memoire = (o.devant ? extra.concat(fusion) : fusion.concat(extra)).filter((x) => !supLoc.has(k(x)));
     if (o.trier) memoire.sort(o.trier);
     const avant = locale();
@@ -5454,10 +5509,10 @@ async function _saveVirements(){
     let ver;
     try { ver = (await apiFetch('/api/settings?cles=' + cle + ',' + cleT)) || {}; }
     catch (e) { return false; }
-    const svV = lireL(ver[cle]), tV = lireL(ver[cleT]);
+    const svV = R2 ? _virIds(lireL(ver[cle])) : lireL(ver[cle]), tV = lireL(ver[cleT]);
     const presents = new Set(svV.map(k)), tombV = new Set();
     let coupeV = 0;
-    tV.forEach((t) => { if (!t) return; if (t.avant) { const a = new Date(t.avant).getTime(); if (a > coupeV) coupeV = a; } else if (t.k != null) tombV.add(String(t.k)); });
+    tV.forEach((t) => { if (!t) return; if (t.avant) { const a = new Date(t.avant).getTime(); if (a > coupeV) coupeV = a; } else if (t.k != null) { tombV.add(String(t.k)); if (t.ok != null) tombV.add(String(t.ok)); } });
     const vu = (x) => presents.has(k(x)) || tombV.has(k(x)) || (coupeV > 0 && dateDe(x) <= coupeV) || sortis.has(k(x));
     if (enPlus.every(vu) && [...supLoc].every((x) => !presents.has(String(x)))) {
       if (typeof _tombesNoter === 'function') _tombesNoter(cle, tV);
@@ -6004,8 +6059,10 @@ function renderRecovery(){
   const mod=_recLire(cleLocale('modeles'))||[];
   const vs =_recLire(cleLocale('vas'))||[];
 
+  // (16/10, R2) comptés par identifiant (les paiements anciens : par nombre) — avant, par « date|montant|note » : deux
+  // paiements identiques ne comptaient qu'une fois, et celui qui manquait dans le cloud n'était jamais proposé
   const vusVir=new Set((virements||[]).map(_recSig));
-  const virManquants=vir.filter(o=>!vusVir.has(_recSig(o)) && !(typeof _virTombe==='function' && _virTombe(o)));
+  const virManquants=(typeof _virManquants==='function')?_virManquants(vir):vir.filter(o=>!vusVir.has(_recSig(o)) && !(typeof _virTombe==='function' && _virTombe(o)));
   const totalManquant=virManquants.reduce((s,o)=>s+(Number(o.amount)||0),0);
 
   let html='<div class="hl-rec-h">Sur cet appareil</div>'+(typeof _attenteHtml==='function'?_attenteHtml():'');
@@ -6037,7 +6094,7 @@ function renderRecovery(){
 async function restaurerVirements(){
   const vir=_recLire(cleLocale('virements'))||[];
   const vus=new Set((virements||[]).map(_recSig));
-  const manquants=vir.filter(o=>!vus.has(_recSig(o)) && !(typeof _virTombe==='function' && _virTombe(o)));
+  const manquants=(typeof _virManquants==='function')?_virManquants(vir):vir.filter(o=>!vus.has(_recSig(o)) && !(typeof _virTombe==='function' && _virTombe(o)));   // (16/10, R2)
   if(!manquants.length){ showSaveStatus('Rien à restaurer','var(--todo)'); return; }
   const total=manquants.reduce((s,o)=>s+(Number(o.amount)||0),0);
   if(!await showConfirm('Remettre dans le cloud '+_pl(manquants.length,'paiement','paiements')+' à la modèle, pour un total de '+fmtC(total)+' ? Rien ne sera supprimé.')) return;
@@ -6317,7 +6374,8 @@ function renderForecast(){
   // « Fixer un objectif mensuel » (affichage seulement).
   const _gi=document.getElementById('monthly-goal');
   if(_gi&&_gi.value==='0'&&document.activeElement!==_gi)_gi.value='';
-  const goal=parseFloat(document.getElementById('monthly-goal')?.value)||0;
+  // (16/10, R1 frère) « 15.000 » (refusé) ne devient plus un objectif de 15 $ : l'objectif enregistré reste
+  const goal=(typeof objectifDuChamp==='function')?objectifDuChamp():(parseFloat(document.getElementById('monthly-goal')?.value)||0);
   if(card.classList)card.classList.toggle('fc-replie',goal<=0&&!(typeof window!=='undefined'&&window._fcObjOuvert));
   const gdet=document.getElementById('forecast-goal-detail');
   if(goal>0){
@@ -7031,6 +7089,7 @@ async function loadData() {
       vas = apiVas;
       _settingsCache = apiSettings || {};
       virements = apiSettings?.virements ? JSON.parse(apiSettings.virements) : [];
+      if (typeof _virIds === 'function') virements = _virIds(virements);   // (16/10, R2) identifiant stable des paiements anciens (écrit en base au 1er enregistrement)
       // Modèles et journal : relire depuis le cloud (sinon ils repartaient vides à chaque chargement)
       try{ modeles = apiSettings?.modeles ? (JSON.parse(apiSettings.modeles)||[]) : []; }catch(_e){ modeles=[]; }
       if(!modeles.length){ try{ const _lm=await window.storage.get(cleLocale('modeles')); const _pm=_lm?JSON.parse(_lm.value):[]; if(_pm&&_pm.length){ modeles=_pm; _saveModeles(); } }catch(_e){} }
@@ -7096,7 +7155,7 @@ async function loadLocal() {
     const log = await window.storage.get(cleLocale('editlog'));
     if (e) ents = JSON.parse(e.value) || [];
     if (v) vas = JSON.parse(v.value) || [];
-    if (vir) virements = JSON.parse(vir.value) || [];
+    if (vir) { virements = JSON.parse(vir.value) || []; if (typeof _virIds === 'function') virements = _virIds(virements); }   // (16/10, R2)
     if (mod) modeles = JSON.parse(mod.value) || [];
     if (log) editLog = JSON.parse(log.value) || [];
     if (typeof _impCharger === 'function'){ const _ip = window.storage.get(cleLocale('impots_payes')); if (_ip) _impCharger(_ip.value); }
@@ -7624,7 +7683,12 @@ let _goalTimer = null, _discordTimer = null, _goalWasReached = false;
 function onGoalChange() { uk(); clearTimeout(_goalTimer); _goalTimer = setTimeout(saveMonthlyGoal, 1000); }
 async function saveMonthlyGoal() {
   if (ecritureInterdite('objectif du mois')) return;
-  const val = parseFloat(document.getElementById('monthly-goal')?.value) || 0;
+  // (16/10, relecture R1, frère) l'objectif passe par le MÊME garde-fou que les montants : « 15,000 » (que le navigateur
+  // en français rend « 15.000 ») n'est plus enregistré 15 $ ; le refus s'écrit sous le champ (E1), rien n'est envoyé ni gardé.
+  const _souciObj = (typeof verifierMontants === 'function') ? verifierMontants(['monthly-goal']) : '';
+  if (_souciObj) { flashMsg('goal-msg', '⚠ ' + _souciObj.replace(/\*\*/g, ''), 'var(--neg)'); return; }
+  const val = (typeof gv === 'function') ? gv('monthly-goal') : (parseFloat(document.getElementById('monthly-goal')?.value) || 0);
+  if (typeof _objEnregistre !== 'undefined') _objEnregistre = val;
   // (15/10, D-14) un objectif non enregistré est DIT, gardé sur cet appareil et renvoyé au retour du réseau
   const _garder = function(){ try{ if (typeof _fileReglageNoter === 'function') _fileReglageNoter('monthly_goal', val); }catch(_){}
     showSaveStatus('⚠ Objectif du mois NON enregistré pour l’instant — gardé sur cet appareil, renvoyé dès que le réseau revient', '#ef4444'); };
@@ -7842,7 +7906,12 @@ function se(force) {
   // deviner. Ce qu'on sait, c'est que de l'argent n'a jamais 3 décimales.
   // On refuse et on propose la réécriture (voir `lireMontant`).
   {
-    const ids = ['ib','itg','ici','ich'].concat(
+    // (16/10, relecture R1) TOUS les montants du formulaire, dans l'ordre de l'écran : Net OnlyFans, Net Telegram,
+    // chaque ligne VA / Modèle / Chat IA / Chat humain (`lv-<poste>-<n>`), chaque dépense diverse. Avant : `ici` et `ich`
+    // (deux cases disparues, devenues des lignes) étaient sautées sans bruit — une ligne VA « 1,000 » enregistrait 1 $,
+    // une ligne à −500 retirait 500 du total VA. Le message va sous la ligne fautive (E1).
+    const ids = ['ib','itg'].concat(
+      ['va','mo','ci','ch'].reduce(function(l, k){ return l.concat(((typeof _LP !== 'undefined' && _LP[k] && _LP[k].ids) || []).map(function(i){ return 'lv-'+k+'-'+i; })); }, []),
       (typeof afs !== 'undefined' ? afs : []).map(function(i){ return 'av-'+i; }));
     const souci = verifierMontants(ids);
     if(souci){ flashMsg('se-msg','⚠ '+souci.replace(/\*\*/g,''),'var(--neg)'); return; }
@@ -7888,7 +7957,7 @@ function se(force) {
   const paidBy={va:_domin(_vaI),mo:_domin(_moI),ci:_domin(_ciI),ch:_domin(_chI)};
   const notes=document.getElementById('entry-notes')?.value.trim()||'';
   const entry={date,brut:br,tgNet:tg,va,mo,ci,ch,alI,alT,vaI:_vaI,moI:_moI,ciI:_ciI,chI:_chI,ofNet:_ofNet,profit,paidBy,notes,author:_currentUser};
-  const goal=parseFloat(document.getElementById('monthly-goal')?.value)||0;
+  const goal=(typeof objectifDuChamp==='function')?objectifDuChamp():(parseFloat(document.getElementById('monthly-goal')?.value)||0);   // (16/10, R1 frère)
   const now=ts().slice(0,7);
   const profitBefore=ents.filter(e=>e.date.slice(0,7)===now).reduce((s,e)=>s+e.profit,0);
   let _envoi;
@@ -10597,7 +10666,7 @@ function _objEtat(){
   var deM = (/^[aeiouyéè]/i.test(nom) ? "d'" : 'de ') + nom;     // comme la Prévision : « d'octobre »
   var pr = window._objPr;
   var gi = document.getElementById('monthly-goal');
-  var goal = parseFloat(gi && gi.value) || 0;
+  var goal = (typeof objectifDuChamp === 'function') ? objectifDuChamp() : (parseFloat(gi && gi.value) || 0);   // (16/10, R1 frère)
   var lecture = document.body.classList.contains('readonly');
   var apEl = document.getElementById('kpi-apercu'), apercu = !!(apEl && !apEl.hidden);
   if(!ceMois || pr == null || !isFinite(pr)) return { mode: 'cache' };
@@ -11794,11 +11863,23 @@ function _fileReglageFait(cle){
   _fileModifier(function(a){ for (var i = a.length - 1; i >= 0; i--) if (a[i].t === 'reglage' && a[i].cle === cle) a.splice(i, 1); });
 }
 function _tombesNoter(cle, liste){
-  var s = new Set(); (liste || []).forEach(function(t){ if (t && t.k != null) s.add(String(t.k)); }); _tombes[cle] = s;
+  var s = new Set(), v = new Set(), vc = (typeof _virVieilleCle === 'function');
+  (liste || []).forEach(function(t){
+    if (!t || t.k == null) return; s.add(String(t.k));
+    // (16/10, R2) ancienne pierre tombale d'un paiement (« date|montant|note ») : attribuée à une ligne (ok) = la pierre
+    // tombale de cet identifiant ; sinon elle attend (et ne retirera qu'UNE ligne)
+    if (cle === 'virements' && vc && _virVieilleCle(t.k)) { if (t.ok != null) s.add(String(t.ok)); else v.add(String(t.k)); }
+  });
+  _tombes[cle] = s; if (cle === 'virements') _tombes.virVieilles = v;
 }
 function _virTombe(o){
   var s = _tombes.virements; if (!s || !s.size || !o) return false;
-  return s.has(String(_cleVirement(o))) || s.has([o.date, o.amount, o.note || ''].join('|'));
+  // (16/10, R2) un paiement est supprimé par SON identifiant ; une ligne ancienne absente de la base, par une ancienne
+  // pierre tombale de son contenu pas encore attribuée — plus jamais « tous les paiements identiques »
+  if (typeof _virSig !== 'function') return s.has(String(_cleVirement(o))) || s.has([o.date, o.amount, o.note || ''].join('|'));
+  if (o.id && s.has(String(o.id))) return true;
+  var v = _tombes.virVieilles;
+  return !!(v && v.size && (!o.id || _virAncien(o)) && v.has(_virSig(o)));
 }
 // Pierres tombales levées exprès (restauration choisie) : la prochaine écriture fusionnée les retire.
 function _ressusciter(cle, cles){
@@ -11818,6 +11899,9 @@ function _optsJournal(){
   var date = function(l){ var v = new Date(l && l.ts).getTime(); return isFinite(v) ? v : 0; };
   return { cleDe: function(l){ return String(l && l.ts) + '|' + (l && l.action) + '|' + (l && l.detail); }, dateDe: date,
     trier: function(a, b){ return date(b) - date(a); }, devant: true, limite: 200, marge: 25, archive: true, archiveMax: 3000,
+    // (16/10, J4) l'archive ne s'arrête plus à 3 000 lignes : au-delà de 3 500, les plus anciennes (500 au moins) vont dans
+    // le morceau de LEUR année (« editlog_archive_2026 »), lu seulement à la demande (« Voir l'archive »)
+    archiveMarge: 500, archiveSuite: function(l){ var t = date(l); return 'editlog_archive_' + (t ? new Date(t).getFullYear() : 'sans_date'); },
     appliquer: function(l){ editLog = l; } };
 }
 // Pour une NOUVELLE liste rangée dans une ligne de `settings` (ex. les impôts payés) :
@@ -11965,9 +12049,13 @@ function _fileAppliquer(){
   _vuServeur = {};
   (ents || []).forEach(function(e){ if (e && e.id) _vuServeur[e.id] = _copie(e); });
   var lire = function(t){ try { var v = JSON.parse(t || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
-  _tombesNoter('virements', lire(_settingsCache && _settingsCache.virements_supprimes));
+  var _vt = lire(_settingsCache && _settingsCache.virements_supprimes);
+  _tombesNoter('virements', _vt);
   // un ancien appareil (avant ce correctif) a pu remettre en base un paiement supprimé : il reste supprimé
-  if (_tombes.virements.size) virements = (virements || []).filter(function(v){ return !_virTombe(v); });
+  // (16/10, R2) chaque paiement ancien a son identifiant stable ; une ancienne pierre tombale « date|montant|note » n'en
+  // retire qu'UN (avant : tous les paiements identiques) ; une même ligne remise deux fois (même identifiant) compte une fois
+  if (typeof _virAppliquerTombes === 'function') virements = _virAppliquerTombes(virements || [], _vt).liste;
+  else if (_tombes.virements.size) virements = (virements || []).filter(function(v){ return !_virTombe(v); });
   var a = _fileLire();
   if (!a.length) { try { _etatFile(); } catch (e) {} return; }
   var date = function(l){ var v = new Date(l && l.ts).getTime(); return isFinite(v) ? v : 0; };
@@ -11979,8 +12067,15 @@ function _fileAppliquer(){
     else if (op.t === 'maj') { e = _copie(op.e); i = ents.findIndex(function(x){ return x && x.id === op.id; }); if (i >= 0) ents[i] = e; else ents.unshift(e); }
     else if (op.t === 'suppr') { i = ents.findIndex(function(x){ return x && x.id === op.id; }); if (i >= 0) ents.splice(i, 1); }
     else if (op.t === 'liste' && op.cle === 'virements') {
-      (op.sup || []).forEach(function(v){ var k = String(_cleVirement(v)); _VIREMENTS_SUPPRIMES.add(k); virements = virements.filter(function(x){ return String(_cleVirement(x)) !== k; }); });
-      (op.aj || []).forEach(function(v){ var k = String(_cleVirement(v)); if (!virements.some(function(x){ return String(_cleVirement(x)) === k; }) && !_VIREMENTS_SUPPRIMES.has(k) && !_virTombe(v)) virements.push(v); });
+      (op.sup || []).forEach(function(v){
+        // (16/10, R2) gardée par une version d'avant, la suppression d'un paiement ancien (sans identifiant) : le PREMIER
+        // paiement ancien de ce contenu encore là — un seul (avant : tous les identiques)
+        var k = String(_cleVirement(v));
+        if (v && !v.id && typeof _virSig === 'function') { var s0 = _virSig(v), x0 = virements.find(function(x){ return _virAncien(x) && _virSig(x) === s0; }); if (!x0) return; k = String(x0.id); }
+        _VIREMENTS_SUPPRIMES.add(k); virements = virements.filter(function(x){ return String(_cleVirement(x)) !== k; }); });
+      (op.aj || []).forEach(function(v){
+        if (v && !v.id && typeof _virIds === 'function') { var s1 = _virSig(v); if (virements.some(function(x){ return _virAncien(x) && _virSig(x) === s1; })) return; v = _virIds([v])[0]; }   // (16/10, R2)
+        var k = String(_cleVirement(v)); if (!virements.some(function(x){ return String(_cleVirement(x)) === k; }) && !_VIREMENTS_SUPPRIMES.has(k) && !_virTombe(v)) virements.push(v); });
     } else if (op.t === 'liste' && op.cle === 'editlog') {
       var cle = _optsJournal().cleDe, vus = {};
       if (op.vider) { editLog = (editLog || []).filter(function(l){ return date(l) > new Date(op.vider).getTime(); }); var fil = _saveVirements._fil || (_saveVirements._fil = {}); (fil.editlog || (fil.editlog = { p: null, ensuite: null })).vide = op.vider; }
@@ -12153,7 +12248,7 @@ async function _rafraichir(){
     try { if (_panneauOuvert()) return; } catch (e) {}
     var s = r[1] || {};
     ents = r[0];
-    try { if ('virements' in s) virements = JSON.parse(s.virements || '[]') || []; } catch (e) {}
+    try { if ('virements' in s) { virements = JSON.parse(s.virements || '[]') || []; if (typeof _virIds === 'function') virements = _virIds(virements); } } catch (e) {}   // (16/10, R2)
     try { if ('editlog' in s) editLog = JSON.parse(s.editlog || '[]') || []; } catch (e) {}
     ['virements', 'virements_supprimes', 'editlog', 'monthly_goal'].forEach(function(k){ if (k in s) _settingsCache[k] = s[k]; });
     var g = document.getElementById('monthly-goal'); if (g && s.monthly_goal != null && document.activeElement !== g) g.value = s.monthly_goal;
@@ -12179,14 +12274,18 @@ window.addEventListener('storage', function(ev){ if (ev.key === _CLE_FILE) { try
 function _journalPied(el){
   if (!el) return;
   var p = document.createElement('div'); p.className = 'hl-pied';
-  p.innerHTML = _pgIco('info', 15) + '<span>L’Historique garde ici les 200 dernières modifications ; les plus anciennes sont rangées dans l’archive (les 3 000 dernières).</span>'
+  p.innerHTML = _pgIco('info', 15) + '<span>L’Historique garde ici les 200 dernières modifications ; les plus anciennes sont rangées dans l’archive, où rien n’est effacé.</span>'
     + '<button type="button" class="hl-arch-b" onclick="_voirArchiveJournal(this)">Voir l’archive</button>';
   el.appendChild(p);
 }
 async function _voirArchiveJournal(b){
   if (b) { b.disabled = true; b.textContent = 'Lecture…'; }
   var l = [];
-  try { var d = await apiFetch('/api/settings?cles=editlog_archive'); l = JSON.parse((d && d.editlog_archive) || '[]') || []; }
+  try { var d = await apiFetch('/api/settings?cles=editlog_archive'); l = JSON.parse((d && d.editlog_archive) || '[]') || [];
+        // (16/10, J4) + les morceaux par année : les lignes sorties de l'archive au-delà de 3 500 (plus rien n'est effacé)
+        if (typeof _clesArchiveAnnees === 'function') { var _ka = _clesArchiveAnnees(), _d2 = await apiFetch('/api/settings?cles=' + _ka.join(',')), _n0 = l.length;
+          _ka.forEach(function(k){ var m = []; try { m = JSON.parse((_d2 && _d2[k]) || '[]') || []; } catch (e) {} if (Array.isArray(m) && m.length) l = l.concat(m); });
+          if (l.length > _n0) l.sort(function(x, y){ return (new Date(y && y.ts).getTime() || 0) - (new Date(x && x.ts).getTime() || 0); }); } }
   catch (e) { if (b) { b.disabled = false; b.textContent = 'Archive illisible (réseau) — réessayer'; } return; }
   var el = document.getElementById('editlog-content'); if (!el) return;
   var box = document.getElementById('hl-archive');
@@ -12258,6 +12357,7 @@ async function _restaurerAvecApercu(src){
   if (!Array.isArray(srvEnts)) srvEnts = [];
   var lireL = function(t){ try { var v = JSON.parse(t || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
   var srvVir = lireL(dist.virements), tombes = lireL(dist.virements_supprimes);
+  if (typeof _virIds === 'function') srvVir = _virIds(srvVir);   // (16/10, R2) jamais deux paiements identiques confondus
   var tombe = {}; tombes.forEach(function(t){ if (t && t.k != null) tombe[String(t.k)] = t; });
   var sigV = function(o){ return [o && o.date, Number(o && o.amount) || 0, String((o && o.note) || '').trim()].join('|'); };
   var somme = function(l){ return l.reduce(function(s, v){ return s + (Number(v.amount) || 0); }, 0); };
@@ -12282,18 +12382,15 @@ async function _restaurerAvecApercu(src){
     modifies.push({ f: f, s: s });
   });
   var gardes = srvEnts.filter(function(x){ return x && x.id && !pris[x.id]; });
-  // 3. les paiements : présents (même id ou mêmes date/montant/note), supprimés exprès (pierre tombale), absents
+  // 3. les paiements (16/10, R2) : chacun par son identifiant (deux paiements du même jour et du même montant ne se
+  //    confondent plus) ; les paiements ANCIENS identiques se COMPTENT — la copie en a deux, la base un : un manque (avant,
+  //    il passait pour « présent » parce qu'un paiement pareil l'était) ; une ancienne pierre tombale « date|montant|note » compte
+  //    pour UNE ligne supprimée (_virClasser). Supprimés exprès : case décochée, comme avant.
   var fVir = (Array.isArray(d.virements) ? d.virements : []).filter(function(v){ return v && typeof v === 'object' && isFinite(Number(v.amount)); });
-  var srvCle = {}; srvVir.forEach(function(v){ srvCle[String(_cleVirement(v))] = 1; srvCle[sigV(v)] = 1; });
-  var virAbsents = [], virSupprimes = [], virCommuns = 0;
-  fVir.forEach(function(v){
-    var k = String(_cleVirement(v));
-    if (srvCle[k] || srvCle[sigV(v)]) { virCommuns++; return; }
-    if (tombe[k] || tombe[sigV(v)]) { virSupprimes.push(v); return; }
-    virAbsents.push(v);
-  });
-  var fCles = {}; fVir.forEach(function(v){ fCles[String(_cleVirement(v))] = 1; fCles[sigV(v)] = 1; });
-  var virGardes = srvVir.filter(function(v){ return !fCles[String(_cleVirement(v))] && !fCles[sigV(v)]; });
+  if (typeof _virIds === 'function') fVir = _virIds(fVir);
+  var _vc = _virClasser(fVir, srvVir, tombes);
+  var virAbsents = _vc.absents, virSupprimes = _vc.supprimes, virCommuns = _vc.communs.length;
+  var virGardes = _vc.gardes;
   // 3b. les autres listes déclarées par _listeDeclarer (ex. impôts payés) : même règle que les paiements
   var autres = clesL.map(function(k){
     var o = _LISTES[k], kd = o.cleDe || function(x){ return (x && x.id != null) ? String(x.id) : JSON.stringify(x); };
@@ -12340,7 +12437,7 @@ async function _restaurerAvecApercu(src){
   if (virAbsents.length) L.push(_caseHtml('vir', true, 'Ajouter ' + _pl(virAbsents.length, 'paiement à la modèle absent de ta base', 'paiements à la modèle absents de ta base')
     + ' (' + fmtC(somme(virAbsents)) + ') : ' + virAbsents.slice(0, 5).map(function(v){ return esc(dlA(v.date)) + ' ' + fmtC(v.amount); }).join(', ') + plus(virAbsents.length, 5) + '.'));
   if (virSupprimes.length) L.push(_caseHtml('virsup', false, 'Remettre aussi ' + _pl(virSupprimes.length, 'paiement supprimé', 'paiements supprimés') + ' depuis la copie ('
-    + fmtC(somme(virSupprimes)) + ') : ' + virSupprimes.slice(0, 4).map(function(v){ var t = tombe[String(_cleVirement(v))] || tombe[sigV(v)] || {};
+    + fmtC(somme(virSupprimes)) + ') : ' + virSupprimes.slice(0, 4).map(function(v){ var t = (_vc.tombeDe(v)) || tombe[String(_cleVirement(v))] || tombe[sigV(v)] || {};
         return esc(dlA(v.date)) + ' ' + fmtC(v.amount) + (t.le ? ', supprimé le ' + esc(_jourCourt(_ymd(new Date(t.le)))) + (t.par ? ' par ' + esc(t.par) : '') : ''); }).join(' ; ')
     + '. Sans cette case, ' + (virSupprimes.length > 1 ? 'ils restent supprimés.' : 'il reste supprimé.')));
   autres.forEach(function(a){
@@ -12371,7 +12468,7 @@ async function _restaurerAvecApercu(src){
   var _okRestore = true, ok = 0, okRemis = 0, ko = 0, i;
   if (remis.length && !(await _sauvegardeAvant(src.i))) { showSaveStatus('⚠ Sauvegarde de sécurité impossible — rien n’a été changé. Réessaie.', '#ef4444'); return; }
   if (virAjout.length) {
-    if (c.virsup && virSupprimes.length) _ressusciter('virements', virSupprimes.map(function(v){ return String(_cleVirement(v)); }).concat(virSupprimes.map(sigV)));
+    if (c.virsup && virSupprimes.length) _ressusciter('virements', virSupprimes.map(function(v){ return String(_cleVirement(v)); }).concat(virSupprimes.map(sigV), virSupprimes.map(_virSig)));
     virements = (virements || []).concat(virAjout);
     _okRestore = (await _saveVirements()) !== false && _okRestore;
   }
@@ -13473,6 +13570,145 @@ function _lmResumeHtml(faits){
     +'<span class="lm-chev" aria-hidden="true">'+_LM_CHEV+'</span></button>';
 }
 function listeVoirFaits(){ _lmVoir=!_lmVoir; _majListe(); }
+
+
+// ── feat7_argent (16/10 : R1, R2, J1, J4) ──
+// ══ CORRECTIFS ARGENT-DONNÉES (16/10, relecture « argent et sécurité » : R1, R2, J1, J4) ═══════════════════════════
+// Déclarations de fonctions (visibles partout dans le script) ; une seule variable (`_objEnregistre`).
+
+// ── R1 (frère) : l'objectif du mois passe par le MÊME garde-fou que les montants ─────────────────────────────────
+// Dans un champ `type="number"` d'un navigateur en français, « 15,000 » arrive « 15.000 » : parseFloat le lisait 15 $.
+// lireMontant le REFUSE (de l'argent n'a jamais 3 décimales) ; saveMonthlyGoal n'enregistre rien et le dit sous le
+// champ. Tant que le champ est refusé, l'objectif qui compte reste celui enregistré : jamais « 15 $ » à l'écran, jamais
+// une alerte Discord « objectif atteint » sur 15 $. Un montant valide est lu exactement comme avant (même parseFloat).
+var _objEnregistre = null;            // dernier objectif valide enregistré (ou mis à envoyer) dans cette session
+function objectifDuChamp(){
+  var g = document.getElementById('monthly-goal');
+  var r = lireMontant(g ? g.value : '');
+  if (r.ok) return r.valeur;
+  var s = (_objEnregistre != null) ? Number(_objEnregistre) : parseFloat(typeof _settingsCache !== 'undefined' && _settingsCache ? _settingsCache.monthly_goal : '');
+  return (isFinite(s) && s > 0) ? s : 0;
+}
+
+// ── R2 : deux paiements ANCIENS identiques ne fusionnent plus, ne partent plus ensemble ─────────────────────────
+// Les paiements notés avant les identifiants (13/09) n'en ont pas. `_cleVirement` les reconnaissait par
+// « date|montant|note » : deux paiements identiques (même jour, même montant, même note) ne faisaient qu'UN pour la
+// fusion (l'un disparaissait de la base au paiement suivant) et pour la suppression (en supprimer un supprimait les deux).
+// Maintenant chaque paiement ancien reçoit un identifiant STABLE, le même sur tous les appareils, calculé depuis la
+// liste lue : « L- » + date|montant|note + « # » + son rang parmi les paiements SANS identifiant de même contenu.
+// Il est écrit en base au premier enregistrement des paiements ; d'ici là chaque appareil le recalcule à l'identique.
+// (Le rang ne compte que les lignes sans identifiant : une ancienne version encore ouverte qui remettrait sa copie d'un
+//  paiement ancien retombe sur le MÊME identifiant, et la fusion le reconnaît au lieu de le doubler.)
+function _virSig(v){ return [v && v.date, v && v.amount, (v && v.note) || ''].join('|'); }
+function _virIds(liste){
+  if (!Array.isArray(liste)) return [];
+  var rang = {};
+  return liste.map(function(v){
+    if (!v || typeof v !== 'object' || v.id) return v;
+    var s = _virSig(v); rang[s] = (rang[s] || 0) + 1;
+    return Object.assign({}, v, { id: 'L-' + s + '#' + rang[s] });
+  });
+}
+function _virAncien(v){ return !!(v && v.id && String(v.id).slice(0, 2) === 'L-'); }          // un paiement ancien (identifiant donné ici)
+function _virVieilleCle(k){ k = String(k == null ? '' : k); return k.indexOf('|') >= 0 && k.slice(0, 2) !== 'L-'; }   // ancienne pierre tombale « date|montant|note »
+// Les pierres tombales appliquées à une liste de paiements TELLE QU'EN BASE (multi-ensemble) :
+//  - par identifiant (« v… », « L-… ») : la ligne de cet identifiant ;
+//  - ANCIENNE pierre tombale « date|montant|note » (écrite avant ce correctif) : UNE seule ligne ancienne de ce contenu
+//    (la première de la liste), jamais toutes ; une fois attribuée (t.ok = l'identifiant), seulement cette ligne-là.
+// Deux lignes au MÊME identifiant sont le même paiement (une copie remise par une ancienne version encore ouverte) : une
+// seule compte. Jamais deux lignes d'identifiants différents, même si leur contenu est identique.
+// Rend { liste, prises : [{t, id}] (attributions nouvelles), parId : id -> pierre tombale, vieilles : contenu -> nombre
+// d'anciennes pierres tombales restées sans ligne en base (chacune compte pour UNE ligne absente) }.
+function _virAppliquerTombes(liste, tombes){
+  var _un = {};
+  liste = _virIds(liste || []).filter(function(x){ if (!x || !x.id) return true; var k = String(x.id); if (_un[k]) return false; _un[k] = 1; return true; });
+  var parId = {}, vieilles = [];
+  (tombes || []).forEach(function(t){
+    if (!t || t.k == null || t.avant) return;
+    var k = String(t.k);
+    if (_virVieilleCle(k)) { if (t.ok != null) parId[String(t.ok)] = t; else vieilles.push(t); }
+    else parId[k] = t;
+  });
+  var prises = [], restantes = {};
+  vieilles.forEach(function(t){
+    var k = String(t.k);
+    var v = liste.find(function(x){ return _virAncien(x) && !parId[String(x.id)] && _virSig(x) === k; });
+    if (v) { parId[String(v.id)] = t; prises.push({ t: t, id: String(v.id) }); }
+    else restantes[k] = (restantes[k] || 0) + 1;
+  });
+  return { liste: liste.filter(function(x){ return !(x && parId[String(x.id)]); }), prises: prises, parId: parId, vieilles: restantes };
+}
+// Range les paiements d'une COPIE (fichier, sauvegarde, copie gardée sur l'appareil) par rapport à la BASE :
+//   communs (déjà en base), supprimes (supprimés exprès : pierre tombale), absents (à remettre), gardes (en base,
+//   absents de la copie), et tombeDe(v) (la pierre tombale d'un supprimé, pour dire « supprimé le … par … »).
+// Un paiement à identifiant propre : par son identifiant (deux paiements différents du même jour et du même montant ne
+// se confondent plus). Les paiements ANCIENS de même contenu : par leur NOMBRE — la copie en a n, la base m : n − m
+// manquent (d'abord ceux qui ont une pierre tombale, puis ceux dont l'identifiant n'est pas en base), jamais
+// « présents » parce qu'un paiement pareil l'est. `dejaAppliquee` : la base est la mémoire de la page (pierres tombales déjà
+// passées), on ne les repasse pas.
+function _virClasser(copie, base, tombes, dejaAppliquee){
+  copie = _virIds(copie || []);
+  var A = dejaAppliquee ? (function(){ var x = _virAppliquerTombes([], tombes); x.liste = _virIds(base || []); return x; })()
+                        : _virAppliquerTombes(base, tombes);
+  var enBase = {}; A.liste.forEach(function(v){ if (v && v.id) enBase[String(v.id)] = 1; });
+  var res = { communs: [], absents: [], supprimes: [], gardes: [], tombeDe: function(v){ return (v && A.parId[String(v.id)]) || (A.vieillesT && A.vieillesT[_virSig(v)]) || null; } };
+  A.vieillesT = {};
+  (tombes || []).forEach(function(t){ if (t && t.k != null && !t.avant && t.ok == null && _virVieilleCle(t.k)) A.vieillesT[String(t.k)] = t; });
+  var anciens = {}, ordre = [];
+  copie.forEach(function(v){
+    if (!v || typeof v !== 'object') return;
+    if (_virAncien(v)) { var s = _virSig(v); if (!anciens[s]) { anciens[s] = []; ordre.push(s); } anciens[s].push(v); return; }
+    var id = String(v.id);
+    if (enBase[id]) res.communs.push(v);
+    else if (A.parId[id]) res.supprimes.push(v);
+    else res.absents.push(v);
+  });
+  var baseAnc = {}; A.liste.forEach(function(v){ if (_virAncien(v)) { var s = _virSig(v); baseAnc[s] = (baseAnc[s] || 0) + 1; } });
+  ordre.forEach(function(s){
+    var F = anciens[s], n = F.length - (baseAnc[s] || 0);
+    var hors = F.filter(function(v){ return !enBase[String(v.id)]; });
+    var manquent = n > 0 ? hors.filter(function(v){ return A.parId[String(v.id)]; }).concat(hors.filter(function(v){ return !A.parId[String(v.id)]; })).slice(0, n) : [];
+    var reste = A.vieilles[s] || 0;          // anciennes pierres tombales de ce contenu sans ligne en base : une ligne chacune
+    F.forEach(function(v){
+      if (manquent.indexOf(v) < 0) { res.communs.push(v); return; }
+      if (A.parId[String(v.id)]) res.supprimes.push(v);
+      else if (reste > 0) { reste--; res.supprimes.push(v); }
+      else res.absents.push(v);
+    });
+  });
+  var cIds = {}, cAnc = {}, vus = {};
+  copie.forEach(function(v){ if (!v || typeof v !== 'object') return; if (_virAncien(v)) { var s = _virSig(v); cAnc[s] = (cAnc[s] || 0) + 1; } else cIds[String(v.id)] = 1; });
+  A.liste.forEach(function(v){
+    if (!_virAncien(v)) { if (!cIds[String(v.id)]) res.gardes.push(v); return; }
+    var s = _virSig(v); vus[s] = (vus[s] || 0) + 1;
+    if (vus[s] > (cAnc[s] || 0)) res.gardes.push(v);
+  });
+  return res;
+}
+// « Sur cet appareil » (Historique → Récupération) : les paiements de la copie gardée sur l'appareil qui manquent dans
+// le cloud et n'ont pas été supprimés exprès — comptés comme ci-dessus (avant : par « date|montant|note », deux
+// paiements identiques ne comptaient qu'une fois et celui qui manquait n'était jamais proposé).
+function _virManquants(vir){
+  var tl = [];
+  try { tl = JSON.parse((typeof _settingsCache !== 'undefined' && _settingsCache && _settingsCache.virements_supprimes) || '[]') || []; } catch (e) { tl = []; }
+  if (!Array.isArray(tl)) tl = [];
+  // + les suppressions vues ou faites depuis le chargement (pierres tombales relues après écriture, suppressions d'ici)
+  var deja = {}; tl.forEach(function(t){ if (t && t.k != null) deja[String(t.k)] = 1; });
+  var plus = [].concat(Array.from((typeof _tombes !== 'undefined' && _tombes && _tombes.virements) || []),
+                       Array.from((typeof _VIREMENTS_SUPPRIMES !== 'undefined' && _VIREMENTS_SUPPRIMES) || []));
+  plus.forEach(function(k){ k = String(k); if (!deja[k] && !_virVieilleCle(k)) { deja[k] = 1; tl.push({ k: k }); } });
+  return _virClasser(vir || [], virements || [], tl, true).absents;
+}
+
+// ── J4 : l'archive du journal ne perd plus rien ─────────────────────────────────────────────────────────────────
+// Au-delà de 3 000 lignes, les plus anciennes de l'archive (`editlog_archive`) partent dans le morceau de LEUR année
+// (`editlog_archive_2026`…, voir _optsJournal et _saveVirements) au lieu de disparaître. Lus ici, à la demande.
+function _clesArchiveAnnees(){
+  var cles = [], a0 = new Date().getFullYear();
+  for (var a = a0; a >= 2020; a--) cles.push('editlog_archive_' + a);
+  cles.push('editlog_archive_sans_date');
+  return cles;
+}
 
 </script>
 </body>
