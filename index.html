@@ -4540,6 +4540,161 @@ body.skin-melange #hist-panel .tx-mod.tx-mod-ic svg{display:block;width:18px;hei
 @media (max-width:640px) and (prefers-reduced-motion:no-preference){
   body.skin-melange #impots-panel .ip-repli-b .cv{transition:transform var(--t-fast,.15s) var(--ease,ease)}
 }
+
+/* ── feat5_ecrans (écrans 16/10 : E1-E3, E6-E12, P11) ── */
+/* ══ écrans (16/10) : ce qui se voit et se touche — E1 à E12 (sauf E4, E5), P11 ══
+   Présentation seulement. Jetons du thème partout (définis dans :root ET body.light quand ils sont nouveaux). */
+
+/* ── E9 : OnlyFans a sa couleur (le bleu de sa pastille de l'Accueil), comme Telegram a la sienne ── */
+:root{--m-of:#2563eb}
+body.light{--m-of:#2563eb}
+
+/* ── E1 : un message d'ERREUR se voit, reste, et montre son champ ── */
+#se-msg.fm-err,#mp-msg.fm-err,#qa-msg.fm-err,#liste-mois #lm-f-msg.fm-err{display:block!important;position:relative;
+  text-align:left!important;font-size:13px!important;font-weight:600;line-height:1.4;
+  min-height:44px!important;margin:8px 0 12px!important;padding:9px 40px 9px 12px;
+  border-radius:var(--r-md);border:1px solid color-mix(in srgb,var(--neg) 55%,transparent);
+  background:color-mix(in srgb,var(--neg) 10%,var(--surf-1));color:var(--neg)!important;
+  opacity:1!important;cursor:pointer;box-shadow:var(--sh-1);overflow-wrap:anywhere;flex:1 1 100%}
+/* chez lui, le message du paiement est rangé après le formulaire (order:4 de la Part de la modèle) ; glissé sous
+   le montant, il reprend l'ordre du texte */
+#ms-form #mp-msg{order:0}
+/* l'icône flotte : le texte reprend toute la largeur sous elle (une ligne de moins au téléphone) */
+.fm-err > .fm-i{float:left;display:inline-flex;margin:2px 7px 0 0}
+/* très petit téléphone (≤ 359 px) : le message est plus serré (même taille de texte), pour que champ ET message
+   tiennent ensemble au-dessus du clavier (mesuré : 320 × 568, clavier ouvert, refus « 1,000 » des impôts payés) */
+@media (max-width:359px){
+  #se-msg.fm-err,#mp-msg.fm-err,#qa-msg.fm-err,#liste-mois #lm-f-msg.fm-err{line-height:1.3;padding:6px 36px 6px 10px;margin:6px 0 10px!important}
+  .fm-err > .fm-x{width:36px;height:36px;top:0;right:0}
+}
+/* (formulaire « J'ai payé les impôts » de la liste du mois : son icône est un svg nu) */
+#liste-mois #lm-f-msg.fm-err > svg{float:left;margin:3px 7px 0 0}
+.fm-err > .fm-x{position:absolute;top:1px;right:1px;display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;margin:0;padding:0;border:0;border-radius:var(--r-md);
+  background:transparent;color:inherit;cursor:pointer}
+.fm-err > .fm-x:hover{background:color-mix(in srgb,var(--neg) 12%,transparent)}
+.fm-err > .fm-x:focus-visible{outline:2px solid var(--neg);outline-offset:-2px}
+.fm-err > .fm-x svg{width:18px;height:18px}
+/* le champ à corriger : bord rouge et halo (en plus d'aria-invalid pour les lecteurs d'écran) */
+/* (plus fort que le focus violet « .dash input:not([type=file]):focus » : le champ reste rouge quand le curseur y est) */
+.ifield.fm-champ,input.fm-champ,#entry-date-input.fm-champ,
+.dash input.fm-champ:not([type="file"]),.dash input.fm-champ:not([type="file"]):focus,
+#quickadd-box input.fm-champ:not([type="file"]),#quickadd-box input.fm-champ:not([type="file"]):focus{border-color:var(--neg)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--neg) 24%,transparent)!important}
+/* clavier ouvert (fenêtre réduite d'au moins un quart, même largeur : classe posée par le JS) : la barre d'onglets
+   se retire et « Enregistrer » ne colle plus au-dessus du clavier, le champ et son message ont la place */
+@media (max-width:640px){
+  html body.clavier-ouvert #sidebar{display:none!important}
+  html body.clavier-ouvert #ca-entry-panel > .sbtn{position:relative!important;bottom:auto!important}
+  html body.clavier-ouvert #save-status{bottom:calc(var(--mob-safe-b) + 10px)!important}
+}
+/* au téléphone le champ arrive au-dessus du bouton collé : on garde un peu d'air au défilement */
+#ca-entry-panel .ifield,#ms-form .ifield,#liste-mois .lm-f .ifield{scroll-margin:96px 0 140px}
+
+/* ── E6 : « Exporter » ne s'ouvre plus au survol ni au focus : seulement au toucher (et Échap le ferme) ── */
+@media (min-width:641px){
+  html body .export-dropdown:hover .export-menu,
+  html body .export-dropdown:focus-within .export-menu{display:none}
+  html body .export-dropdown.open .export-menu{display:block}
+  html body .export-dropdown:hover .chev{transform:none}
+  html body .export-dropdown.open .chev{transform:rotate(180deg)}
+}
+
+/* ── P11 : œil fermé au téléphone : la barre « Montants cachés · Afficher » ── */
+.oeil-rappel{display:none}
+@media (max-width:640px){
+  html body.montants-caches .oeil-rappel{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;
+    margin:2px 0 10px;padding:0 14px;border-radius:var(--r-lg);border:1px solid var(--acc-22);
+    background:var(--acc-06);color:var(--ink-2);font:inherit;font-size:14px;font-weight:500;text-align:left;cursor:pointer}
+  html body.montants-caches .oeil-rappel > svg{flex:none;color:var(--acc-txt)}
+  html body.montants-caches .oeil-rappel .or-t{flex:1 1 auto;min-width:0}
+  html body.montants-caches .oeil-rappel .or-a{flex:none;color:var(--acc-txt);font-weight:700}
+  html body.montants-caches .oeil-rappel:active{background:var(--acc-12)}
+  html body.montants-caches .oeil-rappel:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+}
+
+/* ── E2 : lecture seule — les gestes d'écriture qui restaient visibles (et ne pouvaient rien enregistrer) ── */
+body.readonly #forecast-card .fc-obj,body.readonly #forecast-card #monthly-goal,body.readonly #forecast-card .fc-discord,
+body.readonly [onclick*="objFixer"],body.readonly [onclick*="snapshotManuel"],body.readonly [onclick*="restaurerSnapshot"],
+body.readonly [onclick*="restaurerVirements"],body.readonly [onclick*="testDiscord"],body.readonly [onclick*="ajouterChargesHabituelles"]{display:none!important}
+body.readonly #forecast-card #monthly-goal + span{display:none!important}
+
+/* ── E3 : Récap à la tablette — un mois ouvert garde les NOMS de ses dépenses ── */
+/* 3 colonnes de 768 à 1 279 px laissaient 0 à 30 px au nom (VA : 0 px à 820) : deux colonnes,
+   « Bénéfice du mois » dessous sur toute la largeur ; le total ne se coupe plus entre « − » et « $ ». */
+@media (min-width:641px) and (max-width:1279px){
+  html body #page-recap .rc-detg{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html body #page-recap .rc-detg > .rc-grp.rc-res,
+  html body #page-recap .rc-detg > .rc-grp:nth-child(3):not(.rc-res){grid-column:1/-1}
+  /* un nom long (« Dépenses diverses ») passe sur deux lignes plutôt que d'être coupé, comme au téléphone */
+  html body #page-recap .rc-ln{white-space:normal;overflow:visible;text-overflow:clip}
+}
+html body #page-recap .rc-tot > span:last-child,html body #page-recap .rc-lv{white-space:nowrap}
+
+/* ── E12 : formulaire à la tablette — une ligne de versement sur deux rangées, comme au téléphone ── */
+/* (641-1 023 px : les blocs VA / Modèle / Chat IA / Chat humain sont à demi-largeur ; date + nom + montant
+   + « × » sur une rangée sortaient du bloc : montant Chat IA visible 25/90 px, « × » dans le bloc voisin) */
+@media (min-width:641px) and (max-width:1023px){
+  html body #ca-entry-panel .lp-grid .arow{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr) auto;
+    gap:6px;align-items:center}
+  html body #ca-entry-panel .lp-grid .arow > input[type=text]{grid-area:1/1/2/3;min-width:0!important;width:100%!important}
+  html body #ca-entry-panel .lp-grid .arow > .arm{grid-area:1/3/2/4;justify-self:end}
+  html body #ca-entry-panel .lp-grid .arow > input[type=date]{grid-area:2/1/3/2;width:100%!important;min-width:0!important}
+  html body #ca-entry-panel .lp-grid .arow > input[type=number]{grid-area:2/2/3/-1;width:100%!important;min-width:0!important}
+}
+
+/* ── E11 : « Autre période… » dit ce qui manque ── */
+#per-aide{flex:1 0 100%;margin-top:6px;font-size:13px;line-height:1.4;color:var(--ink-2)}
+#per-aide:empty{display:none}
+#per-dates:has(#per-aide:not(:empty)){flex-wrap:wrap}
+
+/* ── E10 : petits défauts ── */
+/* pilule « aperçu, pas encore enregistré » rognée à droite (320-390 px) : elle passe sous « BÉNÉFICE » */
+@media (max-width:640px){
+  html body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-label:has(> .kpi-apercu:not([hidden])){flex-wrap:wrap;row-gap:8px;overflow:visible}
+  html body.skin-melange #page-ca .kpi-hero-grid .kpi.kpi-hero > .kpi-label > .kpi-apercu:not([hidden]){margin-left:0;white-space:nowrap}
+}
+/* 320 px : un graphique pas encore dessiné (300 px par défaut) faisait glisser la page de côté */
+.dash canvas,#login-overlay canvas{max-width:100%}
+/* lecture seule : le badge « Lecture seule » dit l'état ; l'état d'enregistrement ne le répète plus à côté
+   (il n'apparaissait qu'à cause du bandeau d'échec retiré, E2) — sauf une vraie alerte (classe ko) */
+body.readonly .dash > .topbar .tb-etat:not(.ko),body.readonly .dash > .topbar .tb-etat-ordi:not(.ko){display:none!important}
+/* 320-359 px : « NOCTRA FINANCE » coupé en « NOCTRA FI… » : le carré « NF » laisse sa place au nom ;
+   en lecture seule (logo + badge + 4 boutons), le badge recouvrait le logo et poussait « Se déconnecter » hors
+   de l'écran (page de 326 px) : logo retiré, badge sans son icône, boutons resserrés de 2 px */
+@media (max-width:359px){
+  html body .dash > .topbar > div:first-child > .tb-mark{display:none!important}
+  html body .dash > .topbar #api-dot{left:-4px;top:2px}
+  html body.readonly .dash > .topbar #ro-badge > svg{display:none}
+  html body.readonly .dash > .topbar > div:last-child{gap:4px!important}
+}
+/* tablette (641-1 180 px) : l'état d'enregistrement n'était plus qu'un « ✓ » dans un rond, au milieu des
+   boutons (il avait l'air d'un bouton « valider ») ; il reprend sa place de texte sous le nom, comme au
+   téléphone, à la place du sous-titre (qui y tombait à 11 px à 768 px) */
+@media (min-width:641px) and (max-width:1180px){
+  html body .dash > .topbar .tb-etat-ordi{display:none!important}
+  html body .dash > .topbar > div:first-child > div > div:nth-child(2){display:none!important}
+  html body .dash > .topbar .tb-etat{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:12px;font-weight:500;
+    line-height:16px;color:var(--ink-3);white-space:nowrap}
+  html body .dash > .topbar .tb-etat.ko{color:var(--neg)}
+  html body .dash > .topbar .tb-etat > svg{flex:none}
+}
+/* cibles sous 40 px au téléphone : « Liste / Tableau » et filtres de l'Historique (38 px). (« Fixer un objectif »
+   mesure 32 px à l'œil mais sa zone de toucher fait déjà 44 px, par un ::before : rien à changer.) */
+@media (max-width:640px){
+  html body #page-recap .rc-sw,html body #page-editlog .hl-chip{min-height:40px;height:40px}
+}
+/* montants coupés entre « − » et « $ » (Records, 1 440 px) */
+#records-panel b:not(.rk-alerte){white-space:nowrap}
+/* Part de la modèle : le « − » entre « Sa moitié » et « Déjà envoyé » est un signe, pas un bouton rond */
+#model-share .ms-op{background:transparent!important;border:0!important;box-shadow:none!important;color:var(--ink-3)}
+/* compte neuf : le formulaire est déjà ouvert sous « Bienvenue » : un seul appel (son bouton se retire) */
+#page-ca:has(#ca-entry-panel:not(.replie)) #empty-state .es-b{display:none}
+/* compte neuf, Récap : pas de « Tableur » qui télécharge un fichier sans aucun mois, et un cadre vide moins haut
+   (le graphique vide occupe 230 px pour une phrase) */
+#page-recap:has(.nfg-recap > .nfg-vide) .rc-exp{display:none}
+#page-recap .nfg-recap:has(> .nfg-vide){height:120px}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -4875,7 +5030,7 @@ body.skin-melange #hist-panel .tx-mod.tx-mod-ic svg{display:block;width:18px;hei
   <div class="panel">
     <div class="panel-title">B&#233;n&#233;fice par mois</div>
     <div class="panel-sub">chaque barre = le b&#233;n&#233;fice du mois, avant la part de la mod&#232;le</div>
-    <div class="nfg nfg-recap"><canvas id="recap-chart" role="img" aria-label="Profit par mois"></canvas><div class="nfg-vide">Le graphique apparaîtra après ton premier bilan.</div></div>
+    <div class="nfg nfg-recap"><canvas id="recap-chart" role="img" aria-label="Bénéfice par mois"></canvas><div class="nfg-vide">Le graphique apparaîtra après ton premier bilan.</div></div>
   </div>
   <div id="recap-annee" hidden></div>
   <div id="recap-content"><div class="emsg">Aucune donn&#233;e</div></div>
@@ -5108,7 +5263,7 @@ function ecritureInterdite(quoi){
     // Le « ⚠ » n'est pas decoratif : showSaveStatus s'en sert pour reconnaitre un
     // ECHEC, le tenir 20 s a l'ecran, et empecher un « Sauvegarde » de le recouvrir.
     if(typeof showSaveStatus==='function')
-      showSaveStatus("⚠ Lecture seule — RIEN n'a été enregistré"+(quoi?" ("+quoi+")":"")+".", '#ef4444');
+      showSaveStatus("⚠ Lecture seule — RIEN n'a été enregistré"+(quoi && /[\sàâçéèêëîïôûù]/i.test(quoi)?" ("+quoi+")":"")+".", '#ef4444');
     else alert("Mode lecture seule : rien n'a été enregistré.");
   }catch(e){}
   return true;
@@ -5320,15 +5475,24 @@ function dl(s){return new Date(s+'T00:00:00').toLocaleDateString('fr-FR',{day:'2
 function _sansZero(t){ return String(t==null?'':t).replace(/^01(\s)/,'1er$1').replace(/^0(\d\s)/,'$1'); }
 function dlA(s){ return _sansZero(dl(s)); }
 function setRange(){
-  const s=document.getElementById('cdate-start')?.value;
-  const e=document.getElementById('cdate-end')?.value;
-  if(!s&&!e)return;
-  ap=null; acd=s||null; acdEnd=e||s||null;
+  const _si=document.getElementById('cdate-start'), _ei=document.getElementById('cdate-end');
+  let s=_si?.value;
+  let e=_ei?.value;
+  const _aide=t=>{ if(typeof _perAide==='function') _perAide(t); };
+  if(!s&&!e){ _aide(''); return; }
+  // (16/10, écrans E11) Avec UNE seule date, un seul JOUR s'affichait (sans étiquette si c'était la fin) :
+  // on garde la période d'avant et on dit ce qui manque. Deux dates à l'envers : remises dans l'ordre, et dit.
+  if(!s||!e){ _aide(s ? 'Choisis aussi la date de fin : la période s’affichera avec les deux dates.'
+                      : 'Choisis aussi la date de début : la période s’affichera avec les deux dates.'); return; }
+  if(s>e){ const _t=s; s=e; e=_t; if(_si)_si.value=s; if(_ei)_ei.value=e;
+    _aide('Dates remises dans l’ordre : du '+_jourCourt(s)+' au '+_jourCourt(e)); }
+  else _aide('');
+  ap=null; acd=s; acdEnd=e;
   document.querySelectorAll('#page-ca .pbtn').forEach(x=>x.classList.remove('active'));
-  const lblS=s?_jourCourt(s):' ';
-  const lblE=e?_jourCourt(e):' ';
-  document.getElementById('plbl').textContent=s&&e&&s!==e?`${lblS} → ${lblE}`:lblS;
-  document.getElementById('edlbl').textContent=s&&e&&s!==e?`Entrée pour la période ${lblS}–${lblE}`:`Entrée pour le ${lblS}`;
+  const lblS=_jourCourt(s);
+  const lblE=_jourCourt(e);
+  document.getElementById('plbl').textContent=s!==e?`${lblS} → ${lblE}`:lblS;
+  document.getElementById('edlbl').textContent=s!==e?`Bilans du ${lblS} au ${lblE}`:`Bilans du ${lblS}`;
   rh();uk();
 }
 function spAll(b){
@@ -5458,10 +5622,12 @@ function gv(id){const e=document.getElementById(id); const r=lireMontant(e&&e.va
 // Contrôle TOUTES les cases d'argent d'un formulaire avant d'enregistrer.
 // Rend "" si tout va bien, sinon le message à afficher.
 function verifierMontants(ids){
+  if(typeof _fmNoter==='function') _fmNoter(null);
   for(const id of ids){
     const e=document.getElementById(id); if(!e) continue;
     const r=lireMontant(e.value);
-    if(!r.ok) return r.erreur;
+    // (16/10, écrans E1) le champ refusé est noté : le message va juste sous lui, il est entouré de rouge
+    if(!r.ok){ if(typeof _fmNoter==='function') _fmNoter(e); return r.erreur; }
   }
   return "";
 }
@@ -5879,6 +6045,9 @@ function _snapTous(){
 // Écrit un point de restauration si le dernier a plus de 20 h.
 // Emplacement tournant : on écrase toujours le PLUS ANCIEN.
 async function snapshotSiNecessaire(){
+  // (16/10, écrans E2) En lecture seule, la sauvegarde automatique (pas un geste de la personne) partait à
+  // chaque ouverture, était refusée, et affichait « ⚠ Lecture seule — RIEN n'a été enregistré (snapshot_1) ».
+  if (typeof document !== 'undefined' && document.body && document.body.classList.contains('readonly')) return;
   try{
     if (!_apiConnected) return;
     if (typeof _donneesChargees !== 'undefined' && _donneesChargees !== true) return;   // (15/10, D-9) chiffres non chargés : on n'écrase rien
@@ -7013,7 +7182,7 @@ async function deleteVAAPI(name) {
 // Désormais : un message d'ÉCHEC tient 20 secondes et ne peut pas être remplacé
 // par un message de succès. Seul un autre échec, ou l'expiration, le libère.
 let _echecAffiche = 0;
-function showSaveStatus(msg, color='#a855f7') {
+function showSaveStatus(msg, color='var(--acc-txt)') {
   const el = document.getElementById('save-status');
   if (!el) return;
   const estEchec = /⚠|NON SAUVEGARD|échec|erreur|hors ligne/i.test(String(msg));
@@ -7032,7 +7201,7 @@ function showSaveStatus(msg, color='#a855f7') {
   else el.textContent = msg;
   // L'enregistrement AUTOMATIQUE réussi ne fait plus surgir « ✓ Sauvegardé » : l'état de l'en-tête
   // (« ✓ Enregistré à 10:12 ») le dit déjà, et après un bilan c'était la 3e confirmation (André).
-  el.style.color = color; el.style.opacity = (msg === '✓ Sauvegardé') ? '0' : '1';
+  el.style.color = (typeof _fmCouleur === 'function') ? _fmCouleur(color) : color; el.style.opacity = (msg === '✓ Sauvegardé') ? '0' : '1';
   const duree = estEchec ? 20000 : (/^✓ (Restauré|Copie restaurée)/.test(String(msg)) ? 8000 : 2500);   // un échec doit rester lisible
   setTimeout(() => {
     // On n'efface que SON propre message (un autre a pu passer entre-temps).
@@ -7041,15 +7210,21 @@ function showSaveStatus(msg, color='#a855f7') {
 }
 
 // Message inline (sous un bouton) — remplace les popups alert() et confirme les saisies
-function flashMsg(id, msg, color='#a855f7') {
+function flashMsg(id, msg, color='var(--acc-txt)') {
   const el = document.getElementById(id);
   if (!el) return;
+  // (16/10, écrans E7) « #f87171 » / « #a855f7 » écrits en dur passaient sous 4,5:1 en thème clair : jetons du thème.
+  if (typeof _fmCouleur === 'function') color = _fmCouleur(color);
   // (13/10) Le « ⚠ » / « ✓ » tapé en tête devient l'icône du jeu (même trait que le menu).
   const _g = /^([\u26a0\u2713])\uFE0F?\s*/.exec(String(msg));
   if (_g) el.innerHTML = '<span class="fm-i" aria-hidden="true">' + _ic(_g[1] === '\u2713' ? 'valide' : 'alerte') + '</span><span>' + esc(String(msg).slice(_g[0].length)) + '</span>';
   else el.textContent = msg;
   el.style.color = color; el.style.opacity = '1';
   clearTimeout(el._t);
+  // (16/10, écrans E1) Une ERREUR (« ⚠ … ») restait 2,2 s, souvent hors de l'écran : André croyait avoir
+  // enregistré. Elle reste maintenant jusqu'à ce qu'il la touche ou corrige, près du champ fautif mis en
+  // évidence et amené à l'écran (_fmMontrer, bloc « écrans »). Une réussite garde ses 2,2 s.
+  if (typeof _fmMontrer === 'function' && _fmMontrer(el, id, msg)) return;
   el._t = setTimeout(() => { el.style.opacity = '0'; }, 2200);
 }
 
@@ -7315,7 +7490,7 @@ function renderRecap(){
       : '';
 
     let det = '<div class="rc-grp"><div class="rc-gt">Ce qui rentre</div>'
-      + '<div class="rc-l"><b style="background:var(--ink-4)"></b><span class="rc-ln">Net OnlyFans</span><span class="rc-lv">' + fmtC(r.net - (r.tg || 0)) + '</span></div>'
+      + '<div class="rc-l"><b style="background:var(--m-of)"></b><span class="rc-ln">Net OnlyFans</span><span class="rc-lv">' + fmtC(r.net - (r.tg || 0)) + '</span></div>'
       + ((r.tg || 0) > 0 ? '<div class="rc-l"><b style="background:var(--m-tg)"></b><span class="rc-ln">Net Telegram</span><span class="rc-lv">' + fmtC(r.tg) + '</span></div>' : '')
       + '<div class="rc-tot"><span>Net total</span><span>' + fmtC(r.net) + '</span></div></div>';
 
@@ -9215,6 +9390,8 @@ function _majSaisie(){
   try{ _majRappel(); }catch(e){}
   var plus=document.querySelector('.topbar [onclick="openQuickAdd()"]');
   if(plus && plus.title!==geste){ plus.title=geste; plus.setAttribute('aria-label',geste); }
+  // (16/10, écrans E8) l'icône dit ce que fait le bouton (comme le gros bouton du bilan) : crayon = mettre à jour
+  if(plus){ var _pi=ex?'edit':'plus'; if(plus._pi!==_pi && _ic(_pi)){ plus.innerHTML=_ic(_pi); plus._pi=_pi; } }
   var st=document.getElementById('sbtn-text');
   if(st) st.textContent=_editingId ? 'Enregistrer les changements' : (_copieDe ? 'Enregistrer le nouveau bilan' : 'Enregistrer le bilan');
   // « Paiements à la modèle » : un 2e endroit pour noter la modele, qui compte deux
@@ -9242,7 +9419,7 @@ function _fenetre(o){
     var q=function(s){ return ov.querySelector(s); }, box=q('.bd-box');
     box.className='bd-box'+(o.ton?' bd-'+o.ton:'');
     q('.bd-ico').innerHTML=o.ico?_ic(o.ico):'';
-    q('.bd-t').textContent=o.titre||'';
+    q('.bd-t').textContent=(typeof _insecable==='function')?_insecable(o.titre||''):(o.titre||'');
     var x=q('.bd-x'); x.textContent=o.texte||''; x.hidden=!o.texte;
     var d=q('.bd-d'); d.textContent=o.detail||''; d.hidden=!o.detail;
     var ch=q('.bd-champ'); ch.hidden=!o.champ;
@@ -12472,7 +12649,10 @@ function listeImpotsFermer(){
   _lmForm=null; _majListe();
   var b=document.getElementById('lm-b-impots'); if(b){ try{ b.focus({preventScroll:true}); }catch(e){} }
 }
-function _lmMsg(t){ var el=document.getElementById('lm-f-msg'); if(el) el.innerHTML=_LM_I.alerte+'<span>'+esc(t)+'</span>'; }
+function _lmMsg(t){ var el=document.getElementById('lm-f-msg'); if(el) el.innerHTML=_LM_I.alerte+'<span>'+esc(t)+'</span>';
+  // (16/10, écrans E1) même affichage que les autres refus d'« Enregistrer » : champ fautif entouré, message et champ
+  // amenés au-dessus de la barre d'onglets et du clavier, message gardé jusqu'à la correction ou un toucher
+  if(el && typeof _fmMontrer==='function') _fmMontrer(el, 'lm-f-msg', t, {err:true}); }
 // « Enregistrer » : la SEULE écriture de la carte. Montant lu comme partout où l'argent est enregistré (lireMontant),
 // mois fixé par la liste, date du jour proposée. Rien n'est annoncé avant la réponse du serveur.
 async function listeImpotsEnregistrer(){
@@ -12878,6 +13058,349 @@ function ipCalcBasculer(){
   b.setAttribute('aria-expanded', o ? 'true' : 'false');
   var t = b.querySelector('.ip-repli-bt'); if(t) t.textContent = o ? 'Masquer le calcul' : 'Voir le calcul';
 }
+
+// ── feat5_ecrans (écrans 16/10 : E1-E3, E6-E12, P11) ──
+// ══ écrans (16/10) : ce qui se voit et se touche — E1, E2, E6, E7, E10, E11, P11 ══
+// PRÉSENTATION SEULEMENT : aucune règle de validation, aucun calcul, aucun enregistrement ne change.
+// Les fonctions de la page appellent celles-ci seulement si elles existent (typeof … === 'function') :
+// la page marche à l'identique sans ce bloc, et les bancs qui extraient une fonction seule aussi.
+
+// ── E7 : couleurs écrites en dur dans les messages -> jetons du thème ──
+// « #f87171 » / « #ef4444 » (rouge clair) passaient sous 4,5:1 sur fond clair (2,77:1 « Entre un montant »,
+// 3,3-3,76:1 le message d'échec) ; « #a855f7 » (violet) 3,96:1 pour « ✓ Paiement enregistré ».
+// --neg et --acc-txt sont redéfinis par le thème clair. Le TEXTE n'est jamais touché : showSaveStatus
+// reconnaît un échec au « ⚠ » du texte, pas à la couleur.
+function _fmCouleur(c){
+  var k = String(c == null ? '' : c).toLowerCase().replace(/\s+/g, '');
+  if (k === '#f87171' || k === '#ef4444' || k === '#dc2626' || k === '#f43f5e') return 'var(--neg)';
+  if (k === '#a855f7' || k === '#c084fc' || k === '') return 'var(--acc-txt)';
+  return c;
+}
+
+// ── E1 : une ERREUR d'enregistrement se VOIT ──
+// Avant (mesuré, 9 cas sur 9, Chrome et Safari) : « Enregistrer » est collé en bas de l'écran, le message
+// s'écrivait tout en bas du formulaire (~1 000 px plus bas, hors de l'écran) ou sous la barre d'onglets,
+// puis s'effaçait au bout de 2,2 s : André croyait avoir enregistré.
+// Maintenant : 1) le message va juste sous le champ fautif (ou reste près du bouton s'il n'y a pas de
+// champ), 2) le champ est entouré de rouge (aria-invalid) et amené à l'écran, au-dessus de la barre
+// d'onglets, du bouton collé et du clavier, 3) le message RESTE jusqu'à ce qu'André le touche ou
+// corrige le champ (ou replie le formulaire). Un message de réussite garde ses 2,2 s.
+var _fmChampNote = null;          // le champ refusé par verifierMontants (noté par lui, lu ici)
+var _fmToucher = null;            // le dernier bouton touché (pour placer un message près de lui)
+function _fmNoter(e){ _fmChampNote = e || null; }
+function _fmEstErreur(msg){ return /^\s*⚠/.test(String(msg == null ? '' : msg)); }
+function _fmPortee(el){
+  if (el.id === 'se-msg') return document.getElementById('ca-entry-panel') || document.body;
+  if (el.id === 'mp-msg') return document.getElementById('model-share-panel') || document.body;
+  return el.closest('[role=dialog], .panel, #quickadd-box, .lm-f') || document.body;
+}
+// Le champ visé par un refus du formulaire « J'ai payé les impôts » (liste du mois), d'après le texte du refus
+function _fmChampListe(msg){
+  var s = String(msg || '');
+  if (/jour du paiement/i.test(s)) return document.getElementById('lm-f-date');
+  if (/montant|d[ée]cimale/i.test(s)) return document.getElementById('lm-f-mt');
+  return null;
+}
+// La place d'origine du message (sous le bouton « Enregistrer ») : on y revient à la fin.
+function _fmMaison(el){
+  var m = el._fmMaison; if (!m) return;
+  if (el.parentNode !== m.parent || el.nextSibling !== m.suivant){
+    try { if (m.suivant && m.suivant.parentNode === m.parent) m.parent.insertBefore(el, m.suivant); else m.parent.appendChild(el); } catch (e) {}
+  }
+}
+// Listes que la page RÉÉCRIT (innerHTML = '') : le message n'y entre jamais, il y serait effacé avec elles.
+var _FM_LISTES = { ainps: 1, vainps: 1, moinps: 1, ciinps: 1, chinps: 1 };
+function _fmEmpile(P, n){
+  // le message peut-il se glisser juste après n, dans P, sans casser une rangée ? (P empile ses enfants, ou n
+  // finit sa ligne dans une rangée qui passe à la ligne : le message y prend alors toute une ligne)
+  var c = getComputedStyle(P);
+  if (c.display === 'block' || c.display === 'flow-root') return true;
+  if (/flex/.test(c.display)){
+    if (/column/.test(c.flexDirection)) return true;
+    if (c.flexWrap !== 'wrap') return false;
+    var s = n.nextElementSibling;
+    return !s || s.getBoundingClientRect().top >= n.getBoundingClientRect().bottom - 1;
+  }
+  if (/grid/.test(c.display)) return String(c.gridTemplateColumns || '').trim().split(/\s+/).length === 1;
+  return false;
+}
+function _fmApres(champ, racine){
+  // le plus petit bloc « empilé » autour du champ : juste sous lui au téléphone (une colonne), sous la rangée
+  // entière à l'ordinateur (deux colonnes) ; jamais dans un <label> ni dans une liste réécrite
+  var n = champ;
+  while (n && n.parentElement && n.parentElement !== racine){
+    var P = n.parentElement;
+    if (P.tagName !== 'LABEL' && !_FM_LISTES[P.id] && !P.classList.contains('arow') && _fmEmpile(P, n)) return n;
+    n = P;
+  }
+  return (n && n.parentElement === racine) ? n : null;
+}
+function _fmDeplacer(el, cible, err){
+  // Le message du bilan est à ~1 000 px de ses champs ; ceux du paiement et des impôts payés, sous leurs boutons.
+  var racine = el.id === 'se-msg' ? document.getElementById('ca-entry-panel')
+             : (el.id === 'mp-msg' ? document.getElementById('ms-form')
+             : (el.id === 'lm-f-msg' ? el.closest('.lm-f') : null));
+  if (!racine) return;
+  if (!el._fmMaison) el._fmMaison = { parent: el.parentNode, suivant: el.nextSibling };
+  var estChamp = cible && /^(INPUT|SELECT|TEXTAREA)$/.test(cible.tagName);
+  // paiement, impôts : seulement une erreur sur un champ ; bilan : aussi le bouton touché (« Charges habituelles »)
+  if (!cible || !racine.contains(cible) || cible.closest('.sbtn') || (el.id !== 'se-msg' && !(err && estChamp))) { _fmMaison(el); return; }
+  var bloc = estChamp ? _fmApres(cible, racine) : null;
+  if (!bloc){ bloc = cible; while (bloc && bloc.parentElement !== racine) bloc = bloc.parentElement; }
+  if (!bloc || bloc === el || !bloc.parentNode) { _fmMaison(el); return; }
+  if (bloc.nextSibling !== el) bloc.parentNode.insertBefore(el, bloc.nextSibling);
+}
+// La partie de l'écran vraiment visible : sous le haut de la fenêtre (clavier ouvert : la partie au-dessus
+// du clavier), au-dessus de la barre d'onglets du téléphone et du bouton « Enregistrer » collé en bas.
+function _fmZone(){
+  var vv = window.visualViewport;
+  var haut = vv ? vv.offsetTop : 0, bas = vv ? vv.offsetTop + vv.height : window.innerHeight;
+  bas = Math.min(bas, window.innerHeight);
+  var nav = document.getElementById('sidebar');
+  if (nav){
+    var cn = getComputedStyle(nav), rn = nav.getBoundingClientRect();
+    if (cn.position === 'fixed' && cn.display !== 'none' && rn.top > window.innerHeight / 2 && rn.top < bas) bas = rn.top;
+  }
+  var sb = document.querySelector('#ca-entry-panel:not(.replie) > .sbtn');
+  if (sb){
+    var cs = getComputedStyle(sb), rs = sb.getBoundingClientRect();
+    // collé en bas (et non à sa place dans le formulaire) : son halo masque ~24 px au-dessus de lui
+    if (cs.position === 'sticky' && rs.height > 0 && rs.bottom > bas - 90 && rs.top < bas) bas = Math.min(bas, rs.top - 24);
+  }
+  return { haut: haut + 8, bas: bas - 8 };
+}
+function _fmAmener(el){
+  if (!el || !el.isConnected) return;
+  var z = _fmZone();
+  var r = el.getBoundingClientRect(), haut = r.top, bas = r.bottom;
+  var c = el._fmChamp;
+  if (c && c.isConnected){
+    var rc = c.getBoundingClientRect();
+    if (rc.height > 0){ haut = Math.min(haut, rc.top - 24); bas = Math.max(bas, rc.bottom); }   // 24 px : son libellé
+  }
+  var d = 0;
+  if (bas - haut > z.bas - z.haut) d = r.bottom - z.bas;   // tout ne tient pas : le MESSAGE entier d'abord (le champ est juste au-dessus)
+  else if (haut < z.haut) d = haut - z.haut;
+  else if (bas > z.bas) d = bas - z.bas;
+  if (Math.abs(d) > 1) window.scrollBy(0, Math.round(d));
+}
+function _fmEteindre(el, garderVisible){
+  if (!el) return;
+  if (el._fmFin){
+    document.removeEventListener('input', el._fmFin, true);
+    document.removeEventListener('change', el._fmFin, true);
+    el._fmFin = null;
+  }
+  var c = el._fmChamp;
+  if (c){
+    c.classList.remove('fm-champ'); c.removeAttribute('aria-invalid');
+    if (c.getAttribute('aria-describedby') === el.id) c.removeAttribute('aria-describedby');
+    el._fmChamp = null;
+  }
+  if (el.classList.contains('fm-err')) el.classList.remove('fm-err');
+  // (le message de la liste du mois garde son rôle « status » d'origine ; les autres n'en ont pas)
+  if (el.id === 'lm-f-msg') el.setAttribute('role', 'status'); else el.removeAttribute('role');
+  var x = el.querySelector(':scope > .fm-x'); if (x) x.remove();
+  if (!garderVisible){
+    // la liste du mois n'a ni fondu ni place d'origine : son message vide se cache tout seul (:empty)
+    if (el.id === 'lm-f-msg') el.innerHTML = '';
+    else { el.style.opacity = '0'; _fmMaison(el); }
+  }
+}
+// Appelée par flashMsg après l'écriture du texte (et par le formulaire « J'ai payé les impôts », o = {err:true}).
+// Rend true pour une ERREUR (le message reste), false pour une réussite (flashMsg garde son effacement à 2,2 s).
+function _fmMontrer(el, id, msg, o){
+  var err = !!(o && o.err) || _fmEstErreur(msg);
+  var gen = (el._fmGen || 0) + 1; el._fmGen = gen;
+  _fmEteindre(el, true);                       // l'état d'erreur d'avant (autre champ) est retiré
+  var portee = _fmPortee(el);
+  var champ = (err && _fmChampNote && portee.contains(_fmChampNote)) ? _fmChampNote : null;
+  _fmChampNote = null;
+  if (err && !champ && id === 'mp-msg' && /montant|d[ée]cimale/i.test(String(msg))) champ = document.getElementById('mp-amount');
+  if (err && !champ && id === 'lm-f-msg') champ = _fmChampListe(msg);
+  var t = _fmToucher, bouton = (t && Date.now() - t.quand < 5000 && portee.contains(t.el)) ? t.el : null;
+  if (err){
+    el.classList.add('fm-err');
+    el.setAttribute('role', 'alert');
+    var x = document.createElement('button');
+    x.type = 'button'; x.className = 'fm-x'; x.setAttribute('aria-label', 'Fermer ce message');
+    x.innerHTML = (typeof ICO === 'object' && ICO && ICO.croix) || '×';
+    el.appendChild(x);
+    if (!el._fmClic){
+      el._fmClic = true;
+      el.addEventListener('click', function(){ if (el.classList.contains('fm-err')) _fmEteindre(el); });
+    }
+  }
+  // La page déplace le curseur juste APRÈS ce message (date vide -> champ Date, aucun net -> Net
+  // OnlyFans) : on décide de la place au tour suivant, quand le curseur y est.
+  setTimeout(function(){
+    if (el._fmGen !== gen) return;
+    if (err && !champ){
+      var a = document.activeElement;
+      if (a && a !== document.body && portee.contains(a) && /^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)) champ = a;
+    }
+    _fmDeplacer(el, champ || bouton, err);
+    if (err){
+      if (champ){
+        champ.classList.add('fm-champ'); champ.setAttribute('aria-invalid', 'true');
+        if (!champ.getAttribute('aria-describedby')) champ.setAttribute('aria-describedby', el.id);
+        el._fmChamp = champ;
+      }
+      // corrigé = André retape dans le champ fautif (ou, sans champ, dans le même formulaire)
+      el._fmFin = function(ev){
+        if (!el.isConnected){ _fmEteindre(el, true); return; }   // formulaire redessiné ou fermé : on se retire
+        var c = el._fmChamp;
+        if (c ? ev.target !== c : !portee.contains(ev.target)) return;
+        _fmEteindre(el);
+      };
+      document.addEventListener('input', el._fmFin, true);
+      document.addEventListener('change', el._fmFin, true);
+    }
+    _fmAmener(el);
+    // le clavier qui s'ouvre (ou se ferme) réduit l'écran : on remet champ et message à l'écran
+    if (err && window.visualViewport && !el._fmVV){
+      el._fmVV = true;
+      var minuterie = null;
+      window.visualViewport.addEventListener('resize', function(){
+        if (!el.classList.contains('fm-err')) return;
+        clearTimeout(minuterie); minuterie = setTimeout(function(){ if (el.classList.contains('fm-err')) _fmAmener(el); }, 120);
+      });
+    }
+  }, 0);
+  return err;
+}
+(function(){
+  // le dernier bouton touché (souris, doigt ou clavier)
+  var noter = function(ev){
+    var b = ev.target && ev.target.closest ? ev.target.closest('button, [role=button]') : null;
+    _fmToucher = b ? { el: b, quand: Date.now() } : null;
+  };
+  document.addEventListener('pointerdown', noter, true);
+  document.addEventListener('click', noter, true);
+  // formulaire replié / fermé : son message d'erreur part avec lui
+  var surveiller = function(id, msgId, attr, ferme){
+    var el = document.getElementById(id); if (!el) return;
+    try {
+      new MutationObserver(function(){
+        if (ferme(el)){ var m = document.getElementById(msgId); if (m && m.classList.contains('fm-err')) _fmEteindre(m); }
+      }).observe(el, { attributes: true, attributeFilter: [attr] });
+    } catch (e) {}
+  };
+  surveiller('ca-entry-panel', 'se-msg', 'class', function(p){ return p.classList.contains('replie'); });
+  surveiller('ms-form', 'mp-msg', 'hidden', function(f){ return f.hidden; });
+  // Liste du mois : après « Enregistrer » (J'ai payé les impôts), le formulaire se referme et la réponse s'écrit EN
+  // HAUT de la carte (« Enregistrement… », « notés », « pas encore enregistré dans le cloud… ») : mesuré hors de
+  // l'écran (au-dessus) au téléphone 375 × 667. Elle est amenée à l'écran, une fois par état, pendant 30 s.
+  var envoi = 0, vu = '';
+  document.addEventListener('click', function(ev){
+    if (ev.target && ev.target.closest && ev.target.closest('#lm-f-ok')) { envoi = Date.now(); vu = ''; }
+  }, true);
+  var lm = document.getElementById('liste-mois');
+  if (lm){
+    try {
+      new MutationObserver(function(){
+        if (!envoi || Date.now() - envoi > 30000) return;
+        var f = lm.querySelector('.lm-flash'); if (!f) return;
+        var etat = f.className; if (etat === vu) return; vu = etat;
+        _fmAmener(f);
+      }).observe(lm, { childList: true, subtree: true });
+    } catch (e) {}
+  }
+})();
+
+// ── E1 (clavier ouvert) : la fenêtre que le clavier réduit n'est pas mangée par la barre d'onglets ──
+// Mesuré (320 × 568, clavier de 336 px, navigateur qui rétrécit la page) : il reste 232 px, dont 120 pris par la
+// barre d'onglets et le bouton « Enregistrer » collé au-dessus du clavier : ni le champ ni son message n'y tenaient.
+// Tant que la fenêtre est nettement plus basse que sa hauteur habituelle (même largeur : ce n'est pas une rotation),
+// la barre d'onglets se retire et le bouton reprend sa place à la fin du formulaire. Sur iPhone, ces deux-là sont de
+// toute façon sous le clavier : rien ne change à l'œil.
+(function(){
+  var hMax = 0, largeur = 0;
+  var maj = function(){
+    var w = window.innerWidth, vv = window.visualViewport;
+    var h = vv ? Math.min(window.innerHeight, vv.height) : window.innerHeight;
+    if (w !== largeur){ largeur = w; hMax = h; }
+    if (h > hMax) hMax = h;
+    var ouvert = w <= 640 && h < hMax * 0.75;
+    if (document.body.classList.contains('clavier-ouvert') !== ouvert) document.body.classList.toggle('clavier-ouvert', ouvert);
+  };
+  window.addEventListener('resize', maj);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', maj);
+  maj();
+})();
+
+// ── E6 : « Exporter » s'ouvre et se ferme au toucher, partout ──
+// Le menu s'ouvrait aussi au survol / au focus : à la tablette et à l'ordinateur, un 2e toucher sur
+// « Exporter » retirait bien « open » mais le menu restait affiché (focus gardé par le bouton). Il ne
+// répond plus qu'à « open » (CSS) ; Échap le referme, et il se ferme quand le clavier en sort.
+(function(){
+  var maj = function(){
+    [].slice.call(document.querySelectorAll('.export-dropdown')).forEach(function(d){
+      var b = d.querySelector('.export-dropdown-btn');
+      if (b) b.setAttribute('aria-expanded', d.classList.contains('open') ? 'true' : 'false');
+    });
+  };
+  document.addEventListener('click', function(){ setTimeout(maj, 0); }, true);
+  document.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Escape') return;
+    var o = document.querySelector('.export-dropdown.open'); if (!o) return;
+    o.classList.remove('open'); maj();
+    var b = o.querySelector('.export-dropdown-btn');
+    if (b && o.contains(document.activeElement)) { try { b.focus({ preventScroll: true }); } catch (e) {} }
+  });
+  document.addEventListener('focusout', function(ev){
+    var d = ev.target && ev.target.closest ? ev.target.closest('.export-dropdown.open') : null;
+    if (!d || !ev.relatedTarget || d.contains(ev.relatedTarget)) return;   // relatedTarget nul : un clic ailleurs (géré par la page)
+    d.classList.remove('open'); maj();
+  });
+  maj();
+})();
+
+// ── P11 : œil fermé au téléphone — un signe visible, et les montants revus en un toucher ──
+// Au téléphone, « Cacher les montants » est rangé dans le menu « ⋯ » : œil fermé, tout était flou
+// sans rien qui le dise, et il fallait rouvrir « ⋯ » pour revoir les chiffres. Une barre « Montants
+// cachés · Afficher » apparaît sous l'en-tête tant que l'œil est fermé (téléphone seulement : à la
+// tablette et à l'ordinateur, l'œil est déjà dans l'en-tête). Elle ne contient aucun montant.
+(function(){
+  var tb = document.querySelector('.dash > .topbar');
+  if (!tb || document.getElementById('oeil-rappel')) return;
+  var b = document.createElement('button');
+  b.type = 'button'; b.id = 'oeil-rappel'; b.className = 'oeil-rappel';
+  b.setAttribute('onclick', 'basculerMontants(false)');
+  b.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
+    + '<path d="M9.9 4.2A9.7 9.7 0 0 1 12 4c6.5 0 10 8 10 8a17.6 17.6 0 0 1-3.2 4.2"/><path d="M6.6 6.6C3.9 8.4 2 12 2 12s3.5 8 10 8a9.5 9.5 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/></svg>'
+    + '<span class="or-t">Montants cachés</span><span class="or-a">Afficher</span>';
+  tb.parentNode.insertBefore(b, tb.nextSibling);
+})();
+
+// ── E11 : « Autre période… » dit ce qui manque (appelée par setRange) ──
+function _perAide(t){
+  var box = document.getElementById('per-dates'); if (!box) return;
+  var a = document.getElementById('per-aide');
+  if (!a){
+    if (!t) return;
+    a = document.createElement('div'); a.id = 'per-aide';
+    a.setAttribute('role', 'status'); a.setAttribute('aria-live', 'polite');
+    box.appendChild(a);
+  }
+  if (a.textContent !== t) a.textContent = t || '';
+}
+// une autre période choisie (bouton) : l'aide n'a plus lieu d'être
+document.addEventListener('click', function(ev){
+  if (ev.target && ev.target.closest && ev.target.closest('#page-ca .pbtn')) _perAide('');
+}, true);
+
+// ── E10 : une date ou un montant ne se coupe plus en deux lignes dans un titre de fenêtre ──
+// (320 px : « Supprimer le bilan du 1er oct. / 2026 (net… ») : espaces insécables DANS la date et entre « net » et
+// son montant ; le texte lu reste le même (seuls des espaces deviennent insécables).
+var _NB = String.fromCharCode(160);   // espace insécable
+function _insecable(s){
+  return String(s == null ? '' : s)
+    .replace(/(\d{1,2}(?:er)?) (janv\.|févr\.|mars|avr\.|mai|juin|juil\.|août|sept\.|oct\.|nov\.|déc\.)(?: (\d{4}))?/g,
+      function(m, j, mo, a){ return j + _NB + mo + (a ? _NB + a : ''); })
+    .replace(/\b(net|bénéfice) ([−-]?\$)/g, '$1' + _NB + '$2');
+}
+
 </script>
 </body>
 </html>
