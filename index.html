@@ -3673,7 +3673,8 @@ body.skin-melange #login-overlay .lg-scene > .lg-foot .pg-i{flex:none;color:var(
 body.readonly #rappel-bilan{display:none!important}
 /* dans la grille du Mélange : la rangée pleine largeur entre l'en-tête et « Résultat » (celle de
    l'écran de bienvenue, vide dès qu'il y a un bilan ; le rappel ne s'affiche jamais sur un compte neuf) */
-body.skin-melange #page-ca > #rappel-bilan{grid-area:em;margin-top:6px}
+body.skin-melange #page-ca > #haut-mois{grid-area:em}
+body.skin-melange #haut-mois > #rappel-bilan{margin-top:6px}
 /* tablette : la colonne de texte était trop étroite à côté des boutons → les boutons passent dessous */
 @media (min-width:641px) and (max-width:1099px){
   #rappel-bilan{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"i x" ". a";align-items:start}
@@ -3682,7 +3683,7 @@ body.skin-melange #page-ca > #rappel-bilan{grid-area:em;margin-top:6px}
 @media (max-width:640px){
   #rappel-bilan{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"i x" "a a";align-items:start;column-gap:12px;
     padding:14px 14px 12px;background-image:linear-gradient(160deg,color-mix(in srgb,var(--todo) 13%,transparent),color-mix(in srgb,var(--todo) 3%,transparent) 55%,transparent 85%)}
-  body.skin-melange #page-ca > #rappel-bilan{margin:12px 0 2px}
+  body.skin-melange #haut-mois > #rappel-bilan{margin:12px 0 2px}
   #rappel-bilan .rb-ico{width:36px;height:36px}
   #rappel-bilan .rb-ico svg{width:18px;height:18px}
   #rappel-bilan .rb-a{gap:6px;margin-top:12px}
@@ -4284,6 +4285,164 @@ body.copie-locale #page-editlog .hl-import,body.copie-locale #page-editlog .hl-d
   border:solid var(--acc-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
 #bilan-dlg .bd-b:disabled{opacity:.45;cursor:not-allowed;filter:none}
 
+
+/* ── feat3_liste (la liste du mois, 15/10) ── */
+/* ══ LA LISTE DU MOIS (15/10) : en haut de l'accueil, sous le rappel ══
+   Une tuile du Mélange (rayon, bord, ombre), lavis VIOLET très léger depuis la gauche (le rappel est orange : on les
+   distingue d'un coup d'œil) ; rond d'icône de verre violet ; trois lignes à cocher : rond orange vide = à faire
+   (l'orange des choses à faire), rond rouge = en retard, coche verte = fait. Les montants en chiffres tabulaires,
+   chacun dans son élément (l'œil les floute seuls). Une seule action pleine par ligne, en violet LÉGER (le violet
+   plein reste au bouton du mois). Téléphone d'abord : lignes empilées ; ordinateur : trois colonnes. */
+#haut-mois{min-width:0}
+#liste-mois{margin:0 0 var(--mx-gap,12px);padding:14px 16px 4px;
+  border-radius:var(--mx-r,20px);border:1px solid var(--mx-edge,var(--line-1));
+  background-color:var(--surf-1);
+  background-image:linear-gradient(100deg,color-mix(in srgb,var(--acc) 9%,transparent),color-mix(in srgb,var(--acc) 2%,transparent) 48%,transparent 74%);
+  box-shadow:var(--mx-hl,inset 0 0 0 0 transparent),var(--mx-sh,var(--sh-1))}
+#liste-mois[hidden],body.readonly #liste-mois{display:none!important}
+body.skin-melange #haut-mois > #liste-mois{margin-top:6px}
+body.skin-melange #haut-mois > #rappel-bilan:not([hidden]) + #liste-mois{margin-top:0}
+#liste-mois.lm-tout{padding-bottom:14px}
+
+/* en-tête */
+#liste-mois .lm-tete{display:flex;align-items:center;gap:14px}
+#liste-mois .lm-ico{flex:none;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;
+  color:var(--acc-txt);background:var(--acc-12);box-shadow:inset 0 0 0 1px var(--acc-22)}
+#liste-mois .lm-ico svg{width:19px;height:19px}
+#liste-mois.lm-tout .lm-ico{color:var(--pos);background:color-mix(in srgb,var(--pos) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pos) 32%,transparent)}
+#liste-mois .lm-tx{flex:1 1 auto;min-width:0}
+#liste-mois .lm-t{font-size:15px;line-height:21px;font-weight:700;letter-spacing:-.01em;color:var(--ink-1)}
+#liste-mois .lm-s{margin-top:1px;font-size:13px;line-height:19px;color:var(--ink-3)}
+#liste-mois .lm-compte{flex:none;align-self:center;display:inline-flex;align-items:baseline;gap:1px;padding:4px 10px;border-radius:999px;
+  font-size:15px;font-weight:700;line-height:20px;font-variant-numeric:tabular-nums;color:var(--ink-1);
+  background:var(--surf-2);box-shadow:inset 0 0 0 1px var(--line-1)}
+#liste-mois .lm-compte span{font-size:13px;font-weight:600;color:var(--ink-3)}
+
+/* les trois lignes */
+#liste-mois .lm-l{display:grid;margin:12px 0 0;padding:0;list-style:none}
+#liste-mois .lm-i{display:grid;grid-template-columns:22px minmax(0,1fr) auto;grid-template-areas:"c q m" ". n n" ". a a";column-gap:12px;align-items:start;align-content:start;
+  margin:0;padding:12px 0;border-top:1px solid var(--line-1)}
+#liste-mois .lm-q{grid-area:q;min-width:0}
+#liste-mois .lm-n{grid-area:n;min-width:0}
+#liste-mois .lm-a,#liste-mois .lm-f{grid-area:a;min-width:0}
+#liste-mois .lm-c{grid-area:c;display:flex;align-items:center;justify-content:center;width:22px;height:22px;margin-top:-1px;border-radius:50%}
+#liste-mois .lm-c svg{width:13px;height:13px}
+#liste-mois .lm-afaire .lm-c{box-shadow:inset 0 0 0 2px var(--todo)}
+#liste-mois .lm-retard .lm-c{color:var(--neg);box-shadow:inset 0 0 0 2px var(--neg)}
+#liste-mois .lm-fait .lm-c{color:var(--pos);background:color-mix(in srgb,var(--pos) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pos) 38%,transparent)}
+#liste-mois .lm-q{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:14px;line-height:20px;font-weight:600;color:var(--ink-1)}
+#liste-mois .lm-fait .lm-qt{color:var(--ink-2);font-weight:500}
+#liste-mois .lm-j{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;
+  font-size:12px;font-weight:700;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums;
+  color:var(--todo);background:color-mix(in srgb,var(--todo) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--todo) 30%,transparent)}
+#liste-mois .lm-retard .lm-j{color:var(--neg);background:color-mix(in srgb,var(--neg) 11%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--neg) 30%,transparent)}
+/* thème clair : l'orange sur son lavis d'orange tombait à 4,26:1 → encre assombrie (mesuré ≥ 4,5:1) */
+body.light #liste-mois .lm-j,body.light #impots-panel .ip-sv-du .ip-sv-e{color:color-mix(in srgb,var(--todo) 78%,var(--ink-1))}
+#liste-mois .lm-n{margin-top:3px;font-size:13px;line-height:19px;color:var(--ink-3)}
+#liste-mois .lm-n b{font-weight:600;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+#liste-mois .lm-m{grid-area:m;font-size:16px;line-height:20px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
+  font-variant-numeric:tabular-nums;color:var(--ink-1)}
+#liste-mois .lm-fait .lm-m{font-weight:600;color:var(--ink-3)}
+#liste-mois .lm-e{grid-area:m;font-size:13px;line-height:20px;font-weight:700;white-space:nowrap;color:var(--todo)}
+#liste-mois .lm-fait .lm-e{color:var(--pos)}
+#liste-mois .lm-sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* boutons : l'action de la ligne (violet léger) ; « Noter l'envoi » et « Annuler » discrets */
+#liste-mois .lm-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+#liste-mois .lm-b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 14px;
+  border-radius:12px;border:1px solid var(--line-2);background:var(--surf-2);color:var(--ink-1);box-shadow:none;
+  font-family:inherit;font-size:14px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer;
+  transition:background-color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease)}
+#liste-mois .lm-b:hover{background:var(--surf-3);border-color:var(--line-3)}
+#liste-mois .lm-b svg{flex:none;width:16px;height:16px}
+#liste-mois .lm-b-pri{border-color:var(--acc-22);background:var(--acc-12);color:var(--acc-txt)}
+#liste-mois .lm-b-pri:hover{background:color-mix(in srgb,var(--acc) 20%,transparent);border-color:var(--acc-45)}
+#liste-mois .lm-b:active{transform:translateY(1px)}
+#liste-mois .lm-b:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#liste-mois .lm-b[disabled]{opacity:.6;cursor:default}
+
+/* « J'ai payé les impôts » : le formulaire, dans la ligne */
+#liste-mois .lm-f{margin-top:10px;padding:12px;border-radius:var(--mx-r-md,14px);background:var(--inset);border:1px solid var(--line-1)}
+#liste-mois .lm-f-t{margin-bottom:10px;font-size:12px;font-weight:600;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+#liste-mois .lm-f-r{display:flex;flex-wrap:wrap;gap:10px}
+#liste-mois .lm-ff{display:flex;flex-direction:column;min-width:0;flex:1 1 140px;margin:0}
+#liste-mois .lm-ff .ifield{width:100%;font-variant-numeric:tabular-nums}
+#liste-mois .lm-f-n{margin-top:8px;font-size:12.5px;line-height:18px;color:var(--ink-3)}
+#liste-mois .lm-f-n b{font-weight:600;color:var(--ink-2);white-space:nowrap}
+#liste-mois .lm-f-a{display:flex;gap:8px;margin-top:10px}
+#liste-mois .lm-f-a .lm-ok{flex:1 1 auto}
+#liste-mois .lm-f-msg{display:flex;align-items:flex-start;gap:6px;margin-top:8px;font-size:13px;line-height:19px;color:var(--neg)}
+#liste-mois .lm-f-msg:empty{display:none}
+#liste-mois .lm-f-msg svg,#liste-mois .lm-flash svg{flex:none;width:14px;height:14px;margin-top:3px}
+body.montants-caches #liste-mois #lm-f-mt:not(:focus){filter:blur(6px)}
+
+/* message après « Enregistrer » */
+#liste-mois .lm-flash{display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:8px 12px;border-radius:12px;font-size:13px;line-height:19px;color:var(--ink-2);background:var(--surf-2)}
+#liste-mois .lm-flash b{font-weight:700;white-space:nowrap}
+#liste-mois .lm-flash-ok{color:var(--pos);background:color-mix(in srgb,var(--pos) 10%,transparent)}
+#liste-mois .lm-flash-ko{color:var(--neg);background:color-mix(in srgb,var(--neg) 10%,transparent)}
+
+/* ordinateur : les trois lignes côte à côte (une colonne chacune), séparées par un filet */
+@media (min-width:1100px){
+  #liste-mois{padding:16px 18px 14px}
+  #liste-mois .lm-l{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px;border-top:1px solid var(--line-1)}
+  #liste-mois .lm-i{border-top:0;padding:14px 18px 2px 0}
+  #liste-mois .lm-i + .lm-i{padding-left:18px;border-left:1px solid var(--line-1)}
+  #liste-mois .lm-i:last-child{padding-right:0}
+}
+/* téléphone : cibles au doigt, l'action sur toute la largeur de sa ligne */
+@media (max-width:640px){
+  body.skin-melange #haut-mois > #liste-mois{margin:12px 0 2px}
+  body.skin-melange #haut-mois > #rappel-bilan:not([hidden]) + #liste-mois{margin-top:8px}
+  #liste-mois{padding:14px 14px 4px}
+  #liste-mois.lm-tout{padding-bottom:14px}
+  #liste-mois .lm-tete{gap:12px}
+  #liste-mois .lm-ico{width:36px;height:36px}
+  #liste-mois .lm-ico svg{width:18px;height:18px}
+  #liste-mois .lm-i{column-gap:10px}
+  #liste-mois .lm-b{min-height:44px;font-size:15px}
+  #liste-mois .lm-a .lm-b{flex:1 1 auto}
+}
+
+/* ══ Le bloc « Impôts à garder de côté » : les impôts payés (déjà payé / reste à payer), dès le 1er paiement noté ══ */
+body.skin-melange #impots-panel.ip-suivi-on{grid-template-areas:"t" "e" "s" "x" "p" "n"}
+@media (min-width:1100px){body.skin-melange #impots-panel.ip-suivi-on{grid-template-areas:"t t" "e x" "s s" "p n"}}
+body.skin-melange #impots-panel .ip-suivi{grid-area:s;min-width:0;padding:14px 16px;border-radius:var(--mx-r-md,14px);background:var(--inset);border:1px solid var(--line-1)}
+#impots-panel .ip-sv-tete{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:2px 12px}
+#impots-panel .ip-sv-t{font-size:12px;font-weight:600;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+#impots-panel .ip-sv-s{font-size:12px;line-height:16px;color:var(--ink-4)}
+body.skin-melange #impots-panel .ip-sv-rel{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-1)}
+body.skin-melange #impots-panel .ip-sv-rel .ip-r dt{color:var(--ink-2)}
+body.skin-melange #impots-panel .ip-sv-rel .ip-r dd{color:var(--ink-1)}
+body.skin-melange #impots-panel .ip-sv-reste dd{font-weight:700}
+body.skin-melange #impots-panel .ip-suivi .ip-cout-det{color:var(--ink-3)}
+body.skin-melange #impots-panel .ip-suivi .ip-cout-det b{color:var(--ink-1)}
+#impots-panel .ip-sv-l{display:grid;gap:8px;margin-top:12px}
+@media (min-width:1100px){#impots-panel .ip-sv-l{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}}
+#impots-panel .ip-sv-r{min-width:0;padding:10px 12px;border-radius:12px;background:var(--surf-1);border:1px solid var(--line-1)}
+#impots-panel .ip-sv-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#impots-panel .ip-sv-m{font-size:14px;font-weight:600;line-height:20px;color:var(--ink-1)}
+#impots-panel .ip-sv-e{flex:none;display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;
+  color:var(--ink-3);background:var(--surf-2)}
+#impots-panel .ip-sv-ok .ip-sv-e{color:var(--pos);background:color-mix(in srgb,var(--pos) 12%,transparent)}
+#impots-panel .ip-sv-du .ip-sv-e{color:var(--todo);background:color-mix(in srgb,var(--todo) 12%,transparent)}
+#impots-panel .ip-sv-retard .ip-sv-e{color:var(--neg);background:color-mix(in srgb,var(--neg) 11%,transparent)}
+#impots-panel .ip-sv-d{margin-top:2px;font-size:13px;line-height:19px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+#impots-panel .ip-sv-d b{font-weight:600;color:var(--ink-1);white-space:nowrap}
+#impots-panel .ip-sv-ps{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#impots-panel .ip-sv-p{display:inline-flex;align-items:center;gap:2px;min-height:32px;padding:0 2px 0 10px;border-radius:999px;
+  font-size:12.5px;line-height:1.2;color:var(--ink-2);background:var(--surf-2);font-variant-numeric:tabular-nums}
+#impots-panel .ip-sv-p b{font-weight:600;color:var(--ink-1);white-space:nowrap}
+#impots-panel .ip-sv-x{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border:0;border-radius:50%;
+  background:transparent;color:var(--ink-3);cursor:pointer}
+#impots-panel .ip-sv-x:hover{background:color-mix(in srgb,var(--neg) 12%,transparent);color:var(--neg)}
+#impots-panel .ip-sv-x:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+body.readonly #impots-panel .ip-sv-x{display:none!important}
+@media (max-width:640px){
+  #impots-panel .ip-sv-p{min-height:40px}
+  #impots-panel .ip-sv-x{width:40px;height:40px}
+}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -4418,6 +4577,7 @@ body.copie-locale #page-editlog .hl-import,body.copie-locale #page-editlog .hl-d
     <button type="button" onclick="ouvrirBilanDuMois()" class="es-b"><svg class="pg-i" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg><span>Saisir mon premier bilan</span></button>
   </div>
   <div class="kpi-sec">Résultat</div>
+  <div id="haut-mois">
   <section id="rappel-bilan" aria-labelledby="rb-t" hidden>
     <span class="rb-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><path d="M16.5 16.5h.01" stroke-width="3"/></svg></span>
     <div class="rb-x"><div class="rb-t" id="rb-t"></div><div class="rb-s" id="rb-s"></div></div>
@@ -4426,6 +4586,8 @@ body.copie-locale #page-editlog .hl-import,body.copie-locale #page-editlog .hl-d
       <button type="button" class="rb-tard" onclick="rappelPlusTard()" title="Masquer ce rappel jusqu’à demain">Plus tard</button>
     </div>
   </section>
+  <section id="liste-mois" aria-labelledby="lm-t" hidden></section>
+  </div>
   <div class="kpi-hero-grid">
     <div class="kpi kpi-hero"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Bénéfice<i class="tip-icon">i</i><span class="tip-box">Ton net moins toutes les dépenses, AVANT la part de la modèle : la moitié lui revient (voir « Part de la modèle »).</span></span><span class="kpi-apercu" id="kpi-apercu" hidden>aperçu, pas encore enregistré</span></div><div class="kpi-value" id="vpr">—</div><div class="kpi-meta"><span class="kpi-delta" id="dvpr"></span><span class="kpi-pct" id="ppr">—</span></div><div class="kpi-moitie" id="pmoitie" hidden title="La moitié du bénéfice te revient, l’autre moitié à la modèle (règle des 50 %)."></div><div class="obj-j" id="obj-jauge" hidden></div></div>
     <div class="kpi kpi-net"><div class="kpi-label"><svg class="kpi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2"/><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M21 11.5h-4a2 2 0 0 0 0 4h4"/></svg><span class="tip">Net total<i class="tip-icon">i</i><span class="tip-box">Ce qui arrive réellement : OnlyFans, commission de 20 % déjà déduite, et Telegram, sans aucune commission.</span></span></div><div class="kpi-value" id="pn">—</div><div class="kpi-meta"><span class="kpi-pct" id="de">—</span></div><div class="kpi-nets"><div class="kn"><span class="kn-l">OnlyFans</span><span class="kn-v" id="vb">—</span><span class="kpi-delta" id="dvb"></span></div><div class="kn"><span class="kn-l">Telegram</span><span class="kn-v" id="vn">—</span><span class="kpi-delta" id="dvn"></span></div></div></div>
@@ -5598,6 +5760,7 @@ function _snapContenu(){
     ents: ents || [],
     virements: virements || [],
     modeles: modeles || [],
+    impots_payes: (typeof impotsPayes !== 'undefined' ? impotsPayes : []),
     vas: (vas || []).map(v => ({ ...v, history: v.history || [] })),
   };
 }
@@ -5748,7 +5911,7 @@ function renderSnapshots(){
       const nV = (s.virements||[]).length, totalVir = (s.virements||[]).reduce((x,o)=>x+(Number(o.amount)||0),0), nM = (s.modeles||[]).length;
       const resume = [_pl((s.ents||[]).length, 'bilan', 'bilans'),
         nV ? _pl(nV, 'paiement à la modèle', 'paiements à la modèle') + (totalVir ? ' (' + fmtC(totalVir) + ')' : '') : '',
-        nM ? _pl(nM, 'modèle', 'modèles') : ''].filter(Boolean).join(' · ');
+        nM ? _pl(nM, 'modèle', 'modèles') : '', (s.impots_payes||[]).length ? _pl((s.impots_payes||[]).length, 'paiement d’impôts', 'paiements d’impôts') : ''].filter(Boolean).join(' · ');
       return '<div class="hl-snap-r">'
         + '<div class="hl-snap-c"><div class="hl-snap-d">' + d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'}).replace(/ 1 /, ' 1er ') + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) + '</div>'
         + '<div class="hl-snap-s">' + resume + '</div></div>'
@@ -6553,6 +6716,8 @@ async function loadData() {
       try{ modeles = apiSettings?.modeles ? (JSON.parse(apiSettings.modeles)||[]) : []; }catch(_e){ modeles=[]; }
       if(!modeles.length){ try{ const _lm=await window.storage.get(cleLocale('modeles')); const _pm=_lm?JSON.parse(_lm.value):[]; if(_pm&&_pm.length){ modeles=_pm; _saveModeles(); } }catch(_e){} }
       try{ editLog = apiSettings?.editlog ? (JSON.parse(apiSettings.editlog)||[]) : []; }catch(_e){ editLog=[]; }
+      // (15/10) impôts payés notés (liste du mois) : lus comme les paiements à la modèle
+      if (typeof _impCharger === 'function') _impCharger(apiSettings && apiSettings.impots_payes);
       // Merge wallet data into VA objects
       if (Array.isArray(apiWallets)) {
         apiWallets.forEach(w => {
@@ -6615,6 +6780,7 @@ async function loadLocal() {
     if (vir) virements = JSON.parse(vir.value) || [];
     if (mod) modeles = JSON.parse(mod.value) || [];
     if (log) editLog = JSON.parse(log.value) || [];
+    if (typeof _impCharger === 'function'){ const _ip = window.storage.get(cleLocale('impots_payes')); if (_ip) _impCharger(_ip.value); }
   } catch {}
 }
 
@@ -6627,6 +6793,8 @@ async function saveData() {
     await window.storage.set(cleLocale('virements'), JSON.stringify(virements));
     await window.storage.set(cleLocale('modeles'), JSON.stringify(modeles));
     await window.storage.set(cleLocale('editlog'), JSON.stringify(editLog));
+    // (sans « await » : window.storage est synchrone, et l'ordre des écritures de la page ne bouge pas d'un battement)
+    if (typeof impotsPayes !== 'undefined') window.storage.set(cleLocale('impots_payes'), JSON.stringify(impotsPayes));
   } catch {}
   // On ne renvoie au cloud que les listes REELLEMENT modifiees dans cette session,
   // sinon une simple saisie de CA ecrasait les virements ajoutes par l autre associe.
@@ -7223,7 +7391,7 @@ function checkGoalReached(profitBefore, profitAfter, goal) {
 
 // ── Export / Import JSON + CSV ──
 function exportData() {
-  const d = { ents, vas, virements, modeles, exportedAt: new Date().toISOString() };
+  const d = { ents, vas, virements, modeles, impots_payes: (typeof impotsPayes !== 'undefined' ? impotsPayes : []), exportedAt: new Date().toISOString() };
   // (15/10, D-10) la copie dit d'où elle vient : un fichier d'un autre carnet est reconnu à l'import
   d.site = (typeof SITE_FINANCES !== 'undefined') ? SITE_FINANCES : 'noctra'; d.version = 2;
   const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
@@ -7775,13 +7943,10 @@ function renderExpenseRecap(){
     +(ouvert?'<div id="exp-recap-detail" class="dd-l">'+rows.map(r=>'<div class="dd-r"><span class="dd-n"><i class="dd-pt" style="background:'+r.c+'" aria-hidden="true"></i>'+esc(nomP(r.name))+'</span><b class="dd-v">'+fmtC(r.total)+'</b></div>').join('')+'</div>':'');
   if(window._depDetailFocus){window._depDetailFocus=false;const b=el.querySelector('.dd-b');if(b)b.focus();}
 }
-function renderModelShare(){
-  const el=document.getElementById('model-share');if(!el)return;
-  // Il y a DEUX façons d'enregistrer un paiement à la modèle : le champ « Paiement
-  // Modèle » d'une entrée (e.mo) et le bouton « + Envoyé » (virements). Le champ e.mo
-  // est déjà déduit du profit : sans le rajouter ici, un paiement saisi de cette
-  // façon réduisait sa part au lieu d'être compté comme déjà versé — les deux
-  // chemins donnaient deux « reste à envoyer » différents pour la même réalité.
+// (15/10, liste du mois) LE CALCUL DE LA PART DE LA MODÈLE, sorti TEL QUEL de renderModelShare pour être PARTAGÉ :
+// la liste du mois lit la même ligne « mois terminés » (aucune règle parallèle). `mc` = le mois « en cours » ('AAAA-MM') ;
+// sans lui, celui de toujours (ts(), comme avant) : renderModelShare l'appelle sans rien, ses chiffres ne bougent pas.
+function _partModele(mc){
   const profitNet=(ents||[]).reduce((s,e)=>s+(e.profit||0),0);
   const moPaid=(ents||[]).reduce((s,e)=>s+(e.mo||0),0);
   const base=profitNet+moPaid;              // bénéfice AVANT paiements modèle
@@ -7789,6 +7954,22 @@ function renderModelShare(){
   const envoye=(virements||[]).reduce((s,v)=>s+(v.amount||0),0);
   const paid=envoye+moPaid;                 // tout ce qu'elle a déjà reçu
   const reste=Math.round((share-paid)*100)/100;   // (15/10, F5) au centime : « en cours + terminés » = ce reste
+  const _mc=mc||ts().slice(0,7);
+  const _ec=(ents||[]).filter(e=>String(e.date||'').slice(0,7)===_mc);
+  const _pc=_ec.reduce((s,e)=>s+(e.profit||0),0), _moc=_ec.reduce((s,e)=>s+(e.mo||0),0);
+  const _cours=Math.round((saMoitie(_pc+_moc)-_moc)*100)/100, _fin=Math.round((reste-_cours)*100)/100;
+  return {profitNet,moPaid,base,share,envoye,paid,reste,mc:_mc,avecMois:_ec.length>0,cours:_cours,fin:_fin};
+}
+function renderModelShare(){
+  const el=document.getElementById('model-share');if(!el)return;
+  // Il y a DEUX façons d'enregistrer un paiement à la modèle : le champ « Paiement
+  // Modèle » d'une entrée (e.mo) et le bouton « + Envoyé » (virements). Le champ e.mo
+  // est déjà déduit du profit : sans le rajouter ici, un paiement saisi de cette
+  // façon réduisait sa part au lieu d'être compté comme déjà versé — les deux
+  // chemins donnaient deux « reste à envoyer » différents pour la même réalité.
+  // (15/10) le calcul est sorti TEL QUEL dans _partModele (juste au-dessus) : la liste du mois lit le même.
+  const _P=_partModele();
+  const profitNet=_P.profitNet, moPaid=_P.moPaid, base=_P.base, share=_P.share, envoye=_P.envoye, paid=_P.paid, reste=_P.reste;
   // ── Affichage seulement (2e tour) ─────────────────────────────────────────
   // Un RELEVÉ « bénéfice depuis le début → sa moitié − déjà envoyé = reste », qui DIT
   // qu'il ignore la période choisie ; « Reste à envoyer » en orange (« à faire » : c'est
@@ -7806,9 +7987,7 @@ function renderModelShare(){
   // jour : sinon « Reste $1,214.50 » sous « ta moitié $2,192.50 » laissait croire à une erreur.
   let _det='';
   if(_avecMois && (st==='du'||st==='trop')){
-    const _ec=(ents||[]).filter(e=>String(e.date||'').slice(0,7)===_mc);
-    const _pc=_ec.reduce((s,e)=>s+(e.profit||0),0), _moc=_ec.reduce((s,e)=>s+(e.mo||0),0);
-    const _cours=Math.round((saMoitie(_pc+_moc)-_moc)*100)/100, _fin=Math.round((reste-_cours)*100)/100;
+    const _cours=_P.cours, _fin=_P.fin;   // (15/10) _partModele : même calcul, partagé avec la liste du mois
     if(_cours>0 && Math.abs(_fin)>=0.005)
       _det=`<div class="ms-det"><span>dont ${_nm} en cours : <b>${fmtC(_cours)}</b></span><span>mois terminés : `
         +(_fin<0?`tu as envoyé <b>${fmtC(-_fin)}</b> de plus que sa part`:`il reste <b>${fmtC(_fin)}</b> à lui envoyer`)+`</span></div>`;
@@ -9182,6 +9361,8 @@ function _hlTitre(l){
   if (/^note$/i.test(a)) return b ? 'Note du bilan ' + dm + ' modifiée' : 'Note modifiée';
   if (/^ajout paiement mod/i.test(a)) return 'Paiement à la modèle ajouté';
   if (/^suppression paiement mod/i.test(a)) return 'Paiement à la modèle supprimé';
+  if (/^ajout paiement imp/i.test(a)) return 'Paiement d’impôts noté';
+  if (/^suppression paiement imp/i.test(a)) return 'Paiement d’impôts supprimé';
   if (/^restauration virements/i.test(a)) return 'Paiements à la modèle remis dans le cloud';
   if (/^restauration sauvegarde/i.test(a)) return 'Sauvegarde restaurée';
   return a;
@@ -11892,6 +12073,426 @@ async function _restaurerAvecApercu(src){
 }
 // Au démarrage : l'en-tête dit déjà la vérité si une file attend (avant même le chargement).
 try { _etatFile(); } catch (e) {}
+
+
+// ── feat3_liste (la liste du mois, 15/10) ──
+// ══ LA LISTE DU MOIS (15/10) — en haut de l'Accueil, sous le rappel ══════════════════════════════════════════════
+// André : « j'envoie le virement à la modèle le 1 du mois, donc j'envoie toujours l'argent généré du mois précédent » ;
+// « les impôts c'est tous les 15 du mois et je dois déclarer ce que la modèle a généré le mois précédent » (1 % du net
+// OnlyFans, payé EN LIQUIDE au bureau). Trois lignes pour le mois qui se termine (octobre : du 29 oct. au 27 nov.) :
+//   1. « Bilan d'octobre » : la règle du RAPPEL, telle quelle (_rappelBilan à la fin du mois, _bilanNonFinalise au début) ;
+//   2. « 1er nov. : envoyer à la modèle sa part d'octobre » : la ligne « mois terminés » de la Part de la modèle
+//      (_partModele : le calcul SORTI de renderModelShare, le même pour les deux) ; cochée quand les paiements notés
+//      (« Noter un paiement envoyé ») la couvrent ;
+//   3. « 15 nov. : payer les impôts d'octobre » : 1 % du net OnlyFans d'octobre (_chFrais : le calcul du bloc « Impôts
+//      à garder de côté ») ; cochée quand André a noté ce paiement (« J'ai payé les impôts »).
+// Aucune règle parallèle. Le SEUL stockage nouveau : la liste des impôts payés (réglage `impots_payes`).
+// ⚠️ BRANCHEMENT (16/10) sur LA fonction générale d'écriture des listes de feat4_donnees (`_saveVirements(cle, liste, o)`) :
+//   la liste est DÉCLARÉE (`_impDeclarer` → `_listeDeclarer('impots_payes', …)`) : relecture de la base juste avant
+//   d'écrire, fusion par identifiant, pierres tombales PARTAGÉES (`impots_payes_supprimes`), file d'attente des
+//   enregistrements ratés (`fin_noctra_a_envoyer`, renvoi automatique), lecture seule et « pas encore chargé »
+//   respectés ; la copie de secours (export) et les sauvegardes portent la clé, l'import et la restauration (avec
+//   aperçu) la reprennent par leur mécanisme. Côté liste, deux petites fonctions seulement :
+//      _impCharger(texte)     la LECTURE (chargement depuis le cloud ou la copie de cet appareil) ;
+//      _ecrireImpotsPayes()   l'ÉCRITURE, par la fonction générale (_listeEcrire).
+//   Chaque paiement a un identifiant unique ; une suppression laisse une pierre tombale partagée (jamais un simple
+//   retrait de la liste) : un appareil ouvert avant ne la ressuscite pas.
+// La carte n'écrit RIEN d'elle-même : seul « Enregistrer » (et la suppression d'une ligne, après confirmation) écrit.
+
+// ── 1. Les impôts payés : la donnée ─────────────────────────────────────────────────────────────────────────────
+// Une ligne = {id, mois:'AAAA-MM' (le mois DÉCLARÉ), date:'AAAA-MM-JJ' (jour du paiement), amount (au centime),
+// le: horodatage de la saisie}. `var` + garde : déclarées en fin de script, elles ne doivent jamais écraser une lecture
+// faite avant.
+var impotsPayes; if(!Array.isArray(impotsPayes)) impotsPayes=[];
+var _IMPOTS_SUPPRIMES; if(!(_IMPOTS_SUPPRIMES instanceof Set)) _IMPOTS_SUPPRIMES=new Set();   // suppressions faites ICI
+var _impIllisible=false;            // le réglage du cloud n'a pas pu être lu : on n'écrira rien par-dessus
+function _cleImpot(p){ return (p && p.id) ? String(p.id) : [p&&p.mois, p&&p.date, p&&p.amount].join('|'); }
+function _nouvelIdImpot(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+// La liste telle qu'enregistrée ([] si absente), ou null si illisible. RIEN n'est filtré : une ligne qu'on ne comprend
+// pas reste dans la liste (un enregistrement ne doit jamais effacer ce qu'il ne sait pas lire).
+function _impLire(brut){
+  if(brut==null || brut==='') return [];
+  try{ var v=(typeof brut==='string') ? JSON.parse(brut) : brut; return Array.isArray(v) ? v : null; }catch(e){ return null; }
+}
+// LA LECTURE : appelée par loadData (cloud) et loadLocal (copie de cet appareil) avec le texte du réglage.
+function _impCharger(brut){
+  var l=_impLire(brut);
+  if(l===null){ impotsPayes=[]; _impIllisible=true; console.warn('[Impôts payés] réglage illisible : rien ne sera écrit par-dessus'); }
+  else { impotsPayes=l; _impIllisible=false; }
+}
+// Un paiement qui COMPTE : lisible et positif (les autres lignes sont gardées, jamais comptées)
+function _impValide(p){ return !!p && !p.supprime && /^\d{4}-\d{2}$/.test(String(p.mois||'')) && isFinite(Number(p.amount)) && Number(p.amount)>0; }
+// Ce qu'André a noté pour un mois, en centimes
+function _impPayeCts(ym){
+  return (impotsPayes||[]).filter(function(p){ return _impValide(p) && p.mois===ym; })
+    .reduce(function(s,p){ return s+Math.round(Number(p.amount)*100); }, 0);
+}
+// La déclaration (une fois, en fin de script, AVANT que loadData ne repasse la file d'attente par-dessus la base)
+function _impDeclarer(){
+  if(typeof _listeDeclarer!=='function') return false;
+  _listeDeclarer('impots_payes', {
+    // (réglage illisible au chargement : la liste vue d'ici est vide → la fusion n'écrit rien par-dessus)
+    lire: function(){ return _impIllisible ? [] : impotsPayes; },
+    ecrire: function(l){ impotsPayes=l; try{ _impRedessiner(); }catch(e){} },
+    cleDe: function(x){ return _cleImpot(x); },
+    supprimes: _IMPOTS_SUPPRIMES,
+    titre: 'paiement d’impôts'
+  });
+  return true;
+}
+_impDeclarer();
+// L'ÉCRITURE : la fonction générale (relit, fusionne, pierres tombales, vérifie ; en cas d'échec, la file d'attente
+// garde le changement et le renvoie toute seule). Rend true seulement quand le changement est VU dans la base.
+function _ecrireImpotsPayes(){
+  if(_impIllisible || typeof _listeEcrire!=='function') return Promise.resolve(false);
+  return _listeEcrire('impots_payes');
+}
+
+// ── 2. Dates et mois ────────────────────────────────────────────────────────────────────────────────────────────
+function _lmSuivant(ym){ var a=+String(ym).slice(0,4), m=+String(ym).slice(5,7); return _ymd(new Date(a, m, 1)).slice(0,7); }
+function _lmJour(ym, j){ return ym+'-'+String(j).padStart(2,'0'); }
+function _lmNomComplet(ym){ var a=String(ym||'').split('-'); return (_MOIS_FR[(+a[1]||1)-1]||'')+' '+a[0]; }   // « octobre 2026 »
+function _lmDeComplet(ym){ var n=_lmNomComplet(ym); return (/^[aeiou]/i.test(n)?"d'":'de ')+n; }
+// Le mois de la liste : les 3 derniers jours du mois (la fenêtre du rappel de fin de mois), le mois en cours ;
+// sinon, le mois précédent (on le clôt : bilan, part de la modèle le 1er, impôts le 15).
+function _lmFenetre(){
+  var a=new Date(), j=a.getDate(), nbj=new Date(a.getFullYear(), a.getMonth()+1, 0).getDate();
+  if(j>nbj-3) return {ym:_ymLocal(), fin:true, reste:nbj-j};
+  return {ym:_ymPrecedent(), fin:false, reste:null};
+}
+
+// ── 3. Les trois lignes (lecture seule de ce qui existe) ────────────────────────────────────────────────────────
+// 1) Bilan du mois : la réponse du RAPPEL. Fin du mois : _rappelBilan() dit « fin » quand le bilan manque ou n'a pas
+//    été mis à jour depuis plus de 3 jours. Début du mois : _bilanNonFinalise() (la règle partagée du 15/10). Ensuite
+//    (à partir du 8), le site compte le mois tel quel : la ligne est cochée.
+function _lmLigneBilan(F){
+  var ym=F.ym, e=_bilansMois(ym)[0]||null;
+  if(!_rythmeBilan(ym)) return null;                 // saisie au jour : le rappel ne s'applique pas, la ligne non plus
+  var rap=null; try{ rap=_rappelAffiche(); }catch(err){ rap=null; }
+  var rapIci=!!rap && rap.ym===ym;                    // le rappel du même mois est à l'écran, juste au-dessus
+  var maj=e ? _majDepuisJournal(e).replace(/ à (\d)/, ' à $1') : '';
+  var L={cle:'bilan', titre:'Bilan '+_deMois(ym), date:'', montant:null};
+  if(F.fin){
+    var r=null; try{ r=_rappelBilan(); }catch(err){ r=null; }
+    if(r && r.type==='fin'){
+      L.fait=false; L.etat=e ? 'à mettre à jour' : 'à saisir';
+      L.sous=rapIci ? 'voir le rappel plus haut' : (e ? (maj ? 'dernière mise à jour '+maj : 'aucune mise à jour notée dans l’Historique') : 'pas encore de bilan ce mois-ci');
+    } else { L.fait=true; L.etat='à jour'; L.sous=maj ? 'mis à jour '+maj : ''; }
+    return L;
+  }
+  if(!e) return null;
+  var p=_bilanNonFinalise();
+  if(p && p.ym===ym){
+    L.fait=false; L.etat='à finaliser';
+    L.sous=rapIci ? 'voir le rappel plus haut' : 'reporte tes chiffres définitifs'+(maj ? ' · dernière mise à jour '+maj : '');
+    return L;
+  }
+  // même test que _bilanNonFinalise (dernière mise à jour notée APRÈS la fin du mois), pour le mot seulement
+  var t=_tsMajBilan(e), finM=new Date(+ym.slice(0,4), +ym.slice(5,7), 1).getTime();
+  L.fait=true; L.etat=(t && t.getTime()>=finM) ? 'finalisé' : 'à jour';
+  L.sous=maj ? (L.etat==='finalisé' ? 'mis à jour ' : 'dernière mise à jour ')+maj : '';
+  return L;
+}
+// 2) Part de la modèle : X = la ligne « mois terminés » de la Part de la modèle, pour tout ce qui est du mois de la
+//    liste ou d'avant = « reste à envoyer » − sa part des bilans du mois SUIVANT (_partModele, le calcul partagé).
+//    En fin de mois (le mois de la liste est le mois en cours), c'est « Reste à envoyer » tout entier, à ce jour.
+function _lmLigneModele(F){
+  var apres=_lmSuivant(F.ym), P=_partModele(apres), X=P.fin;
+  var L={cle:'modele', date:_lmJour(apres,1), montant:null, titre:'', sous:''};
+  if(X>=0.005){                                      // (16/10) au centime, comme la Part de la modèle (F6)
+    L.fait=false; L.titre='Envoyer à la modèle sa part '+_deMois(F.ym); L.montant=X;
+    if(F.fin){
+      var Pc=_partModele(F.ym);                       // sa part du mois en cours, et ce qui reste des mois d'avant
+      L.sous='à ce jour, le mois n’est pas fini'
+        +(Pc.fin>=0.005 ? ' · dont <b>'+fmtC(Pc.fin)+'</b> des mois d’avant' : (Pc.fin<=-0.005 ? ' · <b>'+fmtC(-Pc.fin)+'</b> envoyés en trop déjà déduits' : ''));
+    } else {
+      var dep=_lmJour(apres,1);
+      var env=(virements||[]).filter(function(v){ return String(v.date||'')>=dep; }).reduce(function(s,v){ return s+(v.amount||0); },0);
+      L.sous=env>0 ? 'il reste à envoyer, après <b>'+fmtC(env)+'</b> déjà envoyés depuis le '+_jourCourt(dep) : 'sa part des mois terminés, pas encore envoyée';
+      L.action={l:'Noter l’envoi', f:'listeNoterEnvoi()'};
+    }
+    return L;
+  }
+  // rien (de plus) à envoyer : « envoyée » seulement si un paiement a été noté depuis la fin du mois
+  var depuis=_lmJour(apres,1);
+  var envoye=!F.fin && (virements||[]).some(function(v){ return String(v.date||'')>=depuis && (v.amount||0)>0; });
+  L.fait=true; L.titre=envoye ? 'Part '+_deMois(F.ym)+' envoyée' : 'Rien à envoyer à la modèle pour '+_nomMois(F.ym);
+  if(X<=-0.005) L.sous=P.paid>0 ? 'tu as envoyé <b>'+fmtC(-X)+'</b> de plus que sa part : à déduire de ton prochain envoi' : 'rien à lui envoyer : c’est une perte';
+  else L.sous=envoye ? 'rien à lui envoyer de plus' : (F.fin ? 'à ce jour' : 'sa part des mois terminés est réglée');
+  return L;
+}
+// 3) Impôts : Y = 1 % du net OnlyFans du mois (le calcul du bloc impôts), au centime affiché ; cochée quand les
+//    paiements notés pour ce mois le couvrent.
+function _lmLigneImpots(F){
+  var fr=_chFrais(_bilansMois(F.ym)), du=_chCtsAff(fr.imp), paye=_impPayeCts(F.ym);
+  var ech=_lmJour(_lmSuivant(F.ym),15), auj=_aujLocal();
+  var L={cle:'impots', date:ech, montant:null, du:du, paye:paye, ym:F.ym};
+  if(paye>0 && paye>=du){
+    var l=(impotsPayes||[]).filter(function(p){ return _impValide(p) && p.mois===F.ym; })
+      .sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
+    L.fait=true; L.titre='Impôts '+_deMois(F.ym)+' payés'; L.montant=paye/100; L.date='';
+    L.sous='payé le '+l.map(function(p){ return _jourCourt(p.date); }).filter(function(x,i,t){ return t.indexOf(x)===i; }).join(' et le ')
+      +(paye>du ? ' · <b>'+fmtC((paye-du)/100)+'</b> de plus que l’impôt'+(du>0 ? ' ('+'<b>'+fmtC(du/100)+'</b>)' : '') : '');
+    return L;
+  }
+  if(du===0){
+    L.fait=true; L.titre='Pas d’impôts '+_deMois(F.ym); L.date='';
+    L.sous=F.fin ? 'pour l’instant : aucun net OnlyFans ce mois-ci' : 'aucun net OnlyFans en '+_nomMois(F.ym);
+    return L;
+  }
+  var reste=du-paye;
+  L.fait=false; L.montant=reste/100;
+  L.titre=(paye>0 ? 'Payer le reste des impôts ' : 'Payer les impôts ')+_deMois(F.ym);
+  var garde=paye>0 ? reste/100/(1-_RETRAIT_LIQUIDE) : fr.garde;      // à garder en crypto : ÷ 0,98 (retrait de 2 %)
+  L.sous=(F.fin ? 'à ce jour · ' : '')
+    +(paye>0 ? 'déjà payé <b>'+fmtC(paye/100)+'</b> sur <b>'+fmtC(du/100)+'</b> · ' : '')
+    +'à garder en crypto : <b>'+fmtC(garde)+'</b> (retrait de 2 %)';
+  L.retard=!F.fin && auj>ech; L.aujourdhui=!F.fin && auj===ech;
+  if(!F.fin) L.action={l:paye>0 ? 'J’ai payé le reste' : 'J’ai payé les impôts', f:'listeImpotsOuvrir()', form:true};
+  return L;
+}
+
+// ── 4. L'état de la carte ───────────────────────────────────────────────────────────────────────────────────────
+var _lmForm=null, _lmFlash=null, _lmEnCours=false;
+// Quelque chose a été coché AUJOURD'HUI pour ce mois ? (la carte reste alors repliée jusqu'à ce soir, puis disparaît)
+function _lmFaitAujourdhui(F){
+  var auj=_aujLocal(), jourDe=function(iso){ var d=new Date(iso); return isNaN(d.getTime()) ? '' : _ymd(d); };
+  if((impotsPayes||[]).some(function(p){ return _impValide(p) && p.mois===F.ym && (p.date===auj || jourDe(p.le)===auj); })) return true;
+  if((virements||[]).some(function(v){ return v && (v.date===auj || v.date===ts()); })) return true;
+  var e=_bilansMois(F.ym)[0], t=e ? _tsMajBilan(e) : null;
+  return !!t && _ymd(t)===auj;
+}
+function _lmEtat(){
+  if(document.body.classList.contains('readonly')) return null;              // lecture seule : jamais
+  try{ if(typeof _role!=='undefined' && _role==='assoc') return null; }catch(err){}
+  if(!(ents||[]).length) return null;                                         // compte neuf : l'écran de bienvenue le dit
+  if(_panneauOuvert()) return null;                                           // un bilan ouvert : on est en train de le faire
+  var F=_lmFenetre();
+  if(!F.fin && !_bilansMois(F.ym).length) return null;                         // mois fini sans aucun bilan : rien à clore
+  var lignes=[_lmLigneBilan(F), _lmLigneModele(F), _lmLigneImpots(F)].filter(Boolean);
+  var faites=lignes.filter(function(l){ return l.fait; }).length, tout=faites===lignes.length;
+  if(tout && !_lmFaitAujourdhui(F) && !_lmFlash) return null;                 // tout est coché : la carte disparaît
+  return {F:F, lignes:lignes, faites:faites, tout:tout};
+}
+
+// ── 5. Le dessin ────────────────────────────────────────────────────────────────────────────────────────────────
+var _LM_I=(function(){
+  var s=function(p, t, w){ return '<svg viewBox="0 0 24 24" width="'+t+'" height="'+t+'" fill="none" stroke="currentColor" stroke-width="'+(w||2)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+p+'</svg>'; };
+  return { liste:s('<path d="M10 6h10M10 12h10M10 18h10"/><path d="m3.5 6 1.5 1.5L8 4.5"/><path d="m3.5 12 1.5 1.5L8 10.5"/><path d="M4 18h3"/>', 19),
+    coche:s('<path d="M20 6 9 17l-5-5"/>', 14, 3), alerte:s('<path d="M12 7v6"/><path d="M12 17h.01"/>', 14, 3),
+    envoi:s('<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/>', 16), recu:s('<path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 3 2V2l-3 2-3-2-3 2-3-2-3 2-3-2z"/><path d="M8 9h8M8 13h6"/>', 16),
+    x:s('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', 14) };
+})();
+// (les montants toujours dans leur propre élément : l'œil ne floute qu'eux)
+function _lmLi(L){
+  var cls='lm-i lm-'+L.cle+(L.fait ? ' lm-fait' : ' lm-afaire')+(L.retard ? ' lm-retard' : '')+(L.aujourdhui ? ' lm-auj' : '');
+  var etatSr=L.fait ? 'fait' : (L.retard ? 'en retard' : 'à faire');
+  // l'échéance (seulement pour ce qui reste à faire) : « 15 nov. », « aujourd'hui », « 15 nov. · en retard »
+  var chip=(L.date && !L.fait) ? '<span class="lm-j">'+(L.aujourdhui ? 'aujourd’hui · '+esc(_jourCourt(L.date)) : esc(_jourCourt(L.date))+(L.retard ? ' · en retard' : ''))+'</span>' : '';
+  var droite=L.montant!=null ? '<b class="lm-m">'+fmtC(L.montant)+'</b>'
+    : (L.etat ? '<span class="lm-e">'+esc(L.etat)+'</span>' : '');
+  var act='';
+  if(L.action){
+    var ouvert=!!(L.action.form && _lmForm && _lmForm.ym===L.ym);
+    act=ouvert ? _lmFormHtml(L)
+      : '<div class="lm-a"><button type="button" class="lm-b'+(L.action.form ? ' lm-b-pri' : '')+'" id="lm-b-'+L.cle+'" onclick="'+L.action.f+'"'
+        +(L.action.form ? ' aria-expanded="false" aria-controls="lm-f"' : '')+'>'+(L.action.form ? _LM_I.recu : _LM_I.envoi)+'<span>'+esc(L.action.l)+'</span></button></div>';
+  }
+  // grille de la ligne : rond | échéance + titre | montant ; dessous, le détail puis l'action, sur toute la largeur
+  return '<li class="'+cls+'"><span class="lm-c" aria-hidden="true">'+(L.fait ? _LM_I.coche : (L.retard ? _LM_I.alerte : ''))+'</span>'
+    +'<div class="lm-q">'+chip+'<span class="lm-qt">'+esc(L.titre)+'</span><span class="lm-sr"> ('+etatSr+')</span></div>'
+    +droite+(L.sous ? '<div class="lm-n">'+L.sous+'</div>' : '')+act+'</li>';
+}
+function _lmMontantChamp(cts){ var v=Math.round(cts)/100; return (Math.round(cts)%100===0) ? String(Math.round(v)) : v.toFixed(2); }
+function _lmFormHtml(L){
+  var propose=L.du-L.paye;
+  return '<div class="lm-f" id="lm-f" role="group" aria-labelledby="lm-f-t">'
+    +'<div class="lm-f-t" id="lm-f-t">'+esc('Impôts '+_deMois(L.ym)+' payés au bureau')+'</div>'
+    +'<div class="lm-f-r">'
+    +'<label class="lm-ff lm-ff-mt"><span class="ilbl">Montant payé ($)</span><input class="ifield" type="number" inputmode="decimal" step="0.01" min="0" id="lm-f-mt" autocomplete="off" value="'+_lmMontantChamp(propose)+'"></label>'
+    +'<label class="lm-ff lm-ff-d"><span class="ilbl">Payé le</span><input class="ifield" type="date" id="lm-f-date" value="'+_aujLocal()+'"></label>'
+    +'</div>'
+    +'<div class="lm-f-n">'+(L.paye>0 ? 'Proposé : le reste de l’impôt ' : 'Proposé : l’impôt ')+esc(_deMois(L.ym))+', <b>'+fmtC(propose/100)+'</b>. Change-le si tu as payé autre chose : rien n’est enregistré avant « Enregistrer ».</div>'
+    +'<div class="lm-f-a"><button type="button" class="lm-b lm-annuler" onclick="listeImpotsFermer()">Annuler</button>'
+    +'<button type="button" class="lm-b lm-b-pri lm-ok" id="lm-f-ok" onclick="listeImpotsEnregistrer()">'+_LM_I.coche+'<span>Enregistrer</span></button></div>'
+    +'<div class="lm-f-msg" id="lm-f-msg" role="status"></div></div>';
+}
+function _lmHtml(E){
+  var F=E.F, n=E.lignes.length;
+  var fin=F.reste===0 ? 'ce soir' : (F.reste===1 ? 'demain' : 'dans '+F.reste+' jours');
+  var sous=E.tout ? 'tout est fait' : (F.fin ? _majuscule(_nomMois(F.ym))+' finit '+fin : 'pour clore '+_nomMois(F.ym));
+  var flash=_lmFlash ? '<div class="lm-flash lm-flash-'+_lmFlash.cls+'" role="status">'+(_lmFlash.cls==='ok' ? _LM_I.coche : (_lmFlash.cls==='ko' ? _LM_I.alerte : ''))+'<span>'+_lmFlash.t+'</span></div>' : '';
+  var tete='<div class="lm-tete"><span class="lm-ico" aria-hidden="true">'+(E.tout ? _LM_I.coche : _LM_I.liste)+'</span>'
+    +'<div class="lm-tx"><div class="lm-t" id="lm-t">'+esc('La liste '+_deMois(F.ym))+'</div><div class="lm-s">'+esc(sous)+'</div></div>'
+    +'<span class="lm-compte" role="img" aria-label="'+E.faites+' sur '+n+' faites">'+E.faites+'<span>/'+n+'</span></span></div>';
+  if(E.tout) return _chNb(tete+flash);
+  return _chNb(tete+flash+'<ol class="lm-l">'+E.lignes.map(_lmLi).join('')+'</ol>');
+}
+function _majListe(){
+  var box=document.getElementById('liste-mois'); if(!box) return;
+  var E=null; try{ E=_lmEtat(); }catch(err){ console.warn('liste du mois', err); E=null; }
+  if(!E){ _lmForm=null; if(!box.hidden){ box.hidden=true; box.innerHTML=''; box._h=''; } return; }
+  var h=_lmHtml(E);
+  box.classList.toggle('lm-tout', E.tout);
+  if(box._h!==h){
+    // le formulaire ouvert garde ce qui est tapé (un redessin ne doit jamais effacer une saisie)
+    var mt=document.getElementById('lm-f-mt'), dt=document.getElementById('lm-f-date'), foc=document.activeElement;
+    var vMt=mt ? mt.value : null, vDt=dt ? dt.value : null, idFoc=(foc && box.contains(foc)) ? foc.id : '';
+    box.innerHTML=h; box._h=h;
+    var mt2=document.getElementById('lm-f-mt'), dt2=document.getElementById('lm-f-date');
+    if(mt2 && vMt!==null) mt2.value=vMt;
+    if(dt2 && vDt!==null) dt2.value=vDt;
+    if(idFoc){ var f2=document.getElementById(idFoc); if(f2){ try{ f2.focus({preventScroll:true}); }catch(err){} } }
+  }
+  if(box.hidden) box.hidden=false;
+}
+// Tout ce qui peut changer la liste : la carte ET le bloc impôts (et le panneau de récupération s'il est ouvert)
+function _impRedessiner(){
+  try{ _majListe(); }catch(e){ console.warn('liste du mois', e); }
+  try{ if(typeof renderImpots==='function') renderImpots(); }catch(e){ console.warn('impôts', e); }
+}
+
+// ── 6. Les gestes ───────────────────────────────────────────────────────────────────────────────────────────────
+// « Noter l'envoi » : le MÊME formulaire que « Noter un paiement envoyé » (Part de la modèle), ouvert et amené à l'écran.
+function listeNoterEnvoi(){ try{ msNoterPaiement(true); }catch(e){} }
+function listeImpotsOuvrir(){
+  if(document.body.classList.contains('readonly')) return;
+  var F=_lmFenetre(); if(F.fin) return;
+  _lmForm={ym:F.ym}; _lmFlash=null;
+  _majListe();
+  var mt=document.getElementById('lm-f-mt');
+  if(mt){ try{ mt.focus({preventScroll:true}); }catch(e){ mt.focus(); } try{ mt.select(); }catch(e){} }
+  var f=document.getElementById('lm-f'); if(f){ try{ f.scrollIntoView({block:'nearest', behavior:'smooth'}); }catch(e){} }
+}
+function listeImpotsFermer(){
+  _lmForm=null; _majListe();
+  var b=document.getElementById('lm-b-impots'); if(b){ try{ b.focus({preventScroll:true}); }catch(e){} }
+}
+function _lmMsg(t){ var el=document.getElementById('lm-f-msg'); if(el) el.innerHTML=_LM_I.alerte+'<span>'+esc(t)+'</span>'; }
+// « Enregistrer » : la SEULE écriture de la carte. Montant lu comme partout où l'argent est enregistré (lireMontant),
+// mois fixé par la liste, date du jour proposée. Rien n'est annoncé avant la réponse du serveur.
+async function listeImpotsEnregistrer(){
+  if(_lmEnCours) return;                                                       // double toucher : un seul paiement
+  if(ecritureInterdite('impôts payés')) return;
+  var ym=_lmForm && _lmForm.ym;
+  if(!/^\d{4}-\d{2}$/.test(String(ym||''))) return;
+  var mt=document.getElementById('lm-f-mt'), dt=document.getElementById('lm-f-date');
+  var lu=lireMontant(mt ? mt.value : '');
+  if(!lu.ok){ _lmMsg(lu.erreur.replace(/\*\*/g,'')); return; }
+  if(!(lu.valeur>0)){ _lmMsg('Entre le montant payé. Rien n’a été enregistré.'); return; }
+  var date=String((dt && dt.value)||'');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(new Date(date+'T00:00:00').getTime())){ _lmMsg('Choisis le jour du paiement. Rien n’a été enregistré.'); return; }
+  if(_impIllisible){ _lmMsg('La liste des impôts payés du cloud est illisible : rien n’a été enregistré (recharge la page).'); return; }
+  _lmEnCours=true;
+  var b=document.getElementById('lm-f-ok'); if(b) b.disabled=true;
+  var p={id:_nouvelIdImpot(), mois:ym, date:date, amount:Math.round(lu.valeur*100)/100, le:new Date().toISOString()};
+  impotsPayes.push(p);
+  try{ if(typeof _attenteNoter==='function') _attenteNoter('impots_payes', 'aj', p); }catch(e){}   // gardé sur l'appareil tant qu'il n'est pas VU en base
+  var envoi=_ecrireImpotsPayes();
+  try{ logEdit('Ajout paiement impots', dl(date)+' - '+fmtC(p.amount)+' - impôts '+_lmDeComplet(ym)); }catch(e){ try{ saveData(); }catch(_){} }
+  _lmForm=null;
+  _lmFlash={cls:'en-cours', t:'Enregistrement…'};
+  _impRedessiner();
+  var ok=await Promise.resolve(envoi);
+  _lmEnCours=false;
+  _lmFlash=ok===false
+    ? {cls:'ko', t:'Paiement d’impôts pas encore enregistré dans le cloud : il est gardé sur cet appareil et sera renvoyé tout seul dès que le réseau revient. Ne le note pas une deuxième fois.', fin:Date.now()+20000}
+    : {cls:'ok', t:'Impôts '+esc(_deMois(ym))+' notés : <b>'+fmtC(p.amount)+'</b> payés le '+esc(_jourCourt(date)), fin:Date.now()+6000};
+  _impRedessiner();
+  setTimeout(function(){ if(_lmFlash && Date.now()>=_lmFlash.fin-50){ _lmFlash=null; _impRedessiner(); } }, Math.max(0,_lmFlash.fin-Date.now())+60);
+}
+// Supprimer un paiement d'impôts noté (le bloc impôts) : même fenêtre que la suppression d'un paiement à la modèle.
+async function supprimerImpotPaye(cle){
+  var p=(impotsPayes||[]).find(function(x){ return _impValide(x) && _cleImpot(x)===cle; });
+  var changee=function(){ _impRedessiner(); showSaveStatus('⚠ La liste a changé entre-temps — rien supprimé. Vérifie la ligne et recommence.','#f87171'); };
+  if(!p){ changee(); return; }
+  if(ecritureInterdite('impôts payés')) return;
+  var mtx=fmtC(p.amount);
+  if(!await showConfirm({ico:'del', ton:'danger',
+    titre:'Supprimer le paiement d’impôts du '+_jourCourt(p.date).replace(/ /g,' ')+' ('+mtx+', impôts '+_deMois(p.mois)+') ?',
+    texte:'Les impôts '+_deMois(p.mois)+' redeviendront « à payer » de '+mtx+'. Cette suppression est irréversible.',
+    boutons:[{l:'Annuler',v:'non'},{l:'Supprimer',v:'oui',cls:'danger'}]})) return;
+  var i=impotsPayes.indexOf(p); if(i<0){ changee(); return; }                 // la liste a pu bouger pendant la question
+  try{ logEdit('Suppression paiement impots', dl(p.date)+' - '+fmtC(p.amount)+' - impôts '+_lmDeComplet(p.mois)); }catch(e){}
+  // pierre tombale PARTAGÉE (écrite par la fonction générale avant la liste) : aucun appareil ne la ressuscitera
+  _IMPOTS_SUPPRIMES.add(_cleImpot(p));
+  impotsPayes=impotsPayes.filter(function(x){ return _cleImpot(x)!==_cleImpot(p); });
+  try{ if(typeof _attenteNoter==='function') _attenteNoter('impots_payes', 'sup', p); }catch(e){}
+  _impRedessiner();
+  var ok=await _ecrireImpotsPayes();
+  _impRedessiner();
+  if(ok===false) showSaveStatus("⚠ Suppression du paiement d’impôts pas encore enregistrée — gardée sur cet appareil, renvoyée toute seule dès que le réseau revient.", '#ef4444');
+}
+
+// ── 7. Le bloc « Impôts à garder de côté » : déjà payé / reste à payer ──────────────────────────────────────────
+// Le suivi commence au PREMIER mois noté (les mois d'avant ont été payés avant que le site sache les noter) et va
+// jusqu'au mois en cours (ses impôts « à ce jour » sont à garder aussi). Par mois : l'impôt (1 % du net OnlyFans, le
+// calcul du bloc), ce qui a été noté, le reste. Reste à payer = somme des restes ; à garder en crypto = reste ÷ 0,98.
+function _impSuivi(){
+  var l=(impotsPayes||[]).filter(_impValide); if(!l.length) return null;
+  var m0=l.reduce(function(m,p){ return p.mois<m ? p.mois : m; }, l[0].mois);
+  var mx=l.reduce(function(m,p){ return p.mois>m ? p.mois : m; }, l[0].mois);
+  var cour=_ymLocal(), fin=cour>mx ? cour : mx, mois=[];
+  for(var k=m0, garde=0; k<=fin && garde<600; k=_lmSuivant(k), garde++) mois.push(k);
+  var rows=mois.map(function(ym){
+    var du=_chCtsAff(_chFrais(_bilansMois(ym)).imp), pa=_impPayeCts(ym);
+    return {ym:ym, du:du, pa:pa, reste:Math.max(0,du-pa), cours:ym===cour, ech:_lmJour(_lmSuivant(ym),15),
+      l:l.filter(function(p){ return p.mois===ym; }).sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); })};
+  }).filter(function(r){ return r.du>0 || r.pa>0; }).reverse();
+  var paye=rows.reduce(function(s,r){ return s+r.pa; },0), reste=rows.reduce(function(s,r){ return s+r.reste; },0);
+  return {m0:m0, rows:rows, paye:paye, reste:reste, garde:reste/100/(1-_RETRAIT_LIQUIDE)};
+}
+function _impSuiviHtml(S){
+  var auj=_aujLocal();
+  var ligne=function(r){
+    var etat, cls;
+    if(r.pa>0 && r.pa>=r.du){ etat='payé'; cls='ok'; }
+    else if(r.cours){ etat='en cours'; cls='cours'; }
+    else if(auj>r.ech){ etat='en retard'; cls='retard'; }
+    else { etat='à payer le '+_jourCourt(r.ech); cls='du'; }
+    var det='impôts '+(r.cours ? 'à ce jour ' : '')+'<b>'+fmtC(r.du/100)+'</b>'
+      +(r.pa>0 ? ' · payé <b>'+fmtC(r.pa/100)+'</b>' : '')
+      +(r.reste>0 && r.pa>0 ? ' · reste <b>'+fmtC(r.reste/100)+'</b>' : '')
+      +(r.pa>r.du ? ' · <b>'+fmtC((r.pa-r.du)/100)+'</b> de plus' : '');
+    var pays=r.l.map(function(p){
+      return '<span class="ip-sv-p"><span>'+esc(_jourCourt(p.date))+' · <b>'+fmtC(p.amount)+'</b></span>'
+        +'<button type="button" class="ip-sv-x" onclick="supprimerImpotPaye(\''+esc(_cleImpot(p)).replace(/'/g,'&#39;')+'\')" title="Supprimer ce paiement d’impôts" aria-label="'+esc('Supprimer le paiement d’impôts du '+dlA(p.date)+' ('+_lmNomComplet(p.mois)+')')+'">'+_LM_I.x+'</button></span>';
+    }).join('');
+    return '<div class="ip-sv-r ip-sv-'+cls+'"><div class="ip-sv-h"><span class="ip-sv-m">'+esc(grafCap(_nomMois(r.ym)))+'</span><span class="ip-sv-e">'+esc(etat)+'</span></div>'
+      +'<div class="ip-sv-d">'+det+'</div>'+(pays ? '<div class="ip-sv-ps">'+pays+'</div>' : '')+'</div>';
+  };
+  return '<div class="ip-sv-tete"><span class="ip-sv-t">Impôts payés</span><span class="ip-sv-s">'+esc('suivis depuis '+_lmNomComplet(S.m0))+'</span></div>'
+    +'<dl class="ip-rel ip-sv-rel"><div class="ip-r"><dt>Déjà payé</dt><dd>'+fmtC(S.paye/100)+'</dd></div>'
+    +'<div class="ip-r ip-sv-reste"><dt>Reste à payer</dt><dd>'+fmtC(S.reste/100)+'</dd></div></dl>'
+    +'<div class="ip-cout-det">'+(S.reste>0 ? 'à garder en crypto pour ce reste : <b>'+fmtC(S.garde)+'</b> (retrait de 2 %)' : 'rien à garder : tout ce qui est dû est payé')+'</div>'
+    +'<div class="ip-sv-l">'+S.rows.map(ligne).join('')+'</div>';
+}
+function _impDecorer(){
+  var el=document.getElementById('impots-panel'); if(!el || el.hidden) return;
+  var S=_impSuivi(), note=el.querySelector('.ip-note');
+  el.classList.toggle('ip-suivi-on', !!S && !el.classList.contains('ip-0'));
+  if(note) note.innerHTML=_chNb(S
+    ? 'Le total du haut compte tout, depuis ton premier bilan. Le suivi des paiements commence en '+esc(_lmNomComplet(S.m0))+', ton premier paiement noté : les mois d’avant n’y sont pas.'
+    : 'Note chaque paiement d’impôts avec « J’ai payé les impôts », dans la liste du mois en haut de l’Accueil : ce qui reste à payer s’affichera ici. Ce total compte tout, depuis ton premier bilan.');
+  if(!S || el.classList.contains('ip-0')) return;
+  // le geste ② dit ce qu'il reste VRAIMENT à garder (les impôts déjà payés ne sont plus à garder)
+  var li=el.querySelector('.ip-etapes li:nth-child(2)');
+  if(li) li.innerHTML=_chNb(S.reste>0
+    ? '<b>Garde <span class="ip-mt">'+fmtC(S.garde)+'</span> sur le compte crypto</b> : retirés en liquide (−2 %), ils font les <span class="ip-mt">'+fmtC(S.reste/100)+'</span> d’impôts qu’il reste à payer, pour vous deux.'
+    : '<b>Rien à garder pour les impôts en ce moment</b> : tout ce qui est dû est payé.');
+  var d=document.createElement('div'); d.className='ip-suivi'; d.id='ip-suivi';
+  d.innerHTML=_chNb(_impSuiviHtml(S));
+  el.insertBefore(d, el.querySelector('.ip-per') || note || null);
+}
+
+// ── 8. Redessin : après chaque uk() (via le rappel), chaque renderModelShare() (paiements), chaque renderImpots() ──
+// Les fonctions d'origine sont appelées telles quelles, AVANT ; la liste ne peut pas les casser (try/catch).
+(function(){
+  if(typeof _majRappel==='function'){ var _mrL=_majRappel; _majRappel=function(){ var r=_mrL.apply(this, arguments); try{ _majListe(); }catch(e){ console.warn('liste du mois', e); } return r; }; }
+  if(typeof renderModelShare==='function'){ var _msL=renderModelShare; renderModelShare=function(){ var r=_msL.apply(this, arguments); try{ _majListe(); }catch(e){ console.warn('liste du mois', e); } return r; }; }
+  if(typeof renderImpots==='function'){ var _riL=renderImpots; renderImpots=function(){ var r=_riL.apply(this, arguments); try{ _impDecorer(); }catch(e){ console.warn('impôts payés', e); } return r; }; }
+  try{ _majListe(); }catch(e){}
+})();
 
 </script>
 </body>
