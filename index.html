@@ -4188,6 +4188,10 @@ body.light #mdp-dlg .md-msg.ko{color:color-mix(in srgb,var(--neg) 82%,var(--ink-
   @keyframes md-monte{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
 }
 
+
+/* ── feat5_calculs ── */
+/* (15/10, F11) Répartition d'une période en perte : la ligne « Perte −73 % » en rouge (jeton --neg, les deux thèmes) */
+#bars .nfr-l-pr.nfr-l-perte .nfr-n,#bars .nfr-l-pr.nfr-l-perte .nfr-p{color:var(--neg)}
 </style>
 </head>
 <body class="skin-melange">
@@ -4595,16 +4599,16 @@ document.addEventListener('click',function(ev){
   if(tip && ev.target.closest('.tip-icon')) tip.classList.toggle('open');
 },true);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>_ESC[c]);
-const fmtPct=n=>n+'\u00a0%';   // (13/10) UN format : « 57 % », espace insécable
+const fmtPct=n=>(n<0?'\u2212'+(-n):n)+'\u00a0%';   /* (15/10, F11) le vrai signe « − » (avant : « -73 % ») */   // (13/10) UN format : « 57 % », espace insécable
 const pct=(v,b)=>b>0?fmtPct(Math.round(v/b*100))+' du net':'—';
 // (13/10) Parts du net AFFICHÉES qui totalisent 100 % (DA F5 : la Répartition faisait 101 %).
 // La marge garde l'arrondi simple (même chiffre que la carte du bénéfice, le Récap, chaque bilan) ;
 // les postes se partagent 100 − marge au plus fort reste (à reste égal : l'ordre de la liste).
-// Perte (pr < 0) : rien à totaliser, arrondi simple. Aucun montant ne change.
+// (15/10, F11) Perte (pr < 0) : même règle, les postes font 100 − marge (ex. 173 %) et la ligne « Perte −73 % » complète.
 function _partsArrondies(net, pr, postes){
   const r={}, cles=Object.keys(postes).filter(k=>(postes[k]||0)>0);
   cles.forEach(k=>{ r[k]=net>0?Math.round(postes[k]/net*100):0; });
-  if(!(net>0) || !(pr>=0) || !cles.length) return r;
+  if(!(net>0) || !cles.length) return r;
   const ex=cles.map(k=>postes[k]/net*100), bas=ex.map(x=>Math.floor(x+1e-9));
   let manque=(100-Math.round(pr/net*100))-bas.reduce((s,x)=>s+x,0);
   const ordre=cles.map((k,i)=>i).sort((a,b)=>((ex[b]-bas[b])-(ex[a]-bas[a]))||(a-b));
@@ -4837,8 +4841,10 @@ function loadDefaultPayers(){
 }
 
 
-function logEdit(action,detail){
-  editLog.unshift({ts:new Date().toISOString(),action,detail});
+function logEdit(action,detail,plus){
+  // (15/10, F9) « plus » : l'identifiant du bilan (bid) et ses montants AVANT la modification (avant : {net, pr}) —
+  // l'Historique écrit « avant → après » sur LE BON bilan, même quand deux bilans portent la même date.
+  editLog.unshift(Object.assign({ts:new Date().toISOString(),action,detail},plus||{}));
   if(editLog.length>200)editLog.pop();
   _saveEditLog();saveData();
 }
@@ -4846,7 +4852,10 @@ function logEdit(action,detail){
 
 
 function sw(t,b){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('page-'+t).classList.add('active');try{localStorage.setItem('ccn_tab',t);}catch(e){}window.scrollTo(0,0);}
-function ts(){return new Date().toISOString().split('T')[0];}
+// (15/10, F7) la date du jour en heure LOCALE de l'appareil. Avant : toISOString() = heure UTC, donc entre minuit et
+// 2 h du matin (heure de Paris) « aujourd'hui » était encore la veille : le 1er du mois à 0 h 30, « Ce mois-ci » parlait
+// du mois d'avant, et la Prévision changeait à 2 h. Même calcul que _aujLocal().
+function ts(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function dl(s){return new Date(s+'T00:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
 // (13/10) Date AFFICHÉE : « 1er oct. 2026 », « 5 oct. 2026 » (plus de zéro de tête). dl() garde
 // « 01 oct. 2026 » : c'est la clé des lignes du journal (Historique « avant → après », « mis à jour
@@ -5185,8 +5194,9 @@ function renderEntryWarnings(){
   }
   // c) Bilan en perte
   if(saisieEnCours){
-    const net=br*_TAUX+tg, dep=va+mo+ci+ch+alT+(typeof fraisOF==='function'?fraisOF(br*_TAUX):0);
-    if(dep>net) w.push({t:'Ce bilan est en perte de '+fmtC(dep-net)+' : les dépenses dépassent le net.'});
+    // (15/10, F1) la perte = le bénéfice du bilan au centime (le chiffre de la carte), pas net − dépenses non arrondi
+    const _pB=profitEntree({brut:br,tgNet:tg,va,mo,ci,ch,alT});
+    if(_pB<0) w.push({t:'Ce bilan est en perte de '+fmtC(-_pB)+' : les dépenses dépassent le net.'});
   }
   // d) Depense sans nom : elle polluera le recap pour toujours
   const sansNom=(typeof afs!=='undefined'?afs:[]).filter(id=>{
@@ -5220,8 +5230,11 @@ function renderDepensesParMois(){
   const libMois=m=>{const[y,mo]=m.split('-');return grafMoisCourt(+mo-1)+' '+y;};
 
   const lignes={};
-  const ajout=(nom,mois,val)=>{ if(!val||val<=0) return; const k=_depKey(nom); if(!k) return;
-    if(!lignes[k]) lignes[k]={label:nom,par:{},total:0};
+  // (15/10, F10) les postes ont leur propre clé (« §va »…) : une dépense diverse nommée « VA » ne gonfle plus la ligne VA.
+  // Dépenses diverses : clé _depKey et le nom le plus employé (_depIndex), comme « Voir le détail par dépense ».
+  const _ixD=_depIndex();
+  const ajout=(nom,mois,val,cle)=>{ if(!val||val<=0) return; const k=cle||_depKey(nom); if(!k) return;
+    if(!lignes[k]) lignes[k]={label:cle?nom:((_ixD[k]&&_ixD[k].label)||nom),par:{},total:0};
     lignes[k].par[mois]=(lignes[k].par[mois]||0)+val; lignes[k].total+=val; };
   // (15/10, relecture D5) Impôts + Paxum, mois par mois : fraisOF du net OnlyFans de chaque bilan, le MÊME calcul que la
   // colonne « Impôts + Paxum » du Récap. « Dépenses 6 mois » compte ainsi la même chose que « Dépenses » en haut de la page.
@@ -5230,9 +5243,9 @@ function renderDepensesParMois(){
   (ents||[]).forEach(e=>{
     const m=(e.date||'').slice(0,7); if(moisList.indexOf(m)<0) return;
     caTotal+=(e.brut||0)+(e.tgNet||0);
-    ajout('VA',m,e.va||0); ajout('Modèle',m,e.mo||0); ajout('Chat IA',m,e.ci||0); ajout('Chat humain',m,e.ch||0);
+    ajout('VA',m,e.va||0,'\u00a7va'); ajout('Modèle',m,e.mo||0,'\u00a7mo'); ajout('Chat IA',m,e.ci||0,'\u00a7ci'); ajout('Chat humain',m,e.ch||0,'\u00a7ch');
     (e.alI||[]).forEach(x=>ajout(String(x.name||'Divers').trim()||'Divers',m,x.val||0));
-    const fr=fraisOF((e.brut||0)*_TAUX); if(fr>0){ frPar[m]=(frPar[m]||0)+fr; frTot+=fr; }
+    const fr=fraisBilan(e); if(fr>0){ frPar[m]=(frPar[m]||0)+fr; frTot+=fr; }   // (15/10, F1) la colonne du Récap, bilan par bilan
   });
   const rows=Object.values(lignes).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
   // la ligne « Impôts + Paxum » en dernier : elle suit ce qui rentre, ce n'est pas une dépense qu'on peut couper
@@ -5583,7 +5596,7 @@ function renderForecast(){
   const _passes=Object.keys(_parMois).filter(k=>k<monthStart.slice(0,7)).map(k=>_parMois[k]).sort((a,b)=>a-b);
   const _mediane=_passes.length?_passes[Math.floor(_passes.length/2)]:0;
   const modeBilan=joursSaisis<=2&&(_passes.length===0||_mediane<=2);
-  const moisFini=joursEcoules>=daysInMonth;
+  const moisFini=joursEcoules>=daysInMonth&&refStr<_auj;   // (15/10, F2) le dernier jour, le mois est encore en cours (le rappel dit « se termine ce soir »)
   const moyenneJour=parseFloat((profitCumule/Math.max(1,modeBilan?joursEcoules:joursSaisis)).toFixed(2));
   const forecast=modeBilan&&moisFini?profitCumule:Math.round(moyenneJour*daysInMonth);
   const daysLeft=daysInMonth-joursEcoules;if(typeof window!=='undefined')window._objFc={mois:monthStart.slice(0,7),forecast:forecast,moisFini:moisFini};
@@ -5695,8 +5708,8 @@ function periodDelta(){
     pStart=_iso(new Date(s.getFullYear(),s.getMonth()-mois,1));
     pEnd=addD(start,-1);
   } else { pEnd=addD(start,-1); pStart=addD(pEnd,-(days-1)); }
-  const sums=(a,b)=>{let br=0,tg=0,va=0,mo=0,ci=0,ch=0,al=0;ents.forEach(e=>{if(e.date>=a&&e.date<=b){br+=e.brut||0;tg+=e.tgNet||0;va+=e.va||0;mo+=e.mo||0;ci+=e.ci||0;ch+=e.ch||0;al+=e.alT||0;}});const net=br*.80+tg,dep=va+mo+ci+ch+al+fraisOF(br*.80);return{br,tg,net,dep,pr:net-dep};};
-  const enCours=!ap&&ts()<end;
+  const sums=(a,b)=>{let br=0,tg=0;const es=ents.filter(e=>e.date>=a&&e.date<=b);es.forEach(e=>{br+=e.brut||0;tg+=e.tgNet||0;});const c=centimesBilans(es);return{br,tg,net:c.net/100,dep:c.dep/100,pr:c.p/100};};   // (15/10, F1) au centime, bilan par bilan
+  const enCours=!ap&&ts()<=end;   // (15/10, F2) le DERNIER jour compris : une période qui contient aujourd'hui n'est pas finie
   // (15/10) Du 1er au 7, le mois précédent PAS ENCORE FINALISÉ (règle du rappel : _moisAFinaliser) n'est pas comparé
   // non plus : ses chiffres sont ceux de la mi-mois. Pastilles « à finaliser », pas de pourcentage.
   const _mf=(enCours||ap)?null:(typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
@@ -5816,7 +5829,10 @@ function uk(){
   const ch=f.reduce((s,e)=>s+(e.ch||0),0)+_tl('ch');
   const al=f.reduce((s,e)=>s+(e.alT||0),0)+(_brouillon?gat():0);
   const ac=f.reduce((s,e)=>s+(e.alI?e.alI.length:0),0)+(_brouillon?gai().length:0);
-  const of=br*.20,fr=fraisOF(br*.80),net=br*.80+tg,dep=va+mo+ci+ch+al+fr,pr=net-dep,brTot=br+tg;
+  // (15/10, F1) net, impôts + Paxum et dépenses = la somme, bilan par bilan et au centime, de centimesBilan() (le brouillon
+  // en aperçu compte comme un bilan) : Net − Dépenses = Bénéfice tombe juste au centime affiché. Avant : frais d'un bloc.
+  const _cP=centimesBilans(_brouillon?f.concat([{brut:(_gv('ib')>0?_gv('ib')/_TAUX:0),tgNet:_gv('itg'),va:_tl('va'),mo:_tl('mo'),ci:_tl('ci'),ch:_tl('ch'),alT:gat()}]):f);
+  const of=br*.20,fr=_cP.fr/100,net=_cP.net/100,dep=_cP.dep/100,pr=_cP.p/100,brTot=br+tg;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
   const _apEl=document.getElementById('kpi-apercu');
   // « aperçu » seulement si ce qui est affiché DIFFÈRE de l'enregistré : un bilan neuf
@@ -5825,7 +5841,7 @@ function uk(){
   // Deux sources de revenu clairement separees, toutes les deux en NET.
   // Montants EXACTS (centimes seulement s'il y en a : « 17,50 $ reste 17,50 $ ») et pas de
   // « − » sous l'étiquette « Dépenses » : la tuile dit déjà que c'est une dépense.
-  set('vb',(br*_TAUX)?fmtC(br*_TAUX):'—');set('vof',br?fmtC(of):'—');set('vn',tg?fmtC(tg):'—');
+  set('vb',(br*_TAUX)?fmtC(_cP.of/100):'—');set('vof',br?fmtC(of):'—');set('vn',tg?fmtC(tg):'—');
   set('vva',va?fmtC(va):'—');set('vmo',mo?fmtC(mo):'—');set('vci',ci?fmtC(ci):'—');set('vch',ch?fmtC(ch):'—');set('val',al?fmtC(al):'—');set('vdep',dep?fmtC(dep):'—');set('vfr',fr?fmtC(fr):'—');
   // (15/10) Le bénéfice s'écrit AU CENTIME (centimes affichés s'ils ne sont pas nuls) : c'est la SOMME des
   // bénéfices enregistrés des bilans de la période (chacun arrondi au centime à la sauvegarde) + celui du
@@ -5858,7 +5874,7 @@ function uk(){
   if(_moiEl){
     const _bR=prAff, _ok=!!brTot&&prAff>0&&mo<=_bR;
     _moiEl.hidden=!_ok;
-    _moiEl.innerHTML=_ok?'dont ta moitié : <b>'+fmtC((_bR+mo)*0.5)+'</b>':'';
+    _moiEl.innerHTML=_ok?'dont ta moitié : <b>'+fmtC(taMoitie(_bR+mo))+'</b>':'';   // (15/10, F5)
   }
   // Un poste a zero sur toute la periode n'a pas a occuper une carte entiere
   // (« Modele — », « Chat humain — ») ; si TOUT est a zero, on garde tout.
@@ -5902,7 +5918,10 @@ function uk(){
     // Ordre FIXE (le bénéfice d'abord) : deux couleurs voisines restent toujours
     // distinguables (violet du bénéfice jamais collé au fuchsia des divers).
     const its=[
-      {l:'Bénéfice',         v:Math.max(0,prAff), p:marge/net, c:'var(--acc)', pr:true},   // (15/10) montant = la carte
+      // (15/10, F11) période en PERTE : « Perte −73 % » en rouge (avant : « Bénéfice 0 % » sous une carte en perte) ; la liste
+      // totalise toujours 100 % (les postes font 173 %, la perte −73 %) ; pas de segment dans la barre (v = 0).
+      (pr<0?{l:'Perte', v:0, p:pr/net, c:'var(--neg)', pr:true, perte:true}
+           :{l:'Bénéfice',         v:Math.max(0,prAff), p:marge/net, c:'var(--acc)', pr:true}),   // (15/10) montant = la carte
       {l:'VA',               v:va,    p:va/net,    c:'var(--m-va)'},
       {l:'Modèle',           v:mo,    p:mo/net,    c:'var(--m-mo)'},
       {l:'Chat IA',          v:ci,    p:ci/net,    c:'var(--m-ci)'},
@@ -5972,8 +5991,9 @@ function rh(){
     // Marge calculee sur le NET (ce qui arrive vraiment), PAS sur le CA brut.
     const _netL=(e.brut||0)*0.80+(e.tgNet||0);
     const mg=_netL>0?Math.round(e.profit/_netL*100):0;
-    const _frL=(typeof fraisOF==='function'?fraisOF((e.brut||0)*_TAUX):0);
-    const _depL=(e.va||0)+(e.mo||0)+(e.ci||0)+(e.ch||0)+(e.alT||0)+_frL;
+    // (15/10, F1) impôts + Paxum = ce que le bénéfice du bilan a retiré : Net − Dépenses = Bénéfice sur la ligne, au centime
+    const _cL=centimesBilan(e), _frL=_cL.fr/100;
+    const _depL=_cL.dep/100;
     const ouvert=_txOuverts.has(_txCle(e));
     // Seuls les postes UTILISES s'affichent. Montants EXACTS : 17,50 $ reste 17,50 $.
     const _catsL=[['VA',e.va,'var(--m-va)'],['Modèle',e.mo,'var(--m-mo)'],['Chat IA',e.ci,'var(--m-ci)'],['Chat humain',e.ch,'var(--m-ch)'],['Impôts + Paxum',_frL,'var(--m-fr)']]
@@ -6001,7 +6021,7 @@ function rh(){
       +`<span class="tx-when"><span class="txdb">${dlA(e.date)}</span>${_aut?`<span class="tx-auteur">par ${_aut}</span>`:''}</span>`
       +`<span class="tx-netc"><span class="tx-net"><span class="tx-k">Net </span>${fmtC(_netL)}</span>${e.tgNet?`<span class="tx-tg">dont Telegram ${fmtC(e.tgNet)}</span>`:''}</span>`
       +`<span class="tx-depc">${_depL>0?fmtC(_depL):'<span class="tx-none">aucune</span>'}</span>`
-      +`<span class="tx-res"><span class="tx-pr${e.profit<0?' neg':''}">${_mP(e.profit)}</span><span class="tx-mg">${mg} % de marge</span></span>`
+      +`<span class="tx-res"><span class="tx-pr${e.profit<0?' neg':''}">${_mP(e.profit)}</span><span class="tx-mg">${fmtPct(mg)} de marge</span></span>`
       +`</div>`
       +`<button type="button" class="tx-mod" onclick="window.editEntry(${ri})" aria-label="Mettre à jour le bilan du ${dlA(e.date)}">${ICO.edit||''}<span>Mettre à jour</span></button>`
       +`<div class="tx-det" id="txd-${ri}">`
@@ -6552,17 +6572,19 @@ function getMonthlyRecap() {
     if (!map[key]) map[key] = { key, label, brut:0, tg:0, net:0, va:0, mo:0, ci:0, ch:0, al:0, fr:0, profit:0, count:0, myAdv:0, assocAdv:0, margin:0 };
     // ||0 partout : un seul champ manquant (import partiel) suffisait à mettre
     // TOUT le tableau du récap mensuel à NaN.
-    map[key].brut += (e.brut||0); map[key].tg += (e.tgNet||0); map[key].net += (e.brut||0)*0.80+(e.tgNet||0);
+    // (15/10, F1) net et impôts + Paxum du mois = la somme de ses bilans AU CENTIME (centimesBilan), en centimes entiers
+    const _c=centimesBilan(e); map[key]._cN=(map[key]._cN||0)+_c.net; map[key]._cF=(map[key]._cF||0)+_c.fr;
+    map[key].brut += (e.brut||0); map[key].tg += (e.tgNet||0); map[key].net = map[key]._cN/100;
     map[key].va += (e.va||0); map[key].mo += (e.mo||0); map[key].ci += (e.ci||0);
     map[key].ch += (e.ch||0); map[key].al += (e.alT||0); map[key].profit += (e.profit||0);
-    map[key].fr += fraisOF((e.brut||0)*_TAUX);   // (12/10) impôts + Paxum, déjà dans le profit
+    map[key].fr = map[key]._cF/100;   // (12/10) impôts + Paxum, déjà dans le profit ; (15/10) bilan par bilan, au centime
     map[key].count++;
     map[key].margin=map[key].net>0?map[key].profit/map[key].net*100:0;
     const epb=e.paidBy||{};
     ['va','mo','ci','ch'].forEach(k=>{const r=avancesLigne(e,k); map[key].myAdv+=r.moi; map[key].assocAdv+=r.asso;});
     (e.alI||[]).forEach(ai=>{if(ai.paidBy==='associe')map[key].assocAdv+=(ai.val||0);else map[key].myAdv+=(ai.val||0);});
   });
-  return Object.values(map).sort((a,b) => b.key.localeCompare(a.key));
+  return Object.values(map).map(r => { delete r._cN; delete r._cF; return r; }).sort((a,b) => b.key.localeCompare(a.key));
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -6602,7 +6624,7 @@ function rcTog(k){
 function _rcPct(a, b){ return b > 0 ? Math.round(a / b * 100) : 0; }
 // (13/10) « dont ta moitié » au Récap, la MÊME règle que l'accueil et la Part de la modèle :
 // (bénéfice + paiements modèle notés dans les bilans) × 0,5, seulement si le bénéfice est positif.
-function _rcMoitie(pr, mo){ return (pr > 0 && (mo || 0) <= pr) ? '<span class="rc-moitie">dont ta moitié : <b>' + fmtC((pr + (mo || 0)) * 0.5) + '</b></span>' : ''; }
+function _rcMoitie(pr, mo){ return (pr > 0 && (mo || 0) <= pr) ? '<span class="rc-moitie">dont ta moitié : <b>' + fmtC(taMoitie(pr + (mo || 0))) + '</b></span>' : ''; }
 function _rcCoul(p){ return p >= 0 ? 'var(--acc-txt)' : 'var(--neg)'; }
 function _rcMargeCoul(m){ return m >= 50 ? 'var(--pos)' : m >= 20 ? 'var(--ink-2)' : 'var(--neg)'; }
 
@@ -6647,7 +6669,7 @@ function renderRecap(){
           _pl(data.length, 'mois', 'mois') + ' · ' + _pl(T.count, 'bilan', 'bilans') + (avecTg ? ' · <span class="rc-nw">dont Telegram ' + fmtC(T.tg) + '</span>' : ''))
       + _carte('out', 'var(--ink-3)', 'Dépenses', fmtC(T.dep), 'var(--ink-1)', _rcPct(T.dep, T.net) + ' % du net')
       + _carte('dollar', _rcCoul(T.profit), 'Bénéfice', _mS(T.profit), _rcCoul(T.profit), '<span class="rc-avant">avant la part de la modèle (50 %)</span>' + _rcMoitie(T.profit, T.mo))
-      + _carte('pct', _rcMargeCoul(margeT), 'Marge', margeT + ' %', _rcMargeCoul(margeT),
+      + _carte('pct', _rcMargeCoul(margeT), 'Marge', fmtPct(margeT), _rcMargeCoul(margeT),
           margeT >= 50 ? 'très bonne' : margeT >= 20 ? 'correcte' : 'les dépenses pèsent lourd')
       + '</div>';
   }
@@ -6671,12 +6693,13 @@ function renderRecap(){
       const _enc = '';
       const puce = (v, inverse) => {
         if(neutre) return _enc;
-        if(!isFinite(v) || Math.abs(v) < 0.5) return '<span class="rc-d rc-d-eq">=</span>';
+        if(!isFinite(v)) return '';   // (15/10, F3) mois d'avant à zéro : rien à comparer
+        if(Math.abs(v) < 0.5) return '<span class="rc-d rc-d-eq">=</span>';
         const bon = inverse ? v < 0 : v > 0;
         return '<span class="rc-d ' + (bon ? 'rc-d-ok' : 'rc-d-ko') + '"><span class="sr-only">' + (v > 0 ? 'en hausse de ' : 'en baisse de ') + '</span>'
           + _pgIco(v > 0 ? 'up' : 'dn', 12) + Math.abs(Math.round(v)) + ' %</span>';
       };
-      const ev = (x, y) => y > 0 ? (x - y) / y * 100 : (x > 0 ? 100 : 0);
+      const ev = (x, y) => evolutionPct(x, y);   // (15/10, F3) la règle de l'accueil : un mois d'avant en perte se compare aussi
       const mA = _rcPct(a.profit, a.net), mB = _rcPct(b.profit, b.net), dM = mA - mB;
       const pMarge = neutre ? _enc : '<span class="rc-d ' + (dM > 0 ? 'rc-d-ok' : dM < 0 ? 'rc-d-ko' : 'rc-d-eq') + '">'
         + (dM === 0 ? '=' : _pgIco(dM > 0 ? 'up' : 'dn', 12) + _pl(Math.abs(dM), 'point', 'points')) + '</span>';
@@ -6692,7 +6715,7 @@ function renderRecap(){
         + bloc('Net total', fmtC(a.net), 'var(--ink-1)', puce(ev(a.net, b.net), false), fmtC(b.net))
         + bloc('Dépenses', fmtC(dep_a), 'var(--ink-1)', puce(ev(dep_a, dep_b), true), fmtC(dep_b))
         + bloc('Bénéfice', _mS(a.profit), _rcCoul(a.profit), puce(ev(a.profit, b.profit), false), _mS(b.profit))
-        + bloc('Marge', mA + ' %', _rcMargeCoul(mA), pMarge, mB + ' %')
+        + bloc('Marge', fmtPct(mA), _rcMargeCoul(mA), pMarge, fmtPct(mB))
         + '</div></div>';
     }
   }
@@ -6709,7 +6732,7 @@ function renderRecap(){
     const R = v => fmtC(v);
     const sorted = [...data].sort((a, b) => a.key.localeCompare(b.key));
     const _afT = (typeof _moisAFinaliser==='function'?_moisAFinaliser():null);
-    const tend = r => { const i = sorted.findIndex(x => x.key === r.key); if(i < 1 || r.key === _afT) return '';
+    const tend = r => { const i = sorted.findIndex(x => x.key === r.key); if(i < 1 || r.key === _afT || r.key === _pgMoisCourant()) return '';   /* (15/10, F15) le mois en cours n'est jamais comparé */
       const d = r.margin - sorted[i-1].margin;
       if(Math.abs(d) < 1) return '<span class="rc-tr" style="color:var(--ink-4)" title="marge stable">' + _pgIco('right', 12) + '</span>';
       return d > 0 ? '<span class="rc-tr" style="color:var(--pos)" title="marge en hausse">' + _pgIco('up', 12) + '</span>' : '<span class="rc-tr" style="color:var(--neg)" title="marge en baisse">' + _pgIco('dn', 12) + '</span>'; };
@@ -6728,7 +6751,7 @@ function renderRecap(){
           + '<td class="rc-tn">' + R(r.net) + '</td>' + (avecTg ? '<td>' + R(r.tg || 0) + '</td>' : '')
           + '<td>' + R(r.va) + '</td><td>' + R(r.mo) + '</td><td>' + R(r.ci) + '</td><td>' + R(r.ch) + '</td><td>' + R(r.al) + '</td><td>' + R(r.fr || 0) + '</td>'
           + (_bfT ? '' : bf)
-          + '<td style="color:' + _rcMargeCoul(m) + ';font-weight:500">' + m + ' %' + tend(r) + '</td>'
+          + '<td style="color:' + _rcMargeCoul(m) + ';font-weight:500">' + fmtPct(m) + tend(r) + '</td>'
           + (avecAsso ? '<td>' + R(r.myAdv || 0) + '</td><td>' + R(r.assocAdv || 0) + '</td>' : '')
           + '<td class="rc-brut">' + R(r.brut) + '</td>'
           + '</tr>'; }).join('')
@@ -6736,9 +6759,9 @@ function renderRecap(){
       + (avecTg ? '<td>' + R(T.tg) + '</td>' : '')
       + '<td>' + R(T.va) + '</td><td>' + R(T.mo) + '</td><td>' + R(T.ci) + '</td><td>' + R(T.ch) + '</td><td>' + R(T.al) + '</td><td>' + R(T.fr) + '</td>'
       + (_bfT ? '' : bfTot)
-      + '<td style="color:' + _rcMargeCoul(margeT) + ';font-weight:500">' + margeT + ' %</td>'
+      + '<td style="color:' + _rcMargeCoul(margeT) + ';font-weight:500">' + fmtPct(margeT) + '</td>'
       + (avecAsso ? '<td>' + R(T.myAdv) + '</td><td>' + R(T.assocAdv) + '</td>' : '')
-      + '<td class="rc-brut">' + R(T.brut) + '</td>'
+      + '<td class="rc-brut">' + R(data.reduce((s, x) => s + Math.round(x.brut * 100), 0) / 100) + '</td>'   /* (15/10, F1) = somme de la colonne, au centime */
       + '</tr></tbody></table></div></div>';
     return;
   }
@@ -6788,7 +6811,7 @@ function renderRecap(){
     }
     det += '<div class="rc-grp rc-res"><div class="rc-gt">Bénéfice du mois</div>'
       + '<div class="rc-resv" style="color:' + _rcCoul(r.profit) + '">' + _mS(r.profit) + '</div>'
-      + '<div class="rc-ress">avant la part de la modèle · <b style="color:' + _rcMargeCoul(marge) + '">' + marge + ' %</b> de marge' + _rcMoitie(r.profit, r.mo) + '</div></div>';
+      + '<div class="rc-ress">avant la part de la modèle · <b style="color:' + _rcMargeCoul(marge) + '">' + fmtPct(marge) + '</b> de marge' + _rcMoitie(r.profit, r.mo) + '</div></div>';
 
     // « Corriger ce bilan » : ouvre la MEME modification que « Modifier » sur l'accueil.
     const _bil = (ents || []).filter(e => String(e.date || '').slice(0, 7) === r.key).sort((x, y) => String(y.date).localeCompare(String(x.date)));
@@ -6806,7 +6829,7 @@ function renderRecap(){
       + '<span class="rc-c rc-cn">' + fmtC(r.net) + '</span>'
       + '<span class="rc-c rc-cd">' + fmtC(dep) + '</span>'
       + '<span class="rc-mp" style="color:' + _rcCoul(r.profit) + '">' + _mS(r.profit) + '</span>'
-      + '<span class="rc-badge" style="--rc-c:' + _rcMargeCoul(marge) + '">' + marge + ' %<span class="rc-bd-l">&nbsp;de marge</span></span>'
+      + '<span class="rc-badge" style="--rc-c:' + _rcMargeCoul(marge) + '">' + fmtPct(marge) + '<span class="rc-bd-l">&nbsp;de marge</span></span>'
       + '</div>'
       + '<div class="rc-det" id="rcd-' + esc(r.key) + '"' + (ouvert ? '' : ' style="display:none"') + '><div class="rc-detg">' + det + '</div>' + act + '</div>'
       + '</div>';
@@ -6816,13 +6839,21 @@ function renderRecap(){
 
 function exportRecapCSV() {
   const data = getMonthlyRecap();
-  const headers = ['Mois','Entrées','CA Brut','Telegram','Net','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Impôts + Paxum','Profit','Avancé Moi','Avancé Associé'];
-  const rows = data.map(r => [r.label, r.count, r.brut.toFixed(2), (r.tg||0).toFixed(2), r.net.toFixed(2), r.va.toFixed(2), r.mo.toFixed(2), r.ci.toFixed(2), r.ch.toFixed(2), r.al.toFixed(2), (r.fr||0).toFixed(2), r.profit.toFixed(2), (r.myAdv||0).toFixed(2), (r.assocAdv||0).toFixed(2)]);
+  // (15/10, F8) les mots et les montants du Récap : mois en français, « Dépenses diverses » ET « Total dépenses », « Bénéfice »,
+  // au centime ; Net total − Total dépenses = Bénéfice sur chaque ligne. « Avancé par… » seulement si un associé a avancé
+  // quelque chose (comme le tableau du Récap).
+  const _c = v => Math.round((Number(v) || 0) * 100), c2 = n => (n / 100).toFixed(2);
+  const avecAsso = data.some(r => (r.assocAdv || 0) > 0);
+  const headers = ['Mois','Bilans','Net OnlyFans','Net Telegram','Net total','VA','Modèle','Chat IA','Chat humain','Dépenses diverses','Impôts + Paxum','Total dépenses','Bénéfice','Brut OnlyFans']
+    .concat(avecAsso ? ['Avancé par moi','Avancé par l’associé'] : []);
+  const rows = data.map(r => { const N = _c(r.net), T = _c(r.tg), P = [_c(r.va), _c(r.mo), _c(r.ci), _c(r.ch), _c(r.al), _c(r.fr)], D = P.reduce((s, x) => s + x, 0);
+    return [_rcMois(r.key), r.count, c2(N - T), c2(T), c2(N)].concat(P.map(c2), [c2(D), c2(_c(r.profit)), c2(_c(r.brut))],
+      avecAsso ? [c2(_c(r.myAdv)), c2(_c(r.assocAdv))] : []); });
   const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
   const b = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(b);
-  a.download = `crm-recap-mensuel-${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = `noctra-finance-recap-${ts()}.csv`;
   a.click();
 }
 
@@ -6840,7 +6871,7 @@ function exportVACSV() {
   const b = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(b);
-  a.download = `crm-vas-${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = `noctra-finance-va-${ts()}.csv`;
   a.click();
 }
 
@@ -6937,18 +6968,23 @@ function exportData() {
   const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(b);
-  a.download = `crm-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `noctra-finance-copie-de-secours-${ts()}.json`;
   a.click();
 }
 
 function exportCSV() {
-  const headers = ['Date','CA Brut','Telegram','VA','Modèle','Chat IA','Chat Hum.','Dépenses','Profit'];
-  const rows = ents.map(e => [e.date, e.brut, e.tgNet||0, e.va, e.mo, e.ci, e.ch, e.alT, e.profit]);
+  // (15/10, F8) les colonnes parlent comme le site, au centime (centimesBilan : la règle de tout le site), et le fichier
+  // refait le bénéfice tout seul : Net OnlyFans + Net Telegram = Net total ; VA + Modèle + Chat IA + Chat humain +
+  // Dépenses diverses + Impôts + Paxum = Total dépenses ; Net total − Total dépenses = Bénéfice. Brut OnlyFans en dernier.
+  const c2 = n => (n / 100).toFixed(2);
+  const headers = ['Date','Net OnlyFans','Net Telegram','Net total','VA','Modèle','Chat IA','Chat humain','Dépenses diverses','Impôts + Paxum','Total dépenses','Bénéfice','Brut OnlyFans'];
+  const rows = ents.map(e => { const c = centimesBilan(e);
+    return [e.date, c2(c.of), c2(c.tg), c2(c.net), c2(c.va), c2(c.mo), c2(c.ci), c2(c.ch), c2(c.al), c2(c.fr), c2(c.dep), c2(c.p), c2(Math.round((Number(e.brut) || 0) * 100))]; });
   const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
   const b = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(b);
-  a.download = `crm-entries-${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = `noctra-finance-bilans-${ts()}.csv`;
   a.click();
 }
 
@@ -7093,9 +7129,11 @@ function se(force) {
   if(_editingId){
     entry.id=_editingId;
     const idx=ents.findIndex(e=>e.id===_editingId);
+    const _av=idx>=0?centimesBilan(ents[idx]):null;   // (15/10, F9) le bilan AVANT la modification
     if(idx>=0) ents[idx]=entry;
     _envoi=updateEntryAPI(_editingId,entry);
-    logEdit('Modification entrée', `${dl(date)} · net ${fmt(_ofNet+tg)} · profit ${profit<0?'−':''}${fmt(profit)}`);
+    logEdit('Modification entrée', `${dl(date)} · net ${fmt(_ofNet+tg)} · profit ${profit<0?'−':''}${fmt(profit)}`,
+      {bid:_editingId, avant:_av?{net:_av.net/100, pr:_av.p/100}:null});
   } else {
     ents.unshift(entry);
     _envoi=saveEntry(entry);
@@ -7146,7 +7184,7 @@ window.editEntry = function(idx){
     _editingId=entry.id; _copieDe=null;
     // On reaffiche du NET : soit la valeur saisie, soit le net deduit du brut
     // pour les anciennes entrees (rien n est perdu).
-    document.getElementById('ib').value = (entry.ofNet>0?entry.ofNet:((entry.brut||0)*_TAUX))||'';
+    document.getElementById('ib').value = (Math.round((entry.ofNet>0?entry.ofNet:((entry.brut||0)*_TAUX))*100)/100)||'';   // (15/10, F13) au centime : 3333.328 -> 3333.33
     document.getElementById('itg').value=entry.tgNet||'';
     const _pbE=entry.paidBy||{};
     chargeLP('va', entry.vaI, entry.va, _pbE.va, entry.date);
@@ -7179,7 +7217,7 @@ window.duplicateEntry = function(idx){
     _viderFormulaire();
     // On reaffiche du NET : soit la valeur saisie, soit le net deduit du brut
     // pour les anciennes entrees (rien n est perdu).
-    document.getElementById('ib').value = (entry.ofNet>0?entry.ofNet:((entry.brut||0)*_TAUX))||'';
+    document.getElementById('ib').value = (Math.round((entry.ofNet>0?entry.ofNet:((entry.brut||0)*_TAUX))*100)/100)||'';   // (15/10, F13) au centime : 3333.328 -> 3333.33
     document.getElementById('itg').value=entry.tgNet||'';
     const _pbE=entry.paidBy||{};
     chargeLP('va', entry.vaI, entry.va, _pbE.va, entry.date);
@@ -7435,8 +7473,11 @@ function renderExpenseRecap(){
   // (13/10) Chaque ligne porte le point de couleur de son poste (comme partout), et « Impôts + Paxum »
   // y est (DA F12 : sans lui, la liste n'additionnait pas au « Total dépenses » juste au-dessus).
   // Les postes ont leur propre clé : une dépense diverse nommée « VA » ne s'y mélange plus.
+  // (15/10, F10) dépenses diverses regroupées par _depKey (« Proxies 4G » = « proxies 4g »), sous le nom le plus employé
+  // (_depIndex) : la MÊME règle que la matrice « Dépenses poste par poste » du Récap.
+  const _ixD=_depIndex();
   const add=(cle,nom,val,payer,c)=>{if(!val||val<=0)return;if(!map[cle])map[cle]={name:nom,c,moi:0,asso:0,total:0};const p=(payer==='associe')?'asso':'moi';map[cle][p]+=val;map[cle].total+=val;};
-  ents2.forEach(e=>{const pb=e.paidBy||{};add('\u00a7va','VA',e.va||0,pb.va,'var(--m-va)');add('\u00a7mo','Modèle',e.mo||0,pb.mo,'var(--m-mo)');add('\u00a7ci','Chat IA',e.ci||0,pb.ci,'var(--m-ci)');add('\u00a7ch','Chat humain',e.ch||0,pb.ch,'var(--m-ch)');(e.alI||[]).forEach(x=>{const n=(x.name||'Divers').trim()||'Divers';add(n,n,x.val||0,x.paidBy,'var(--m-fu)');});add('\u00a7fr','Impôts + Paxum',fraisOF((e.brut||0)*_TAUX),'moi','var(--m-fr)');});
+  ents2.forEach(e=>{const pb=e.paidBy||{};add('\u00a7va','VA',e.va||0,pb.va,'var(--m-va)');add('\u00a7mo','Modèle',e.mo||0,pb.mo,'var(--m-mo)');add('\u00a7ci','Chat IA',e.ci||0,pb.ci,'var(--m-ci)');add('\u00a7ch','Chat humain',e.ch||0,pb.ch,'var(--m-ch)');(e.alI||[]).forEach(x=>{const n=(x.name||'Divers').trim()||'Divers', k=_depKey(n);add('d:'+k,(_ixD[k]&&_ixD[k].label)||n,x.val||0,x.paidBy,'var(--m-fu)');});add('\u00a7fr','Impôts + Paxum',fraisBilan(e),'moi','var(--m-fr)');});
   const rows=Object.keys(map).map(k=>map[k]).filter(r=>r.total>0).sort((a,b)=>b.total-a.total);
   // (2e tour) L'ancien panneau « Récap des dépenses » répétait le total des tuiles dans un
   // cadre rouge : il ne reste qu'UN accès au détail, juste sous les tuiles Dépenses.
@@ -7458,17 +7499,17 @@ function renderModelShare(){
   const profitNet=(ents||[]).reduce((s,e)=>s+(e.profit||0),0);
   const moPaid=(ents||[]).reduce((s,e)=>s+(e.mo||0),0);
   const base=profitNet+moPaid;              // bénéfice AVANT paiements modèle
-  const share=base*0.5;
+  const share=saMoitie(base);              // (15/10, F5) au centime : sa moitié + ta moitié = le bénéfice
   const envoye=(virements||[]).reduce((s,v)=>s+(v.amount||0),0);
   const paid=envoye+moPaid;                 // tout ce qu'elle a déjà reçu
-  const reste=share-paid;
+  const reste=Math.round((share-paid)*100)/100;   // (15/10, F5) au centime : « en cours + terminés » = ce reste
   // ── Affichage seulement (2e tour) ─────────────────────────────────────────
   // Un RELEVÉ « bénéfice depuis le début → sa moitié − déjà envoyé = reste », qui DIT
   // qu'il ignore la période choisie ; « Reste à envoyer » en orange (« à faire » : c'est
   // surtout sa part du mois en cours), le rouge seulement pour « Sa part de la perte ».
   // « Trop envoyé » n'a de sens que si de l'argent est réellement parti ; sinon
   // (bénéfice négatif) il s'agit de sa part de la perte.
-  const st=reste>0.5?'du':(reste<-0.5?(paid>0?'trop':'perte'):'ok');
+  const st=reste>=0.005?'du':(reste<=-0.005?(paid>0?'trop':'perte'):'ok');   // (15/10, F6) au centime (avant : 0,50 $)
   const _mc=ts().slice(0,7);
   const _nm=new Date(_mc+'-01T00:00:00').toLocaleDateString('fr-FR',{month:'long'});
   const _avecMois=(ents||[]).some(e=>String(e.date||'').slice(0,7)===_mc);
@@ -7481,8 +7522,8 @@ function renderModelShare(){
   if(_avecMois && (st==='du'||st==='trop')){
     const _ec=(ents||[]).filter(e=>String(e.date||'').slice(0,7)===_mc);
     const _pc=_ec.reduce((s,e)=>s+(e.profit||0),0), _moc=_ec.reduce((s,e)=>s+(e.mo||0),0);
-    const _cours=Math.round(((_pc+_moc)*0.5-_moc)*100)/100, _fin=Math.round((reste-_cours)*100)/100;
-    if(_cours>0 && Math.abs(_fin)>=0.5)
+    const _cours=Math.round((saMoitie(_pc+_moc)-_moc)*100)/100, _fin=Math.round((reste-_cours)*100)/100;
+    if(_cours>0 && Math.abs(_fin)>=0.005)
       _det=`<div class="ms-det"><span>dont ${_nm} en cours : <b>${fmtC(_cours)}</b></span><span>mois terminés : `
         +(_fin<0?`tu as envoyé <b>${fmtC(-_fin)}</b> de plus que sa part`:`il reste <b>${fmtC(_fin)}</b> à lui envoyer`)+`</span></div>`;
   }
@@ -7571,7 +7612,7 @@ async function deleteModelPayment(i){
   //     restait en base, et il réapparaissait au rechargement ;
   //   • il écrasait la liste du serveur sans la relire.
   // Tout passe maintenant par `_saveVirements()`.
-  logEdit('Suppression paiement modele', dl(v.date)+' - '+fmtR(v.amount));
+  logEdit('Suppression paiement modele', dl(v.date)+' - '+_mt);   // (15/10, F14) au centime (_mt = fmtC, le montant de la question), comme l'ajout
   _VIREMENTS_SUPPRIMES.add(_cleVirement(v));   // pour que la fusion ne le ressuscite pas
   virements.splice(i,1);
   renderModelShare();
@@ -8086,7 +8127,7 @@ function grafRepartition(net, its, gros){
   // (2e tour) Légende en POURCENTAGES seulement : les montants sont déjà dans les tuiles
   // juste au-dessus (avant : le même chiffre écrit trois fois sur l'accueil).
   var lignes = its.map(function (i){
-    return '<div class="nfr-l' + (i.pr ? ' nfr-l-pr' : '') + '"><span class="nfr-pt" style="background:' + i.c + '"></span>'
+    return '<div class="nfr-l' + (i.pr ? ' nfr-l-pr' : '') + (i.perte ? ' nfr-l-perte' : '') + '"><span class="nfr-pt" style="background:' + i.c + '"></span>'
       + '<span class="nfr-n">' + esc(i.l) + '</span><span class="nfr-p">' + pc(i) + '</span></div>';
   }).join('');
   return '<div class="nfr-base"><span class="nfr-sur">Sur <b>' + fmtC(net) + '</b> de net, après commission OnlyFans</span>'
@@ -8882,9 +8923,15 @@ function _hlPrecedents(tout){
   for (var i = 0; i < tout.length; i++){
     var l = tout[i]; if (!/^modif/i.test(String(l.action || ''))) continue;
     var b = _hlBilan(l.detail); if (!b) continue;
+    // (15/10, F9) une ligne récente porte ses montants d'avant (l.avant) : rien à chercher. Une ANCIENNE ligne (sans
+    // identifiant) d'un jour qui compte plusieurs bilans : impossible de savoir lequel -> pas de « avant → après »
+    // (avant : comparée à l'AUTRE bilan du même jour, « $1,000 → $5,100 (+$4,100) »).
+    if (l.avant) continue;
+    if (l.bid == null && (ents || []).filter(function(e){ return e.date === b.iso; }).length > 1) continue;
     for (var j = i + 1; j < tout.length; j++){
       var o = tout[j], ob = _hlBilan(o.detail);
       if (!ob || ob.txt !== b.txt) continue;
+      if (l.bid != null && o.bid != null && String(o.bid) !== String(l.bid)) continue;   // un autre bilan du même jour
       if (/^suppr/i.test(String(o.action || ''))) break;
       var v = _hlVals(o.detail); if (v.net == null && v.pr == null) continue;
       m.set(l, o); break;
@@ -8895,7 +8942,9 @@ function _hlPrecedents(tout){
 function _hlDetail(l, prev){
   var a = String(l.action || ''), v = _hlVals(l.detail), sep = '<span class="hl-sep"> · </span>';
   if (v.net != null || v.pr != null){
-    var pv = (prev && /^modif/i.test(a)) ? _hlVals(prev.detail) : {net: null, pr: null};
+    // (15/10, F9) une ligne récente porte les montants du bilan AVANT la modification : c'est eux qu'on compare
+    var _avOk = /^modif/i.test(a) && l.avant && isFinite(+l.avant.net) && isFinite(+l.avant.pr);
+    var pv = _avOk ? {net: +l.avant.net, pr: +l.avant.pr} : (prev && /^modif/i.test(a)) ? _hlVals(prev.detail) : {net: null, pr: null};
     var parts = [_hlEcart('Net', pv.net, v.net), _hlEcart('Bénéfice', pv.pr, v.pr)];
     if (/^suppr/i.test(a)) { var bs = _hlBilan(l.detail); if (bs) parts.unshift('<span class="hl-p">Daté du ' + esc(_sansZero(bs.txt)) + '</span>'); }
     return parts.filter(Boolean).join(sep);
@@ -9175,7 +9224,7 @@ function renderRecords(){
 //           paxMoitie = chacun − moitie : sa moitié du Paxum pris sur l'argent des impôts
 function _chFrais(es){
   var br = (es || []).reduce(function(s, e){ return s + (e.brut || 0); }, 0);   // même somme que uk()
-  var n = br * _TAUX, tot = fraisOF(n), imp = n * _IMPOTS_OF;
+  var n = br * _TAUX, tot = centimesBilans(es).fr / 100, imp = n * _IMPOTS_OF;   // (15/10, F1) tot = la tuile « Impôts + Paxum », bilan par bilan
   var garde = imp / (1 - _RETRAIT_LIQUIDE), cout = garde / (1 - _PAXUM_OF);
   var cT = _chCtsAff(tot), cI = _chCtsAff(imp), cG = _chCtsAff(garde), cC = _chCtsAff(cout);
   return {br: br, net: n, tot: tot, imp: imp, garde: garde, cout: cout,
@@ -10532,6 +10581,47 @@ async function _mdpEnvoyer(ev){
       b.insertAdjacentHTML('beforebegin', '<button type="button" onclick="ouvrirChangementMdp()" id="mdp-btn" class="icon-btn" title="Changer mon mot de passe" aria-label="Changer mon mot de passe">' + _mdpIco(_MDP_I.cle) + '</button>');
   } catch (e) {}
 })();
+
+
+// ── feat5_calculs ──
+// ── (15/10) CALCULS : UNE règle des montants au centime, partagée par tout le site ─────────────────────────────
+// centimesBilan(e) : les montants d'UN bilan, en centimes ENTIERS.
+//   of   net OnlyFans (brut × 0,80)        tg   net Telegram            net = of + tg
+//   va mo ci ch al : les dépenses notées (VA, Modèle, Chat IA, Chat humain, diverses) ; aut = leur somme
+//   p    le bénéfice ENREGISTRÉ du bilan (profitEntree : net − impôts et Paxum − dépenses, déjà au centime)
+//   fr   impôts + Paxum = CE QUE CE BÉNÉFICE A RETIRÉ : net − aut − p (fraisOF, arrondi exactement comme le bénéfice)
+//   dep  toutes les dépenses = aut + fr = net − p
+// Conséquence : « Net − Dépenses = Bénéfice » tombe juste au centime sur chaque bilan ET sur toute somme de bilans
+// (période, mois, total, fichier tableur). Avant (F1) : les frais d'une période étaient fraisOF() de la somme des nets,
+// arrondis d'un bloc, alors que le bénéfice est la somme des bilans arrondis (« 29 410 − 11 176,99 ≠ 18 233 »).
+// AUCUN bénéfice ne change : on part du bénéfice enregistré, jamais l'inverse.
+function centimesBilan(e){
+  e = e || {};
+  var c = function(v){ return Math.round((Number(v) || 0) * 100); };
+  var of = c((Number(e.brut) || 0) * _TAUX), tg = c(e.tgNet);
+  var va = c(e.va), mo = c(e.mo), ci = c(e.ci), ch = c(e.ch), al = c(e.alT);
+  var pr = (e.profit != null && e.profit !== '' && isFinite(Number(e.profit))) ? Number(e.profit) : profitEntree(e);
+  var p = c(pr), net = of + tg, aut = va + mo + ci + ch + al;
+  return {of: of, tg: tg, net: net, va: va, mo: mo, ci: ci, ch: ch, al: al, aut: aut, p: p, fr: net - aut - p, dep: net - p};
+}
+// La même chose pour plusieurs bilans (une période, un mois) : la somme, en centimes entiers.
+function centimesBilans(es){
+  var t = {of: 0, tg: 0, net: 0, va: 0, mo: 0, ci: 0, ch: 0, al: 0, aut: 0, p: 0, fr: 0, dep: 0};
+  (es || []).forEach(function(e){ var c = centimesBilan(e); for (var k in t) t[k] += c[k]; });
+  return t;
+}
+// Impôts + Paxum d'un bilan, et toutes ses dépenses, en dollars (au centime).
+function fraisBilan(e){ return centimesBilan(e).fr / 100; }
+function depensesBilan(e){ return centimesBilan(e).dep / 100; }
+// Le partage 50/50 AU CENTIME, écrit une seule fois (F5) : le montant est compté en centimes ; SA moitié (la modèle)
+// prend le demi-centime (il monte, comme « dont sa moitié » du bloc impôts), TA moitié = le reste. Donc sa moitié +
+// ta moitié = le montant, au centime, partout (accueil, Récap, L'année, Part de la modèle).
+function saMoitie(v){ var c = Math.round((Number(v) || 0) * 100); return Math.round(c / 2) / 100; }
+function taMoitie(v){ var c = Math.round((Number(v) || 0) * 100); return (c - Math.round(c / 2)) / 100; }
+// Évolution en % d'un montant par rapport au précédent (F3) : la règle de l'accueil (pastilles, bandeau « Mois
+// dernier ») — l'écart divisé par la valeur ABSOLUE du précédent, pour qu'un mois d'avant en perte se compare aussi
+// (−1 093,70 → −367,31 : +66 %). Précédent à zéro : rien à comparer (NaN) ; zéro → zéro : 0 %.
+function evolutionPct(x, y){ x = Number(x) || 0; y = Number(y) || 0; return y !== 0 ? (x - y) / Math.abs(y) * 100 : (x === 0 ? 0 : NaN); }
 
 </script>
 </body>
