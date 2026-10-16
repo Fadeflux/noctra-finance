@@ -4443,6 +4443,74 @@ body.readonly #impots-panel .ip-sv-x{display:none!important}
   #impots-panel .ip-sv-x{width:40px;height:40px}
 }
 
+
+/* ── feat5_accueil (16/10, sur final21 : P1, P2, P5, P6, P14 de la relecture ; F4, F12, F16) ── */
+/* ══ feat5_accueil (15/10) : P1, P2, P5, P6, P14 — dessin seulement (jetons du thème, aucune couleur écrite en dur) ══ */
+
+/* ── P2 · le relevé « Part de la modèle » finit par sa ligne résultat (même mot, même chiffre que la tuile) ── */
+#model-share-panel .ms-pied{order:1}
+#model-share .ms-fin{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;margin-top:8px;padding:11px 14px;
+  border-radius:var(--r-lg);background:var(--surf-1);border:1px solid var(--line-1)}
+#model-share .ms-fin-l{display:flex;align-items:center;gap:10px;min-width:0;font-size:14px;font-weight:600;line-height:1.3;color:var(--ink-1)}
+#model-share .ms-fin-sg{flex:none;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;
+  font-size:14px;font-weight:700;line-height:1;background:var(--surf-3);color:var(--ink-2)}
+#model-share .ms-fin-v{flex:none;font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1.2;white-space:nowrap;
+  font-variant-numeric:tabular-nums;color:var(--ink-1)}
+body.skin-melange #model-share .ms-fin-du .ms-fin-sg{background:var(--bc-du-m);color:var(--bc-du-on)}
+body.skin-melange #model-share .ms-fin-trop .ms-fin-sg{background:var(--bc-tr-m);color:var(--bc-tr-on)}
+body.skin-melange #model-share .ms-fin-perte .ms-fin-sg{background:var(--bc-ng-m);color:var(--bc-ng-on)}
+#model-share .ms-fin-du .ms-fin-v{color:var(--todo)}
+#model-share .ms-fin-perte .ms-fin-v{color:var(--neg)}
+#model-share .ms-fin-ok .ms-fin-n{color:var(--pos)}
+#model-share .ms-fin-ok .ms-fin-v{color:var(--ink-2)}
+/* l'accueil (grille du Mélange, toutes largeurs) : la ligne et la phrase « Impôts et Paxum… » prennent la place de la phrase */
+body.skin-melange #page-ca #model-share .ms-pied{grid-area:mx;min-width:0}
+@media (min-width:641px){
+  /* ordinateur / tablette : une bande sous les trois petites tuiles du relevé */
+  body.skin-melange #page-ca #model-share .ms-fin{margin:var(--mx-gap) 0 0;padding:12px var(--mx-pad-s);border:0;border-radius:var(--mx-r-md);
+    background:var(--surf-1);box-shadow:var(--mx-hl),var(--mx-sh),inset 0 0 0 1px var(--mx-edge)}
+  body.skin-melange #page-ca #model-share .ms-fin-n{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  body.skin-melange #page-ca #model-share .ms-fin-ok .ms-fin-n{color:var(--pos)}
+  body.skin-melange #page-ca #model-share .ms-fin-v{font-size:19px}
+}
+@media (max-width:640px){
+  /* téléphone : la 4e ligne de la même liste (la ligne « Déjà envoyé » perd son arrondi du bas, la nouvelle le prend) */
+  body.skin-melange #page-ca #model-share:has(.ms-fin) .ms-eq > .ms-c-paid{border-radius:0;box-shadow:inset 1px 0 0 var(--mx-edge),inset -1px 0 0 var(--mx-edge)}
+  body.skin-melange #page-ca #model-share .ms-fin{margin:0;padding:12px 14px;border:0;border-top:1px solid var(--line-1);border-radius:0 0 16px 16px;
+    background:var(--surf-1);box-shadow:inset 0 -1px 0 var(--mx-edge),inset 1px 0 0 var(--mx-edge),inset -1px 0 0 var(--mx-edge)}
+}
+
+/* ── P5 · la Prévision ne redit plus la jauge ; un seul « Fixer un objectif » ; F16 : l'aperçu est dit ── */
+body.skin-melange #forecast-card.fc-jauge #forecast-goal-pct,
+body.skin-melange #forecast-card.fc-jauge > div:has(> #forecast-bar),
+body.skin-melange #forecast-card.fc-jauge #forecast-rest-goal,
+body.skin-melange #forecast-card.fc-jauge #forecast-goal-detail > div:not(:first-child),
+body.skin-melange #forecast-card.fc-invite .fc-obj{display:none!important}
+body.skin-melange #forecast-card.fc-jauge #forecast-goal-detail{margin-top:10px!important;padding:0!important;background:none!important;border:0!important}
+body.skin-melange #forecast-card.fc-jauge #forecast-goal-detail:has(#forecast-date-goal:empty){display:none!important}
+body.skin-melange #forecast-card.fc-jauge #forecast-date-goal{font-size:13px!important;line-height:1.45}
+body.skin-melange #forecast-card .fc-apx{display:block;margin-bottom:4px;font-weight:600;color:var(--todo)}
+/* la tuile « Reste à envoyer » n'a pas la place d'une ligne de plus (son détail se pose dessous) : pendant l'aperçu,
+   « depuis le début » y devient « sans ton aperçu » (même longueur) ; le titre de la Part de la modèle dit le reste */
+body.skin-melange #model-share-panel.ms-en-apercu .ms-res .ms-db{font-size:0!important}
+body.skin-melange #model-share-panel.ms-en-apercu .ms-res .ms-db::after{content:"sans ton aperçu";font-size:12px;line-height:16px;font-weight:600}
+@media (min-width:641px){body.skin-melange #model-share-panel.ms-en-apercu .ms-res .ms-db::after{font-size:12.5px}}
+body.skin-melange #model-share-panel.ms-en-apercu > .panel-sub::after{content:" · bilans enregistrés seulement"}
+
+/* ── P6 · « Tes bilans » : un crayon discret sur les bilans des mois passés ; la date exacte dans le détail ── */
+body.skin-melange #hist-panel .tx-mod.tx-mod-ic{width:var(--h-md);min-width:var(--h-md);min-height:var(--h-md);padding:0;gap:0;color:var(--ink-3);
+  background:transparent;border-color:transparent;box-shadow:none}
+body.skin-melange #hist-panel .tx-mod.tx-mod-ic:hover{color:var(--ink-1);background:var(--surf-3);border-color:transparent}
+body.skin-melange #hist-panel .tx-mod.tx-mod-ic svg{display:block;width:18px;height:18px}
+@media (max-width:640px){
+  html body.skin-melange #hist-panel .txrow > .tx-mod.tx-mod-ic{width:44px;min-width:44px;min-height:44px;padding:0;margin-right:-6px}
+  html body.skin-melange #hist-panel .txrow > .tx-mod.tx-mod-ic svg{display:block;width:18px;height:18px}
+}
+#hist-panel .tx-jour{margin:0 0 8px;font-size:13px;line-height:18px;color:var(--ink-3)}
+
+/* ── P1 · le formulaire de paiement dit d'où vient le montant proposé ── */
+#model-share-panel .ms-prop{flex:1 1 100%;margin:0;font-size:13px;line-height:1.45;color:var(--ink-2)}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -5938,7 +6006,9 @@ function renderForecast(){
 
   const monthStart=`${year}-${String(month+1).padStart(2,'0')}-01`;
   const monthEnd=`${year}-${String(month+1).padStart(2,'0')}-${String(daysInMonth).padStart(2,'0')}`;
-  const monthEntries=ents.filter(e=>e.date>=monthStart&&e.date<=refStr);
+  // (15/10, F12) le mois EN COURS : tous ses bilans, même datés de la fin du mois (avant : un bilan daté du 31 faisait
+  // disparaître la Prévision tout le mois) ; une période passée : jusqu'à sa fin, comme avant.
+  const monthEntries=ents.filter(e=>e.date>=monthStart&&e.date<=(refStr===_auj?monthEnd:refStr));
   if(!monthEntries.length||joursEcoules===0){card.style.display='none';return;}
 
   const profitCumule=Math.round(monthEntries.reduce((s,e)=>s+(e.profit||0),0)*100)/100;   // (15/10) au centime
@@ -6031,11 +6101,17 @@ function renderForecast(){
       if(reste<=0){dg.textContent='';}
       else if(moyenneJour>0){
         const joursRestants=Math.ceil(reste/moyenneJour);
-        const dateAtteinte=new Date(refDate.getTime()+joursRestants*86400000);
+        // (15/10, F4) « il manquera » = l'objectif moins la prévision écrite juste au-dessus (avant : un jour de bénéfice
+        // en trop : 6 137 au lieu de 15 000 − 9 060 = 5 940) ; rien ne manque à l'écran -> « atteint vers le … » (au plus tard le
+        // dernier jour du mois)
+        const _manque=Math.round(goal-forecast), _jA=_manque<=0?Math.min(joursRestants,daysLeft):joursRestants;
+        // (15/10) la date en JOURS du calendrier : « + n × 24 h » perdait un jour après le passage à l'heure d'hiver
+        // (le 15 oct. + 13 jours affichait « 27 oct. » au lieu du 28)
+        const dateAtteinte=new Date(year,month,joursEcoules+_jA);
         const dateStr=dateAtteinte.toLocaleDateString('fr-FR',{day:'numeric',month:'short'}).replace(/^1(\s)/,'1er$1');
         const _h=(typeof ICO!=='undefined'&&ICO&&ICO.horloge)||'', _a=(typeof ICO!=='undefined'&&ICO&&ICO.alerte)||'';
-        if(joursRestants<=daysLeft){dg.innerHTML=`<span class="fc-ok">${_h}Objectif atteint vers le ${dateStr} si le rythme continue</span>`;}
-        else{dg.innerHTML=`<span class="fc-ko">${_a}Au rythme actuel, il manquera environ ${fmtR((joursRestants-daysLeft)*moyenneJour)}</span>`;}
+        if(_manque<=0){dg.innerHTML=`<span class="fc-ok">${_h}Objectif atteint vers le ${dateStr} si le rythme continue</span>`;}
+        else{dg.innerHTML=`<span class="fc-ko">${_a}Au rythme actuel, il manquera environ ${fmtR(goal-forecast)}</span>`;}
       } else {dg.textContent='';}
     }
     if(ba)ba.style.width=Math.min(100,pctAtteint)+'%';
@@ -6350,7 +6426,7 @@ function rh(){
   // Une ligne courte par bilan : [›] date · net · benefice, et « Modifier » au bout.
   // Le detail (postes, versements, depenses diverses, note, autres actions NOMMEES)
   // s'ouvre au toucher de la ligne. « Modifier » appelle window.editEntry comme avant.
-  tl.innerHTML='<div class="tx-head" aria-hidden="true"><span class="th-sum"><span></span><span>Date</span><span>Net</span><span class="th-dep">Dépenses</span><span class="th-res">Bénéfice</span></span><span></span></div>'+page.map(e=>{
+  tl.innerHTML='<div class="tx-head" aria-hidden="true"><span class="th-sum"><span></span><span>'+(page.every(_txUnSeul)?'Mois':'Date')+'</span><span>Net</span><span class="th-dep">Dépenses</span><span class="th-res">Bénéfice</span></span><span></span></div>'+page.map(e=>{
     const ri=base.indexOf(e);
     // Marge calculee sur le NET (ce qui arrive vraiment), PAS sur le CA brut.
     const _netL=(e.brut||0)*0.80+(e.tgNet||0);
@@ -6382,13 +6458,13 @@ function rh(){
     return `<div class="txrow${ouvert?' open':''}" id="txr-${ri}">`
       +`<div class="tx-sum" role="button" tabindex="0" aria-expanded="${ouvert?'true':'false'}" aria-controls="txd-${ri}" onclick="txTog(${ri})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();txTog(${ri})}">`
       +`<span class="tx-cv" aria-hidden="true">${_pgIco('chev',16)}</span>`
-      +`<span class="tx-when"><span class="txdb">${dlA(e.date)}</span>${_aut?`<span class="tx-auteur">par ${_aut}</span>`:''}</span>`
+      +`<span class="tx-when"><span class="txdb">${_txTitre(e)}</span>${_aut?`<span class="tx-auteur">par ${_aut}</span>`:''}</span>`
       +`<span class="tx-netc"><span class="tx-net"><span class="tx-k">Net </span>${fmtC(_netL)}</span>${e.tgNet?`<span class="tx-tg">dont Telegram ${fmtC(e.tgNet)}</span>`:''}</span>`
       +`<span class="tx-depc">${_depL>0?fmtC(_depL):'<span class="tx-none">aucune</span>'}</span>`
       +`<span class="tx-res"><span class="tx-pr${e.profit<0?' neg':''}">${_mP(e.profit)}</span><span class="tx-mg">${fmtPct(mg)} de marge</span></span>`
       +`</div>`
-      +`<button type="button" class="tx-mod" onclick="window.editEntry(${ri})" aria-label="Mettre à jour le bilan du ${dlA(e.date)}">${ICO.edit||''}<span>Mettre à jour</span></button>`
-      +`<div class="tx-det" id="txd-${ri}">`
+      +_txBoutonMaj(e,ri)   // (15/10, P6) en toutes lettres : mois en cours / à finaliser ; sinon un crayon nommé
+      +`<div class="tx-det" id="txd-${ri}">`+_txJour(e)   // (15/10, P6) « Daté du 1er oct. 2026 »
       +(_meta?`<div class="tx-meta">${_meta}</div>`:'')
       +`<div class="tx-dl"><span>Dépenses</span><b>${_depL>0?fmtC(_depL):'aucune'}</b></div>`
       +(_vide?'<div class="tx-none">Aucune dépense notée dans ce bilan</div>':'')
@@ -8005,7 +8081,14 @@ function renderModelShare(){
     +_op('=')
     +`<div class="ms-res ms-res-${st}">${box('','=',rl,Math.abs(reste),rs,'depuis le début')}</div></div>`;
   html+=_det;
+  // (15/10, P2) le relevé finit par SA ligne résultat : le MÊME mot (rl) et le MÊME chiffre (m(Math.abs(reste))) que la
+  // tuile « Reste à envoyer », rien de recalculé ; la phrase « Impôts et Paxum… » la suit dans le même bloc (.ms-pied).
+  // (P1) « Noter un paiement envoyé » se remplit avec CES chiffres-là (window._msEtat).
+  if(typeof window!=='undefined')window._msEtat={st:st,reste:reste,mc:_mc,avecMois:_avecMois};
+  html+=`<div class="ms-pied"><div class="ms-fin ms-fin-${st}"><span class="ms-fin-l"><span class="ms-fin-sg" aria-hidden="true">=</span><span class="ms-fin-n">${rl}</span></span><b class="ms-fin-v">${m(Math.abs(reste))}</b></div>`;
   html+=`<div class="ms-frais">Impôts et Paxum déjà retirés de ce bénéfice, moitié-moitié avec la modèle${(ents||[]).length?' : détail plus bas':''}.</div>`;
+  html+='</div>';   // (15/10, P2) fin de .ms-pied
+  if(typeof _msAideMaj==='function'){try{_msAideMaj();}catch(_e){}}   // (P1) champ vidé après « Enregistrer » : l'aide se retire
   _VIR_AFFICHES=(virements||[]).slice();
   const n=(virements||[]).length;
   if(n){
@@ -9641,16 +9724,8 @@ function renderRecords(){
       : (R.n >= 2 && m.profit > 0 ? '<span class="rk-s2">le meilleur de tes ' + R.n + ' mois terminés</span>' : ''))
     + (m.profit < 0 ? '<span class="rk-s2">aucun mois en bénéfice pour l’instant</span>' : '');
   var t1 = tuile('rk-best' + (m.profit < 0 ? ' rk-neg' : ''), 'Meilleur mois', '<span class="rk-mt">' + _mS(m.profit) + '</span>', sousM);
-  // 2) progression depuis le premier mois terminé
-  var t2;
-  if(R.n < 2){
-    t2 = tuile('rk-prog rk-attente', 'Progression', '<span class="rk-tiret">—</span>', 'elle se mesurera avec un 2<sup>e</sup> mois terminé');
-  } else {
-    var vP = R.prog !== null ? _chPct(R.prog) : '<span class="rk-mt">' + (R.progDiff < 0 ? '−' : '+') + fmtC(R.progDiff) + '</span>';
-    var sousP = esc(_chNom(R.premier.key)) + ' <b>' + _mS(R.premier.profit) + '</b> <span class="rk-fl" aria-label="puis">→</span> '
-      + esc(_chNomMin(R.dernier.key)) + ' <b>' + _mS(R.dernier.profit) + '</b>';
-    t2 = tuile('rk-prog' + ((R.prog !== null ? R.prog : R.progDiff) < 0 ? ' rk-recul' : ''), 'Progression<span class="rk-lx"> depuis le début</span>', vP, sousP);
-  }
+  // 2) (15/10, P14) tes 3 derniers mois terminés, par rapport aux 3 d'avant (src : _rk3Mois, mêmes lignes que le Récap)
+  var t2 = _rk3Mois(R, tuile);
   // 3) dernier mois terminé, par rapport au mois calendaire d'avant
   var d = R.dernier, p = R.precedent, t3, lblD = 'Dernier mois terminé', record = '';
   if(R.n >= 2 && R.meilleur.key === d.key && d.profit > 0)
@@ -12493,6 +12568,202 @@ function _impDecorer(){
   if(typeof renderImpots==='function'){ var _riL=renderImpots; renderImpots=function(){ var r=_riL.apply(this, arguments); try{ _impDecorer(); }catch(e){ console.warn('impôts payés', e); } return r; }; }
   try{ _majListe(); }catch(e){}
 })();
+
+
+// ── feat5_accueil (16/10, sur final21 : P1, P2, P5, P6, P14 de la relecture ; F4, F12, F16) ──
+// ══ feat5_accueil · P1 (15/10 ; 16/10 sur final21) : « Noter un paiement envoyé » s'ouvre DÉJÀ REMPLI ════════════════
+// André paie la modèle le 1er du mois pour le mois PRÉCÉDENT. À l'ouverture du formulaire, le montant proposé est
+// EXACTEMENT la ligne « mois terminés » de la Part de la modèle : _partModele().fin — le MÊME appel que la tuile
+// (renderModelShare) et le même chiffre que la ligne 2 de « La liste du mois » (_partModele du mois suivant celui de la
+// liste, c'est-à-dire du mois en cours, hors des 3 derniers jours). AUCUN calcul ici : on lit ce calcul partagé.
+// Règle au centime (F6, comme la tuile et la liste du mois) : proposé dès 0,005 $. Le mois concerné va dans la note.
+// Le montant reste visible et modifiable ; RIEN n'est enregistré : seul « Enregistrer » (addModelPayment, inchangé, avec la
+// file d'attente et la relecture de feat4_donnees) écrit, exactement comme si André avait tapé le montant.
+//   - rien de dû pour les mois terminés (à jour, trop envoyé, perte) : champ vide, comme avant ; si la tuile dit quand même
+//     « Reste à envoyer » (c'est la part du mois en cours), une phrase le dit ;
+//   - le mois d'avant est « à finaliser » (règle du rappel, _moisAFinaliser) : le montant est proposé (c'est celui de la
+//     liste du mois) et la phrase dit qu'il est « à ce jour », le bilan n'étant pas encore finalisé ;
+//   - chiffres pas encore chargés (feat4_donnees) : rien n'est proposé.
+function _msMoisNom(k){ return grafMoisLong(+String(k || '').slice(5, 7) - 1); }
+function _msDe(nom){ return (/^[aeiouyéèh]/i.test(nom) ? "d'" : 'de ') + nom; }
+// La proposition : {v: montant ou null, note, aide: 'rempli' | 'rempli-afin' | 'cours' | null, mois}
+function _msProposition(){
+  if(typeof _donneesChargees !== 'undefined' && _donneesChargees === false) return {v: null, aide: null};
+  var P = _partModele();                        // l'appel de la tuile : P.fin = la ligne « mois terminés »
+  var kDer = null;                              // le dernier mois TERMINÉ qui a un bilan (pour la note)
+  (ents || []).forEach(function(e){ var k = String(e.date || '').slice(0, 7); if(k && k < P.mc && (!kDer || k > kDer)) kDer = k; });
+  if(P.fin >= 0.005){
+    var note = '';
+    if(kDer){
+      var nom = _msMoisNom(kDer), partDer = _partModele(kDer).cours;   // sa part de ce mois-là (le même calcul partagé)
+      note = 'sa part ' + (P.fin <= partDer + 0.005 ? _msDe(nom) : "jusqu'à " + nom);
+    }
+    var aFin = (typeof _moisAFinaliser === 'function') ? _moisAFinaliser() : null;
+    return {v: P.fin, note: note, aide: (aFin && aFin < P.mc) ? 'rempli-afin' : 'rempli', mois: (aFin && aFin < P.mc) ? aFin : kDer};
+  }
+  var E = window._msEtat;                        // l'état de la tuile, tel qu'affiché
+  return {v: null, aide: (E && E.st === 'du') ? 'cours' : null, mois: P.mc};
+}
+// montant écrit dans le champ (type number) : au centime, sans « .00 »
+function _msTxt(v){ return (Math.round(v * 100) / 100).toFixed(2).replace(/\.00$/, ''); }
+function _msAide(P){
+  var f = document.getElementById('ms-form'); if(!f) return;
+  var h = document.getElementById('ms-prop');
+  if(!h){
+    // juste au-dessus de « Enregistrer » : on le lit avant de toucher le bouton
+    h = document.createElement('div'); h.className = 'ms-prop'; h.id = 'ms-prop'; h.setAttribute('role', 'status'); h.hidden = true;
+    var act = f.querySelector('.ms-f-act'); if(act && act.parentNode) act.parentNode.insertBefore(h, act); else f.appendChild(h);
+  }
+  var t = '', nb = ' ', quoi = (P && P.note) ? P.note : 'sa part des mois terminés';
+  if(P && P.aide === 'rempli')
+    t = 'Rempli avec ' + quoi + ' pas encore envoyée. Vérifie le montant' + nb + ': rien n’est noté avant «' + nb + 'Enregistrer' + nb + '».';
+  else if(P && P.aide === 'rempli-afin')
+    t = 'Rempli avec ' + quoi + ' pas encore envoyée, à ce jour' + nb + ': le bilan ' + _msDe(_msMoisNom(P.mois))
+      + ' n’est pas encore finalisé. Rien n’est noté avant «' + nb + 'Enregistrer' + nb + '».';
+  else if(P && P.aide === 'cours')
+    t = 'Mois terminés' + nb + ': rien à envoyer pour l’instant. Le reste concerne ' + _msMoisNom(P.mois) + ', pas encore fini.';
+  h.setAttribute('data-k', P && P.aide || '');
+  h.textContent = t; h.hidden = !t;
+}
+// « Rempli avec… » ne reste que tant que le champ porte la proposition (tapé autre chose, ou enregistré puis vidé : retiré)
+function _msAideMaj(){
+  var h = document.getElementById('ms-prop'), a = document.getElementById('mp-amount');
+  if(!h || !a || !/^rempli/.test(h.getAttribute('data-k') || '')) return;
+  if(a.value !== a.getAttribute('data-propose')) h.hidden = true;
+}
+function _msRemplir(){
+  var a = document.getElementById('mp-amount'), n = document.getElementById('mp-note'); if(!a) return;
+  var P = _msProposition();
+  var pA = a.getAttribute('data-propose'), pN = n ? n.getAttribute('data-propose') : null;
+  // on ne remplace JAMAIS ce qu'André a tapé : seulement un champ vide, ou notre proposition d'avant restée telle quelle
+  var aLibre = a.value === '' || (pA !== null && a.value === pA);
+  var nLibre = aLibre && !!n && (n.value === '' || (pN !== null && n.value === pN));   // la note suit le montant
+  if(aLibre){
+    if(P.v != null){ var t = _msTxt(P.v); a.value = t; a.setAttribute('data-propose', t); }
+    else { a.value = ''; a.removeAttribute('data-propose'); }
+  }
+  if(nLibre){
+    if(P.v != null && P.note){ n.value = P.note; n.setAttribute('data-propose', P.note); }
+    else { n.value = ''; n.removeAttribute('data-propose'); }
+  }
+  _msAide(aLibre ? P : (/^rempli/.test(P.aide || '') ? null : P));
+}
+(function(){
+  if(typeof msNoterPaiement !== 'function') return;
+  var _msOrig = msNoterPaiement;
+  // le MÊME geste qu'avant (date du jour si vide, curseur sur le montant) : on remplit juste AVANT de l'ouvrir.
+  // (« Noter l'envoi » de la liste du mois appelle ce même msNoterPaiement : même proposition, même chiffre que sa ligne.)
+  msNoterPaiement = function(ouvrir){
+    var f = document.getElementById('ms-form');
+    var o = (typeof ouvrir === 'boolean') ? ouvrir : !!(f && f.hidden);
+    if(o){ try { _msRemplir(); } catch (e) { console.warn('paiement proposé', e); } }
+    return _msOrig.apply(this, arguments);
+  };
+  var a = document.getElementById('mp-amount');
+  if(a) a.addEventListener('input', function(){ try { _msAideMaj(); } catch (e) {} });
+})();
+
+// ══ feat5_accueil · P5 (15/10) : la Prévision ne redit plus la jauge, et se tait sur un mois terminé ═══════════════
+// Affichage seulement : aucun chiffre ne change, rien n'est écrit. Après chaque renderForecast (et la jauge qui le suit) :
+//  - mois TERMINÉ (passé : renderForecast le dit dans window._objFc.moisFini) : la carte se cache — la carte Bénéfice
+//    dit déjà le bilan de ce mois (avant : le bénéfice de septembre une 2e fois, « Mois terminé : c'est ton bilan de septembre ») ;
+//  - la jauge B2 de la carte Bénéfice montre l'objectif (_objEtat().mode 'jauge') : la Prévision garde « ≈ X si le rythme
+//    continue », sa base, « objectif atteint vers le … » / « il manquera environ … » et le champ de l'objectif ; elle ne
+//    redit plus « % prévu · % atteint », « il reste … » ni ses deux barres (classe fc-jauge, dessin seulement) ;
+//  - la carte Bénéfice porte déjà « Fixer un objectif » (_objEtat().mode 'invite') : un seul bouton (classe fc-invite) ;
+//  - F16 : formulaire ouvert avec un aperçu (#kpi-apercu visible) : la Prévision et la Part de la modèle le DISENT
+//    (« bilans enregistrés seulement », le mot du bloc impôts) : elles restent sur les bilans enregistrés.
+function _accApresPrevision(){
+  var card = document.getElementById('forecast-card'); if(!card) return;
+  var ap = document.getElementById('kpi-apercu'), apercu = !!(ap && !ap.hidden);
+  var mp = document.getElementById('model-share-panel'); if(mp) mp.classList.toggle('ms-en-apercu', apercu);
+  var fc = window._objFc;
+  if(fc && fc.moisFini && card.style.display !== 'none') card.style.display = 'none';
+  if(card.style.display === 'none') return;
+  var S = null; try { S = (typeof _objEtat === 'function') ? _objEtat() : null; } catch (e) { S = null; }
+  card.classList.toggle('fc-jauge', !!(S && S.mode === 'jauge'));
+  card.classList.toggle('fc-invite', !!(S && S.mode === 'invite'));
+  card.classList.toggle('fc-apercu', apercu);
+  var fs = document.getElementById('forecast-sub');
+  if(apercu && fs && !fs.querySelector('.fc-apx'))
+    fs.insertAdjacentHTML('afterbegin', '<span class="fc-apx">Bilans enregistrés seulement : ton aperçu n’y est pas encore.</span>');
+}
+(function(){
+  if(typeof renderForecast !== 'function') return;
+  var _rfAcc = renderForecast;   // (déjà enveloppée par la jauge : elle redessine la jauge juste après)
+  renderForecast = function(){
+    var r = _rfAcc.apply(this, arguments);
+    try { _accApresPrevision(); } catch (e) { console.warn('prévision', e); }
+    return r;
+  };
+  try { _accApresPrevision(); } catch (e) {}
+})();
+
+// ══ feat5_accueil · P6 (15/10) : « Tes bilans » se lit comme le Récap ════════════════════════════════════════════
+// Affichage seulement (aucun montant, aucune écriture ; le geste « Mettre à jour » reste window.editEntry(ri)) :
+//  - un bilan SEUL dans son mois (le rythme d'André : un bilan par mois) porte le nom du mois, « Octobre 2026 » (le nom
+//    du Récap, _rcMois) ; sa date exacte passe dans le détail (« Daté du 1er oct. 2026 »). Deux bilans ou plus dans le
+//    même mois (saisie au jour) : la date reste le titre, comme avant ;
+//  - « Mettre à jour » en toutes lettres sur le bilan du mois en cours (et sur celui du mois « à finaliser », règle du
+//    rappel : c'est celui qu'André doit rouvrir) ; un crayon discret, avec son nom pour les lecteurs d'écran, sur les autres.
+function _txUnSeul(e){
+  var k = String(e && e.date || '').slice(0, 7); if(!k) return false;
+  var n = 0; (ents || []).forEach(function(x){ if(String(x.date || '').slice(0, 7) === k) n++; });
+  return n === 1;
+}
+function _txTitre(e){ return _txUnSeul(e) ? esc(_rcMois(String(e.date).slice(0, 7))) : dlA(e.date); }
+function _txJour(e){ return _txUnSeul(e) ? '<div class="tx-jour">Daté du ' + dlA(e.date) + '</div>' : ''; }
+function _txVivant(e){
+  var k = String(e && e.date || '').slice(0, 7);
+  return k === _pgMoisCourant() || k === ((typeof _moisAFinaliser === 'function') ? _moisAFinaliser() : null);
+}
+function _txBoutonMaj(e, ri){
+  var k = String(e.date || '').slice(0, 7), m = _rcMois(k), mn = m.charAt(0).toLowerCase() + m.slice(1);
+  var nom = 'Mettre à jour le bilan ' + (_txUnSeul(e) ? ((/^[aeiouyéè]/i.test(mn) ? "d'" : 'de ') + mn) : 'du ' + dlA(e.date));
+  if(_txVivant(e))
+    return '<button type="button" class="tx-mod" onclick="window.editEntry(' + ri + ')" aria-label="' + nom + '">' + (ICO.edit || '') + '<span>Mettre à jour</span></button>';
+  return '<button type="button" class="tx-mod tx-mod-ic" onclick="window.editEntry(' + ri + ')" aria-label="' + nom + '" title="' + nom + '">' + (ICO.edit || '') + '</button>';
+}
+
+// ══ feat5_accueil · P14 (15/10 ; 16/10 sur final21) : Records — « Tes 3 derniers mois » à la place de « Progression » ══
+// « +848 % depuis avril » grandissait sans rien dire du moment présent. La tuile dit maintenant si l'agence accélère :
+// la moyenne par mois des 3 derniers mois TERMINÉS, comparée à celle des 3 mois d'avant. Affichage seulement.
+// Mois : R.finis = les lignes de getMonthlyRecap() (les MÊMES que le Récap) terminées (clé < mois en cours) et
+// finalisées (le mois « à finaliser » du rappel, _moisAFinaliser, est exclu par chRecords), du plus récent au plus ancien.
+// Montants : les agrégats EN CENTIMES de feat5_calculs (centimesBilans(_bilansMois(mois)).p = la somme des bénéfices du
+// mois, bilan par bilan, en centimes entiers). Moyenne = somme ÷ 3, arrondie au centime. Évolution = evolutionPct, LA règle
+// du site (accueil, Récap) : l'écart divisé par la valeur absolue d'avant (3 mois d'avant en perte : comparés aussi),
+// arrondie au pour cent ; 3 mois d'avant à zéro : l'écart des moyennes en dollars.
+// Cas limites : moins de 3 mois terminés : « — » et une phrase ; 3 à 5 : la moyenne seule, la comparaison viendra.
+function _rkPlage(l){
+  // l : lignes du Récap, du plus récent au plus ancien -> « de juillet à septembre » / « juin, juillet et septembre »
+  var cles = l.map(function(r){ return r.key; }).reverse();          // du plus ancien au plus récent
+  var an = String(_pgMoisCourant()).slice(0, 4), memeAn = cles.every(function(k){ return k.slice(0, 4) === an; });
+  var nom = function(k){ return _chMoisSeul(k) + (memeAn ? '' : ' ' + k.slice(0, 4)); };
+  var suivis = cles.every(function(k, i){ return !i || _chMoisAvant(k) === cles[i - 1]; });
+  if(suivis){ var a = nom(cles[0]); return ((/^[aeiouyéè]/i.test(a) ? "d'" : 'de ') + a) + ' à ' + nom(cles[cles.length - 1]); }
+  var n = cles.map(nom); return n.slice(0, -1).join(', ') + ' et ' + n[n.length - 1];
+}
+function _rk3Mois(R, tuile){
+  var f = R.finis || [];
+  var lbl = 'Tes 3 derniers mois<span class="rk-lx"> terminés</span>';
+  if(f.length < 3)
+    return tuile('rk-prog rk-3m rk-attente', lbl, '<span class="rk-tiret">—</span>',
+      'ta moyenne par mois apparaîtra avec 3 mois terminés');
+  var cts = function(l){ return l.reduce(function(s, r){ return s + centimesBilans(_bilansMois(r.key)).p; }, 0); };
+  var r3 = f.slice(0, 3), s3 = cts(r3), m3 = Math.round(s3 / 3);
+  if(f.length < 6)
+    return tuile('rk-prog rk-3m rk-attente', lbl, '<span class="rk-mt">' + _mS(m3 / 100) + '</span>',
+      'en moyenne par mois ' + _rkPlage(r3) + '<span class="rk-s2">comparée aux 3 mois d’avant à partir de 6 mois terminés</span>');
+  var a3 = f.slice(3, 6), sa = cts(a3), ma = Math.round(sa / 3);
+  var ev = evolutionPct(s3, sa), dm = m3 - ma;          // sommes = rapport des moyennes
+  var r = isFinite(ev) ? Math.round(ev) : null;
+  var v = r !== null ? (r === 0 ? 'stable' : _chPct(r))
+    : '<span class="rk-mt">' + (dm < 0 ? '−' : '+') + fmtC(Math.abs(dm) / 100) + '</span>';
+  var recul = r !== null ? r < 0 : dm < 0;
+  return tuile('rk-prog rk-3m' + (recul ? ' rk-recul' : ''), lbl, v,
+    '<b>' + _mS(m3 / 100) + '</b> en moyenne par mois ' + _rkPlage(r3) + ', contre <b>' + _mS(ma / 100) + '</b> ' + _rkPlage(a3));
+}
 
 </script>
 </body>
