@@ -4192,6 +4192,98 @@ body.light #mdp-dlg .md-msg.ko{color:color-mix(in srgb,var(--neg) 82%,var(--ink-
 /* ── feat5_calculs ── */
 /* (15/10, F11) Répartition d'une période en perte : la ligne « Perte −73 % » en rouge (jeton --neg, les deux thèmes) */
 #bars .nfr-l-pr.nfr-l-perte .nfr-n,#bars .nfr-l-pr.nfr-l-perte .nfr-p{color:var(--neg)}
+
+/* ── feat4_donnees (données : file d’attente, chargement, deux appareils, restauration) ── */
+/* ══ DONNÉES (15/10) : chargement, chiffres non chargés, changements en attente, aperçu de restauration ══
+   Jetons du thème seulement (deux thèmes). Rien ici ne touche un écran chargé normalement, sans attente. */
+/* Pendant le chargement (et s'il a échoué) : pas de faux compte vide, pas de bouton de saisie (E4) */
+body.chargement #page-ca > :not(.dash-header):not(#chargement-etat),
+body.charge-ko #page-ca > :not(.dash-header):not(#chargement-etat),
+body.chargement #page-recap > *, body.charge-ko #page-recap > *,
+body.chargement #page-editlog > *, body.charge-ko #page-editlog > *{display:none!important}
+body.chargement #page-ca .per-tete, body.charge-ko #page-ca .per-tete,
+body.chargement .topbar [onclick="openQuickAdd()"], body.charge-ko .topbar [onclick="openQuickAdd()"]{visibility:hidden}
+#chargement-etat:empty{display:none}
+#chargement-etat{margin:4px 0 18px}
+#chargement-etat .ce-sq{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:12px}
+#chargement-etat .ce-tuile{display:flex;flex-direction:column;gap:14px;min-height:150px;padding:20px;border-radius:var(--r-lg);
+  background:var(--surf-1);border:1px solid var(--line-1)}
+#chargement-etat .ce-tuile i,#chargement-etat .ce-tuile b{display:block;border-radius:7px;
+  background:linear-gradient(90deg,var(--surf-2) 0%,var(--surf-3) 50%,var(--surf-2) 100%);background-size:220% 100%;animation:ce-luit 1.5s ease-in-out infinite}
+#chargement-etat .ce-tuile i{width:42%;height:11px}
+#chargement-etat .ce-tuile b{width:64%;height:30px;margin-top:4px}
+#chargement-etat .ce-tuile i.c{width:30%;margin-top:auto}
+#chargement-etat .ce-txt{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:14px;color:var(--ink-3)}
+#chargement-etat .ce-rond{flex:none;width:16px;height:16px;border-radius:50%;border:2px solid var(--line-3);border-top-color:var(--acc);animation:ce-tourne .9s linear infinite}
+@keyframes ce-luit{0%{background-position:100% 0}100%{background-position:-100% 0}}
+@keyframes ce-tourne{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#chargement-etat .ce-tuile i,#chargement-etat .ce-tuile b,#chargement-etat .ce-rond{animation:none}}
+@media (max-width:640px){#chargement-etat .ce-sq{grid-template-columns:minmax(0,1fr)}#chargement-etat .ce-tuile:not(.ce-hero){display:none}}
+/* « Impossible de charger tes chiffres » (D-9) */
+#chargement-etat .ce-ko,#chargement-etat .ce-copie{padding:20px;border-radius:var(--r-lg);
+  background:color-mix(in srgb,var(--neg) 7%,var(--surf-1));border:1px solid color-mix(in srgb,var(--neg) 32%,transparent)}
+#chargement-etat .ce-ko-t{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:650;line-height:1.3;color:var(--ink-1)}
+#chargement-etat .ce-ko-t .pg-i{flex:none;color:var(--neg)}
+#chargement-etat .ce-ko-s{margin:8px 0 16px;font-size:14px;line-height:1.55;color:var(--ink-2)}
+#chargement-etat .ce-ko-a{display:flex;flex-wrap:wrap;gap:10px}
+#chargement-etat .ce-b{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:12px;
+  border:1px solid var(--line-2);background:var(--surf-2);color:var(--ink-1);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+#chargement-etat .ce-b:hover{background:var(--surf-3)}
+#chargement-etat .ce-b.pri{background:var(--acc-btn);border-color:transparent;color:var(--acc-ink)}
+#chargement-etat .ce-b.pri:hover{filter:brightness(1.08)}
+#chargement-etat .ce-b:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#chargement-etat .ce-copie{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:14px;line-height:1.5;color:var(--ink-2);
+  background:color-mix(in srgb,var(--warn) 8%,var(--surf-1));border-color:color-mix(in srgb,var(--warn) 34%,transparent)}
+#chargement-etat .ce-copie > .pg-i{flex:none;color:var(--warn)}
+#chargement-etat .ce-copie > span{flex:1 1 260px;min-width:0}
+#chargement-etat .ce-copie b{color:var(--ink-1)}
+/* La copie de cet appareil (lecture) : aucun bouton qui écrit */
+body.copie-locale #ca-entry-panel,body.copie-locale .topbar [onclick="openQuickAdd()"],body.copie-locale [onclick*="saveData"],
+body.copie-locale #model-share-panel .ms-noter,body.copie-locale #model-share-panel .ms-form,body.copie-locale [onclick*="deleteModelPayment"],
+body.copie-locale #hist-panel .tx-mod,body.copie-locale #hist-panel .tx-acts,body.copie-locale #rappel-bilan,
+body.copie-locale #page-editlog .hl-import,body.copie-locale #page-editlog .hl-danger{display:none!important}
+/* En-tête : le texte long à l'ordinateur (« 1 changement pas encore enregistré — réessai… »), le court au téléphone
+   (« 1 non enregistré », la place de « Tout est enregistré ») ; chacun est lu là où il se voit */
+#tb-etat .ef-l,#tb-etat-ordi .ef-c{display:none}
+/* ordinateur : la pastille et le message d'enregistrement ne poussent jamais les boutons hors de l'écran (mesuré :
+   un message d'échec débordait déjà de 94 px à 1 280 px sur la base) ; la pastille garde son texte entier au survol */
+@media (min-width:641px){
+  .dash > .topbar #save-status{flex:0 1 auto;min-width:0;max-width:min(340px,28vw);line-height:1.35}
+}
+@media (min-width:1181px){.dash > .topbar .tb-etat-ordi{max-width:260px;min-width:0;overflow:hidden}}
+.tb-etat > span,.tb-etat-ordi > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Ligne d'un bilan pas encore enregistré (D-8) */
+#hist-panel .txrow .tx-att{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;font-size:11.5px;font-weight:600;line-height:18px;
+  white-space:nowrap;color:var(--warn);background:color-mix(in srgb,var(--warn) 13%,transparent)}
+/* Secours (Historique) : la liste de ce qui attend remplace « Rien à récupérer » */
+#recovery-box .hl-rec-attente ~ .hl-rec-ok{display:none}
+/* Historique : la limite est dite, l'archive se consulte (D-13) */
+#page-editlog .hl-pied{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;margin:16px 2px 0;font-size:13px;line-height:1.5;color:var(--ink-3)}
+#page-editlog .hl-pied > .pg-i{flex:none}
+#page-editlog .hl-pied > span{flex:1 1 240px;min-width:0}
+#page-editlog .hl-arch-b{min-height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--surf-1);color:var(--ink-2);
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+#page-editlog .hl-arch-b:hover{background:var(--surf-2);color:var(--ink-1)}
+#page-editlog #hl-archive{margin-top:14px}
+/* Fenêtres : plusieurs lignes de détail ; aperçu d'une restauration avec ses cases (D-10, D-11) */
+#bilan-dlg .bd-d{white-space:pre-line}
+#bilan-dlg .bd-plus{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-height:46vh;overflow:auto;text-align:left;overscroll-behavior:contain}
+#bilan-dlg .bd-pl{font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+#bilan-dlg .bd-pl b{color:var(--ink-1)}
+#bilan-dlg .bd-pl-ko,#bilan-dlg .bd-pl-ko b{color:var(--neg)}
+#bilan-dlg .bd-pl-avert,#bilan-dlg .bd-pl-avert b{color:var(--warn)}
+#bilan-dlg .bd-pl-doux{font-size:12.5px;color:var(--ink-3)}
+#bilan-dlg .bd-case{display:flex;align-items:flex-start;gap:10px;width:100%;min-height:44px;padding:10px 12px;border-radius:10px;
+  border:1px solid var(--line-2);background:var(--surf-1);color:var(--ink-1);font:inherit;font-size:13.5px;line-height:1.45;text-align:left;cursor:pointer}
+#bilan-dlg .bd-case:hover{border-color:var(--line-3)}
+#bilan-dlg .bd-case:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#bilan-dlg .bd-case .bd-cc{position:relative;flex:none;width:18px;height:18px;margin-top:1px;border-radius:5px;border:2px solid var(--line-3)}
+#bilan-dlg .bd-case[aria-checked="true"]{border-color:var(--acc-45);background:var(--acc-06)}
+#bilan-dlg .bd-case[aria-checked="true"] .bd-cc{background:var(--acc-btn);border-color:var(--acc-btn)}
+#bilan-dlg .bd-case[aria-checked="true"] .bd-cc::after{content:"";position:absolute;left:4px;top:0;width:5px;height:10px;
+  border:solid var(--acc-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
+#bilan-dlg .bd-b:disabled{opacity:.45;cursor:not-allowed;filter:none}
+
 </style>
 </head>
 <body class="skin-melange">
@@ -4745,7 +4837,14 @@ const _dirty={virements:false,modeles:false,editlog:false};
 // Une garde qui se contourne au clavier n'est pas une garde. On la met LA OU
 // L'ECRITURE PART, une seule fois, pour tous les chemins d'appel.
 function ecritureInterdite(quoi){
-  if(!document.body.classList.contains('readonly')) return false;
+  if(!document.body.classList.contains('readonly')){
+    // (15/10, D-9) chiffres pas (encore) chargés : rien ne part d'une copie incomplète ou ancienne
+    if(typeof _donneesChargees!=='undefined' && _donneesChargees===false){
+      try{ if(typeof showSaveStatus==='function') showSaveStatus("⚠ Tes chiffres ne sont pas chargés — RIEN n'a été enregistré"+(quoi?" ("+quoi+")":"")+". Réessaie quand ils sont là.", '#ef4444'); }catch(e){}
+      return true;
+    }
+    return false;
+  }
   try{
     // Le « ⚠ » n'est pas decoratif : showSaveStatus s'en sert pour reconnaitre un
     // ECHEC, le tenir 20 s a l'ecran, et empecher un « Sauvegarde » de le recouvrir.
@@ -4758,6 +4857,8 @@ function ecritureInterdite(quoi){
 function _pushSetting(key,val){
   // Refus AVANT l'appel réseau, et on rend `false` : les appelants qui vérifient la
   // valeur de retour annoncent alors un échec honnête au lieu d'un « Sauvegardé ».
+  // (15/10, D-5) le journal passe par l'écriture fusionnée (relu en base juste avant), jamais réécrit en entier
+  if(key==='editlog' && typeof _saveEditLog==='function' && typeof _optsJournal==='function') return _saveEditLog();
   if(ecritureInterdite(key)) return Promise.resolve(false);
   try{
     return apiFetch('/api/settings',{method:'POST',body:JSON.stringify({key,value:JSON.stringify(val)})})
@@ -4772,7 +4873,7 @@ function _pushSetting(key,val){
 // comme pour la suppression d une entree ou d un VA.
 async function clearEditLog(){
   if(!await showConfirm('Effacer tout l’historique des modifications ?\nCette action est irréversible. Tes bilans, eux, ne bougent pas.')) return;
-  editLog=[]; _saveEditLog(); saveData(); renderEditLog();
+  editLog=[]; if(typeof _journalVider==='function') _journalVider(); _saveEditLog(); saveData(); renderEditLog();
 }
 // ⚠️ DEUX APPAREILS SE DÉTRUISAIENT LES PAIEMENTS L'UN L'AUTRE.
 // La liste partait ENTIÈRE, écrasant celle du serveur. Scénario vécu en une soirée :
@@ -4796,35 +4897,129 @@ function _nouvelIdVirement(){
   return 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 async function _saveVirements(){
-  _dirty.virements = true;
-  if (typeof ecritureInterdite === 'function' && ecritureInterdite('paiements')) return false;
-  try{
-    const dist = await apiFetch('/api/settings');           // ce que le serveur a MAINTENANT
-    let sv = [];
-    try{ sv = JSON.parse((dist && dist.virements) || '[]') || []; }catch(e){ sv = []; }
-    if (Array.isArray(sv) && sv.length){
-      const vus = new Set((virements||[]).map(_cleVirement));
-      const repeches = sv.filter(v => {
-        const c = _cleVirement(v);
-        return !vus.has(c) && !_VIREMENTS_SUPPRIMES.has(c);   // ni déjà là, ni supprimé par nous
-      });
-      if (repeches.length){
-        virements = (virements||[]).concat(repeches)
-          .sort((a,b) => String(a.date||'').localeCompare(String(b.date||'')));
-        console.info('[Paiements] ' + repeches.length + ' paiement(s) d un autre appareil recuperes avant ecriture');
-        try{ if(typeof renderModelShare==='function') renderModelShare(); else if(typeof renderVirements==='function') renderVirements(); }catch(e){}
+  // ⚠️ (15/10) DEUX APPAREILS SE REPRENAIENT ENCORE CE QUE L'AUTRE AVAIT FAIT (D-3, D-5, D-6) : un paiement supprimé
+  // par l'un REVENAIT dès que l'autre en notait un (les « pierres tombales » ne vivaient que dans la page qui avait
+  // supprimé) ; le journal de l'un effaçait les lignes de l'autre ; deux paiements dans la même seconde : l'un
+  // manquait en base malgré deux « ✓ ».
+  // C'est maintenant LA fonction générale d'écriture d'une liste partagée, rangée dans UNE ligne de `settings` :
+  //   _saveVirements()               → les paiements à la modèle (comme avant) ;
+  //   _saveVirements(cle, liste, o)  → toute autre liste (journal, impôts payés…) ; `liste` = tableau, ou fonction
+  //                                    qui le rend : ce que CET appareil voit.
+  // À chaque appel :
+  //   1. elle RELIT en base cette clé seulement (et ses pierres tombales `${cle}_supprimes`) juste avant d'écrire ;
+  //   2. résultat = (base ∪ ce que cet appareil a en plus) − pierres tombales (celles de la base + les suppressions
+  //      faites ici) : un appareil ouvert depuis longtemps ne ressuscite plus ce que l'autre a supprimé, et n'efface
+  //      plus ce que l'autre a ajouté ;
+  //   3. une suppression devient une pierre tombale ENREGISTRÉE (partagée), écrite AVANT la liste ;
+  //   4. elle n'écrit que si quelque chose change, puis RELIT pour vérifier : si l'autre appareil a écrit entre-temps,
+  //      elle refait la fusion (3 essais) ; `true` seulement quand sa contribution est vue en base ;
+  //   5. une écriture à la fois par liste : les appels qui arrivent pendant ce temps n'en font qu'UNE de plus.
+  // o = { cleDe(x) → identifiant stable ; supprimes : Set des identifiants supprimés ici ; devant : les ajouts en tête ;
+  //       trier(a, b) ; dateDe(x) ; limite, marge, archive, archiveMax (le journal) ; appliquer(l) → la mémoire de la page }
+  const cle = arguments[0] || 'virements', liste = arguments[1], o = arguments[2] || {};
+  const estVir = cle === 'virements';
+  if (estVir) _dirty.virements = true;
+  if (typeof ecritureInterdite === 'function' && ecritureInterdite(estVir ? 'paiements' : cle)) return false;
+  const fil = _saveVirements._fil || (_saveVirements._fil = {});
+  const f = fil[cle] || (fil[cle] = { p: null, ensuite: null });
+  if (!o._tour) {
+    const lancer = () => {
+      const p = _saveVirements(cle, liste, Object.assign({}, o, { _tour: true })); f.p = p;
+      const fin = () => { if (f.p === p) f.p = null; }; p.then(fin, fin); return p;
+    };
+    if (f.p) { if (!f.ensuite) f.ensuite = f.p.then(() => {}, () => {}).then(() => { f.ensuite = null; return lancer(); }); return f.ensuite; }
+    return lancer();
+  }
+  const cleDe = o.cleDe || (estVir ? _cleVirement : (x) => ((x && x.id != null) ? String(x.id) : JSON.stringify(x)));
+  const dateDe = o.dateDe || ((x) => { const t = new Date(x && (x.ts || x.date)).getTime(); return isFinite(t) ? t : 0; });
+  const k = (x) => String(cleDe(x));
+  const locale = () => { const l = estVir ? virements : (typeof liste === 'function' ? liste() : liste); return Array.isArray(l) ? l : []; };
+  const supLoc = estVir ? _VIREMENTS_SUPPRIMES : (o.supprimes || new Set());
+  const ress = f.ress || new Set();
+  const cleT = cle + '_supprimes';
+  const lireL = (t) => { try { const v = JSON.parse(t || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+  const qui = (typeof _currentUser !== 'undefined' && _currentUser) ? String(_currentUser) : '';
+  const ecrire = (key, val) => apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: key, value: JSON.stringify(val) }) });
+  let dist = null;
+  for (let essai = 0; essai < 3; essai++) {
+    if (!dist) {
+      try { dist = (await apiFetch('/api/settings?cles=' + cle + ',' + cleT)) || {}; }
+      catch (e) { console.warn('[' + cle + '] relecture impossible, ecriture annulee pour ne rien detruire', e); return false; }
+    }
+    const sv = lireL(dist[cle]), tSrv = lireL(dist[cleT]);
+    const tombes = new Set(); let coupe = 0, repere = null;
+    tSrv.forEach((t) => { if (!t) return; if (t.avant) { const a = new Date(t.avant).getTime(); if (a > coupe) coupe = a; } else if (t.k != null && !ress.has(String(t.k))) tombes.add(String(t.k)); });
+    const nouvelles = [];
+    supLoc.forEach((x) => { x = String(x); if (!tombes.has(x) && !ress.has(x)) { tombes.add(x); nouvelles.push({ k: x, le: new Date().toISOString(), par: qui }); } });
+    if (f.vide) { const a = new Date(f.vide).getTime(); if (a > coupe) { coupe = a; repere = { avant: new Date(a).toISOString(), par: qui, raison: 'vide' }; } }
+    const mort = (x) => tombes.has(k(x)) || (coupe > 0 && dateDe(x) <= coupe);
+    const vus = new Set(), base = [], enPlus = [];
+    sv.forEach((x) => { const c = k(x); if (vus.has(c) || mort(x)) return; vus.add(c); base.push(x); });
+    locale().forEach((x) => { const c = k(x); if (vus.has(c) || mort(x)) return; vus.add(c); enPlus.push(x); });
+    let fusion = o.devant ? enPlus.concat(base) : base.concat(enPlus);
+    if (o.trier) fusion = fusion.slice().sort(o.trier);
+    // au-delà de la limite (journal) : les plus anciens partent dans `${cle}_archive`, écrits AVANT d'être retirés
+    let sortants = [];
+    if (o.limite && fusion.length > o.limite + (o.marge || 0)) {
+      let n = o.limite;
+      while (n < fusion.length && dateDe(fusion[n]) === dateDe(fusion[n - 1])) n++;
+      if (n < fusion.length) {
+        const s = fusion.slice(n);
+        let okA = true;
+        if (o.archive) okA = (await _saveVirements(cle + '_archive', s, { cleDe: cleDe, dateDe: dateDe, trier: o.trier, devant: true, limite: o.archiveMax || 3000, _tour: true })) !== false;
+        if (okA) {
+          sortants = s; fusion = fusion.slice(0, n);
+          const a = dateDe(s[0]); if (a > coupe) { coupe = a; repere = { avant: new Date(a).toISOString(), par: qui, raison: o.archive ? 'archive' : 'limite' }; }
+        }
       }
     }
-  }catch(e){
-    // Relecture impossible (hors ligne, serveur muet) : on N'ÉCRASE PAS à l'aveugle.
-    console.warn('[Paiements] relecture impossible, ecriture annulee pour ne rien detruire', e);
-    return false;
+    let tl = tSrv.filter((t) => t && !(t.k != null && ress.has(String(t.k)))).concat(nouvelles);
+    if (repere) tl = tl.filter((t) => !t.avant).concat([repere]);
+    const vieux = Date.now() - 400 * 864e5;            // les pierres tombales de plus de 400 jours partent (2 000 au plus)
+    tl = tl.filter((t) => t.avant || !t.le || new Date(t.le).getTime() > vieux).slice(-2000);
+    try {
+      if (JSON.stringify(tl) !== JSON.stringify(tSrv)) await ecrire(cleT, tl);
+      if (JSON.stringify(fusion) !== JSON.stringify(sv)) await ecrire(cle, fusion);
+    } catch (e) { console.warn('[' + cle + '] ecriture refusee', e); return false; }
+    // la mémoire de la page : ce qu'on vient d'écrire + ce qui a été ajouté ICI pendant ce temps
+    const dans = new Set(fusion.map(k)), sortis = new Set(sortants.map(k));
+    const extra = locale().filter((x) => !dans.has(k(x)) && !sortis.has(k(x)) && !mort(x));
+    const memoire = (o.devant ? extra.concat(fusion) : fusion.concat(extra)).filter((x) => !supLoc.has(k(x)));
+    if (o.trier) memoire.sort(o.trier);
+    const avant = locale();
+    if (memoire.length !== avant.length || memoire.some((x, i) => k(x) !== k(avant[i]))) {
+      if (estVir) { virements = memoire; try { if (typeof renderModelShare === 'function') renderModelShare(); } catch (e) {} }
+      else if (typeof o.appliquer === 'function') { try { o.appliquer(memoire); } catch (e) {} }
+    }
+    // vérifier : relire, et ne dire « fait » que si NOTRE contribution est vue en base
+    let ver;
+    try { ver = (await apiFetch('/api/settings?cles=' + cle + ',' + cleT)) || {}; }
+    catch (e) { return false; }
+    const svV = lireL(ver[cle]), tV = lireL(ver[cleT]);
+    const presents = new Set(svV.map(k)), tombV = new Set();
+    let coupeV = 0;
+    tV.forEach((t) => { if (!t) return; if (t.avant) { const a = new Date(t.avant).getTime(); if (a > coupeV) coupeV = a; } else if (t.k != null) tombV.add(String(t.k)); });
+    const vu = (x) => presents.has(k(x)) || tombV.has(k(x)) || (coupeV > 0 && dateDe(x) <= coupeV) || sortis.has(k(x));
+    if (enPlus.every(vu) && [...supLoc].every((x) => !presents.has(String(x)))) {
+      if (typeof _tombesNoter === 'function') _tombesNoter(cle, tV);
+      ress.forEach((x) => { if (f.ress) f.ress.delete(x); });
+      if (f.vide && coupeV >= new Date(f.vide).getTime()) f.vide = null;
+      // 6. un dernier regard 2,5 s plus tard : si l'autre appareil a écrit JUSTE après notre vérification (sa lecture
+      //    datait d'avant notre écriture), on le voit et on refait la fusion. Ce n'est qu'alors que la copie gardée
+      //    sur cet appareil (file d'attente) est libérée ; d'ici là, l'en-tête la compte déjà comme vue en base.
+      if (!o._regard && (enPlus.length || nouvelles.length)) {
+        if (typeof _attenteVu === 'function') _attenteVu(cle, svV.concat(sortants), tV, cleDe, dateDe);
+        setTimeout(() => { _saveVirements(cle, liste, Object.assign({}, o, { _tour: false, _regard: true })); }, 2500);
+      } else if (typeof _attenteConfirmer === 'function') _attenteConfirmer(cle, svV.concat(sortants), tV, cleDe, dateDe);
+      return true;
+    }
+    dist = ver;                                          // l'autre appareil a écrit entre-temps : on refait la fusion
   }
-  return _pushSetting('virements', virements);
+  return false;
 }
 // Modèles et journal : eux aussi n'étaient sauvés nulle part (perdus à chaque rechargement).
 function _saveModeles(){ _dirty.modeles=true; _pushSetting('modeles',modeles); }
-function _saveEditLog(){ _dirty.editlog=true; _pushSetting('editlog',editLog.slice(0,200)); }
+function _saveEditLog(){ _dirty.editlog=true; return _saveVirements('editlog', function(){ return editLog; }, _optsJournal()); }
 // (addVirement/deleteVirement retirées avec les panneaux "associé" : sur Noctra les
 //  paiements passent par addModelPayment/deleteModelPayment — voir « Part modèle ».)
 
@@ -4844,8 +5039,11 @@ function loadDefaultPayers(){
 function logEdit(action,detail,plus){
   // (15/10, F9) « plus » : l'identifiant du bilan (bid) et ses montants AVANT la modification (avant : {net, pr}) —
   // l'Historique écrit « avant → après » sur LE BON bilan, même quand deux bilans portent la même date.
-  editLog.unshift(Object.assign({ts:new Date().toISOString(),action,detail},plus||{}));
-  if(editLog.length>200)editLog.pop();
+  // (F9) « plus » garde bid et avant:{net, pr} ; la clé de fusion d'une ligne reste ts|action|detail
+  const _l=Object.assign({ts:new Date().toISOString(),action,detail},plus||{}); editLog.unshift(_l);
+  // (15/10, D-13) plus de coupe silencieuse ici : l'écriture fusionnée range les plus anciennes dans l'archive
+  if(typeof _attenteNoter==='function') _attenteNoter('editlog','aj',_l);
+  else if(editLog.length>200)editLog.pop();
   _saveEditLog();saveData();
 }
 
@@ -4931,7 +5129,7 @@ function initSaisie(){
   // etait retenu dans le navigateur) invitait a creer un 2e bilan du mois.
   // Ouvert d'office seulement sur un compte neuf.
   if(!(ents&&ents.length)) nouveauBilan({defiler:false,focus:false});
-  else _fermerPanneau();
+  else if(!(typeof _saisieModifiee==='function' && _panneauOuvert() && _saisieModifiee())) _fermerPanneau();   // (15/10, E4) une saisie commencée reste
 }
 function gf(){
   if(!ap&&!acd&&!acdEnd)return ents;
@@ -5337,10 +5535,10 @@ function renderRecovery(){
   const vs =_recLire(cleLocale('vas'))||[];
 
   const vusVir=new Set((virements||[]).map(_recSig));
-  const virManquants=vir.filter(o=>!vusVir.has(_recSig(o)));
+  const virManquants=vir.filter(o=>!vusVir.has(_recSig(o)) && !(typeof _virTombe==='function' && _virTombe(o)));
   const totalManquant=virManquants.reduce((s,o)=>s+(Number(o.amount)||0),0);
 
-  let html='<div class="hl-rec-h">Sur cet appareil</div>';
+  let html='<div class="hl-rec-h">Sur cet appareil</div>'+(typeof _attenteHtml==='function'?_attenteHtml():'');
   // Le cadre « à faire » n'apparait que s'il manque VRAIMENT quelque chose dans le cloud.
   // Un appareil sans copie locale (cas normal sur un nouveau téléphone) n'est pas une alerte.
   if(virManquants.length){
@@ -5369,7 +5567,7 @@ function renderRecovery(){
 async function restaurerVirements(){
   const vir=_recLire(cleLocale('virements'))||[];
   const vus=new Set((virements||[]).map(_recSig));
-  const manquants=vir.filter(o=>!vus.has(_recSig(o)));
+  const manquants=vir.filter(o=>!vus.has(_recSig(o)) && !(typeof _virTombe==='function' && _virTombe(o)));
   if(!manquants.length){ showSaveStatus('Rien à restaurer','var(--todo)'); return; }
   const total=manquants.reduce((s,o)=>s+(Number(o.amount)||0),0);
   if(!await showConfirm('Remettre dans le cloud '+_pl(manquants.length,'paiement','paiements')+' à la modèle, pour un total de '+fmtC(total)+' ? Rien ne sera supprimé.')) return;
@@ -5379,7 +5577,7 @@ async function restaurerVirements(){
   // qui n'est pas partie, c'est repartir tranquille avec le problème intact.
   const _okVir = await _saveVirements();
   try{ logEdit('Restauration virements', manquants.length+' virement(s) · '+fmtR(total)); }catch(e){}
-  try{ renderVirements(); }catch(e){}
+  try{ renderVirements(); renderModelShare(); }catch(e){}
   try{ renderRecovery(); }catch(e){}
   if (_okVir === false) showSaveStatus("⚠ Restauration NON enregistrée — "
     + "rien n'est parti au serveur. Refais-la.", '#ef4444');
@@ -5423,6 +5621,7 @@ function _snapTous(){
 async function snapshotSiNecessaire(){
   try{
     if (!_apiConnected) return;
+    if (typeof _donneesChargees !== 'undefined' && _donneesChargees !== true) return;   // (15/10, D-9) chiffres non chargés : on n'écrase rien
     if (!(ents && ents.length) && !(virements && virements.length)) return; // rien à sauvegarder
     const tous = _snapTous();
     if (tous.length){
@@ -5465,6 +5664,8 @@ async function restaurerSnapshot(i){
   if (ecritureInterdite('restauration de sauvegarde')) return;
   const s = _snapLire(i);
   if (!s){ showSaveStatus('Point de restauration introuvable', '#f87171'); return; }
+  // (15/10, D-11) aperçu : ce qui revient, et les bilans qu'on peut remettre à leur valeur de ce jour-là
+  if (typeof _restaurerAvecApercu === 'function') return _restaurerAvecApercu({ type: 'sauvegarde', d: s, i: i });
   const dt = new Date(s.ts);
   const resume = _pl((s.ents||[]).length, 'bilan', 'bilans') + ' · ' + _pl((s.virements||[]).length, 'paiement à la modèle', 'paiements à la modèle');
   if (!await showConfirm('Restaurer la sauvegarde du ' + dt.toLocaleString('fr-FR') + ' ?\n' + resume + '\nRien ne sera supprimé : les données absentes seront rajoutées.')) return;
@@ -6237,11 +6438,19 @@ async function apiFetch(path, options={}) {
   const seg = path.split('?')[0];
   if (seg === '/api/entries' && method === 'GET') {
     const { data, error } = await sb.from('entries').select('*').order('date',{ascending:false}).order('created_at',{ascending:false});
-    if (error) throw error; return (data||[]).map(entryFromDb);
+    if (error) throw error;
+    try{ if (typeof _creeLe === 'object' && _creeLe) (data||[]).forEach(function(r){ if (r && r.id) _creeLe[r.id] = r.created_at; }); }catch(_e){}
+    return (data||[]).map(entryFromDb);
   }
   if (seg === '/api/entries' && method === 'POST') {
     const { data, error } = await sb.from('entries').insert(entryToDb(body)).select().single();
     if (error) throw error; return entryFromDb(data);
+  }
+  if (seg.indexOf('/api/entries/') === 0 && method === 'GET') {
+    // (15/10, D-1) relire UN bilan juste avant de l'écrire ; [] s'il a été supprimé ailleurs
+    const id = seg.split('/').pop();
+    const { data, error } = await sb.from('entries').select('*').eq('id', id);
+    if (error) throw error; return (data||[]).map(entryFromDb);
   }
   if (seg.indexOf('/api/entries/') === 0 && method === 'PUT') {
     const id = seg.split('/').pop();
@@ -6284,6 +6493,12 @@ async function apiFetch(path, options={}) {
     const { data, error } = await sb.from('virtual_assistants').select('name,wallet_address,last_paid_amount,last_paid_date,total_paid').not('wallet_address','is',null);
     if (error) return []; return (data||[]).map(w=>({ name:w.name, wallet_address:w.wallet_address, last_paid_amount:w.last_paid_amount!=null?+w.last_paid_amount:0, last_paid_date:w.last_paid_date, total_paid:w.total_paid!=null?+w.total_paid:0 }));
   }
+  if (seg === '/api/settings' && method === 'GET' && /[?&]cles=/.test(path)) {
+    // (15/10, D-13) seulement les clés demandées : avant, chaque paiement relisait TOUTE la table (≈ 32 Ko, 250 dans 3 ans)
+    const cles = decodeURIComponent((path.split(/[?&]cles=/)[1] || '').split('&')[0]).split(',').filter(Boolean);
+    const rs = await Promise.all(cles.map(k => sb.from('settings').select('key,value').eq('key', k)));
+    const o = {}; for (const r of rs) { if (r.error) throw r.error; (r.data||[]).forEach(s => { o[s.key] = s.value; }); } return o;
+  }
   if (seg === '/api/settings' && method === 'GET') {
     const { data, error } = await sb.from('settings').select('*');
     if (error) throw error; const o={}; (data||[]).forEach(s=>o[s.key]=s.value); return o;
@@ -6313,7 +6528,14 @@ async function checkAPI() {
 
 // ── Chargement initial depuis l'API ──
 async function loadData() {
-  const online = await checkAPI();
+  // (15/10, D-9 + E4) « Chargement de tes chiffres… » clair, lecture réessayée ; un échec est DIT. Avant : la vieille
+  // copie de cet appareil s'affichait en silence et écrasait la sauvegarde n°1 et le journal de la base.
+  if (typeof _chargementDebut === 'function') _chargementDebut();
+  let online = false, _lu = false;
+  for (let _essai = 0; _essai < 3 && !_lu; _essai++) {
+  if (_essai) await new Promise(function(r){ setTimeout(r, _essai === 1 ? 800 : 2000); });
+  online = await checkAPI();
+  if (!online) break;
   if (online) {
     try {
       const [apiEnts, apiVas, apiSettings, apiWallets] = await Promise.all([
@@ -6322,6 +6544,7 @@ async function loadData() {
         apiFetch('/api/settings'),
         apiFetch('/api/wallets').catch(() => []),
       ]);
+      _lu = true; _donneesChargees = true;
       ents = apiEnts;
       vas = apiVas;
       _settingsCache = apiSettings || {};
@@ -6346,12 +6569,16 @@ async function loadData() {
         if (el) el.value = apiSettings.discord_webhook;
       }
     } catch (e) {
-      console.warn('Fallback stockage local', e);
-      await loadLocal();
+      console.warn('Lecture des chiffres impossible (essai ' + (_essai + 1) + ')', e);
+      if (_lu) { _lu = false; _essai = 3; }       // lus mais illisibles : inutile de réessayer
+      _donneesChargees = false;
     }
-  } else {
-    await loadLocal();
   }
+  }
+  if (typeof _chargementFin === 'function') _chargementFin(_lu);
+  if (!_lu) return;
+  // ce qui attend sur cet appareil (réseau coupé) repasse par-dessus ce que la base vient de rendre
+  try { if (typeof _fileAppliquer === 'function') _fileAppliquer(); } catch (e) { console.warn('file', e); }
   loadDefaultPayers();
   const virDateEl=document.getElementById('vir-date');if(virDateEl)virDateEl.value=ts();
   const modStartEl=document.getElementById('mod-start');if(modStartEl)modStartEl.value=ts();
@@ -6365,6 +6592,7 @@ async function loadData() {
   _safe(initSaisie);
   _safe(renderVirements); _safe(renderModeles); _safe(renderModelShare);
   try{ snapshotSiNecessaire(); }catch(e){}
+  try{ if (typeof _fileEnvoyer === 'function') _fileEnvoyer('chargement'); }catch(e){}
 }
 
 // Filet de secours local. ⚠️ `window.storage` n'existait NULLE PART : saveData()
@@ -6418,9 +6646,14 @@ async function saveData() {
     ]);
     _tous = _r.every(x => x !== false);
   }catch(e){ _tous = false; }
+  // (15/10, D-7) ce qui attend sur cet appareil (bilans, réglages) repart aussi ; sinon pas de « ✓ »
+  if (typeof _fileEnvoyer === 'function') { try { if ((await _fileEnvoyer('enregistrer')) === false) _tous = false; } catch (e) { _tous = false; } }
   if(_tous) showSaveStatus('✓ Sauvegardé');
-  else showSaveStatus("⚠ NON SAUVEGARDÉ au cloud — tes chiffres n'existent que sur "
-                      + "cet écran. Vérifie ta connexion avant de fermer.", '#ef4444');
+  else showSaveStatus((typeof _fileLire === 'function' && _fileLire().length)
+      ? (_fileLire().some(function(o){ return o.conflit || o.reporte; })
+        ? "⚠ NON SAUVEGARDÉ pour l'instant — un changement attend ta réponse (il a changé sur un autre appareil) ; rien n'est perdu."
+        : "⚠ NON SAUVEGARDÉ pour l'instant — gardé sur cet appareil, renvoyé tout seul dès que le réseau revient.")
+      : "⚠ NON SAUVEGARDÉ au cloud — tes chiffres n'existent que sur cet écran. Vérifie ta connexion avant de fermer.", '#ef4444');
   return _tous;
 }
 
@@ -6440,7 +6673,8 @@ async function saveEntry(entry) {
   if (ecritureInterdite('entrée')) return false;
   // Un échec doit se VOIR : sinon l'utilisateur lit « ✓ Entrée enregistrée »
   // alors que rien n'est parti au cloud, et la saisie disparaît au rechargement.
-  if (!_apiConnected) { showSaveStatus('⚠ NON SAUVEGARDÉ — hors ligne, ne recharge pas la page', '#f87171'); return false; }
+  if (!_apiConnected) { if (typeof _fileGarderCreation === 'function') _fileGarderCreation(entry, 0); if (typeof _dernierEchec !== 'undefined') _dernierEchec = 'reseau';
+    showSaveStatus('⚠ NON SAUVEGARDÉ pour l’instant — hors ligne ; le bilan est gardé sur cet appareil et renvoyé dès que le réseau revient', '#f87171'); return false; }
   try {
     const saved = await apiFetch('/api/entries', {
       method: 'POST', body: JSON.stringify(entry),
@@ -6448,19 +6682,33 @@ async function saveEntry(entry) {
     // Remplacer l'entrée locale par celle avec l'id DB
     const idx = ents.findIndex(e => e === entry);
     if (idx >= 0) ents[idx] = saved;
+    if (typeof _baseNoter === 'function') _baseNoter(saved);
     return true;
   } catch (e) {
     console.warn('Save entry failed', e);
-    showSaveStatus('⚠ NON SAUVEGARDÉ — erreur réseau, ne recharge pas la page', '#f87171');
+    if (typeof _fileGarderCreation === 'function') _fileGarderCreation(entry, 1);
+    if (typeof _dernierEchec !== 'undefined') _dernierEchec = 'reseau';
+    showSaveStatus('⚠ NON SAUVEGARDÉ pour l’instant — erreur réseau ; le bilan est gardé sur cet appareil et renvoyé dès que le réseau revient', '#f87171');
     return false;
   }
 }
 
-async function deleteEntryAPI(id) {
-  if (ecritureInterdite('suppression')) return;
-  if (!_apiConnected || !id) return;
+async function deleteEntryAPI(id, entree) {
+  // (15/10, D-12) Rend true/false. Un échec est DIT, et la suppression est GARDÉE sur cet appareil (file d'attente),
+  // renvoyée toute seule au retour du réseau — avant, le bilan revenait au rechargement sans un mot.
+  if (ecritureInterdite('suppression')) return false;
+  if (!id) return false;
+  const garder = function(){
+    try{ if (typeof _fileBilan === 'function') _fileBilan({ t: 'suppr', id: id, e: entree || null }); }catch(_){}
+    showSaveStatus('⚠ Suppression NON enregistrée pour l’instant — le bilan est encore en base ; la suppression est gardée sur cet appareil et renvoyée dès que le réseau revient', '#ef4444');
+    return false;
+  };
+  if (!_apiConnected) return garder();
   try { await apiFetch(`/api/entries/${id}`, { method: 'DELETE' }); }
-  catch (e) { console.warn('Delete entry failed', e); }
+  catch (e) { console.warn('Delete entry failed', e); return garder(); }
+  if (typeof _fileRetirerBilan === 'function') _fileRetirerBilan(id);
+  if (typeof _vuServeur === 'object' && _vuServeur) delete _vuServeur[id];
+  return true;
 }
 
 async function saveVA(va, historyEntry) {
@@ -6499,6 +6747,9 @@ function showSaveStatus(msg, color='#a855f7') {
   const maintenant = Date.now();
   // Un succès ne recouvre pas un échec récent : c'est tout le problème.
   if(!estEchec && _echecAffiche && (maintenant - _echecAffiche) < 20000) return;
+  // (15/10, D-11) un « ✓ Restauré … » reste lisible : le « ✓ Sauvegardé » silencieux qui suit ne l'efface plus
+  if(!estEchec && msg === '✓ Sauvegardé' && showSaveStatus._tenu && maintenant < showSaveStatus._tenu) return;
+  showSaveStatus._tenu = /^✓ (Restauré|Copie restaurée)/.test(String(msg)) ? maintenant + 8000 : (estEchec ? 0 : showSaveStatus._tenu);
   _echecAffiche = estEchec ? maintenant : 0;
   // (13/10) Le glyphe de tête (⚠ ✓ ⏳) est dessiné avec l'icône du jeu ; il reste dans le texte
   // (caché) : el.textContent vaut EXACTEMENT msg, l'état de l'en-tête et l'effacement le relisent.
@@ -6509,7 +6760,7 @@ function showSaveStatus(msg, color='#a855f7') {
   // L'enregistrement AUTOMATIQUE réussi ne fait plus surgir « ✓ Sauvegardé » : l'état de l'en-tête
   // (« ✓ Enregistré à 10:12 ») le dit déjà, et après un bilan c'était la 3e confirmation (André).
   el.style.color = color; el.style.opacity = (msg === '✓ Sauvegardé') ? '0' : '1';
-  const duree = estEchec ? 20000 : 2500;   // un échec doit rester lisible
+  const duree = estEchec ? 20000 : (/^✓ (Restauré|Copie restaurée)/.test(String(msg)) ? 8000 : 2500);   // un échec doit rester lisible
   setTimeout(() => {
     // On n'efface que SON propre message (un autre a pu passer entre-temps).
     if(el.textContent === msg) el.style.opacity = '0';
@@ -6880,10 +7131,14 @@ let _goalTimer = null, _discordTimer = null, _goalWasReached = false;
 function onGoalChange() { uk(); clearTimeout(_goalTimer); _goalTimer = setTimeout(saveMonthlyGoal, 1000); }
 async function saveMonthlyGoal() {
   if (ecritureInterdite('objectif du mois')) return;
-  if (!_apiConnected) return;
   const val = parseFloat(document.getElementById('monthly-goal')?.value) || 0;
-  try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: 'monthly_goal', value: val }) }); }
-  catch (e) { console.warn('Erreur save objectif', e); }
+  // (15/10, D-14) un objectif non enregistré est DIT, gardé sur cet appareil et renvoyé au retour du réseau
+  const _garder = function(){ try{ if (typeof _fileReglageNoter === 'function') _fileReglageNoter('monthly_goal', val); }catch(_){}
+    showSaveStatus('⚠ Objectif du mois NON enregistré pour l’instant — gardé sur cet appareil, renvoyé dès que le réseau revient', '#ef4444'); };
+  if (!_apiConnected) { _garder(); return; }
+  try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: 'monthly_goal', value: val }) });
+        if (typeof _fileReglageFait === 'function') _fileReglageFait('monthly_goal'); }
+  catch (e) { console.warn('Erreur save objectif', e); _garder(); }
 }
 
 // ── Discord webhook ──
@@ -6891,11 +7146,15 @@ let _webhookTimer = null;
 function saveDiscordWebhook() {
   clearTimeout(_webhookTimer);
   _webhookTimer = setTimeout(async () => {
-    if (!_apiConnected) return;
     if (ecritureInterdite('webhook Discord')) return;
     const val = document.getElementById('discord-webhook')?.value.trim() || '';
-    try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: 'discord_webhook', value: val }) }); }
-    catch (e) { console.warn('Erreur save webhook', e); }
+    // (15/10, D-14) un webhook non enregistré est DIT, gardé sur cet appareil et renvoyé au retour du réseau
+    const _garder = function(){ try{ if (typeof _fileReglageNoter === 'function') _fileReglageNoter('discord_webhook', val); }catch(_){}
+      showSaveStatus('⚠ Webhook Discord NON enregistré pour l’instant — gardé sur cet appareil, renvoyé dès que le réseau revient', '#ef4444'); };
+    if (!_apiConnected) { _garder(); return; }
+    try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: 'discord_webhook', value: val }) });
+          if (typeof _fileReglageFait === 'function') _fileReglageFait('discord_webhook'); }
+    catch (e) { console.warn('Erreur save webhook', e); _garder(); }
   }, 1500);
 }
 
@@ -6965,6 +7224,8 @@ function checkGoalReached(profitBefore, profitAfter, goal) {
 // ── Export / Import JSON + CSV ──
 function exportData() {
   const d = { ents, vas, virements, modeles, exportedAt: new Date().toISOString() };
+  // (15/10, D-10) la copie dit d'où elle vient : un fichier d'un autre carnet est reconnu à l'import
+  d.site = (typeof SITE_FINANCES !== 'undefined') ? SITE_FINANCES : 'noctra'; d.version = 2;
   const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(b);
@@ -6995,6 +7256,8 @@ function importData(e) {
   r.onload = async ev => {
     try {
       const d = JSON.parse(ev.target.result);
+      // (15/10, D-10) aperçu de ce qui va changer et confirmation ; provenance vérifiée ; rien en double
+      if (typeof _restaurerAvecApercu === 'function') { try { e.target.value = ''; } catch (_) {} return _restaurerAvecApercu({ type: 'import', d: d, nom: (file && file.name) || '' }); }
       // L'import ÉCRASE tout (entrées, VA, paiements, modèles) puis pousse le résultat
       // en base. Sans confirmation, un clic de travers sur ce bouton — voisin des
       // boutons d'export — détruisait définitivement la comptabilité.
@@ -7077,6 +7340,8 @@ function se(force) {
   // Une fenetre (alerte de doublon, note…) est deja ouverte : Ctrl+Entree ne
   // doit pas relancer un 2e enregistrement par-dessous.
   if(_dlgOuvert) return;
+  if(typeof _seVerif!=='undefined' && _seVerif) return;   // (15/10) la base est en train d'être relue (double clic)
+  if(typeof _pasCharge==='function' && _pasCharge('se-msg')) return;
   // ⚠️ CONTRÔLE AVANT TOUT CALCUL. Dans un champ `type="number"` en français,
   // taper « 10,000 » donne `.value === "10.000"` → **10 dollars**. Mesuré dans un
   // vrai navigateur. Le navigateur normalise avant que le code ne voie quoi que
@@ -7107,6 +7372,14 @@ function se(force) {
   if(!_editingId && force!==true){
     const _dbl=_doublonMois(document.getElementById('entry-date-input')?.value||acd||ts());
     if(_dbl){ _alerteDoublon(_dbl, function(){ se(true); }); return; }
+    // (15/10, D-2) l'autre appareil a peut-être DÉJÀ créé le bilan de ce mois : on relit la base avant de créer
+    if(force!=='srv' && typeof _doublonServeur==='function' && _doublonServeurUtile()){
+      const _dS=document.getElementById('entry-date-input')?.value||acd||ts();
+      _seVerif=true;
+      _doublonServeur(_dS).then(function(d){ _seVerif=false; if(d) _alerteDoublon(d, function(){ se(true); }); else se('srv'); },
+                                function(){ _seVerif=false; se('srv'); });
+      return;
+    }
   }
   const wasEdit=!!_editingId;
   const _oldK={vpr:_kpiNum('vpr'),pn:_kpiNum('pn')};
@@ -7131,7 +7404,7 @@ function se(force) {
     const idx=ents.findIndex(e=>e.id===_editingId);
     const _av=idx>=0?centimesBilan(ents[idx]):null;   // (15/10, F9) le bilan AVANT la modification
     if(idx>=0) ents[idx]=entry;
-    _envoi=updateEntryAPI(_editingId,entry);
+    _envoi=updateEntryAPI(_editingId,entry,(typeof _baseEditionPour==='function'?_baseEditionPour(_editingId):undefined));
     logEdit('Modification entrée', `${dl(date)} · net ${fmt(_ofNet+tg)} · profit ${profit<0?'−':''}${fmt(profit)}`,
       {bid:_editingId, avant:_av?{net:_av.net/100, pr:_av.p/100}:null});
   } else {
@@ -7151,10 +7424,13 @@ function se(force) {
   _annoncerBilan(_envoi, wasEdit, date);
 }
 
-async function updateEntryAPI(id, entry) {
+async function updateEntryAPI(id, entry, base) {
   // Rend true/false (comme saveEntry) : se() n'annonce « Bilan … mis à jour »
   // qu'une fois la reponse recue, et jamais quand l'envoi a echoue.
   if (ecritureInterdite('modification')) return false;
+  // (15/10, D-1/D-8) Le vrai chemin : relire ce bilan en base, fusionner si l'autre appareil l'a changé depuis
+  // l'ouverture (ou demander), garder la saisie sur cet appareil si le réseau manque. Voir _majBilan.
+  if (typeof _majBilan === 'function') return _majBilan(id, entry, base);
   // Échec visible : l'app affichait « ✓ Entrée modifiée » même quand la modification
   // n'était jamais partie au cloud (session expirée, coupure réseau).
   if(!_apiConnected){ showSaveStatus('⚠ MODIFICATION NON SAUVEGARDÉE — hors ligne, ne recharge pas la page','#f87171'); return false; }
@@ -7176,12 +7452,13 @@ window.editEntry = function(idx){
   // Sans identifiant en base, la validation partait dans la branche "creation" et
   // fabriquait un DOUBLON (CA compte deux fois), en laissant le bandeau d edition
   // affiche. On refuse l edition tant que l entree n est pas enregistree.
-  if(!entry.id){ showSaveStatus("⚠ Ce bilan n'est pas encore enregistré : recharge la page avant de le modifier",'#f87171'); return; }
+  if(!entry.id){ showSaveStatus("⏳ Ce bilan attend d'être envoyé (réseau) : il est gardé sur cet appareil ; tu pourras le modifier dès qu'il sera enregistré.",'var(--todo)');
+    try{ if(typeof _fileEnvoyer==='function') _fileEnvoyer('clic'); }catch(e){} return; }
   // Deja ouvert sur ce bilan : on le ramene a l'ecran sans recharger les champs.
   if(_panneauOuvert() && _editingId===entry.id){ _ouvrirPanneau(true); return; }
   return _apres(_abandonnerSiBesoin(), function(ok){
     if(!ok) return;
-    _editingId=entry.id; _copieDe=null;
+    _editingId=entry.id; _copieDe=null; try{ if(typeof _baseEditionNoter==='function') _baseEditionNoter(entry.id); }catch(e){}
     // On reaffiche du NET : soit la valeur saisie, soit le net deduit du brut
     // pour les anciennes entrees (rien n est perdu).
     document.getElementById('ib').value = (Math.round((entry.ofNet>0?entry.ofNet:((entry.brut||0)*_TAUX))*100)/100)||'';   // (15/10, F13) au centime : 3333.328 -> 3333.33
@@ -7313,6 +7590,7 @@ window.rmVA = async function(i) {
 };
 
 window.deleteEntry = async function(idx) {
+  if (typeof _pasCharge === 'function' && _pasCharge()) return;
   const entry = gf()[idx];
   if (!entry) return;
   // On dit QUEL bilan part (date et montants) et le bouton est rouge : c'est le
@@ -7330,7 +7608,7 @@ window.deleteEntry = async function(idx) {
     // sinon le bandeau restait et valider écrivait dans le vide (saisie perdue en silence).
     if (_editingId && id === _editingId) { try{ cancelEdit(); }catch(e){ _editingId=null; } }
     ents.splice(realIdx,1); rh(); rc(); uk();
-    if (id) deleteEntryAPI(id);
+    if (id) deleteEntryAPI(id, entry); else if (typeof _fileAnnulerCreation === 'function') _fileAnnulerCreation(entry);
     saveData();
   }
 };
@@ -7388,6 +7666,7 @@ async function quickAddSave(force){
   // dessus puis enregistré. Une règle écrite une fois, appliquée à un formulaire
   // sur deux. On REFUSE au lieu de deviner, comme dans `se()`.
   if(_dlgOuvert) return;
+  if(typeof _pasCharge==='function' && _pasCharge('qa-msg')) return;
   {
     const souci = verifierMontants(['qa-brut','qa-tg','qa-va','qa-mo','qa-al']);
     if(souci){ flashMsg('qa-msg','⚠ '+souci.replace(/\*\*/g,''),'var(--neg)'); return; }
@@ -7404,6 +7683,13 @@ async function quickAddSave(force){
       _alerteDoublon(_dbl, function(){ quickAddSave(true); },
         function(e){ const n=_resumeTape(_ofNetQ,tg); closeQuickAdd(); _basculerVersBilan(e,n); });
       return;
+    }
+    // (15/10, D-2) relire la base avant de créer ; un 2e appel pendant ce temps ne crée rien
+    if(force!=='srv' && typeof _doublonServeur==='function' && _doublonServeurUtile()){
+      if(_qaVerif) return; _qaVerif=true;
+      let _dS=null; try{ _dS=await _doublonServeur(date); }catch(e){} finally{ _qaVerif=false; }
+      if(_dS){ _alerteDoublon(_dS, function(){ quickAddSave(true); },
+        function(e){ const n=_resumeTape(_ofNetQ,tg); closeQuickAdd(); _basculerVersBilan(e,n); }); return; }
     }
   }
   const va=gv('qa-va');
@@ -7557,13 +7843,15 @@ function renderModelShare(){
 function addModelPayment(){
   // Même contrôle que l'entrée du jour : « 1,000 » valait 1 dollar, et le tableau
   // « reste à envoyer » réclamait alors 999 $ de plus que la réalité.
+  if(typeof _pasCharge==='function' && _pasCharge('mp-msg')) return;
   const _lu = lireMontant(document.getElementById('mp-amount').value);
   if(!_lu.ok){ flashMsg('mp-msg','⚠ '+_lu.erreur.replace(/\*\*/g,''),'#f87171'); return; }
   const amount=_lu.valeur;
   if(!amount){flashMsg('mp-msg','⚠ Entre un montant','#f87171');return;}
   const date=document.getElementById('mp-date').value||ts();
   const note=(document.getElementById('mp-note').value||'').trim();
-  virements.push({id:_nouvelIdVirement(),date,amount,note});
+  const _nv={id:_nouvelIdVirement(),date,amount,note}; virements.push(_nv);
+  if(typeof _attenteNoter==='function') _attenteNoter('virements','aj',_nv);
   // ⚠️ TROIS DÉFAUTS CUMULÉS ICI, tous silencieux :
   //   • l'erreur partait à la poubelle (`.catch(()=>{})`) ;
   //   • aucun test de `_apiConnected` — hors ligne, la requête partait dans le vide,
@@ -7581,9 +7869,8 @@ function addModelPayment(){
   renderModelShare();
   Promise.resolve(_envoi).then(function(ok){
     if(ok === false){
-      flashMsg("mp-msg", "⚠ Paiement NON enregistré au cloud — il n’existe que "
-        + "sur cet écran. Ne le renvoie pas : vérifie ta connexion, recharge, et "
-        + "regarde s’il est là avant de recommencer.", "#f87171");
+      flashMsg("mp-msg", "⚠ Paiement NON enregistré pour l’instant — il est gardé sur cet appareil et "
+        + "repartira tout seul dès que le réseau revient. Ne le note pas une 2e fois.", "#f87171");
     }else{
       flashMsg('mp-msg','✓ Paiement enregistré');
     }
@@ -7613,15 +7900,16 @@ async function deleteModelPayment(i){
   //   • il écrasait la liste du serveur sans la relire.
   // Tout passe maintenant par `_saveVirements()`.
   logEdit('Suppression paiement modele', dl(v.date)+' - '+_mt);   // (15/10, F14) au centime (_mt = fmtC, le montant de la question), comme l'ajout
-  _VIREMENTS_SUPPRIMES.add(_cleVirement(v));   // pour que la fusion ne le ressuscite pas
+  _VIREMENTS_SUPPRIMES.add(_cleVirement(v));
+  if(typeof _attenteNoter==='function') _attenteNoter('virements','sup',v);   // pour que la fusion ne le ressuscite pas
   virements.splice(i,1);
   renderModelShare();
   const ok = await _saveVirements();
   try{saveData();}catch(e){}
   renderModelShare();
   if (ok === false && typeof showSaveStatus === 'function')
-    showSaveStatus("⚠ Suppression NON enregistrée — le paiement est toujours en base. "
-      + "Recharge la page pour voir l état réel.", '#ef4444');
+    showSaveStatus("⚠ Suppression NON enregistrée pour l'instant — le paiement est encore en base ; "
+      + "la suppression est gardée sur cet appareil et renvoyée dès que le réseau revient.", '#ef4444');
 }
 // ─────────────────────────────────────────────────────────────────────────
 // HISTORIQUE — refondu : la liste a plat de toutes les lignes, sans repere
@@ -7720,6 +8008,7 @@ function renderEditLog(){
     html += '<button class="hl-more" onclick="hlPlus()">' + _pgIco('dn', 15) + 'Afficher ' + _pl(liste.length - visibles.length, 'ligne plus ancienne', 'lignes plus anciennes') + '</button>';
   }
   el.innerHTML = html;
+  try{ if(typeof _journalPied==='function') _journalPied(el); }catch(e){}
 }
 
 // ── Keyboard shortcuts ──
@@ -8558,7 +8847,7 @@ function _basculerVersBilan(x, note){
 function _alerteDoublon(d, creer, maj){
   var plus=d.liste[0], tx=_texteDoublon(d);
   return _fenetre({ico:'alerte', ton:'avert', titre:tx.t1, texte:tx.t2,
-    detail:(d.liste.length>1?'Le plus récent':'Ce bilan')+' : net '+fmtC(_netBilan(plus))+' · bénéfice '+_mtS(plus.profit||0),
+    detail:(d.liste.length>1?'Le plus récent':'Ce bilan')+' : net '+fmtC(_netBilan(plus))+' · bénéfice '+_mtS(plus.profit||0)+(d.ailleurs?' — '+d.ailleurs:''),
     boutons:[{l:'Annuler',v:'annuler',cls:'ghost'},{l:'Créer quand même',v:'creer'},
              {l:d.liste.length>1?'Mettre à jour le plus récent':'Mettre à jour celui-là',v:'maj',cls:'pri'}]
   }).then(function(r){
@@ -8574,7 +8863,7 @@ function _annoncerBilan(envoi, modif, date){
   _montrerPanneau();
   Promise.resolve(envoi).then(function(ok){
     _flashSaisie = ok===false
-      ? {t:'Bilan '+quoi+' NON enregistré : vérifie ta connexion avant de fermer.', cls:'ko', fin:Date.now()+20000}
+      ? {t:(typeof _texteEchecBilan==='function'?_texteEchecBilan(quoi):'Bilan '+quoi+' NON enregistré : vérifie ta connexion avant de fermer.'), cls:'ko', fin:Date.now()+20000}
       : {t:'Bilan '+quoi+(modif?' mis à jour':' enregistré'), cls:'ok', fin:Date.now()+6000};
     try{ _majSaisie(); }catch(e){}
     setTimeout(function(){ try{ _majSaisie(); }catch(e){} }, Math.max(0,_flashSaisie.fin-Date.now())+60);
@@ -8968,7 +9257,10 @@ function _hlTexte(l, titre, detail){
 // Lu dans les messages que l'application affiche déjà (#save-status) : rien n'est
 // enregistré ni vérifié de plus ici.
 function _tbEtatInit(){
-  var el = document.getElementById('tb-etat'); if (!el || el.textContent) return;
+  var el = document.getElementById('tb-etat'); if (!el) return;
+  // (15/10, D-7/D-8/E4) l'état RÉEL d'abord : chargement, chiffres non chargés, changements en attente sur cet appareil
+  try { if (typeof _etatFile === 'function' && _etatFile()) return; } catch (e) {}
+  if (el.textContent) return;
   try { if (_apiConnected) el.innerHTML = _pgIco('check', 13) + '<span>Tout est enregistré</span>'; } catch (e) {}
 }
 (function(){
@@ -8976,7 +9268,9 @@ function _tbEtatInit(){
   if (!st || !el || !window.MutationObserver) return;
   new MutationObserver(function(){
     var t = String(st.textContent || '');
-    if (/^✓ (Sauvegardé|Entrée ajoutée|Import réussi|Restauré)/.test(t)) {
+    // (15/10, D-7/D-8) un « ✓ » qui ne concerne que le journal ne dit plus « Enregistré » à côté d'un bilan perdu
+    if (typeof _fileLire === 'function' && _fileLire().length && !/Lecture seule/i.test(t) && typeof _etatFile === 'function' && _etatFile()) { }
+    else if (/^✓ (Sauvegardé|Entrée ajoutée|Import réussi|Restauré|Copie restaurée)/.test(t)) {
       el.classList.remove('ko'); document.body.classList.remove('sauve-ko');
       el.innerHTML = _pgIco('check', 13) + '<span>Enregistré à ' + new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}) + '</span>';
     } else if (/NON SAUVEGARD|NON enregistr|INCOMPL|Lecture seule/i.test(t)) {
@@ -10622,6 +10916,982 @@ function taMoitie(v){ var c = Math.round((Number(v) || 0) * 100); return (c - Ma
 // dernier ») — l'écart divisé par la valeur ABSOLUE du précédent, pour qu'un mois d'avant en perte se compare aussi
 // (−1 093,70 → −367,31 : +66 %). Précédent à zéro : rien à comparer (NaN) ; zéro → zéro : 0 %.
 function evolutionPct(x, y){ x = Number(x) || 0; y = Number(y) || 0; return y !== 0 ? (x - y) / Math.abs(y) * 100 : (x === 0 ? 0 : NaN); }
+
+
+// ── feat4_donnees (données : file d’attente, chargement, deux appareils, restauration) ──
+// ══ DONNÉES (15/10, agent feat4_donnees) — rien ne se perd, rien ne s'écrase, rien ne ment ════════════════
+// Constats D-1 à D-14 (agents/equipe_1510/donnees/trouvailles.md) et E4 (écrans). Aucun calcul de montant
+// n'est touché : ce bloc décide QUAND et QUOI écrire, et ce que l'écran dit de l'enregistrement.
+//
+// 1. FILE D'ATTENTE (stockage local `fin_noctra_a_envoyer`, un TABLEAU d'opérations) : un enregistrement raté
+//    (bilan créé, mis à jour ou supprimé ; paiement ; ligne d'Historique ; objectif ; webhook) y est GARDÉ, et
+//    renvoyé tout seul : retour du réseau, retour sur l'onglet, toutes les 15 à 60 s, chargement suivant,
+//    « Renvoyer au cloud maintenant ». Tant qu'il en reste, l'en-tête le dit (« 1 changement pas encore
+//    enregistré — réessai… ») et ne dit JAMAIS « Enregistré » ; recharger la page ne perd rien.
+// 2. CHARGEMENT (D-9, E4) : « Chargement de tes chiffres… » (plus de faux compte vide ni de bouton de saisie),
+//    3 essais, puis « Impossible de charger tes chiffres » + Réessayer. La vieille copie de l'appareil n'est
+//    plus jamais montrée en silence ; RIEN n'est écrit tant que les chiffres ne sont pas chargés (ni la
+//    sauvegarde n°1, ni le journal). Une saisie commencée n'est jamais effacée par l'arrivée des données.
+// 3. DEUX APPAREILS (D-1, D-2, D-5, D-6) : un bilan est RELU juste avant d'être écrit ; changé ailleurs depuis
+//    l'ouverture → fusion par groupe de champs (net OnlyFans, net Telegram, VA, modèle, chat IA, chat humain,
+//    dépenses diverses, note, date) ou la question « ses chiffres / les tiens » ; supprimé ailleurs → « le
+//    recréer ? » ; le bilan du mois créé ailleurs → l'alerte « déjà un bilan ». Les listes (paiements, journal,
+//    et toute liste déclarée) passent par _saveVirements, LA fonction générale d'écriture fusionnée.
+// 4. RESTAURER / IMPORTER (D-10, D-11) : aperçu de ce qui va changer, cases à cocher, provenance vérifiée,
+//    dédoublonnage par identifiant (et par date + contenu sans identifiant), sauvegarde juste avant si des
+//    valeurs sont remplacées, ligne d'Historique, message qui reste lisible.
+
+var _donneesChargees;          // undefined avant le 1er chargement ; false pendant / après un échec ; true ensuite
+var _derniereLecture = 0;      // Date.now() de la dernière lecture complète réussie
+var _vuServeur = {};           // id -> copie du bilan tel qu'il est EN BASE (dernière lecture ou écriture)
+var _creeLe = {};              // id -> created_at lu en base (« créé par Manon à 15:37 »)
+var _baseEdition = null;       // {id, base} : le bilan tel qu'il était quand le formulaire s'est ouvert
+var _tombes = {};              // cle -> Set des identifiants supprimés (pierres tombales lues en base)
+var _seVerif = false, _qaVerif = false, _dernierEchec = 'reseau';
+var _uids = new WeakMap();      // bilan à l'écran -> identifiant de sa création en attente
+var _CLE_FILE = cleLocale('a_envoyer');
+var _fileMem = [];
+var _LISTES = {};              // listes déclarées en plus des paiements et du journal (voir _listeDeclarer)
+
+// ── petits outils ──────────────────────────────────────────────────────────────────────────────────────
+function _canon(x){
+  if (Array.isArray(x)) return '[' + x.map(_canon).join(',') + ']';
+  if (x && typeof x === 'object') return '{' + Object.keys(x).sort().map(function(k){ return JSON.stringify(k) + ':' + _canon(x[k]); }).join(',') + '}';
+  return JSON.stringify(x === undefined ? null : x);
+}
+function _copie(x){ return x == null ? x : JSON.parse(JSON.stringify(x)); }
+function _heureDe(t){
+  var d = new Date(t); if (isNaN(d.getTime())) return '';
+  var h = d.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'});
+  return _ymd(d) === _aujLocal() ? 'à ' + h : 'le ' + _jourCourt(_ymd(d)) + ' à ' + h;
+}
+function _quoiBilan(e){
+  var ym = String((e && e.date) || '').slice(0, 7);
+  try { return _rythmeBilan(ym) ? _deMois(ym) : 'du ' + _jourCourt(e.date); } catch (x) { return 'du ' + String((e && e.date) || ''); }
+}
+function _rendreTout(){
+  var s = function(f){ try { f(); } catch (e) { console.warn('rendu', e); } };
+  s(rh); s(rc); s(uk); s(renderModelShare);
+  s(function(){ var p = document.getElementById('page-editlog'); if (p && p.classList.contains('active')) renderEditLog(); });
+  s(function(){ var p = document.getElementById('page-recap'); if (p && p.classList.contains('active') && typeof renderRecap === 'function') renderRecap(); });
+}
+// Une saisie est en cours (ou les chiffres ne sont pas chargés) : on ne déclenche pas de question par-dessus.
+function _peutDemander(declencheur){
+  if (!declencheur) return true;
+  if (_dlgOuvert) return false;
+  try { if (_panneauOuvert() && _saisieModifiee()) return false; } catch (e) {}
+  return true;
+}
+// Le geste ne peut pas encore écrire (chiffres pas chargés) : on le dit, et on ne touche à rien (rien n'est perdu).
+function _pasCharge(id){
+  if (_donneesChargees !== false) return false;
+  var t = document.body.classList.contains('chargement')
+    ? '⏳ Tes chiffres se chargent encore : réessaie dans un instant (rien n’est perdu).'
+    : '⚠ Tes chiffres ne sont pas chargés : rien ne peut être enregistré. Recharge-les d’abord (bouton « Réessayer »).';
+  try { if (id && typeof flashMsg === 'function' && document.getElementById(id)) flashMsg(id, t, 'var(--neg)'); else showSaveStatus(t, '#ef4444'); } catch (e) {}
+  return true;
+}
+
+// ── les bilans tels qu'ils sont EN BASE (pour reconnaître un changement fait ailleurs) ───────────────────
+function _baseNoter(e){ try { if (e && e.id) _vuServeur[e.id] = _copie(e); } catch (x) {} }
+function _baseDe(id){ return (id && _vuServeur[id]) ? _copie(_vuServeur[id]) : null; }
+function _baseEditionNoter(id){ _baseEdition = { id: id, base: _baseDe(id) }; }
+function _baseEditionPour(id){ return (_baseEdition && _baseEdition.id === id && _baseEdition.base) ? _copie(_baseEdition.base) : _baseDe(id); }
+async function _lireBilan(id){
+  var r = await apiFetch('/api/entries/' + id);
+  var l = Array.isArray(r) ? r : (r ? [r] : []);
+  for (var i = 0; i < l.length; i++) if (l[i] && String(l[i].id) === String(id)) return l[i];
+  return null;
+}
+
+// ── fusion d'un bilan, groupe par groupe (D-1) ───────────────────────────────────────────────────────────
+// Un groupe = ce qu'on change ensemble dans le formulaire. Les totaux dérivés (brut, profit) suivent leur groupe ;
+// le bénéfice est recalculé par profitEntree, la même règle que l'enregistrement.
+var _GROUPES_BILAN = [
+  ['of', 'Net OnlyFans', ['ofNet', 'brut']], ['tg', 'Net Telegram', ['tgNet']],
+  ['va', 'VA', ['va', 'vaI', 'paidBy.va']], ['mo', 'Paiements à la modèle', ['mo', 'moI', 'paidBy.mo']],
+  ['ci', 'Chat IA', ['ci', 'ciI', 'paidBy.ci']], ['ch', 'Chat humain', ['ch', 'chI', 'paidBy.ch']],
+  ['al', 'Dépenses diverses', ['alT', 'alI']], ['notes', 'Note', ['notes']], ['date', 'Date', ['date']]
+];
+function _valGroupe(e, champs){
+  e = e || {};
+  return _canon(champs.map(function(c){
+    if (c.indexOf('paidBy.') === 0) return (e.paidBy || {})[c.slice(7)] || 'moi';
+    var v = e[c];
+    if (c === 'notes') return String(v || '').trim();
+    if (c === 'date') return String(v || '');
+    if (Array.isArray(v)) return v;
+    if (v == null || v === '') return /I$/.test(c) ? [] : 0;
+    var n = Number(v); return isFinite(n) ? Math.round(n * 100) / 100 : v;
+  }));
+}
+function _sigBilan(e){ return _canon(_GROUPES_BILAN.map(function(g){ return _valGroupe(e, g[2]); })); }
+function _fusionBilan(base, mien, sien){
+  var prendre = function(src, dst, champs){
+    champs.forEach(function(c){
+      if (c.indexOf('paidBy.') === 0) {
+        var k = c.slice(7); dst.paidBy = Object.assign({}, dst.paidBy || {});
+        var v = (src.paidBy || {})[k]; if (v === undefined) delete dst.paidBy[k]; else dst.paidBy[k] = v;
+      } else dst[c] = _copie(src[c]);
+    });
+  };
+  var fusion = _copie(sien), avecMiens = _copie(sien), avecSiens = _copie(sien);
+  var conflits = [], miens = [], leurs = [];
+  _GROUPES_BILAN.forEach(function(g){
+    var b = _valGroupe(base, g[2]), m = _valGroupe(mien, g[2]), s = _valGroupe(sien, g[2]);
+    if (m === b) { if (s !== b) leurs.push(g[1]); return; }            // changé là-bas seulement (ou nulle part)
+    if (s === b || s === m) {                                          // changé ici seulement (ou pareil des deux côtés)
+      prendre(mien, fusion, g[2]); prendre(mien, avecMiens, g[2]); prendre(mien, avecSiens, g[2]);
+      if (s === b) miens.push(g[1]);
+      return;
+    }
+    conflits.push(g); prendre(mien, avecMiens, g[2]);                   // changé des deux côtés, différemment
+  });
+  [fusion, avecMiens, avecSiens].forEach(function(r){ r.id = sien.id; r.author = mien.author || r.author; r.profit = profitEntree(r); });
+  return { fusion: fusion, avecMiens: avecMiens, avecSiens: avecSiens, conflits: conflits, miens: miens, leurs: leurs };
+}
+function _texteGroupe(e, g){
+  var k = g[0];
+  if (k === 'of') return fmtC((e.ofNet > 0) ? e.ofNet : (e.brut || 0) * _TAUX);
+  if (k === 'tg') return fmtC(e.tgNet || 0);
+  if (k === 'al') return fmtC(e.alT || 0) + ((e.alI || []).length ? ' (' + _pl((e.alI || []).length, 'ligne', 'lignes') + ')' : '');
+  if (k === 'notes') return e.notes ? '« ' + String(e.notes).slice(0, 60) + ' »' : '(aucune)';
+  if (k === 'date') return dlA(e.date);
+  return fmtC(e[k] || 0);
+}
+async function _heureModifAilleurs(e){
+  try {
+    var d = await apiFetch('/api/settings?cles=editlog');
+    var l = JSON.parse((d && d.editlog) || '[]') || [], cle = dl(e.date);
+    var x = l.find(function(y){ return y && /^(Ajout|Modification)(?! paiement)/.test(String(y.action || '')) && String(y.detail || '').indexOf(cle) === 0; });
+    return x ? _heureDe(x.ts) : '';
+  } catch (err) { return ''; }
+}
+async function _dialogueConflit(mien, sien, f){
+  var qui = (sien.author && sien.author !== mien.author && sien.author !== 'Moi') ? sien.author : '';
+  var quand = await _heureModifAilleurs(sien);
+  var q = _quoiBilan(mien);
+  var lignes = f.conflits.map(function(g){ return g[1] + ' : ' + (qui ? 'ses chiffres ' : 'là-bas ') + _texteGroupe(sien, g) + ' · les tiens ' + _texteGroupe(mien, g); });
+  if (f.leurs.length) lignes.push('Gardé de l’autre appareil quoi que tu choisisses : ' + f.leurs.join(', ') + '.');
+  if (f.miens.length) lignes.push('Gardé de toi quoi que tu choisisses : ' + f.miens.join(', ') + '.');
+  var r = await _fenetre({ ico: 'alerte', ton: 'avert',
+    titre: (qui ? qui + ' a modifié le bilan ' + q : 'Le bilan ' + q + ' a été modifié sur un autre appareil') + (quand ? ' ' + quand : '') + ', pendant que tu le modifiais',
+    texte: 'Vous avez changé les mêmes chiffres. Lesquels garder ? Rien n’est enregistré tant que tu n’as pas choisi.',
+    detail: lignes.join('\n'),
+    boutons: [{ l: qui ? 'Garder ses chiffres' : 'Garder ceux de l’autre appareil', v: 'siens' }, { l: 'Garder les miens', v: 'miens', cls: 'pri' }] });
+  return r.choix;
+}
+
+// ── la mise à jour d'un bilan : relire, fusionner ou demander, écrire ; garder si le réseau manque ─────────
+// Rend true (écrit) ou false (_majBilan.raison : 'reseau' gardé dans la file ; 'choix' attend ta réponse ;
+// 'abandon' laissé supprimé). `declencheur` absent = geste direct (se(), note) ; sinon = la file qui renvoie.
+async function _majBilan(id, entry, base, declencheur){
+  base = base || _baseDe(id);
+  var q = _quoiBilan(entry);
+  var garder = function(raison, conflit){
+    _fileBilan({ t: 'maj', id: id, e: _copie(entry), base: base ? _copie(base) : null, conflit: !!conflit, reporte: conflit ? Date.now() : 0 });
+    _majBilan.raison = raison; _dernierEchec = raison;
+    if (raison === 'reseau') showSaveStatus('⚠ MODIFICATION NON SAUVEGARDÉE pour l’instant — gardée sur cet appareil, renvoyée toute seule dès que le réseau revient', '#f87171');
+    return false;
+  };
+  // pendant la question, le changement est déjà gardé (page fermée = reposée au prochain chargement) et l'en-tête le dit
+  var attendre = function(){ _fileBilan({ t: 'maj', id: id, e: _copie(entry), base: base ? _copie(base) : null, conflit: true }); };
+  if (!_apiConnected) return garder('reseau');
+  var aEcrire = entry, f = null;
+  if (base) {
+    var srv;
+    try { srv = await _lireBilan(id); } catch (e) { return garder('reseau'); }
+    if (!srv) {                                     // supprimé sur un autre appareil pendant ce temps
+      if (!_peutDemander(declencheur)) return garder('choix', true);
+      attendre();
+      var c = await _fenetre({ ico: 'alerte', ton: 'avert', titre: 'Le bilan ' + q + ' a été supprimé sur un autre appareil',
+        texte: 'Pendant que tu le modifiais. Tes chiffres ne sont pas perdus : veux-tu le recréer avec eux ?',
+        detail: 'Tes chiffres : net ' + fmtC(_netBilan(entry)) + ' · bénéfice ' + _mtS(entry.profit || 0),
+        boutons: [{ l: 'Le laisser supprimé', v: 'laisser' }, { l: 'Le recréer avec mes chiffres', v: 'recreer', cls: 'pri' }] });
+      if (c.choix === 'recreer') {
+        var cc = _copie(entry); delete cc.id; var saved;
+        try { saved = await apiFetch('/api/entries', { method: 'POST', body: JSON.stringify(cc) }); } catch (e) { return garder('reseau'); }
+        var i0 = ents.findIndex(function(x){ return x && x.id === id; });
+        if (i0 >= 0) ents[i0] = saved; else ents.unshift(saved);
+        _fileRetirerBilan(id); delete _vuServeur[id]; _baseNoter(saved); _rendreTout();
+        _majBilan.raison = null; return true;
+      }
+      if (c.choix === 'laisser') {
+        var i1 = ents.findIndex(function(x){ return x && x.id === id; }); if (i1 >= 0) ents.splice(i1, 1);
+        _fileRetirerBilan(id); delete _vuServeur[id]; _rendreTout();
+        _majBilan.raison = 'abandon'; _dernierEchec = 'abandon'; return false;
+      }
+      return garder('choix', true);
+    }
+    if (_sigBilan(srv) !== _sigBilan(base)) {      // modifié ailleurs depuis l'ouverture
+      f = _fusionBilan(base, entry, srv);
+      if (f.conflits.length) {
+        if (!_peutDemander(declencheur)) return garder('choix', true);
+        attendre();
+        var ch = await _dialogueConflit(entry, srv, f);
+        if (ch === 'miens') aEcrire = f.avecMiens; else if (ch === 'siens') aEcrire = f.avecSiens; else return garder('choix', true);
+      } else aEcrire = f.fusion;
+    }
+  }
+  var sv;
+  try { sv = await apiFetch('/api/entries/' + id, { method: 'PUT', body: JSON.stringify(aEcrire) }); }
+  catch (e) { console.warn('Update entry failed', e); return garder('reseau'); }
+  _fileRetirerBilan(id);
+  _baseNoter((sv && sv.id) ? sv : Object.assign({}, aEcrire, { id: id }));
+  if (aEcrire !== entry || declencheur) {          // l'écran montre ce qui est vraiment en base
+    var nouv = Object.assign(_copie(aEcrire), { id: id });
+    var i2 = ents.findIndex(function(x){ return x && x.id === id; });
+    if (i2 >= 0) ents[i2] = nouv; else ents.unshift(nouv);
+    _rendreTout();
+  }
+  if (f && !f.conflits.length && f.leurs.length) showSaveStatus('✓ Bilan ' + q + ' mis à jour — les changements faits sur l’autre appareil (' + f.leurs.join(', ') + ') sont gardés');
+  _majBilan.raison = null;
+  return true;
+}
+function _texteEchecBilan(quoi){
+  if (_dernierEchec === 'choix') return 'Bilan ' + quoi + ' : à vérifier — il a changé sur un autre appareil (rien n’est perdu).';
+  if (_dernierEchec === 'abandon') return 'Bilan ' + quoi + ' laissé supprimé, comme sur l’autre appareil.';
+  if (_dernierEchec === 'charge') return 'Bilan ' + quoi + ' NON enregistré : tes chiffres ne sont pas chargés.';
+  return 'Bilan ' + quoi + ' NON enregistré pour l’instant : gardé sur cet appareil, renvoyé tout seul dès que le réseau revient.';
+}
+
+// ── le bilan du mois créé sur l'autre appareil (D-2) ─────────────────────────────────────────────────────
+function _doublonServeurUtile(){ return _donneesChargees === true && !!_apiConnected && !document.body.classList.contains('readonly') && navigator.onLine !== false; }
+async function _doublonServeur(date){
+  var ym = String(date || '').slice(0, 7); if (ym.length !== 7) return null;
+  var srv;
+  try { srv = await apiFetch('/api/entries'); } catch (e) { return null; }      // hors ligne : la file s'en chargera
+  if (!Array.isArray(srv)) return null;
+  var connus = {}; (ents || []).forEach(function(e){ if (e && e.id) connus[e.id] = 1; });
+  var suppr = {}; _fileLire().forEach(function(o){ if (o.t === 'suppr') suppr[o.id] = 1; });
+  var neufs = srv.filter(function(e){ return e && e.id && !connus[e.id] && !suppr[e.id]; });
+  if (!neufs.length) return null;
+  neufs.forEach(function(e){ ents.push(e); _baseNoter(e); });            // ils existent en base : on les montre
+  ents.sort(function(a, b){ return String(b.date || '').localeCompare(String(a.date || '')); });
+  _rendreTout();
+  var d = _doublonMois(date);
+  if (!d) return null;
+  var autre = d.liste.find(function(e){ return neufs.indexOf(e) >= 0; });
+  if (autre) d.ailleurs = 'créé sur un autre appareil' + (autre.author && autre.author !== _currentUser && autre.author !== 'Moi' ? ' par ' + autre.author : '')
+    + (_creeLe[autre.id] ? ' ' + _heureDe(_creeLe[autre.id]) : '');
+  return d;
+}
+
+// ── la file d'attente ────────────────────────────────────────────────────────────────────────────────────
+// Opérations : {t:'cree', u, e} · {t:'maj', id, e, base} · {t:'suppr', id, e} · {t:'annule', e}
+//              {t:'liste', cle, aj:[…], sup:[…], vider} · {t:'reglage', cle, valeur}
+function _fileLire(){
+  try {
+    var t = localStorage.getItem(_CLE_FILE); var a = t ? JSON.parse(t) : [];
+    return Array.isArray(a) ? a.filter(function(o){ return o && o.t; }) : [];
+  } catch (e) { return _fileMem.slice(); }
+}
+function _fileEcrire(a){
+  _fileMem = a.slice();
+  try { if (a.length) localStorage.setItem(_CLE_FILE, JSON.stringify(a)); else localStorage.removeItem(_CLE_FILE); return true; }
+  catch (e) {
+    if (!_fileEcrire._dit) { _fileEcrire._dit = 1; try { showSaveStatus('⚠ Cet appareil ne peut plus rien garder (stockage plein) : ne ferme pas la page avant que l’en-tête dise « Enregistré »', '#ef4444'); } catch (x) {} }
+    return false;
+  }
+}
+function _fileModifier(fn){ var a = _fileLire(); fn(a); _fileEcrire(a); try { _etatFile(); } catch (e) {} return a; }
+function _uidDe(e){
+  if (!e || typeof e !== 'object') return null;
+  var u = _uids && _uids.get(e);
+  if (!u) { u = 'c' + Date.now().toString(36) + (++_uidDe.n).toString(36); if (_uids) _uids.set(e, u); }
+  return u;
+}
+_uidDe.n = 0;
+function _entreeDeUid(u){ for (var i = 0; i < (ents || []).length; i++) if (_uids && _uids.get(ents[i]) === u) return ents[i]; return null; }
+function _fileBilan(op){
+  if (document.body.classList.contains('readonly')) return;
+  op.le = op.le || new Date().toISOString(); op.par = op.par || (_currentUser || '');
+  _fileModifier(function(a){
+    var i;
+    if (op.t === 'maj') {
+      if (a.some(function(o){ return o.t === 'suppr' && o.id === op.id; })) return;
+      i = a.findIndex(function(o){ return o.t === 'maj' && o.id === op.id; });
+      if (i >= 0) { op.base = a[i].base || op.base; op.le = a[i].le; a[i] = op; return; }   // la base reste celle de la 1re modification
+    }
+    if (op.t === 'suppr') {
+      for (i = a.length - 1; i >= 0; i--) if (a[i].t === 'maj' && a[i].id === op.id) a.splice(i, 1);
+      if (a.some(function(o){ return o.t === 'suppr' && o.id === op.id; })) return;
+    }
+    if (op.t === 'cree') { i = a.findIndex(function(o){ return o.t === 'cree' && o.u === op.u; }); if (i >= 0) { a[i].e = op.e; return; } }
+    a.push(op);
+  });
+  _fileMinuteur();
+}
+function _fileGarderCreation(e, essais){ if (e && typeof e === 'object') _fileBilan({ t: 'cree', u: _uidDe(e), e: _copie(e), essais: essais || 0 }); }
+function _fileRetirerBilan(id){ _fileModifier(function(a){ for (var i = a.length - 1; i >= 0; i--) if ((a[i].t === 'maj' || a[i].t === 'suppr') && a[i].id === id) a.splice(i, 1); }); }
+function _fileRetirerCreation(u){ _fileModifier(function(a){ for (var i = a.length - 1; i >= 0; i--) if (a[i].t === 'cree' && a[i].u === u) a.splice(i, 1); }); }
+// Un bilan pas encore envoyé, supprimé ici : on retire sa création (et s'il a pu partir, on le cherchera en base).
+function _fileAnnulerCreation(e){
+  var u = _uids && _uids.get(e); if (!u) return;
+  _fileModifier(function(a){
+    var i = a.findIndex(function(o){ return o.t === 'cree' && o.u === u; }); if (i < 0) return;
+    if (a[i].essais) a[i] = { t: 'annule', e: a[i].e, le: new Date().toISOString(), par: a[i].par }; else a.splice(i, 1);
+  });
+}
+function _memeOp(o, op){ return o.t === op.t && o.le === op.le && (o.id || o.u || o.cle || '') === (op.id || op.u || op.cle || ''); }
+// Listes : ce que CET appareil a ajouté / supprimé et qui n'est pas encore vu en base.
+function _attenteNoter(cle, genre, x){
+  if (document.body.classList.contains('readonly') || _donneesChargees === false) return;
+  _fileModifier(function(a){
+    var op = a.find(function(o){ return o.t === 'liste' && o.cle === cle; });
+    if (!op) { op = { t: 'liste', cle: cle, aj: [], sup: [], le: new Date().toISOString() }; a.push(op); }
+    if (genre === 'aj') op.aj.push(_copie(x)); else if (genre === 'sup') op.sup.push(_copie(x)); else if (genre === 'vider') op.vider = x;
+  });
+  _fileMinuteur();
+}
+function _attenteConfirmer(cle, liste, tombes, cleDe, dateDe){
+  var a = _fileLire(); var op = a.find(function(o){ return o.t === 'liste' && o.cle === cle; }); if (!op) return;
+  var pres = {}, tomb = {}, coupe = 0;
+  (liste || []).forEach(function(x){ pres[String(cleDe(x))] = 1; });
+  (tombes || []).forEach(function(t){ if (!t) return; if (t.avant) { var v = new Date(t.avant).getTime(); if (v > coupe) coupe = v; } else if (t.k != null) tomb[String(t.k)] = 1; });
+  var date = dateDe || function(x){ var v = new Date(x && (x.ts || x.date)).getTime(); return isFinite(v) ? v : 0; };
+  _fileModifier(function(b){
+    var o = b.find(function(z){ return z.t === 'liste' && z.cle === cle; }); if (!o) return;
+    o.aj = (o.aj || []).filter(function(x){ var k = String(cleDe(x)); return !pres[k] && !tomb[k] && !(coupe && date(x) <= coupe); });
+    o.sup = (o.sup || []).filter(function(x){ return !!pres[String(cleDe(x))]; });
+    if (o.vider && coupe >= new Date(o.vider).getTime()) delete o.vider;
+    if (!o.aj.length && !o.sup.length && !o.vider) b.splice(b.indexOf(o), 1);
+  });
+}
+// Vus une première fois en base : ils ne comptent plus comme « pas encore enregistrés » (l'en-tête), mais restent
+// gardés jusqu'au dernier regard de _saveVirements (2,5 s plus tard), qui les libère ou les renvoie.
+function _attenteVu(cle, liste, tombes, cleDe, dateDe){
+  var a = _fileLire(); if (!a.some(function(o){ return o.t === 'liste' && o.cle === cle; })) return;
+  var pres = {}, tomb = {}, coupe = 0;
+  (liste || []).forEach(function(x){ pres[String(cleDe(x))] = 1; });
+  (tombes || []).forEach(function(t){ if (!t) return; if (t.avant) { var v = new Date(t.avant).getTime(); if (v > coupe) coupe = v; } else if (t.k != null) tomb[String(t.k)] = 1; });
+  var date = dateDe || function(x){ var v = new Date(x && (x.ts || x.date)).getTime(); return isFinite(v) ? v : 0; };
+  _fileModifier(function(b){
+    var o = b.find(function(z){ return z.t === 'liste' && z.cle === cle; }); if (!o) return;
+    (o.aj || []).forEach(function(x){ var k = String(cleDe(x)); if (pres[k] || tomb[k] || (coupe && date(x) <= coupe)) x._vu = 1; });
+    (o.sup || []).forEach(function(x){ if (!pres[String(cleDe(x))]) x._vu = 1; });
+  });
+}
+function _nonVus(l){ return (l || []).filter(function(x){ return !(x && x._vu); }); }
+function _fileReglageNoter(cle, valeur){
+  if (document.body.classList.contains('readonly')) return;
+  _fileModifier(function(a){
+    for (var i = a.length - 1; i >= 0; i--) if (a[i].t === 'reglage' && a[i].cle === cle) a.splice(i, 1);
+    a.push({ t: 'reglage', cle: cle, valeur: valeur, le: new Date().toISOString() });
+  });
+  _fileMinuteur();
+}
+function _fileReglageFait(cle){
+  if (!_fileLire().some(function(o){ return o.t === 'reglage' && o.cle === cle; })) return;
+  _fileModifier(function(a){ for (var i = a.length - 1; i >= 0; i--) if (a[i].t === 'reglage' && a[i].cle === cle) a.splice(i, 1); });
+}
+function _tombesNoter(cle, liste){
+  var s = new Set(); (liste || []).forEach(function(t){ if (t && t.k != null) s.add(String(t.k)); }); _tombes[cle] = s;
+}
+function _virTombe(o){
+  var s = _tombes.virements; if (!s || !s.size || !o) return false;
+  return s.has(String(_cleVirement(o))) || s.has([o.date, o.amount, o.note || ''].join('|'));
+}
+// Pierres tombales levées exprès (restauration choisie) : la prochaine écriture fusionnée les retire.
+function _ressusciter(cle, cles){
+  var fil = _saveVirements._fil || (_saveVirements._fil = {});
+  var f = fil[cle] || (fil[cle] = { p: null, ensuite: null });
+  f.ress = f.ress || new Set();
+  (cles || []).forEach(function(k){ f.ress.add(String(k)); if (cle === 'virements') _VIREMENTS_SUPPRIMES.delete(String(k)); });
+}
+// « Effacer l'historique » : un repère partagé (pierre tombale « avant ») pour qu'aucun appareil ne le ressuscite.
+function _journalVider(){
+  var t = new Date().toISOString();
+  var fil = _saveVirements._fil || (_saveVirements._fil = {});
+  (fil.editlog || (fil.editlog = { p: null, ensuite: null })).vide = t;
+  _attenteNoter('editlog', 'vider', t);
+}
+function _optsJournal(){
+  var date = function(l){ var v = new Date(l && l.ts).getTime(); return isFinite(v) ? v : 0; };
+  return { cleDe: function(l){ return String(l && l.ts) + '|' + (l && l.action) + '|' + (l && l.detail); }, dateDe: date,
+    trier: function(a, b){ return date(b) - date(a); }, devant: true, limite: 200, marge: 25, archive: true, archiveMax: 3000,
+    appliquer: function(l){ editLog = l; } };
+}
+// Pour une NOUVELLE liste rangée dans une ligne de `settings` (ex. les impôts payés) :
+//   _listeDeclarer('impots_payes', { lire: () => impotsPayes, ecrire: (l) => { impotsPayes = l; }, cleDe: (x) => x.id,
+//                                    supprimes: new Set(), titre: 'paiement d’impôts' });
+// puis, à chaque ajout : _attenteNoter('impots_payes', 'aj', x) ; à chaque suppression : o.supprimes.add(id) +
+// _attenteNoter('impots_payes', 'sup', x) ; et pour écrire : _listeEcrire('impots_payes').
+function _listeDeclarer(cle, o){ _LISTES[cle] = o || {}; }
+function _listeEcrire(cle){
+  var o = _LISTES[cle]; if (!o) return Promise.resolve(false);
+  return _saveVirements(cle, o.lire, { cleDe: o.cleDe, supprimes: o.supprimes, appliquer: o.ecrire, devant: o.devant, trier: o.trier, dateDe: o.dateDe });
+}
+
+// ── renvoyer la file ─────────────────────────────────────────────────────────────────────────────────────
+var _fileEnCours = null, _fileT = null, _filePause = 15000;
+function _fileMinuteur(){
+  if (_fileT) return;
+  if (!_fileLire().length) { _filePause = 15000; return; }
+  _fileT = setTimeout(function(){
+    _fileT = null;
+    _fileEnvoyer('minuteur').then(function(ok){ _filePause = ok ? 15000 : Math.min(60000, _filePause * 2); _fileMinuteur(); });
+  }, _filePause);
+}
+function _fileEnvoyer(declencheur){
+  if (_fileEnCours) return _fileEnCours;
+  if (document.body.classList.contains('readonly')) return Promise.resolve(true);
+  if (!_fileLire().length) { try { _etatFile(); } catch (e) {} return Promise.resolve(true); }
+  if (_donneesChargees !== true || !_apiConnected) { _fileMinuteur(); return Promise.resolve(false); }
+  var tour = function(){ return _fileTour(declencheur || 'minuteur'); };
+  var p;
+  try { p = (navigator.locks && navigator.locks.request) ? navigator.locks.request('noctra-finance-file', { ifAvailable: true }, function(v){ return v ? tour() : false; }) : tour(); }
+  catch (e) { p = tour(); }
+  _fileEnCours = Promise.resolve(p).then(function(r){ _fileEnCours = null; try { _etatFile(); } catch (e) {} _fileMinuteur(); return r; },
+    function(e){ _fileEnCours = null; console.warn('file', e); _fileMinuteur(); return false; });
+  return _fileEnCours;
+}
+async function _fileTour(declencheur){
+  var a = _fileLire(), ok = true;
+  for (var i = 0; i < a.length; i++) {
+    var op = a[i];
+    if (!_fileLire().some(function(o){ return _memeOp(o, op); })) continue;          // déjà traitée (autre onglet)
+    if (op.reporte && declencheur === 'minuteur' && Date.now() - op.reporte < 600000) { ok = false; continue; }
+    var r;
+    try {
+      if (op.t === 'cree') r = await _fileCreer(op, declencheur);
+      else if (op.t === 'maj') r = (await _majBilan(op.id, op.e, op.base, declencheur)) ? true : (_majBilan.raison || 'reseau');
+      else if (op.t === 'suppr') r = await _fileSuppr(op);
+      else if (op.t === 'annule') r = await _fileAnnule(op);
+      else if (op.t === 'liste') r = await _fileListe(op);
+      else if (op.t === 'reglage') r = await _fileReglage(op);
+      else r = true;
+    } catch (e) { console.warn('file', op.t, e); r = 'reseau'; }
+    if (r === true || r === 'abandon') continue;
+    ok = false;
+    if (r === 'reseau') break;                 // le réseau manque : les suivantes échoueraient aussi
+  }
+  var vide = !_fileLire().length;
+  if (ok && vide) {
+    // tout ce qui attendait est parti : l'avertissement rouge (tenu 20 s) n'a plus lieu d'être, il ne doit pas mentir
+    try { _echecAffiche = 0; } catch (e) {}
+    if (declencheur !== 'enregistrer') { try { showSaveStatus('✓ Sauvegardé'); } catch (e) {} }
+  }
+  return ok && vide;
+}
+async function _fileCreer(op, declencheur){
+  var srv;
+  try { srv = await apiFetch('/api/entries'); } catch (e) { return 'reseau'; }
+  if (!Array.isArray(srv)) return 'reseau';
+  var connus = {}; (ents || []).forEach(function(e){ if (e && e.id) connus[e.id] = 1; });
+  var local = _entreeDeUid(op.u), sig = _sigBilan(op.e);
+  var remplacer = function(saved){
+    var i = local ? ents.indexOf(local) : -1;
+    if (i >= 0) ents[i] = saved; else if (!ents.some(function(x){ return x && x.id === saved.id; })) ents.unshift(saved);
+    _baseNoter(saved); _fileRetirerCreation(op.u); _rendreTout();
+  };
+  // 1. déjà créé (la réponse s'était perdue en route) : on l'adopte, jamais un 2e
+  var deja = srv.find(function(s){ return s && s.id && !connus[s.id] && _sigBilan(s) === sig; });
+  if (deja) { remplacer(deja); return true; }
+  // 2. le bilan de ce mois a été créé ailleurs pendant que celui-ci attendait le réseau
+  var ym = String(op.e.date || '').slice(0, 7);
+  var autres = srv.filter(function(s){ return s && s.id && !connus[s.id] && String(s.date || '').slice(0, 7) === ym; });
+  var rythme = false; try { rythme = _rythmeBilan(ym); } catch (e) {}
+  if (autres.length && rythme) {
+    if (!_peutDemander(declencheur)) return 'choix';
+    autres.forEach(function(s){ ents.push(s); _baseNoter(s); });
+    ents.sort(function(x, y){ return String(y.date || '').localeCompare(String(x.date || '')); });
+    _rendreTout();
+    var s0 = autres[0], qui = (s0.author && s0.author !== _currentUser && s0.author !== 'Moi') ? ' par ' + s0.author : '';
+    var c = await _fenetre({ ico: 'alerte', ton: 'avert', titre: 'Un bilan ' + _deMois(ym) + ' a été créé sur un autre appareil' + qui,
+      texte: 'Pendant que le tien attendait le réseau. Les deux ensemble compteraient ' + _nomMois(ym) + ' deux fois.',
+      detail: 'Le sien : net ' + fmtC(_netBilan(s0)) + ' · bénéfice ' + _mtS(s0.profit || 0) + '\nLe tien : net ' + fmtC(_netBilan(op.e)) + ' · bénéfice ' + _mtS(op.e.profit || 0),
+      boutons: [{ l: 'Garder les deux', v: 'deux' }, { l: 'Garder seulement le sien', v: 'sien' }, { l: 'Mettre mes chiffres dans le sien', v: 'miens', cls: 'pri' }] });
+    if (c.choix === 'sien') {
+      var i0 = local ? ents.indexOf(local) : -1; if (i0 >= 0) ents.splice(i0, 1);
+      _fileRetirerCreation(op.u); _rendreTout(); return true;
+    }
+    if (c.choix === 'miens') {
+      var m = Object.assign(_copie(op.e), { id: s0.id }), sv;
+      try { sv = await apiFetch('/api/entries/' + s0.id, { method: 'PUT', body: JSON.stringify(m) }); } catch (e) { return 'reseau'; }
+      var i1 = local ? ents.indexOf(local) : -1; if (i1 >= 0) ents.splice(i1, 1);
+      var i2 = ents.findIndex(function(x){ return x && x.id === s0.id; }); var nm = (sv && sv.id) ? sv : m;
+      if (i2 >= 0) ents[i2] = nm; else ents.unshift(nm);
+      _baseNoter(nm); _fileRetirerCreation(op.u); _rendreTout(); return true;
+    }
+    if (c.choix !== 'deux') { _fileModifier(function(a){ var o = a.find(function(z){ return z.t === 'cree' && z.u === op.u; }); if (o) o.reporte = Date.now(); }); return 'choix'; }
+  }
+  // 3. on l'envoie (le nombre d'essais est noté AVANT : une réponse perdue sera reconnue au prochain tour)
+  _fileModifier(function(a){ var o = a.find(function(z){ return z.t === 'cree' && z.u === op.u; }); if (o) o.essais = (o.essais || 0) + 1; });
+  var saved;
+  try { saved = await apiFetch('/api/entries', { method: 'POST', body: JSON.stringify(op.e) }); } catch (e) { return 'reseau'; }
+  remplacer(saved);
+  return true;
+}
+async function _fileSuppr(op){
+  try { await apiFetch('/api/entries/' + op.id, { method: 'DELETE' }); } catch (e) { return 'reseau'; }
+  _fileModifier(function(a){ for (var i = a.length - 1; i >= 0; i--) if (a[i].t === 'suppr' && a[i].id === op.id) a.splice(i, 1); });
+  delete _vuServeur[op.id];
+  return true;
+}
+async function _fileAnnule(op){
+  var srv;
+  try { srv = await apiFetch('/api/entries'); } catch (e) { return 'reseau'; }
+  var connus = {}; (ents || []).forEach(function(e){ if (e && e.id) connus[e.id] = 1; });
+  var sig = _sigBilan(op.e);
+  var x = (srv || []).find(function(s){ return s && s.id && !connus[s.id] && _sigBilan(s) === sig; });
+  if (x) { try { await apiFetch('/api/entries/' + x.id, { method: 'DELETE' }); } catch (e) { return 'reseau'; } }
+  _fileModifier(function(a){ var i = a.findIndex(function(o){ return _memeOp(o, op); }); if (i >= 0) a.splice(i, 1); });
+  return true;
+}
+async function _fileListe(op){
+  var ok = true;
+  if (op.cle === 'virements') ok = await _saveVirements();
+  else if (op.cle === 'editlog') ok = await _saveEditLog();
+  else if (_LISTES[op.cle]) ok = await _listeEcrire(op.cle);
+  return ok === false ? 'reseau' : true;
+}
+async function _fileReglage(op){
+  try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: op.cle, value: op.valeur }) }); } catch (e) { return 'reseau'; }
+  _fileModifier(function(a){ for (var i = a.length - 1; i >= 0; i--) if (a[i].t === 'reglage' && a[i].cle === op.cle && a[i].valeur === op.valeur) a.splice(i, 1); });
+  return true;
+}
+
+// ── au chargement : ce qui attend sur cet appareil repasse PAR-DESSUS ce que la base vient de rendre ─────────
+function _fileAppliquer(){
+  _vuServeur = {};
+  (ents || []).forEach(function(e){ if (e && e.id) _vuServeur[e.id] = _copie(e); });
+  var lire = function(t){ try { var v = JSON.parse(t || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+  _tombesNoter('virements', lire(_settingsCache && _settingsCache.virements_supprimes));
+  // un ancien appareil (avant ce correctif) a pu remettre en base un paiement supprimé : il reste supprimé
+  if (_tombes.virements.size) virements = (virements || []).filter(function(v){ return !_virTombe(v); });
+  var a = _fileLire();
+  if (!a.length) { try { _etatFile(); } catch (e) {} return; }
+  var date = function(l){ var v = new Date(l && l.ts).getTime(); return isFinite(v) ? v : 0; };
+  var net = function(x){ var c = _copie(x); if (c && typeof c === 'object') delete c._vu; return c; };   // la marque « vu » reste dans la file
+  a.forEach(function(op){
+    var i, e;
+    if (op.t === 'liste') op = Object.assign({}, op, { aj: (op.aj || []).map(net), sup: (op.sup || []).map(net) });
+    if (op.t === 'cree') { e = _copie(op.e); if (_uids) _uids.set(e, op.u); ents.unshift(e); }
+    else if (op.t === 'maj') { e = _copie(op.e); i = ents.findIndex(function(x){ return x && x.id === op.id; }); if (i >= 0) ents[i] = e; else ents.unshift(e); }
+    else if (op.t === 'suppr') { i = ents.findIndex(function(x){ return x && x.id === op.id; }); if (i >= 0) ents.splice(i, 1); }
+    else if (op.t === 'liste' && op.cle === 'virements') {
+      (op.sup || []).forEach(function(v){ var k = String(_cleVirement(v)); _VIREMENTS_SUPPRIMES.add(k); virements = virements.filter(function(x){ return String(_cleVirement(x)) !== k; }); });
+      (op.aj || []).forEach(function(v){ var k = String(_cleVirement(v)); if (!virements.some(function(x){ return String(_cleVirement(x)) === k; }) && !_VIREMENTS_SUPPRIMES.has(k) && !_virTombe(v)) virements.push(v); });
+    } else if (op.t === 'liste' && op.cle === 'editlog') {
+      var cle = _optsJournal().cleDe, vus = {};
+      if (op.vider) { editLog = (editLog || []).filter(function(l){ return date(l) > new Date(op.vider).getTime(); }); var fil = _saveVirements._fil || (_saveVirements._fil = {}); (fil.editlog || (fil.editlog = { p: null, ensuite: null })).vide = op.vider; }
+      (editLog || []).forEach(function(l){ vus[cle(l)] = 1; });
+      (op.aj || []).forEach(function(l){ if (!vus[cle(l)]) editLog.push(l); });
+      editLog.sort(function(x, y){ return date(y) - date(x); });
+    } else if (op.t === 'liste' && _LISTES[op.cle] && _LISTES[op.cle].lire && _LISTES[op.cle].ecrire) {
+      var L = _LISTES[op.cle], kd = L.cleDe || function(x){ return x && x.id; }, l0 = (L.lire() || []).slice();
+      (op.sup || []).forEach(function(x){ var k = String(kd(x)); if (L.supprimes) L.supprimes.add(k); l0 = l0.filter(function(y){ return String(kd(y)) !== k; }); });
+      (op.aj || []).forEach(function(x){ if (!l0.some(function(y){ return String(kd(y)) === String(kd(x)); })) l0.push(x); });
+      L.ecrire(l0);
+    } else if (op.t === 'reglage') {
+      var el = document.getElementById(op.cle === 'monthly_goal' ? 'monthly-goal' : (op.cle === 'discord_webhook' ? 'discord-webhook' : ''));
+      if (el) el.value = op.valeur;
+    }
+  });
+  ents.sort(function(x, y){ return String(y.date || '').localeCompare(String(x.date || '')); });
+  try { _etatFile(); } catch (e) {}
+}
+
+// ── l'en-tête et les lignes : l'état RÉEL ────────────────────────────────────────────────────────────────
+function _etatFile(){
+  var el = document.getElementById('tb-etat'); if (!el) return false;
+  var ico = function(n){ try { return _pgIco(n, 13); } catch (e) { return ''; } };
+  // texte long (ordinateur, lecteurs d'écran) et texte court (en-tête du téléphone, étroit) : les deux dans l'élément
+  var ecrire = function(long, court, ko, etat, ic){
+    var h = ico(ic) + '<span class="ef-l">' + long + '</span><span class="ef-c">' + court + '</span>';
+    if (el.innerHTML !== h) el.innerHTML = h; el.title = long; el.classList.toggle('ko', !!ko); el.setAttribute('data-donnees', etat);
+  };
+  try { _marquerAttente(); } catch (e) {}
+  var b = document.body;
+  if (b.classList.contains('chargement')) { ecrire('Chargement de tes chiffres…', 'Chargement…', false, 'chargement', 'cloud'); return true; }
+  if (_donneesChargees === false && (b.classList.contains('charge-ko') || b.classList.contains('copie-locale'))) {
+    ecrire('Chiffres non chargés', 'Non chargés', true, 'ko', 'alert'); b.classList.add('sauve-ko'); return true;
+  }
+  var n = 0, j = 0, choix = 0;
+  _fileLire().forEach(function(o){
+    if (o.t === 'liste') { var k = _nonVus(o.aj).length + _nonVus(o.sup).length + (o.vider ? 1 : 0); if (o.cle === 'editlog') j += k; else n += k; }
+    else { n++; if (o.conflit || o.reporte) choix++; }
+  });
+  if (n || j) {
+    var t = choix ? (choix > 1 ? choix + ' changements attendent ton choix' : '1 changement attend ton choix')
+      : ((n ? (n > 1 ? n + ' changements pas encore enregistrés' : '1 changement pas encore enregistré') : 'Historique pas encore enregistré') + ' — réessai…');
+    var c = choix ? 'À vérifier' : (n ? (n > 1 ? n + ' non enregistrés' : '1 non enregistré') : 'Non enregistré');
+    ecrire(t, c, true, 'attente', 'alert'); b.classList.add('sauve-ko'); return true;
+  }
+  var prec = el.getAttribute('data-donnees') || '';
+  if (prec) {
+    el.setAttribute('data-donnees', ''); el.removeAttribute('title'); el.classList.remove('ko'); b.classList.remove('sauve-ko');
+    el.innerHTML = (prec === 'attente') ? ico('check') + '<span>Enregistré à ' + new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}) + '</span>' : '';
+  }
+  return false;
+}
+// Combien de changements de CET appareil ne sont pas encore vus en base (0 = tout est enregistré). Pour la
+// déconnexion (« 1 changement attend encore d'être envoyé ») : plus juste que la longueur brute de la file.
+function _fileCompte(){
+  var n = 0;
+  _fileLire().forEach(function(o){ n += (o.t === 'liste') ? _nonVus(o.aj).length + _nonVus(o.sup).length + (o.vider ? 1 : 0) : 1; });
+  return n;
+}
+function _marquerAttente(){
+  var tl = document.getElementById('txlist'); if (!tl) return;
+  var ids = {}; _fileLire().forEach(function(o){ if (o.t === 'maj') ids[o.id] = (o.conflit || o.reporte) ? 'choix' : 1; });
+  var l = (typeof gf === 'function') ? gf() : [];
+  tl.querySelectorAll('.txrow').forEach(function(r){
+    var e = l[+String(r.id).replace('txr-', '')];
+    var att = e ? (!e.id ? 1 : ids[e.id]) : 0;
+    r.classList.toggle('tx-attente', !!att);
+    var w = r.querySelector('.tx-when'); if (!w) return;
+    var s = w.querySelector('.tx-att');
+    if (att && !s) { s = document.createElement('span'); s.className = 'tx-att'; w.appendChild(s); }
+    if (s) { if (att) s.textContent = att === 'choix' ? 'à vérifier' : 'pas encore enregistré'; else s.remove(); }
+  });
+}
+// Historique → « Récupération » : ce qui attend sur cet appareil, et un bouton pour le renvoyer maintenant.
+function _attenteHtml(){
+  var a = _fileLire(); if (!a.length) return '';
+  var l = [];
+  a.forEach(function(o){
+    if (o.t === 'cree') l.push('Bilan ' + _quoiBilan(o.e) + ' créé (net ' + fmtC(_netBilan(o.e)) + ')');
+    else if (o.t === 'maj') l.push('Bilan ' + _quoiBilan(o.e) + ' modifié' + ((o.conflit || o.reporte) ? ' — à vérifier : il a changé sur un autre appareil' : ''));
+    else if (o.t === 'suppr') l.push('Suppression du bilan ' + (o.e ? _quoiBilan(o.e) : ''));
+    else if (o.t === 'annule') l.push('Annulation d’un bilan ' + _quoiBilan(o.e));
+    else if (o.t === 'liste' && o.cle === 'virements') {
+      _nonVus(o.aj).forEach(function(v){ l.push('Paiement à la modèle de ' + fmtC(v.amount) + ' (' + dlA(v.date) + ')'); });
+      _nonVus(o.sup).forEach(function(v){ l.push('Suppression du paiement de ' + fmtC(v.amount) + ' (' + dlA(v.date) + ')'); });
+    } else if (o.t === 'liste' && o.cle === 'editlog') {
+      var nj = _nonVus(o.aj).length; if (nj) l.push(_pl(nj, 'ligne d’Historique', 'lignes d’Historique'));
+      if (o.vider) l.push('Historique effacé');
+    } else if (o.t === 'liste') { var n = _nonVus(o.aj).length + _nonVus(o.sup).length; if (n) l.push(_pl(n, 'changement', 'changements') + ' (' + ((_LISTES[o.cle] && _LISTES[o.cle].titre) || o.cle) + ')'); }
+    else if (o.t === 'reglage') l.push(o.cle === 'monthly_goal' ? 'Objectif du mois : ' + fmtC(+o.valeur || 0) : (o.cle === 'discord_webhook' ? 'Adresse du webhook Discord' : o.cle));
+  });
+  if (!l.length) return '';
+  return '<div class="hl-rec-box warn hl-rec-attente"><div class="hl-rec-bt">' + _pgIco('warn', 16) + '<span>'
+    + _pl(l.length, 'changement pas encore enregistré', 'changements pas encore enregistrés') + '</span></div>'
+    + '<div class="hl-rec-bs">Ils sont gardés sur cet appareil et repartent tout seuls dès que le réseau revient. Ne les refais pas.</div>'
+    + '<div class="hl-rec-ls">' + l.map(function(t){ return '<div class="hl-rec-li"><span>' + esc(t) + '</span></div>'; }).join('') + '</div>'
+    + '<button class="hl-btn pri" onclick="_fileEnvoyer(\'clic\').then(function(){try{renderEditLog()}catch(e){}})">' + _pgIco('cloud', 15) + 'Réessayer maintenant</button></div>';
+}
+
+// ── chargement (D-9, E4) ─────────────────────────────────────────────────────────────────────────────────
+var _chargeT = null;
+function _chargementDebut(){
+  _donneesChargees = false;
+  var b = document.body; b.classList.add('chargement'); b.classList.remove('charge-ko', 'copie-locale');
+  var sq = document.getElementById('chargement-etat'), pca = document.getElementById('page-ca');
+  if (!sq && pca) {
+    sq = document.createElement('div'); sq.id = 'chargement-etat'; sq.setAttribute('role', 'status'); sq.setAttribute('aria-live', 'polite');
+    var h = pca.querySelector('.dash-header'); pca.insertBefore(sq, h ? h.nextSibling : pca.firstChild);
+  }
+  if (sq) sq.innerHTML = '<div class="ce-sq" aria-hidden="true"><div class="ce-tuile ce-hero"><i></i><b></b><i class="c"></i></div>'
+    + '<div class="ce-tuile"><i></i><b></b><i class="c"></i></div></div>'
+    + '<div class="ce-txt"><span class="ce-rond" aria-hidden="true"></span><span>Chargement de tes chiffres…</span></div>';
+  clearTimeout(_chargeT);
+  try { _etatFile(); } catch (e) {}
+}
+function _copieLocaleExiste(){ try { var t = localStorage.getItem(cleLocale('ents')); return !!t && t !== '[]'; } catch (e) { return false; } }
+function _chargementFin(ok){
+  var b = document.body; b.classList.remove('chargement');
+  var sq = document.getElementById('chargement-etat');
+  clearTimeout(_chargeT);
+  if (ok) {
+    _donneesChargees = true; _derniereLecture = Date.now();
+    b.classList.remove('charge-ko', 'copie-locale'); if (sq) sq.innerHTML = '';
+    try { _etatFile(); } catch (e) {}
+    return;
+  }
+  _donneesChargees = false;
+  b.classList.add('charge-ko');
+  if (sq) sq.innerHTML = '<div class="ce-ko" role="alert"><div class="ce-ko-t">' + _pgIco('warn', 18) + '<span>Impossible de charger tes chiffres</span></div>'
+    + '<div class="ce-ko-s">Le réseau ne répond pas, ou la connexion a expiré. Rien n’a été modifié ; on réessaie tout seul toutes les 20 secondes.</div>'
+    + '<div class="ce-ko-a"><button type="button" class="ce-b pri" onclick="_rechargerMaintenant()">Réessayer</button>'
+    + (_copieLocaleExiste() ? '<button type="button" class="ce-b" onclick="_voirCopieLocale()">Voir la copie gardée sur cet appareil</button>' : '') + '</div></div>';
+  try { _etatFile(); } catch (e) {}
+  _chargeT = setTimeout(function(){ if (_donneesChargees !== true && !document.hidden) _rechargerMaintenant(); }, 20000);
+}
+function _rechargerMaintenant(){
+  clearTimeout(_chargeT);
+  if (document.body.classList.contains('chargement')) return Promise.resolve();
+  return loadData().then(function(){ try { if (_donneesChargees === true) restoreTab(); } catch (e) {} });
+}
+// La copie de cet appareil, montrée seulement si on la demande, en LECTURE (rien ne part tant que ce n'est pas chargé).
+async function _voirCopieLocale(){
+  await loadLocal();
+  var b = document.body; b.classList.remove('charge-ko'); b.classList.add('copie-locale');
+  var sq = document.getElementById('chargement-etat');
+  if (sq) sq.innerHTML = '<div class="ce-copie" role="status">' + _pgIco('info', 16) + '<span><b>Copie gardée sur cet appareil</b> — peut-être pas à jour (ce qui a été changé ailleurs n’y est pas). '
+    + 'Rien ne sera enregistré tant que tes chiffres ne sont pas chargés.</span><button type="button" class="ce-b pri" onclick="_rechargerMaintenant()">Recharger mes chiffres</button></div>';
+  _rendreTout();
+  try { _etatFile(); } catch (e) {}
+}
+
+// ── revenir sur l'onglet : relire si les chiffres ont plus de quelques minutes (D-1) ──────────────────────
+var _RAFRAICHIR_APRES = 3 * 60 * 1000;
+function _rafraichirSiVieux(force){
+  if (document.hidden || _donneesChargees !== true || _rafraichir._enCours) return;
+  if (!force && Date.now() - _derniereLecture < _RAFRAICHIR_APRES) return;
+  if (_dlgOuvert) return;
+  try { if (_panneauOuvert()) return; } catch (e) {}
+  var qa = document.getElementById('quickadd-overlay'); if (qa && qa.classList.contains('open')) return;
+  var mf = document.getElementById('ms-form'); if (mf && !mf.hidden) return;
+  _rafraichir();
+}
+async function _rafraichir(){
+  _rafraichir._enCours = true;
+  try {
+    var r = await Promise.all([apiFetch('/api/entries'), apiFetch('/api/settings?cles=virements,virements_supprimes,editlog,monthly_goal')]);
+    if (!Array.isArray(r[0])) return;
+    if (_dlgOuvert) return;
+    try { if (_panneauOuvert()) return; } catch (e) {}
+    var s = r[1] || {};
+    ents = r[0];
+    try { if ('virements' in s) virements = JSON.parse(s.virements || '[]') || []; } catch (e) {}
+    try { if ('editlog' in s) editLog = JSON.parse(s.editlog || '[]') || []; } catch (e) {}
+    ['virements', 'virements_supprimes', 'editlog', 'monthly_goal'].forEach(function(k){ if (k in s) _settingsCache[k] = s[k]; });
+    var g = document.getElementById('monthly-goal'); if (g && s.monthly_goal != null && document.activeElement !== g) g.value = s.monthly_goal;
+    _fileAppliquer();
+    _derniereLecture = Date.now();
+    _rendreTout();
+  } catch (e) { console.warn('relecture au retour sur l’onglet impossible', e); }
+  finally { _rafraichir._enCours = false; }
+}
+document.addEventListener('visibilitychange', function(){
+  if (document.hidden) return;
+  if (_donneesChargees === false && document.body.classList.contains('charge-ko')) { _rechargerMaintenant(); return; }
+  _fileEnvoyer('retour'); _rafraichirSiVieux();
+});
+window.addEventListener('focus', function(){ _rafraichirSiVieux(); });
+window.addEventListener('online', function(){
+  if (_donneesChargees === false && document.body.classList.contains('charge-ko')) { _rechargerMaintenant(); return; }
+  _fileEnvoyer('reseau');
+});
+window.addEventListener('storage', function(ev){ if (ev.key === _CLE_FILE) { try { _etatFile(); } catch (e) {} } });
+
+// ── Historique : la limite est DITE, et l'archive se consulte (D-13) ─────────────────────────────────────
+function _journalPied(el){
+  if (!el) return;
+  var p = document.createElement('div'); p.className = 'hl-pied';
+  p.innerHTML = _pgIco('info', 15) + '<span>L’Historique garde ici les 200 dernières modifications ; les plus anciennes sont rangées dans l’archive (les 3 000 dernières).</span>'
+    + '<button type="button" class="hl-arch-b" onclick="_voirArchiveJournal(this)">Voir l’archive</button>';
+  el.appendChild(p);
+}
+async function _voirArchiveJournal(b){
+  if (b) { b.disabled = true; b.textContent = 'Lecture…'; }
+  var l = [];
+  try { var d = await apiFetch('/api/settings?cles=editlog_archive'); l = JSON.parse((d && d.editlog_archive) || '[]') || []; }
+  catch (e) { if (b) { b.disabled = false; b.textContent = 'Archive illisible (réseau) — réessayer'; } return; }
+  var el = document.getElementById('editlog-content'); if (!el) return;
+  var box = document.getElementById('hl-archive');
+  if (!box) { box = document.createElement('section'); box.id = 'hl-archive'; box.className = 'hl-g'; el.appendChild(box); }
+  box.innerHTML = '<div class="hl-day"><span>Archive</span><i></i><u>' + l.length + '</u></div><div class="hl-list">'
+    + (l.length ? l.map(function(x){
+        var h = new Date(x && x.ts), a = String((x && x.action) || ''), t = '', dd = '';
+        try { t = _hlTitre(x); } catch (e) { t = a; }
+        try { dd = _hlDetail(x, null) || ''; } catch (e) { dd = esc(String((x && x.detail) || '')); }
+        return '<div class="hl-r" style="--hl-c:' + _hlCoul(a) + '"><span class="hl-t">' + (isNaN(h) ? '--' : _jourCourt(_ymd(h))) + '</span>'
+          + '<span class="hl-b">' + _hlIco(a) + '</span><div class="hl-c"><div class="hl-a">' + esc(t) + '</div>' + (dd ? '<div class="hl-d">' + dd + '</div>' : '') + '</div></div>';
+      }).join('') : '<div class="emsg">L’archive est vide : tout ton historique est au-dessus.</div>') + '</div>';
+  if (b) b.remove();
+}
+
+// ── restaurer une sauvegarde / importer une copie : APERÇU, puis seulement ce que tu choisis (D-10, D-11) ──
+// _fenetre + un bloc en plus (lignes et cases à cocher) ; `requis` : la case sans laquelle le bouton reste grisé.
+function _fenetrePlus(o, plus){
+  var p = _fenetre(o);
+  var ov = document.getElementById('bilan-dlg'), box = ov && ov.querySelector('.bd-box'), bs = box && box.querySelector('.bd-btns');
+  if (!box || !plus || !plus.html) return p.then(function(r){ r.cases = {}; return r; });
+  var div = document.createElement('div'); div.className = 'bd-plus'; div.innerHTML = plus.html; box.insertBefore(div, bs);
+  var lire = function(){ var c = {}; div.querySelectorAll('[data-case]').forEach(function(x){ c[x.getAttribute('data-case')] = x.getAttribute('aria-checked') === 'true'; }); return c; };
+  var maj = function(){
+    var bt = bs && bs.querySelector('.bd-b.' + (plus.bouton || 'danger')); if (!bt) return;
+    var c = lire(), on = true;
+    if (plus.requis) on = !!c[plus.requis];
+    if (on && plus.actif) on = !!plus.actif(c);
+    bt.disabled = !on;
+  };
+  div.querySelectorAll('[data-case]').forEach(function(x){
+    x.addEventListener('click', function(){ x.setAttribute('aria-checked', x.getAttribute('aria-checked') === 'true' ? 'false' : 'true'); maj(); });
+  });
+  maj();
+  return p.then(function(r){ r.cases = lire(); if (div.parentNode) div.parentNode.removeChild(div); return r; });
+}
+function _caseHtml(id, coche, texte){
+  return '<button type="button" class="bd-case" role="checkbox" aria-checked="' + (coche ? 'true' : 'false') + '" data-case="' + id + '">'
+    + '<span class="bd-cc" aria-hidden="true"></span><span>' + texte + '</span></button>';
+}
+// Sauvegarde de tes chiffres actuels JUSTE AVANT une restauration qui remplace des valeurs (jamais par-dessus
+// la sauvegarde qu'on restaure).
+async function _sauvegardeAvant(sauf){
+  var tous = _snapTous(), cible = null, i;
+  for (i = 1; i <= _SNAP_N && !cible; i++) if (!_snapLire(i) && i !== sauf) cible = i;
+  if (!cible) { var c = tous.filter(function(s){ return s.i !== sauf; }); cible = c.length ? c[c.length - 1].i : 1; }
+  var contenu = _snapContenu(); contenu.raison = 'avant restauration';
+  var ok = await _pushSetting('snapshot_' + cible, contenu);
+  if (ok !== false) { _settingsCache['snapshot_' + cible] = JSON.stringify(contenu); try { window.storage.set(cleLocale('snapshot_local'), JSON.stringify(contenu)); } catch (e) {} }
+  return ok !== false;
+}
+async function _restaurerAvecApercu(src){
+  var imp = src.type === 'import';
+  if (ecritureInterdite(imp ? 'import' : 'restauration de sauvegarde')) return;
+  if (_pasCharge()) return;
+  var d = src.d || {};
+  if (imp && (!d || typeof d !== 'object' || (!Array.isArray(d.ents) && !Array.isArray(d.virements)))) {
+    showSaveStatus('⚠ Fichier invalide : ce n’est pas une copie de secours de Noctra Finance — rien n’a été importé.', '#f87171'); return;
+  }
+  if (imp && d.site && d.site !== SITE_FINANCES) {
+    await _fenetre({ ico: 'alerte', ton: 'danger', titre: 'Ce fichier vient d’un autre site', texte: 'Ce n’est pas une copie de Noctra Finance : rien n’a été importé.', boutons: [{ l: 'Compris', v: 'ok', cls: 'pri' }] });
+    return;
+  }
+  // 1. ce que la BASE contient maintenant (pas la copie de cet écran)
+  var srvEnts, dist;
+  var clesL = Object.keys(_LISTES).filter(function(k){ return Array.isArray(d[k]); });   // autres listes déclarées (ex. impôts payés)
+  try { var rr = await Promise.all([apiFetch('/api/entries'), apiFetch('/api/settings?cles=virements,virements_supprimes' + clesL.map(function(k){ return ',' + k + ',' + k + '_supprimes'; }).join(''))]); srvEnts = rr[0]; dist = rr[1] || {}; }
+  catch (e) { showSaveStatus('⚠ Impossible de lire ta base pour préparer la restauration — rien n’a été changé. Réessaie.', '#ef4444'); return; }
+  if (!Array.isArray(srvEnts)) srvEnts = [];
+  var lireL = function(t){ try { var v = JSON.parse(t || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
+  var srvVir = lireL(dist.virements), tombes = lireL(dist.virements_supprimes);
+  var tombe = {}; tombes.forEach(function(t){ if (t && t.k != null) tombe[String(t.k)] = t; });
+  var sigV = function(o){ return [o && o.date, Number(o && o.amount) || 0, String((o && o.note) || '').trim()].join('|'); };
+  var somme = function(l){ return l.reduce(function(s, v){ return s + (Number(v.amount) || 0); }, 0); };
+  // 2. les bilans : par identifiant ; sans identifiant, par date ET contenu (un fichier sans id ne double plus tout)
+  var fEnts = Array.isArray(d.ents) ? d.ents : [];
+  var valides = fEnts.filter(function(e){ return e && typeof e === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(String(e.date || '')); });
+  var illisibles = fEnts.length - valides.length;
+  var parId = {}; srvEnts.forEach(function(e){ if (e && e.id) parId[e.id] = e; });
+  var pris = {}, absents = [], modifies = [], ambigus = [], identiques = 0, communs = 0;
+  valides.forEach(function(f){
+    var s = null;
+    if (f.id && parId[f.id]) s = parId[f.id];
+    else if (!f.id) {
+      var memes = srvEnts.filter(function(x){ return x && x.date === f.date && !pris[x.id]; });
+      var egal = memes.find(function(x){ return _sigBilan(x) === _sigBilan(f); });
+      if (egal) s = egal; else if (memes.length === 1) s = memes[0]; else if (memes.length > 1) { ambigus.push(f); return; }
+    }
+    if (!s) { absents.push(f); return; }
+    pris[s.id] = 1;
+    if (_sigBilan(s) === _sigBilan(f)) { identiques++; communs++; return; }
+    if (f.id) communs++;
+    modifies.push({ f: f, s: s });
+  });
+  var gardes = srvEnts.filter(function(x){ return x && x.id && !pris[x.id]; });
+  // 3. les paiements : présents (même id ou mêmes date/montant/note), supprimés exprès (pierre tombale), absents
+  var fVir = (Array.isArray(d.virements) ? d.virements : []).filter(function(v){ return v && typeof v === 'object' && isFinite(Number(v.amount)); });
+  var srvCle = {}; srvVir.forEach(function(v){ srvCle[String(_cleVirement(v))] = 1; srvCle[sigV(v)] = 1; });
+  var virAbsents = [], virSupprimes = [], virCommuns = 0;
+  fVir.forEach(function(v){
+    var k = String(_cleVirement(v));
+    if (srvCle[k] || srvCle[sigV(v)]) { virCommuns++; return; }
+    if (tombe[k] || tombe[sigV(v)]) { virSupprimes.push(v); return; }
+    virAbsents.push(v);
+  });
+  var fCles = {}; fVir.forEach(function(v){ fCles[String(_cleVirement(v))] = 1; fCles[sigV(v)] = 1; });
+  var virGardes = srvVir.filter(function(v){ return !fCles[String(_cleVirement(v))] && !fCles[sigV(v)]; });
+  // 3b. les autres listes déclarées par _listeDeclarer (ex. impôts payés) : même règle que les paiements
+  var autres = clesL.map(function(k){
+    var o = _LISTES[k], kd = o.cleDe || function(x){ return (x && x.id != null) ? String(x.id) : JSON.stringify(x); };
+    var pres = {}, tb = {}, ab = [], sup = [];
+    lireL(dist[k]).forEach(function(x){ pres[String(kd(x))] = 1; });
+    lireL(dist[k + '_supprimes']).forEach(function(t){ if (t && t.k != null) tb[String(t.k)] = 1; });
+    d[k].forEach(function(x){ if (!x || typeof x !== 'object') return; var c = String(kd(x)); if (pres[c]) return; (tb[c] ? sup : ab).push(x); });
+    return { cle: k, o: o, kd: kd, ab: ab, sup: sup, un: o.titre || 'élément', plusieurs: o.titres || ((o.titre || 'élément') + 's') };
+  }).filter(function(a){ return a.ab.length || a.sup.length; });
+  // 4. modèles et VA (pages retirées) : comme avant
+  var modAjoutes = [], modRemplaces = false, vasRemplaces = false;
+  if (imp) { modRemplaces = Array.isArray(d.modeles) && _canon(d.modeles) !== _canon(modeles || []); vasRemplaces = Array.isArray(d.vas) && _canon(d.vas) !== _canon(vas || []); }
+  else { var noms = {}; (modeles || []).forEach(function(m){ noms[String(m.name || '').toLowerCase()] = 1; }); modAjoutes = (d.modeles || []).filter(function(m){ return m && !noms[String(m.name || '').toLowerCase()]; }); }
+  // 5. provenance et âge
+  var baseVide = !srvEnts.length && !srvVir.length;
+  var suspect = imp && !d.site && !baseVide && (communs + virCommuns) === 0 && (valides.length + fVir.length) > 0;
+  var tCopie = new Date(imp ? d.exportedAt : d.ts), okT = !isNaN(tCopie.getTime());
+  var dernier = (editLog || []).reduce(function(m, l){ var t = new Date(l && l.ts).getTime(); return isFinite(t) && t > m ? t : m; }, 0);
+  var plusVieille = okT && dernier > tCopie.getTime();
+  var quand = function(t){ var x = new Date(t); return dlA(_ymd(x)) + ' à ' + x.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}); };
+  var nomCopie = imp ? 'la copie' + (okT ? ' du ' + quand(tCopie) : '') : 'la sauvegarde du ' + (okT ? quand(tCopie) : '?');
+  var nomB = function(e){ return esc(dlA(e.date)); };
+  var rien = !absents.length && !modifies.length && !virAbsents.length && !virSupprimes.length && !modAjoutes.length && !modRemplaces && !vasRemplaces && !autres.length;
+  if (rien) {
+    await _fenetre({ ico: 'valide', titre: 'Rien à restaurer', texte: 'Ta base contient déjà tout ce qui est dans ' + nomCopie + '.'
+      + (identiques ? ' ' + _pl(identiques, 'bilan identique', 'bilans identiques') + '.' : '')
+      + (ambigus.length ? ' ' + _pl(ambigus.length, 'bilan sans identifiant ignoré', 'bilans sans identifiant ignorés') + ' (plusieurs bilans le même jour).' : ''),
+      boutons: [{ l: 'OK', v: 'ok', cls: 'pri' }] });
+    return;
+  }
+  // 6. l'aperçu
+  var L = [], plus = function(n, l){ return n > l ? ' et ' + (n - l) + ' autre' + (n - l > 1 ? 's' : '') : ''; };
+  var ligne = function(cls, t){ L.push('<div class="bd-pl' + (cls ? ' ' + cls : '') + '">' + t + '</div>'); };
+  if (suspect) {
+    ligne('bd-pl-ko', '<b>Ce fichier ne porte pas la marque de Noctra Finance et n’a AUCUN bilan ni paiement en commun avec tes chiffres.</b> Il vient peut-être d’un autre carnet.');
+    L.push(_caseHtml('sur', false, 'Je suis sûr : c’est bien une copie de MES chiffres Noctra'));
+  } else if (imp && !d.site) ligne('', 'Ancienne copie (sans marque), reconnue : ' + _pl(communs + virCommuns, 'élément en commun', 'éléments en commun') + ' avec tes chiffres.');
+  if (okT) ligne(plusVieille ? 'bd-pl-avert' : '', (imp ? 'Copie' : 'Sauvegarde') + ' du ' + quand(tCopie) + (plusVieille ? ' — <b>plus ancienne que tes données</b> : des changements ont été faits depuis (le dernier le ' + quand(dernier) + ').' : '.'));
+  if (absents.length) ligne('', '<b>' + _pl(absents.length, 'bilan absent de ta base reviendra', 'bilans absents de ta base reviendront') + '</b> : '
+    + absents.slice(0, 6).map(function(e){ return nomB(e) + ' (net ' + fmtC(_netBilan(e)) + ')'; }).join(', ') + plus(absents.length, 6) + '.');
+  if (modifies.length) L.push(_caseHtml('modif', false, 'Remettre ' + _pl(modifies.length, 'bilan', 'bilans') + ' à la valeur de la copie : '
+    + modifies.slice(0, 4).map(function(m){ return nomB(m.f) + ' — net ' + fmtC(_netBilan(m.s)) + ' → ' + fmtC(_netBilan(m.f)) + ', bénéfice ' + _mtS(m.s.profit || 0) + ' → ' + _mtS(profitEntree(m.f)); }).join(' ; ')
+    + plus(modifies.length, 4) + '. Sans cette case, ' + (modifies.length > 1 ? 'ils gardent leur valeur actuelle.' : 'il garde sa valeur actuelle.')));
+  if (virAbsents.length) L.push(_caseHtml('vir', true, 'Ajouter ' + _pl(virAbsents.length, 'paiement à la modèle absent de ta base', 'paiements à la modèle absents de ta base')
+    + ' (' + fmtC(somme(virAbsents)) + ') : ' + virAbsents.slice(0, 5).map(function(v){ return esc(dlA(v.date)) + ' ' + fmtC(v.amount); }).join(', ') + plus(virAbsents.length, 5) + '.'));
+  if (virSupprimes.length) L.push(_caseHtml('virsup', false, 'Remettre aussi ' + _pl(virSupprimes.length, 'paiement supprimé', 'paiements supprimés') + ' depuis la copie ('
+    + fmtC(somme(virSupprimes)) + ') : ' + virSupprimes.slice(0, 4).map(function(v){ var t = tombe[String(_cleVirement(v))] || tombe[sigV(v)] || {};
+        return esc(dlA(v.date)) + ' ' + fmtC(v.amount) + (t.le ? ', supprimé le ' + esc(_jourCourt(_ymd(new Date(t.le)))) + (t.par ? ' par ' + esc(t.par) : '') : ''); }).join(' ; ')
+    + '. Sans cette case, ' + (virSupprimes.length > 1 ? 'ils restent supprimés.' : 'il reste supprimé.')));
+  autres.forEach(function(a){
+    if (a.ab.length) L.push(_caseHtml('l_' + a.cle, true, 'Ajouter ' + _pl(a.ab.length, esc(a.un) + ' absent de ta base', esc(a.plusieurs) + ' absents de ta base')
+      + (a.ab.some(function(x){ return isFinite(Number(x.amount)); }) ? ' (' + fmtC(somme(a.ab)) + ')' : '') + '.'));
+    if (a.sup.length) L.push(_caseHtml('ls_' + a.cle, false, 'Remettre aussi ' + _pl(a.sup.length, esc(a.un) + ' supprimé', esc(a.plusieurs) + ' supprimés') + ' depuis la copie'
+      + (a.sup.some(function(x){ return isFinite(Number(x.amount)); }) ? ' (' + fmtC(somme(a.sup)) + ')' : '') + '. Sans cette case, ' + (a.sup.length > 1 ? 'ils restent supprimés.' : 'il reste supprimé.')));
+  });
+  if (modAjoutes.length || modRemplaces || vasRemplaces) ligne('bd-pl-doux', 'Les modèles et VA de la copie sont repris.');
+  if (ambigus.length) ligne('bd-pl-avert', _pl(ambigus.length, 'bilan sans identifiant ignoré', 'bilans sans identifiant ignorés') + ' : plusieurs bilans le même jour dans ta base, impossible de savoir lequel ('
+    + ambigus.slice(0, 4).map(nomB).join(', ') + ').');
+  if (illisibles) ligne('bd-pl-avert', _pl(illisibles, 'ligne illisible ignorée', 'lignes illisibles ignorées') + '.');
+  if (identiques) ligne('bd-pl-doux', _pl(identiques, 'bilan identique', 'bilans identiques') + ' : rien à faire.');
+  if (gardes.length || virGardes.length) ligne('bd-pl-doux', 'Gardés tels quels (absents de la copie) : ' + [gardes.length ? _pl(gardes.length, 'bilan', 'bilans') + ' (' + gardes.slice(0, 4).map(nomB).join(', ') + plus(gardes.length, 4) + ')' : '',
+    virGardes.length ? _pl(virGardes.length, 'paiement', 'paiements') + ' (' + fmtC(somme(virGardes)) + ')' : ''].filter(Boolean).join(' et ') + '. Rien n’est supprimé.');
+  if (modifies.length) ligne('bd-pl-doux', 'Si tu remets des bilans à une ancienne valeur, une sauvegarde de tes chiffres actuels est faite juste avant (Historique → Sauvegardes).');
+  var r = await _fenetrePlus({ ico: 'alerte', ton: 'avert', titre: 'Restaurer ' + nomCopie + ' ?', texte: 'Voici ce qui va changer. Tu choisis ce qui revient ; rien n’est supprimé.',
+    boutons: [{ l: 'Annuler', v: 'non', cls: 'ghost' }, { l: imp ? 'Restaurer cette copie' : 'Restaurer', v: 'oui', cls: 'danger' }] },
+    { html: L.join(''), requis: suspect ? 'sur' : null, bouton: 'danger',
+      actif: function(c){ return !!(absents.length || modAjoutes.length || modRemplaces || vasRemplaces || (c.modif && modifies.length) || (c.vir && virAbsents.length) || (c.virsup && virSupprimes.length)
+        || autres.some(function(a){ return (c['l_' + a.cle] && a.ab.length) || (c['ls_' + a.cle] && a.sup.length); })); } });
+  if (!r || r.choix !== 'oui') return;
+  var c = r.cases || {};
+  if (suspect && !c.sur) return;
+  // 7. appliquer, dans l'ordre d'avant (paiements, modèles, bilans), en attendant chaque réponse
+  var remis = c.modif ? modifies : [];
+  var virAjout = (c.vir ? virAbsents : []).concat(c.virsup ? virSupprimes : []);
+  var _okRestore = true, ok = 0, okRemis = 0, ko = 0, i;
+  if (remis.length && !(await _sauvegardeAvant(src.i))) { showSaveStatus('⚠ Sauvegarde de sécurité impossible — rien n’a été changé. Réessaie.', '#ef4444'); return; }
+  if (virAjout.length) {
+    if (c.virsup && virSupprimes.length) _ressusciter('virements', virSupprimes.map(function(v){ return String(_cleVirement(v)); }).concat(virSupprimes.map(sigV)));
+    virements = (virements || []).concat(virAjout);
+    _okRestore = (await _saveVirements()) !== false && _okRestore;
+  }
+  for (i = 0; i < autres.length; i++) {
+    var a = autres[i], aj = (c['l_' + a.cle] ? a.ab : []).concat(c['ls_' + a.cle] ? a.sup : []);
+    if (!aj.length) continue;
+    if (c['ls_' + a.cle] && a.sup.length) _ressusciter(a.cle, a.sup.map(function(x){ return String(a.kd(x)); }));
+    try { a.o.ecrire((a.o.lire() || []).concat(aj)); } catch (e) {}
+    _okRestore = (await _listeEcrire(a.cle)) !== false && _okRestore;
+  }
+  if (modAjoutes.length) { modeles = modeles.concat(modAjoutes); _okRestore = (await _saveModeles()) !== false && _okRestore; }
+  if (modRemplaces) { modeles = d.modeles; _okRestore = (await _saveModeles()) !== false && _okRestore; }
+  if (vasRemplaces) { vas = d.vas; try { rv(); } catch (e) {} }
+  for (i = 0; i < absents.length; i++) { try { var cc = Object.assign({}, absents[i]); delete cc.id; await apiFetch('/api/entries', { method: 'POST', body: JSON.stringify(cc) }); ok++; } catch (e) { ko++; } }
+  for (i = 0; i < remis.length; i++) { try { var m = Object.assign({}, remis[i].f, { id: remis[i].s.id }); await apiFetch('/api/entries/' + remis[i].s.id, { method: 'PUT', body: JSON.stringify(m) }); okRemis++; } catch (e) { ko++; } }
+  if (ok || okRemis) { try { ents = await apiFetch('/api/entries'); _fileAppliquer(); } catch (e) {} }
+  _rendreTout(); try { renderVirements(); renderModeles(); renderRecovery(); renderSnapshots(); } catch (e) {}
+  try {
+    if (imp) logEdit('Restauration copie', 'copie du ' + (okT ? quand(tCopie) : '?') + ' · ' + ([ok ? _pl(ok, 'bilan revenu', 'bilans revenus') : '', okRemis ? _pl(okRemis, 'bilan remis à sa valeur', 'bilans remis à leur valeur') : '',
+      virAjout.length ? _pl(virAjout.length, 'paiement ajouté', 'paiements ajoutés') : ''].filter(Boolean).join(', ') || 'modèles et VA'));
+    else logEdit('Restauration sauvegarde', tCopie.toLocaleDateString('fr-FR') + ' · ' + virAjout.length + ' virement(s), ' + ok + ' entrée(s)' + (okRemis ? ', ' + okRemis + ' remise(s) à sa valeur' : ''));
+  } catch (e) {}
+  if (!_okRestore) showSaveStatus('⚠ Restauration INCOMPLÈTE — paiements ou modèles NON enregistrés au serveur. Refais-la.', '#ef4444');
+  else showSaveStatus((imp ? '✓ Copie restaurée : ' : '✓ Restauré : ') + _pl(virAjout.length, 'paiement', 'paiements') + ', ' + _pl(ok + okRemis, 'bilan', 'bilans')
+    + (ko ? ' · ' + _pl(ko, 'échec', 'échecs') : ''), ko ? 'var(--todo)' : 'var(--pos)');
+}
+// Au démarrage : l'en-tête dit déjà la vérité si une file attend (avant même le chargement).
+try { _etatFile(); } catch (e) {}
 
 </script>
 </body>
