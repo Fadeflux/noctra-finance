@@ -4868,6 +4868,35 @@ body.montants-caches #impots-panel #lm-f-mt:not(:focus){filter:blur(6px)}
 @media (max-width:339px){#liste-mois .lm-fc-long{display:none}#liste-mois .lm-fc-court{display:inline}
   #liste-mois .lm-faits:has(.lm-fc-neutre){column-gap:6px}}
 
+
+/* ── feat8_corbeille (16/10) : corbeille des bilans + une sauvegarde par mois ── */
+/* La corbeille des bilans : en haut de l'Historique, seulement quand elle n'est pas vide. Même tuile que
+   « Récupération & sauvegardes » (details.hl-sos : thèmes clair / sombre et style Mélange compris). */
+#page-editlog #hl-corb:empty{display:none}
+#page-editlog #hl-corb > details.hl-sos{margin:0 0 16px}
+#page-editlog .hl-corb-n{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:26px;height:26px;padding:0 8px;
+  border-radius:999px;font-size:13px;font-weight:700;line-height:26px;color:var(--acc-txt);background:var(--acc-12)}
+#page-editlog .hl-corb-n:empty{display:none}
+#page-editlog .hl-corb-x{margin:0 0 4px;font-size:13px;line-height:20px;color:var(--ink-3)}
+#page-editlog .hl-corb-r{border-top:1px solid var(--line-1)}
+#page-editlog .hl-corb-l > .hl-corb-r:first-child{border-top:0}
+#page-editlog .hl-corb-r .hl-btn{flex:none}
+#page-editlog .hl-corb-a:empty,#page-editlog .hl-corb-m:empty{display:none}
+#page-editlog .hl-corb-a{margin-top:12px;font-size:13px;line-height:20px;color:var(--ink-3)}
+#page-editlog .hl-corb-m{display:flex;align-items:flex-start;gap:8px;margin-top:14px;padding:10px 12px;border-radius:var(--r-md);
+  font-size:13px;line-height:20px;color:var(--ink-1);--rb:var(--pos);
+  background:color-mix(in srgb,var(--rb) 8%,var(--surf-1));border:1px solid color-mix(in srgb,var(--rb) 30%,transparent);box-shadow:inset 3px 0 0 var(--rb)}
+#page-editlog .hl-corb-m.ko{--rb:var(--todo)}
+#page-editlog .hl-corb-m > .pg-i{flex:none;margin-top:2px;color:var(--rb)}
+/* Une sauvegarde par mois (dans « Récupération & sauvegardes », lue seulement quand on l'ouvre) */
+#page-editlog #sauv-mois-box:empty{display:none}
+#page-editlog #sauv-mois-box.hl-snap{margin-top:20px;padding-top:16px;border-top:1px solid var(--line-1)}
+/* Lecture seule : rien ne se remet ni ne se restaure (la fonction refuse aussi d'elle-même) */
+body.readonly [onclick*="corbRemettre"],body.readonly [onclick*="restaurerSauvegardeMois"]{display:none!important}
+@media (max-width:640px){
+  #page-editlog .hl-corb-r{flex-wrap:wrap}
+  #page-editlog .hl-corb-r .hl-btn{width:100%}
+}
 </style>
 </head>
 <body class="skin-melange">
@@ -5220,6 +5249,7 @@ body.montants-caches #impots-panel #lm-f-mt:not(:focus){filter:blur(6px)}
     <div><div class="dash-title">Historique</div><div class="dash-sub">tout ce qui a &#233;t&#233; ajout&#233;, modifi&#233; ou supprim&#233;</div></div>
   </div>
   <div id="activity-panel" class="panel" style="display:none;margin-bottom:12px"></div>
+  <div id="hl-corb"></div>
   <div class="panel">
     <div class="hl-tools" id="hl-filtres"></div>
     <div id="editlog-content"><div class="emsg">Aucune modification enregistr&#233;e</div></div>
@@ -5229,6 +5259,7 @@ body.montants-caches #impots-panel #lm-f-mt:not(:focus){filter:blur(6px)}
     <div class="hl-sosb">
       <div id="recovery-box"><div class="emsg">Analyse&#8230;</div></div>
       <div id="snapshots-box" class="hl-snap"></div>
+      <div id="sauv-mois-box" class="hl-snap"></div>
       <div class="hl-copie">
         <div class="hl-rec-h">Copie de secours</div>
         <div class="hl-outil"><div class="hl-outil-t"><b>Télécharger une copie de secours</b><span>un fichier avec tous tes bilans et paiements, à garder de côté</span></div><button type="button" class="hl-btn" onclick="exportData()"><svg class="pg-i" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>Télécharger</button></div>
@@ -5464,7 +5495,8 @@ function _pushSetting(key,val){
 // Effacer le journal detruit toute la piste d audit : une confirmation s impose,
 // comme pour la suppression d une entree ou d un VA.
 async function clearEditLog(){
-  if(!await showConfirm('Effacer tout l’historique des modifications ?\nCette action est irréversible. Tes bilans, eux, ne bougent pas.')) return;
+  if(!await showConfirm('Effacer tout l’historique des modifications ?\nCette action est irréversible. Tes bilans, eux, ne bougent pas, et la corbeille des bilans est gardée.')) return;
+  if(typeof _corbAvantEffacer==='function' && (await _corbAvantEffacer())===false) return;   // (16/10, corbeille) ses lignes d'abord dans l'archive
   editLog=[]; if(typeof _journalVider==='function') _journalVider(); _saveEditLog(); saveData(); renderEditLog();
 }
 // ⚠️ DEUX APPAREILS SE DÉTRUISAIENT LES PAIEMENTS L'UN L'AUTRE.
@@ -7148,8 +7180,15 @@ async function apiFetch(path, options={}) {
     const o = {}; for (const r of rs) { if (r.error) throw r.error; (r.data||[]).forEach(s => { o[s.key] = s.value; }); } return o;
   }
   if (seg === '/api/settings' && method === 'GET') {
-    const { data, error } = await sb.from('settings').select('*');
-    if (error) throw error; const o={}; (data||[]).forEach(s=>o[s.key]=s.value); return o;
+    // (16/10, corbeille) les 12 sauvegardes du début de mois (`sauvegarde_mois_01…12`) ne sont PAS lues au chargement :
+    // seulement à l'ouverture de « Récupération & sauvegardes » (route ?cles=). Si la base refusait ce filtre, la lecture
+    // d'avant (tout) ; elles sont alors écartées ici.
+    let _q = sb.from('settings').select('*'), _r;
+    if (_q && typeof _q.not === 'function') _q = _q.not('key', 'like', 'sauvegarde_mois_%');
+    _r = await _q;
+    if (_r && _r.error && !/fetch|network|timeout|abort/i.test(String(_r.error.message || _r.error))) _r = await sb.from('settings').select('*');
+    const { data, error } = _r || {};
+    if (error) throw error; const o={}; (data||[]).forEach(s=>{ if (String(s.key).indexOf('sauvegarde_mois_') !== 0) o[s.key]=s.value; }); return o;
   }
   if (seg === '/api/settings' && method === 'POST') {
     const { error } = await sb.from('settings').upsert({ key:body.key, value:String(body.value) }, { onConflict:'key' });
@@ -7242,7 +7281,7 @@ async function loadData() {
   else { _safe(uk); }
   _safe(initSaisie);
   _safe(renderVirements); _safe(renderModeles); _safe(renderModelShare);
-  try{ snapshotSiNecessaire(); }catch(e){}
+  try{ const _sn = snapshotSiNecessaire(); if (typeof sauvegardeMoisSiNecessaire === 'function') Promise.resolve(_sn).then(function(){ return sauvegardeMoisSiNecessaire(); }).catch(function(){}); }catch(e){}   // (16/10, corbeille) une par mois, gardée 12 mois
   try{ if (typeof _fileEnvoyer === 'function') _fileEnvoyer('chargement'); }catch(e){}
 }
 
@@ -8267,13 +8306,14 @@ window.deleteEntry = async function(idx) {
   // pire accident possible (avant : « Supprimer cette entrée ? », bouton violet).
   const r = await _fenetre({ico:'del', ton:'danger',
     titre:'Supprimer le bilan du '+dlA(entry.date)+' (net '+fmtC(_netBilan(entry))+', bénéfice '+_mtS(entry.profit||0)+') ?',
-    texte:'Il sera retiré de tous tes totaux.',
+    texte:'Il sera retiré de tous tes totaux. Tu pourras le remettre depuis la corbeille, dans l’Historique.',
     boutons:[{l:'Annuler',v:'non'},{l:'Supprimer',v:'oui',cls:'danger'}]});
   if (r.choix !== 'oui') return;
   const realIdx = ents.indexOf(entry);
   if (realIdx >= 0) {
     const id = entry?.id;
-    logEdit('Suppression entrée', `${dl(entry.date)} · net ${fmt((entry.brut||0)*0.80+(entry.tgNet||0))}`);
+    logEdit('Suppression entrée', `${dl(entry.date)} · net ${fmt((entry.brut||0)*0.80+(entry.tgNet||0))}`,
+      (typeof _corbChamps === 'function') ? _corbChamps(entry) : undefined);   // (16/10, corbeille) + {par, bid, bilan : entryToDb} : il reste remettable, même des mois après
     // Si on supprime l'entrée EN COURS d'édition, il faut quitter le mode édition :
     // sinon le bandeau restait et valider écrivait dans le vide (saisie perdue en silence).
     if (_editingId && id === _editingId) { try{ cancelEdit(); }catch(e){ _editingId=null; } }
@@ -8621,7 +8661,7 @@ let _hlF = 'tous', _hlQ = '', _hlQBrut = '', _hlMax = 60;
 
 function _hlCoul(a){
   if(/suppr/i.test(a))  return 'var(--neg)';
-  if(/^ajout/i.test(a)) return 'var(--acc-txt)';
+  if(/^ajout|^bilan remis/i.test(a)) return 'var(--acc-txt)';
   return 'var(--ink-3)';
 }
 function hlFiltre(f){ _hlF = f; _hlMax = 60; renderEditLog(); }
@@ -8641,6 +8681,7 @@ function _hlJour(ts){
 function renderEditLog(){
   try{ renderRecovery(); }catch(e){}
   try{ renderSnapshots(); }catch(e){}
+  try{ if(typeof renderCorbeille==='function') renderCorbeille(); }catch(e){}   // (16/10, corbeille)
   const el = document.getElementById('editlog-content'); if(!el) return;
   const bf = document.getElementById('hl-filtres');
 
@@ -9198,7 +9239,7 @@ function _hlIco(a){
   if(/suppr/i.test(a))   return _pgIco('trash', 14);
   if(/modif/i.test(a))   return _pgIco('pen', 14);
   if(/^ajout/i.test(a))  return _pgIco('plus', 14);
-  if(/restaur/i.test(a)) return _pgIco('undo', 14);
+  if(/restaur|^bilan remis/i.test(a)) return _pgIco('undo', 14);
   return _pgIco('dot', 14);
 }
 // Connexion : afficher / masquer le mot de passe (aucun effet sur la connexion elle-meme).
@@ -9891,6 +9932,8 @@ function _hlTitre(l){
   if (/^suppression paiement imp/i.test(a)) return 'Paiement d’impôts supprimé';
   if (/^restauration virements/i.test(a)) return 'Paiements à la modèle remis dans le cloud';
   if (/^restauration sauvegarde/i.test(a)) return 'Sauvegarde restaurée';
+  if (/^bilan remis/i.test(a)) return b ? 'Bilan ' + dm + ' remis depuis la corbeille' : 'Bilan remis depuis la corbeille';   // (16/10, corbeille)
+  if (/^remise annul/i.test(a)) return b ? 'Remise du bilan ' + dm + ' annulée : il est de nouveau dans la corbeille' : 'Remise annulée : de nouveau dans la corbeille';
   return a;
 }
 function _hlVals(d){
@@ -12121,6 +12164,7 @@ async function _fileCreer(op, declencheur){
       boutons: [{ l: 'Garder les deux', v: 'deux' }, { l: 'Garder seulement le sien', v: 'sien' }, { l: 'Mettre mes chiffres dans le sien', v: 'miens', cls: 'pri' }] });
     if (c.choix === 'sien') {
       var i0 = local ? ents.indexOf(local) : -1; if (i0 >= 0) ents.splice(i0, 1);
+      if (typeof _corbRemiseAnnulee === 'function') _corbRemiseAnnulee(op.u, op.e);   // (16/10, corbeille) une remise abandonnée revient dans la corbeille
       _fileRetirerCreation(op.u); _rendreTout(); return true;
     }
     if (c.choix === 'miens') {
@@ -14256,6 +14300,363 @@ function _dbTextes(s, r, horsLigne){
   return { titre: titre, texte: texte, detail: detail };
 }
 // ══ fin feat8 · DOUBLON ══
+
+// ── feat8_corbeille (16/10 : la corbeille des bilans + une sauvegarde par mois, idée 3) ──
+// ══ feat8_corbeille (16/10) : LA CORBEILLE DES BILANS + UNE SAUVEGARDE PAR MOIS (relecture du 16/10, O2) ═══════════
+// André : « un bilan supprimé par erreur peut être remis, même des mois après ». Avant : perdu au bout de 7 jours (les 7
+// sauvegardes automatiques tournent) et le journal ne gardait que « 30 sept. 2026 · net $12,080.00 ».
+//
+// 1. SUPPRIMER garde le bilan ENTIER dans SA ligne du journal : logEdit('Suppression entrée', <le MÊME détail>, {par,
+//    bid, bilan: entryToDb(bilan)}). Action et détail inchangés (le centre de contrôle les lit) : des champs EN PLUS.
+// 2. LA CORBEILLE (en haut de l'Historique, seulement quand elle n'est pas vide) = les lignes « Suppression entrée » qui
+//    portent un bilan, moins celles déjà remises. Elle est CALCULÉE depuis le journal : rien de plus à stocker, et le
+//    journal est déjà fusionné entre appareils (relu avant d'écrire) — un bilan supprimé sur le téléphone est dans la
+//    corbeille de l'ordinateur ; une remise faite sur l'un le retire de la corbeille de l'autre.
+//    « Remettre ce bilan » = le CHEMIN NORMAL de création (celui d'« Enregistrer le bilan ») : la base est relue
+//    (_rafraichir : un bilan remis ou recréé ailleurs se voit), alerte « Tu as déjà un bilan pour <mois> » si le mois en
+//    a déjà un (ici : _doublonMois ; créé ailleurs : _doublonServeur), saveEntry (la file d'attente garde et renvoie si
+//    le réseau manque ; une réponse perdue ou une double remise depuis deux appareils est reconnue : jamais en double),
+//    puis la ligne « Bilan remis » {de: <clé de la ligne de suppression>} qui le sort de la corbeille. Jamais en lecture
+//    seule. Remis puis resupprimé : une NOUVELLE ligne de suppression, il revient. Une remise gardée sur l'appareil puis
+//    abandonnée (« Garder seulement le sien » : l'autre appareil avait créé ce mois-là) écrit « Remise annulée » : il
+//    revient dans la corbeille. Rien ne se perd.
+// 3. SURVIT À L'ARCHIVAGE : au-delà de 225 lignes, le journal range les plus anciennes dans `editlog_archive`, puis
+//    au-delà de 3 500 dans le morceau de LEUR année (`editlog_archive_<année>`), où rien n'est jamais effacé (J4). La
+//    corbeille lit le journal ET ces archives (lues au chargement, relues à l'ouverture de la corbeille), et garde en
+//    mémoire les lignes vues pendant la session. « Effacer tout l'historique » range d'abord les lignes de la corbeille
+//    dans l'archive : la corbeille est gardée.
+// 4. UNE SAUVEGARDE PAR MOIS, gardée 12 mois : la première ouverture du mois (chiffres chargés, pas en lecture seule)
+//    écrit `sauvegarde_mois_<MM>` (12 emplacements : celui d'octobre est réécrit en octobre suivant) puis le petit index
+//    `sauvegardes_mois`. Ces sauvegardes ne sont JAMAIS lues au chargement (apiFetch les exclut de la lecture de
+//    `settings`) : seulement à l'ouverture de « Récupération & sauvegardes ». Restaurées par l'aperçu existant.
+var _CORB_SUPPR = /^Suppression entr/;
+var _corbVus = {};                 // clé -> ligne utile à la corbeille, vue pendant cette session (même archivée depuis)
+var _corbArch = { obj: null, l: [] };   // lignes utiles des archives lues au chargement (_settingsCache), mémorisées
+var _corbFrais = [];               // lignes utiles des archives RELUES à l'ouverture de la corbeille
+var _corbLu = 0, _corbArchEtat = '';
+var _corbOuverte = false;          // la corbeille dépliée (gardé d'un dessin à l'autre)
+var _corbMessage = null;           // {t, cls, fin} : le résultat du dernier geste, lisible quelques secondes
+var _CORB_REMISES = cleLocale('corbeille_remises');   // remises gardées sur l'appareil (file d'attente) : uid -> {de, le}
+
+// la clé d'une ligne = la clé de fusion du journal (_optsJournal : ts|action|detail)
+function _corbCle(l){ return String(l && l.ts) + '|' + (l && l.action) + '|' + (l && l.detail); }
+function _corbT(l){ var t = new Date(l && l.ts).getTime(); return isFinite(t) ? t : 0; }
+function _corbQui(){ return (typeof _currentUser !== 'undefined' && _currentUser && _currentUser !== 'Moi') ? String(_currentUser) : ''; }
+function _corbUtile(l){
+  if (!l || typeof l !== 'object') return false;
+  var a = String(l.action || '');
+  if (_CORB_SUPPR.test(a)) return !!(l.bilan && typeof l.bilan === 'object' && /^\d{4}-\d{2}-\d{2}$/.test(String(l.bilan.date || '')));
+  return (a === 'Bilan remis' || /^Remise annul/.test(a)) && l.de != null;
+}
+// Les champs AJOUTÉS à la ligne « Suppression entrée » : qui, l'identifiant du bilan, et le bilan entier tel qu'en base.
+function _corbChamps(e){
+  var c = { par: _corbQui() };
+  if (e && e.id != null) c.bid = e.id;
+  try { c.bilan = entryToDb(e); } catch (x) {}
+  return c;
+}
+// Le bilan à remettre : relu comme au chargement (entryFromDb : même bénéfice au centime, même règle), sans identifiant.
+function _corbEntree(l){
+  var r = _copie(l.bilan) || {}; delete r.id;
+  var e = entryFromDb(r); delete e.id;
+  return e;
+}
+function _corbDetail(e){ var p = Number(e.profit) || 0; return dl(e.date) + ' · net ' + fmt(_netBilan(e)) + ' · profit ' + (p < 0 ? '−' : '') + fmt(p); }
+// « de septembre », « d’août » (l'apostrophe de l'Historique, juste en dessous)
+function _corbQuoi(e){ return String(_quoiBilan(e)).replace(/^d'/, 'd’'); }
+function _corbDepuisTexte(t){ try { var v = JSON.parse(t || '[]'); return Array.isArray(v) ? v.filter(_corbUtile) : []; } catch (e) { return []; } }
+function _corbArchivesChargees(){
+  var cs = (typeof _settingsCache !== 'undefined' && _settingsCache) || {};
+  if (_corbArch.obj !== cs) {
+    var cles = ['editlog_archive'].concat(typeof _clesArchiveAnnees === 'function' ? _clesArchiveAnnees() : []), l = [];
+    cles.forEach(function(k){ if (cs[k]) l = l.concat(_corbDepuisTexte(cs[k])); });
+    _corbArch = { obj: cs, l: l };
+  }
+  return _corbArch.l;
+}
+// Toutes les lignes utiles connues : journal + archives (chargement, relecture) + celles vues pendant la session.
+function _corbLignes(){
+  var out = {}, ajouter = function(l){ if (!_corbUtile(l)) return; var k = _corbCle(l); if (!out[k]) out[k] = l; };
+  (typeof editLog !== 'undefined' && Array.isArray(editLog) ? editLog : []).forEach(ajouter);
+  _corbArchivesChargees().forEach(ajouter);
+  (_corbFrais || []).forEach(ajouter);
+  Object.keys(_corbVus).forEach(function(k){ ajouter(_corbVus[k]); });
+  Object.keys(out).forEach(function(k){ _corbVus[k] = out[k]; });
+  return Object.keys(out).map(function(k){ return out[k]; });
+}
+// La corbeille : un élément par bilan supprimé — le MÊME bilan (même identifiant, mêmes chiffres) supprimé sur deux
+// appareils n'apparaît qu'UNE fois ; deux versions différentes du même bilan restent deux éléments (rien n'est choisi à
+// la place d'André). Un élément est dans la corbeille tant que le DERNIER événement de son histoire (suppression,
+// « Bilan remis », « Remise annulée ») n'est pas « Bilan remis ».
+function _corbeille(){
+  var lignes = _corbLignes(), groupes = {}, groupeDe = {};
+  lignes.forEach(function(l){
+    if (!_CORB_SUPPR.test(String(l.action || ''))) return;
+    var e = null; try { e = _corbEntree(l); } catch (x) {}
+    if (!e) return;
+    var sig = (typeof _sigBilan === 'function') ? _sigBilan(e) : JSON.stringify(l.bilan);
+    var g = (l.bid != null && l.bid !== '') ? 'b:' + l.bid + '|' + sig : 'c:' + _corbCle(l);
+    groupeDe[_corbCle(l)] = g;
+    (groupes[g] = groupes[g] || { suppr: [], ev: [], e: e }).suppr.push(l);
+  });
+  lignes.forEach(function(l){
+    if (_CORB_SUPPR.test(String(l.action || ''))) return;
+    var g = groupeDe[String(l.de)]; if (g) groupes[g].ev.push(l);
+  });
+  var out = [];
+  Object.keys(groupes).forEach(function(g){
+    var G = groupes[g];
+    var tl = G.suppr.map(function(l){ return { t: _corbT(l), dedans: true }; })
+      .concat(G.ev.map(function(l){ return { t: _corbT(l), dedans: l.action !== 'Bilan remis' }; }))
+      .sort(function(a, b){ return a.t - b.t; });
+    if (!tl.length || !tl[tl.length - 1].dedans) return;
+    var l = G.suppr.slice().sort(function(a, b){ return _corbT(b) - _corbT(a); })[0];   // la suppression la plus récente
+    out.push({ cle: _corbCle(l), l: l, t: _corbT(l), e: G.e, par: l.par ? String(l.par) : '' });
+  });
+  return out.sort(function(a, b){ return b.t - a.t; });
+}
+function _corbQuand(t){
+  var d = new Date(t); if (isNaN(d.getTime())) return '';
+  var h = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }), j = _ymd(d);
+  if (j === _aujLocal()) return 'aujourd’hui à ' + h;
+  if (j === _ymd(new Date(Date.now() - 864e5))) return 'hier à ' + h;
+  return 'le ' + dlA(j).replace(' ' + new Date().getFullYear(), '') + ' à ' + h;
+}
+function _corbDire(t, cls){
+  _corbMessage = { t: t, cls: cls || 'ok', fin: Date.now() + 9000 };
+  try { renderCorbeille(); } catch (e) {}
+  setTimeout(function(){ try { renderCorbeille(); } catch (e) {} }, 9100);
+}
+
+// ── le dessin (Historique, en haut ; rien à l'écran quand la corbeille est vide) ─────────────────────────────────────
+function renderCorbeille(){
+  var box = document.getElementById('hl-corb'); if (!box) return;
+  var l = [];
+  try { l = _corbeille(); } catch (e) { console.warn('corbeille', e); }
+  try { _corbRemisesNettoyer(); } catch (e) {}
+  var msg = (_corbMessage && Date.now() < _corbMessage.fin) ? _corbMessage : null;
+  if (!l.length && !msg) { if (box.firstChild) box.innerHTML = ''; return; }
+  var det = box.querySelector('details.hl-corb');
+  if (!det) {
+    box.innerHTML = '<details class="hl-sos hl-corb"><summary>'
+      + '<span class="hl-sos-i">' + _pgIco('trash', 18) + '</span>'
+      + '<span class="hl-sos-t"><b>Corbeille des bilans</b><span class="hl-corb-s"></span></span>'
+      + '<span class="hl-corb-n" aria-hidden="true"></span>'
+      + '<span class="hl-sos-c">' + _pgIco('chev', 18) + '</span></summary>'
+      + '<div class="hl-sosb"><div class="hl-corb-x">Un bilan supprimé arrive ici avec tous ses chiffres. Il y reste jusqu’à ce que tu le remettes, même des mois après.</div>'
+      + '<div class="hl-corb-l"></div><div class="hl-corb-a" role="status"></div><div class="hl-corb-m" role="status" aria-live="polite"></div></div></details>';
+    det = box.querySelector('details.hl-corb');
+    det.open = !!_corbOuverte;
+    det.addEventListener('toggle', function(){ _corbOuverte = det.open; if (det.open) _corbRelireArchives(); });
+  }
+  var q = function(s){ return det.querySelector(s); };
+  var ecrire = function(el, h){ if (el && el._h !== h) { el.innerHTML = h; el._h = h; } };
+  var ro = document.body.classList.contains('readonly');
+  var s0 = l[0];
+  ecrire(q('.hl-corb-s'), !l.length ? 'Vide' : esc(l.length === 1 ? 'Bilan ' + _corbQuoi(s0.e) + ' · supprimé ' + _corbQuand(s0.t)
+    : l.length + ' bilans supprimés · le plus récent ' + _corbQuand(s0.t)));
+  ecrire(q('.hl-corb-n'), l.length ? String(l.length) : '');
+  ecrire(q('.hl-corb-l'), !l.length ? '<div class="hl-rec-vide">La corbeille est vide.</div>' : l.map(function(it){
+    var e = it.e;
+    return '<div class="hl-snap-r hl-corb-r"><div class="hl-snap-c">'
+      + '<div class="hl-snap-d">Bilan ' + esc(_corbQuoi(e)) + '</div>'
+      + '<div class="hl-snap-s">daté du ' + esc(dlA(e.date)) + ' · net ' + fmtC(_netBilan(e)) + ' · bénéfice ' + _mtS(e.profit || 0) + '</div>'
+      + '<div class="hl-snap-s hl-corb-q">supprimé ' + esc(_corbQuand(it.t)) + (it.par ? ' par ' + esc(it.par) : '') + '</div></div>'
+      + (ro ? '' : '<button type="button" class="hl-btn acc" data-cle="' + esc(encodeURIComponent(it.cle)) + '" onclick="corbRemettre(this)">' + _pgIco('undo', 15) + 'Remettre ce bilan</button>')
+      + '</div>';
+  }).join('') + (ro ? '<div class="hl-rec-vide">Lecture seule : rien ne peut être remis depuis cet appareil.</div>' : ''));
+  ecrire(q('.hl-corb-a'), _corbArchEtat === 'lecture' ? 'Recherche aussi dans l’archive de l’Historique…'
+    : (_corbArchEtat === 'ko' ? 'Archive de l’Historique illisible pour l’instant (réseau) : un bilan supprimé il y a longtemps peut manquer ici. Referme et rouvre la corbeille pour réessayer.' : ''));
+  var m = q('.hl-corb-m');
+  if (m) { m.className = 'hl-corb-m' + (msg ? ' ' + msg.cls : ''); ecrire(m, msg ? _pgIco(msg.cls === 'ok' ? 'check' : 'warn', 16) + '<span>' + esc(msg.t) + '</span>' : ''); }
+}
+// À l'ouverture de la corbeille : les archives relues (au plus une fois par minute), puis redessin.
+async function _corbRelireArchives(force){
+  if (_corbRelireArchives._p) return _corbRelireArchives._p;
+  if (!force && Date.now() - _corbLu < 60000) return;
+  if (!_apiConnected || _donneesChargees !== true) return;
+  _corbArchEtat = 'lecture'; try { renderCorbeille(); } catch (e) {}
+  var p = (async function(){
+    try {
+      var cles = ['editlog_archive'].concat(typeof _clesArchiveAnnees === 'function' ? _clesArchiveAnnees() : []);
+      var d = (await apiFetch('/api/settings?cles=' + cles.join(','))) || {}, l = [];
+      cles.forEach(function(k){ if (d[k]) l = l.concat(_corbDepuisTexte(d[k])); });
+      _corbFrais = l; _corbLu = Date.now(); _corbArchEtat = '';
+    } catch (e) { _corbArchEtat = 'ko'; }
+  })();
+  _corbRelireArchives._p = p;
+  try { await p; } finally { _corbRelireArchives._p = null; }
+  try { renderCorbeille(); } catch (e) {}
+}
+
+// ── « Remettre ce bilan » : le chemin NORMAL de création ─────────────────────────────────────────────────────────────
+async function corbRemettre(x){
+  var cle = (x && typeof x === 'object' && x.getAttribute) ? decodeURIComponent(x.getAttribute('data-cle') || '') : String(x == null ? '' : x);
+  if (typeof _pasCharge === 'function' && _pasCharge()) return false;
+  if (ecritureInterdite('remise d’un bilan')) return false;
+  if (corbRemettre._enCours || _dlgOuvert) return false;
+  corbRemettre._enCours = true;
+  try {
+    // 1. la base relue (bilans + journal, comme au retour sur l'onglet) : un bilan déjà remis ou recréé ailleurs se voit
+    if (typeof _doublonServeurUtile === 'function' && _doublonServeurUtile() && typeof _rafraichir === 'function') { try { await _rafraichir(); } catch (e) {} }
+    var trouver = function(){ return _corbeille().find(function(i){ return i.cle === cle; }) || null; };
+    var it = trouver();
+    if (!it) { _corbDire('Ce bilan n’est plus dans la corbeille : il a déjà été remis (sur cet appareil ou sur un autre).', 'ko'); return false; }
+    var e = _corbEntree(it.l), quoi = _corbQuoi(e);
+    // 2. le mois a déjà un bilan ? La règle de la création : ceux de l'écran (_doublonMois), sinon la base (_doublonServeur)
+    var d = _doublonMois(e.date);
+    if (!d && typeof _doublonServeur === 'function' && _doublonServeurUtile()) { try { d = await _doublonServeur(e.date); } catch (er) { d = null; } }
+    if (d) {
+      var ch = await _corbAlerteDoublon(d, e);
+      if (ch !== 'creer') { try { renderCorbeille(); } catch (er) {} return false; }
+      if (!trouver()) { _corbDire('Ce bilan n’est plus dans la corbeille : il a déjà été remis (sur cet appareil ou sur un autre).', 'ko'); return false; }
+    }
+    // 3. créé comme « Enregistrer le bilan » : saveEntry (ou la file d'attente), la ligne du journal, les totaux redessinés
+    var u = (typeof _uidDe === 'function') ? _uidDe(e) : null;
+    if (u) _corbRemiseNoter(u, it.l);
+    ents.unshift(e);
+    var envoi = saveEntry(e);
+    logEdit('Bilan remis', _corbDetail(e), { de: cle, par: _corbQui() });
+    try { rh(); rc(); uk(); renderVirements(); renderModeles(); } catch (er) {}
+    try { if (typeof renderModelShare === 'function') renderModelShare(); } catch (er) {}
+    try { renderCorbeille(); } catch (er) {}
+    var ok = await envoi;
+    // (l'en-tête : un message COURT, de la forme de « ✓ Restauré : 1 paiement, 1 bilan » — le long « bilan d’août, remis
+    //  depuis la corbeille » faisait déborder l'en-tête de 5 px à la tablette sous Safari ; le détail est dans la corbeille)
+    if (ok) { _corbDire('Bilan ' + quoi + ' remis : il compte de nouveau dans tes totaux.', 'ok'); try { showSaveStatus('✓ Restauré : 1 bilan'); } catch (er) {} }
+    else _corbDire('Bilan ' + quoi + ' remis sur cet appareil, PAS encore enregistré : il est gardé ici et renvoyé tout seul dès que le réseau revient. Ne le remets pas une 2e fois.', 'ko');
+    return ok;
+  } finally { corbRemettre._enCours = false; }
+}
+// L'alerte « Tu as déjà un bilan pour <mois> » : le texte de la création (_texteDoublon), les deux bilans côte à côte.
+function _corbAlerteDoublon(d, e){
+  var plus = d.liste[0], tx = _texteDoublon(d), n = d.liste.length;
+  return _fenetre({ ico: 'alerte', ton: 'avert', titre: tx.t1,
+    texte: 'Le remettre en créerait un ' + (n + 1) + 'e, compté en plus.',
+    detail: (n > 1 ? 'Le plus récent' : 'Celui qui est là') + ' : net ' + fmtC(_netBilan(plus)) + ' · bénéfice ' + _mtS(plus.profit || 0) + (d.ailleurs ? ' — ' + d.ailleurs : '')
+      + '\nCelui de la corbeille : net ' + fmtC(_netBilan(e)) + ' · bénéfice ' + _mtS(e.profit || 0),
+    boutons: [{ l: 'Annuler', v: 'annuler', cls: 'ghost' }, { l: 'Remettre quand même', v: 'creer' },
+              { l: n > 1 ? 'Ouvrir le plus récent' : 'Ouvrir celui-là', v: 'ouvrir', cls: 'pri' }]
+  }).then(function(r){
+    if (r.choix === 'ouvrir') { try { _basculerVersBilan(plus, 'Le bilan de la corbeille avait : net ' + fmtC(_netBilan(e)) + ' · bénéfice ' + _mtS(e.profit || 0) + '. Il reste dans la corbeille.'); } catch (x) {} }
+    return r.choix;
+  });
+}
+// Les remises gardées sur l'appareil (réseau coupé) : si la file les abandonne (« Garder seulement le sien »), le bilan
+// revient dans la corbeille (ligne « Remise annulée »). Rangées à côté de la file (seulement l'heure de la ligne de
+// suppression : aucun montant) ; nettoyées quand la file ne les a plus.
+function _corbRemisesLire(){ try { var o = JSON.parse(localStorage.getItem(_CORB_REMISES) || '{}'); return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; } catch (e) { return {}; } }
+function _corbRemisesEcrire(o){ try { if (Object.keys(o).length) localStorage.setItem(_CORB_REMISES, JSON.stringify(o)); else localStorage.removeItem(_CORB_REMISES); } catch (e) {} }
+function _corbRemiseNoter(u, l){ var o = _corbRemisesLire(); o[u] = { ts: String(l && l.ts), le: new Date().toISOString() }; _corbRemisesEcrire(o); }
+function _corbRemisesNettoyer(){
+  var o = _corbRemisesLire(), ks = Object.keys(o); if (!ks.length) return;
+  var file = {}; (typeof _fileLire === 'function' ? _fileLire() : []).forEach(function(op){ if (op && op.t === 'cree' && op.u) file[op.u] = 1; });
+  var change = false;
+  ks.forEach(function(u){ var t = new Date(o[u] && o[u].le).getTime(); if (!file[u] && !(Date.now() - t < 120000)) { delete o[u]; change = true; } });
+  if (change) _corbRemisesEcrire(o);
+}
+function _corbRemiseAnnulee(u, e){
+  var o = _corbRemisesLire(), m = o[u]; if (!m) return;
+  delete o[u]; _corbRemisesEcrire(o);
+  var l = _corbLignes().find(function(x){ return _CORB_SUPPR.test(String(x.action || '')) && String(x.ts) === String(m.ts); });
+  if (l) { try { logEdit('Remise annulée', _corbDetail(e || _corbEntree(l)), { de: _corbCle(l), par: _corbQui() }); } catch (x) {} }
+  try { renderCorbeille(); } catch (x) {}
+}
+// « Effacer tout l'historique » : les lignes de la corbeille d'abord rangées dans l'archive (jamais effacée) ; si ce
+// n'est pas possible (réseau), l'historique n'est pas effacé. En lecture seule / chiffres pas chargés : rien de nouveau
+// (rien ne s'écrit de toute façon).
+async function _corbAvantEffacer(){
+  if (document.body.classList.contains('readonly') || _donneesChargees === false) return true;
+  var l = (editLog || []).filter(_corbUtile);
+  if (!l.length) return true;
+  var o = _optsJournal();
+  var ok = await _saveVirements('editlog_archive', l, { cleDe: o.cleDe, dateDe: o.dateDe, trier: o.trier, devant: true,
+    limite: o.archiveMax || 3000, marge: o.archiveMarge || 0, archive: o.archiveSuite });
+  if (ok === false) {
+    showSaveStatus('⚠ Historique NON effacé — la corbeille des bilans n’a pas pu être mise à l’abri (réseau). Réessaie quand la connexion revient.', '#ef4444');
+    return false;
+  }
+  l.forEach(function(x){ _corbVus[_corbCle(x)] = x; });
+  return true;
+}
+
+// ── UNE SAUVEGARDE PAR MOIS, gardée 12 mois ─────────────────────────────────────────────────────────────────────────
+var _SM_PREFIXE = 'sauvegarde_mois_', _SM_INDEX = 'sauvegardes_mois';
+var _smEtat = { l: null, err: false, enCours: false };
+function _smLireIndex(t){ try { var o = JSON.parse(t || '{}'); return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; } catch (e) { return {}; } }
+function _smCles(){ var c = []; for (var m = 1; m <= 12; m++) c.push(_SM_PREFIXE + String(m).padStart(2, '0')); return c; }
+async function sauvegardeMoisSiNecessaire(){
+  try {
+    if (document.body.classList.contains('readonly')) return false;
+    if (!_apiConnected || _donneesChargees !== true) return false;
+    if (!(ents && ents.length) && !(virements && virements.length)) return false;
+    var ym = _ymLocal(), mm = ym.slice(5, 7);
+    var idx = _smLireIndex(_settingsCache && _settingsCache[_SM_INDEX]);
+    if (idx[mm] && idx[mm].ym === ym) return true;                  // déjà faite ce mois-ci (le petit index est lu au chargement)
+    if (sauvegardeMoisSiNecessaire._p) return sauvegardeMoisSiNecessaire._p;
+    var p = (async function(){
+      var d = (await apiFetch('/api/settings?cles=' + _SM_INDEX)) || {};   // l'autre appareil l'a peut-être faite entre-temps
+      var ib = _smLireIndex(d[_SM_INDEX]);
+      if (ib[mm] && ib[mm].ym === ym) { _settingsCache[_SM_INDEX] = JSON.stringify(ib); return true; }
+      var c = _snapContenu(); c.mois = ym; c.raison = 'début du mois';
+      if ((await _pushSetting(_SM_PREFIXE + mm, c)) === false) return false;   // pas enregistrée : réessayée à la prochaine ouverture
+      ib[mm] = { ym: ym, ts: c.ts, bilans: (c.ents || []).length, paiements: (c.virements || []).length };
+      var ok = await _pushSetting(_SM_INDEX, ib);
+      if (ok !== false) _settingsCache[_SM_INDEX] = JSON.stringify(ib);
+      return ok !== false;
+    })();
+    sauvegardeMoisSiNecessaire._p = p;
+    try { return await p; } finally { sauvegardeMoisSiNecessaire._p = null; }
+  } catch (e) { console.warn('[Sauvegarde du mois]', e); return false; }
+}
+// « Récupération & sauvegardes » ouvert : les 12 emplacements lus (seulement maintenant), la liste dessinée.
+async function renderSauvegardesMois(lire){
+  var el = document.getElementById('sauv-mois-box'); if (!el) return;
+  if (lire) {
+    _smEtat.enCours = true; _smDessiner(el);
+    try {
+      var cles = _smCles(), d = (await apiFetch('/api/settings?cles=' + cles.join(','))) || {};
+      _smEtat.l = cles.map(function(k){ try { var s = JSON.parse(d[k] || 'null'); return (s && typeof s === 'object' && s.ts) ? Object.assign({}, s, { _cle: k }) : null; } catch (e) { return null; } })
+        .filter(Boolean).sort(function(a, b){ return String(b.ts).localeCompare(String(a.ts)); });
+      _smEtat.err = false;
+    } catch (e) { _smEtat.err = true; }
+    _smEtat.enCours = false;
+  }
+  _smDessiner(el);
+}
+function _smDessiner(el){
+  var h = '<div class="hl-rec-top"><div class="hl-rec-h">Une sauvegarde par mois <span>(gardée 12 mois)</span></div></div>'
+    + '<div class="hl-rec-expl">La première de chaque mois, faite toute seule : pour revenir à un état plus ancien que les 7 dernières sauvegardes. Restaurer montre d’abord ce qui reviendrait.</div>';
+  var l = _smEtat.l;
+  if (_smEtat.enCours && !l) h += '<div class="hl-rec-vide">Lecture des sauvegardes du mois…</div>';
+  else if (_smEtat.err && !l) h += '<div class="hl-rec-vide">Sauvegardes du mois illisibles pour l’instant (réseau). Referme et rouvre ce panneau pour réessayer.</div>';
+  else if (!(l || []).length) h += '<div class="hl-rec-vide">Aucune pour l’instant : la première se fait toute seule à la prochaine ouverture du site.</div>';
+  else h += l.map(function(s){
+    var dt = new Date(s.ts), nV = (s.virements || []).length, tot = (s.virements || []).reduce(function(x, o){ return x + (Number(o.amount) || 0); }, 0);
+    var resume = [s.mois ? 'Début ' + String(_deMois(String(s.mois))).replace(/^d'/, 'd’') : '', _pl((s.ents || []).length, 'bilan', 'bilans'),
+      nV ? _pl(nV, 'paiement à la modèle', 'paiements à la modèle') + (tot ? ' (' + fmtC(tot) + ')' : '') : '',
+      (s.impots_payes || []).length ? _pl((s.impots_payes || []).length, 'paiement d’impôts', 'paiements d’impôts') : ''].filter(Boolean).join(' · ');
+    return '<div class="hl-snap-r"><div class="hl-snap-c"><div class="hl-snap-d">'
+      + esc(dt.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/ 1 /, ' 1er ') + ' à ' + dt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }))
+      + '</div><div class="hl-snap-s">' + esc(resume) + '</div></div>'
+      + '<button type="button" class="hl-btn acc" onclick="restaurerSauvegardeMois(\'' + s._cle + '\')">' + _pgIco('undo', 15) + 'Restaurer</button></div>';
+  }).join('');
+  el.innerHTML = h;
+}
+async function restaurerSauvegardeMois(cle){
+  if (ecritureInterdite('restauration de sauvegarde')) return;
+  var s = (_smEtat.l || []).find(function(x){ return x._cle === cle; }) || null;
+  try { var d = await apiFetch('/api/settings?cles=' + cle), s2 = JSON.parse((d && d[cle]) || 'null'); if (s2 && s2.ts) s = Object.assign({}, s2, { _cle: cle }); } catch (e) {}
+  if (!s) { showSaveStatus('⚠ Sauvegarde du mois introuvable — rouvre « Récupération & sauvegardes ».', '#f87171'); return; }
+  var c = Object.assign({}, s); delete c._cle;
+  return _restaurerAvecApercu({ type: 'sauvegarde', d: c, i: 'mois_' + String(cle).slice(-2) });
+}
+// Ouvrir « Récupération & sauvegardes » = lire les sauvegardes du mois (jamais au chargement).
+(function(){
+  var sb = document.getElementById('snapshots-box'), det = (sb && sb.closest) ? sb.closest('details') : null;
+  if (det && !det._smBranche) { det._smBranche = 1; det.addEventListener('toggle', function(){ if (det.open) renderSauvegardesMois(true); }); }
+})();
+// ══ fin feat8_corbeille ══
 
 // ── feat7_mois (16/10 : correctifs du mois d’André, D1 D2 D3 D5 D6 D9 D10 D11 D12 D13 D14) ──
 // ══ feat7_mois (16/10) : les correctifs du mois d'André (relecture « le mois vécu au téléphone », défauts 1, 2, 3, 5, 6,
