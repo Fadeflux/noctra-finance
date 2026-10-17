@@ -73,7 +73,7 @@ function monde(serveurInit) {
     'var document = { body: { classList: { contains: (c) => !!W.lecture && c === "readonly" } }, getElementById: () => null };\n' +
     'var console = { warn() {}, info() {}, log() {}, error() {} };\n' +
     'var navigator = {}; var apiFetch = W.apiFetch; var ents = W.ents || []; var _vuServeur = {}; var _tombes = {}; var _uids = new WeakMap();\n' +
-    'var _CLE_FILE = "fin_noctra_a_envoyer", _fileMem = [], _fileEnCours = null, _donneesChargees = true, _apiConnected = true, _currentUser = "Manon", _dlgOuvert = false, _dernierEchec = "reseau";\n' +
+    'var _CLE_FILE = "fin_noctra_a_envoyer", _fileMem = [], _fileEnCours = null, _donneesChargees = true, _apiConnected = true, _currentUser = "Elodie", _dlgOuvert = false, _dernierEchec = "reseau";\n' +
     'var virements = [], editLog = [], _VIREMENTS_SUPPRIMES = new Set(), _settingsCache = {}, _LISTES = {};\n' +
     'function ecritureInterdite(){ return !!W.lecture; } function showSaveStatus(t){ W.statut.push(t); } function _etatFile(){ return false; } function _fileMinuteur(){}\n' +
     'function _rendreTout(){} function _rythmeBilan(){ return true; } function _peutDemander(){ return true; } function _quoiBilan(){ return "d’octobre"; }\n' +
@@ -88,7 +88,7 @@ function monde(serveurInit) {
   return W;
 }
 function bilan(id, date, ofNet, extra) {
-  const e = Object.assign({ date, ofNet, brut: ofNet / 0.8, tgNet: 0, va: 0, mo: 0, ci: 0, ch: 0, alT: 0, alI: [], vaI: [], moI: [], ciI: [], chI: [], paidBy: {}, notes: '', author: 'Andre' }, extra || {});
+  const e = Object.assign({ date, ofNet, brut: ofNet / 0.8, tgNet: 0, va: 0, mo: 0, ci: 0, ch: 0, alT: 0, alI: [], vaI: [], moI: [], ciI: [], chI: [], paidBy: {}, notes: '', author: 'Camille' }, extra || {});
   if (id) e.id = id;
   return e;
 }
@@ -140,12 +140,12 @@ function bilan(id, date, ofNet, extra) {
   {
     const o = bilan('o1', '2026-10-01', 6800, { alI: [{ name: 'VPN', val: 10, paidBy: 'moi' }], alT: 10 });
     const W = monde([o]); W.setEnts([JSON.parse(JSON.stringify(o))]); W._baseNoter(o);
-    // André (ailleurs) ajoute une dépense ; Manon (ici, ouverte avant) ne change que la note
+    // L’appareil A (ailleurs) ajoute une dépense ; l’appareil B (ici, ouverte avant) ne change que la note
     W.S.lignes[0] = Object.assign({}, o, { alI: o.alI.concat([{ name: 'Serveur dédié', val: 50, paidBy: 'moi' }]), alT: 60 });
-    const mien = Object.assign({}, W.ents()[0], { notes: 'facture reçue', author: 'Manon' });
+    const mien = Object.assign({}, W.ents()[0], { notes: 'facture reçue', author: 'Elodie' });
     V(await W.updateEntryAPI('o1', mien) === true, 'note seule : écrit sans question');
     const b = W.S.lignes[0];
-    V(b.alT === 60 && b.alI.length === 2 && b.notes === 'facture reçue' && b.ofNet === 6800, 'la dépense d’André ET la note de Manon sont en base', JSON.stringify([b.alT, b.notes, b.ofNet]));
+    V(b.alT === 60 && b.alI.length === 2 && b.notes === 'facture reçue' && b.ofNet === 6800, 'la dépense de l’appareil A ET la note de l’appareil B sont en base', JSON.stringify([b.alT, b.notes, b.ofNet]));
     V(Math.abs(b.profit - W.ents()[0].profit) < 0.001 && W.ents()[0].alT === 60, 'le bénéfice est recalculé, l’écran montre la fusion');
     // les deux changent le net : la question ; « les miens » / « les siens »
     W.S.lignes[0] = Object.assign({}, W.S.lignes[0], { ofNet: 9000, brut: 9000 / 0.8 });
@@ -205,7 +205,7 @@ function bilan(id, date, ofNet, extra) {
   {
     const base = { ofNet: 6800, alT: 10 }, ailleurs = { ofNet: 6800, alT: 60 }, ici = { ofNet: 6800, alT: 10, notes: 'x' };
     const ancienne = Object.assign({}, ici);      // PUT de la ligne telle que chargée ici
-    V(ancienne.alT !== ailleurs.alT && base.alT === 10, 'l’ancienne forme effaçait la dépense d’André (le banc mesure bien ce défaut)');
+    V(ancienne.alT !== ailleurs.alT && base.alT === 10, 'l’ancienne forme effaçait la dépense de l’appareil A (le banc mesure bien ce défaut)');
   }
 
   console.log('\n' + (ko ? ko + ' ECHEC(S)' : 'TOUT PASSE (' + n + ' contrôles)') + '\n');

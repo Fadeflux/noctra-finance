@@ -1,4 +1,4 @@
-// LES CORRECTIFS DU MOIS D'ANDRÉ (feat7_mois, 16/10), prouvés sur le VRAI code de index.html : la période retenue, la carte
+// LES CORRECTIFS DU MOIS DU PROPRIÉTAIRE (feat7_mois, 16/10), prouvés sur le VRAI code de index.html : la période retenue, la carte
 // du mois après « Finaliser », les mots d'un mois en perte (aucun montant nouveau), « / an » du Récap (mois terminés),
 // la ligne d'un bilan jamais finalisé, la phrase des graphiques.
 //
@@ -79,7 +79,7 @@ console.log('\n-- 1. D10 : un mois en perte n’est plus un « trop envoyé » (
   V(t2 && t2.rl === 'À déduire' && t2.rs === 'de ton prochain envoi', 'tuile avec détail : « À déduire » · « de ton prochain envoi »', JSON.stringify(t2));
 }
 {
-  // GARDE : André a VRAIMENT envoyé plus que sa part (aucune perte) : « Trop envoyé » reste le bon mot
+  // GARDE : le propriétaire a VRAIMENT envoyé plus que sa part (aucune perte) : « Trop envoyé » reste le bon mot
   const e = [B('2026-08-31', 5000), B('2026-09-30', 6000), B('2026-10-31', 4000)];
   F.set(e, [{ date: '2026-11-01', amount: 9000 }]);
   const P = F._partModele(mc);
@@ -154,7 +154,7 @@ console.log('\n-- 4. D14 : la phrase sous les graphiques --');
   V(F._f7NoteGraf('ligne', [{}, {}], (i) => k[i]) === null, 'rien de provisoire : pas de phrase');
 }
 
-console.log('\n-- 5. D1 : seul un toucher d’André est retenu ; aucun stockage nouveau --');
+console.log('\n-- 5. D1 : seul un toucher du propriétaire est retenu ; aucun stockage nouveau --');
 {
   const js = SRC.slice(SRC.indexOf('// ══ feat7_mois'));
   V(/_memoPeriode = function\(v\)\{ if \(!_f7ChoixEnCours\) return;/.test(js), 'la période n’est retenue que pendant un toucher sur une des quatre périodes');

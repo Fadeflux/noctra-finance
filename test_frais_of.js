@@ -1,4 +1,4 @@
-// REGLE D'ANDRE (12/10, circuit precise le 14/10) : sur l'argent ONLYFANS seulement.
+// REGLE DU PROPRIÉTAIRE (12/10, circuit precise le 14/10) : sur l'argent ONLYFANS seulement.
 //   OnlyFans verse le net sur Paxum (0,25 $ fixe par virement : ignore) ; 1 % de ce qui arrive sur
 //   Paxum est declare aux impots ; TOUT passe ensuite en crypto (Paxum prend 3,5 %) ; partage 50/50
 //   en crypto ; les impots se paient EN LIQUIDE et retirer la crypto en liquide coute 2 % : pour
@@ -49,7 +49,7 @@ const morceaux = ['fraisOF', 'profitEntree', 'entryFromDb'].map(extraire);
 V('les fonctions de la regle existent (garde-fou du banc)', morceaux.every(Boolean) && /_IMPOTS_OF/.test(consts),
   'absentes : ' + ['fraisOF', 'profitEntree', 'entryFromDb'].filter((n, i) => !morceaux[i]).join(', '));
 
-// Les trois taux sont des CONSTANTES NOMMEES, avec les valeurs d'Andre (une valeur recopiee a la main derive).
+// Les trois taux sont des CONSTANTES NOMMEES, avec les valeurs du propriétaire (une valeur recopiee a la main derive).
 const taux = {};
 for (const [nom, attendu] of [['_IMPOTS_OF', 0.01], ['_PAXUM_OF', 0.035], ['_RETRAIT_LIQUIDE', 0.02]]) {
   const m = consts.match(new RegExp('\\b' + nom + '=([0-9.]+)'));
@@ -69,7 +69,7 @@ try {
 } catch (e) { api = null; }
 
 if (api) {
-  // ── L'EXEMPLE D'ANDRE : 10 000 $ nets OnlyFans (brut 12 500), rien d'autre ──
+  // ── L'EXEMPLE DU PROPRIÉTAIRE : 10 000 $ nets OnlyFans (brut 12 500), rien d'autre ──
   const f10k = api.fraisOF(10000);
   V('exemple : 10 000 $ nets -> 452,04 $ de frais (350 $ Paxum + 102,04 $ d’impots gardes en crypto)',
     proche(f10k, 350 + 100 / 0.98) && cts(f10k) === 45204, 'fraisOF(10000) = ' + f10k + ' (attendu 452,0408…)');

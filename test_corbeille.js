@@ -172,7 +172,7 @@ const egal = (a, b) => JSON.stringify(a) === JSON.stringify(b);
       const D2 = monde();                     // (un monde neuf : la remise ci-dessus reste connue de la session, à raison)
       D2.api.editLog = [l3, l2, l1];
       c = D2.api._corbeille();
-      V(c.length === 2, 'deux VERSIONS différentes du même bilan : deux lignes (rien n’est choisi à la place d’André)', c.length);
+      V(c.length === 2, 'deux VERSIONS différentes du même bilan : deux lignes (rien n’est choisi à la place du propriétaire)', c.length);
       D.api.editLog = [l3];
       c = D.api._corbeille();
       V(c.length === 1 && c[0].l.ts === l3.ts, 'la version remise quitte la corbeille, l’autre version y reste', JSON.stringify(c.map((i) => i.l.ts)));

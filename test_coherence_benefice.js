@@ -136,7 +136,7 @@ if (presentes.length === REGLE.length) {
     if (c.p !== Math.round(e.profit * 100)) koP++;
   }
   V('chaque bilan (' + n + ' fictifs) : centimes ENTIERS, Net − Dépenses = Bénéfice, postes + frais = Dépenses, OnlyFans + Telegram = Net', koB === 0, koB + ' faux');
-  V('impôts + Paxum d\'un bilan à 1 centime au plus de net × 3,5 % + net × 1 % ÷ 0,98 (la règle d\'André)', koF === 0, koF + ' faux');
+  V('impôts + Paxum d\'un bilan à 1 centime au plus de net × 3,5 % + net × 1 % ÷ 0,98 (la règle du propriétaire)', koF === 0, koF + ' faux');
   V('AUCUN bénéfice ne bouge : p = le bénéfice enregistré du bilan', koP === 0, koP + ' faux');
   // somme de bilans (une période) : écrite, elle tombe juste
   let koS = 0;
@@ -154,7 +154,7 @@ if (presentes.length === REGLE.length) {
   V('ancien bilan (brut 4 166,66 $, net 3 333,328 $) : net 3 333,33 $ ; Net − Dépenses = Bénéfice', ca.net === 333333 && ca.net - ca.dep === ca.p, JSON.stringify(ca));
   // brouillon sans bénéfice enregistré : le bénéfice de la règle (profitEntree)
   const br = { brut: 10000 / 0.8, tgNet: 0, va: 0, mo: 0, ci: 0, ch: 0, alT: 0 };
-  V('exemple d\'André (10 000 $ nets) : impôts + Paxum 452,04 $, bénéfice 9 547,96 $', P.fraisBilan(br) === 452.04 && P.centimesBilan(br).p === 954796 && P.depensesBilan(br) === 452.04,
+  V('exemple du propriétaire (10 000 $ nets) : impôts + Paxum 452,04 $, bénéfice 9 547,96 $', P.fraisBilan(br) === 452.04 && P.centimesBilan(br).p === 954796 && P.depensesBilan(br) === 452.04,
     P.fraisBilan(br) + ' / ' + P.centimesBilan(br).p);
   // moitiés
   let koM = 0;

@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow, noarchive"><!-- finance privée : jamais indexée (2026-08-10) -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- (17/10, S-C) Sécurité de contenu : scripts = les 2 fichiers figés (+ le script de la page), connexions = ce site, le projet Supabase (https + wss) et les webhooks Discord (« Objectif atteint »), polices Google, images du site ; aucun plugin, aucune balise <base>, aucun envoi de formulaire. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://iikqbqxwvccenxmzlmyk.supabase.co wss://iikqbqxwvccenxmzlmyk.supabase.co https://discord.com/api/webhooks/ https://discordapp.com/api/webhooks/; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="theme-color" content="#0a0a0a" id="theme-color-meta">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2014,7 +2016,7 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
 /* (15/10) téléphone — « Tes bilans » sur deux étages (relecture D1). Avec les centimes (« +$4,383.91 »), la date, le
    bénéfice et « Mettre à jour » ne tenaient plus sur une seule ligne : de 375 à 430 px le bénéfice recouvrait la date.
    Étage du haut : date | bénéfice. Étage du bas : le net puis la marge, l'un sous l'autre | « Mettre à jour », écrit en
-   toutes lettres à TOUTES les largeurs (avant : le crayon seul sous 375 px ; André voulait le mot). La ligne partage ses
+   toutes lettres à TOUTES les largeurs (avant : le crayon seul sous 375 px ; le propriétaire voulait le mot). La ligne partage ses
    colonnes avec son résumé (subgrid) : la colonne de droite prend la largeur du bouton ou du bénéfice, le plus large des
    deux, et rien ne peut passer dessous. Ordinateur et tablette : inchangés. */
 @media (max-width:640px){
@@ -2048,7 +2050,7 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
 /* ── r5_finitions étape 2 ── */
 /* (13/10) messages d'état : glyphe gardé dans le texte mais caché, icône du jeu à la place */
 .ss-g{display:none}
-/* (13/10) ordinateur : l'état d'enregistrement remplace le bouton « Sauvegarder » (André F7) */
+/* (13/10) ordinateur : l'état d'enregistrement remplace le bouton « Sauvegarder » (le propriétaire, F7) */
 .tb-etat-ordi{display:none}
 @media (min-width:641px){
   .dash > .topbar .tb-etat-ordi{display:inline-flex;align-items:center;gap:6px;
@@ -2115,7 +2117,7 @@ body.readonly #page-editlog .hl-import,body.readonly #page-editlog .hl-danger{di
 
 
 /* ── style fixe : Mélange (13/10) ── */
-/* ══════ style du site : « Mélange » (B3 × B4), choisi par André le 13/10 ; tout est sous body.skin-melange ══════ */
+/* ══════ style du site : « Mélange » (B3 × B4), choisi par le propriétaire le 13/10 ; tout est sous body.skin-melange ══════ */
 /* ═══ NOCTRA FINANCE — STYLE « MÉLANGE » : le Cockpit en couleurs, version finale ═══
    Départ : mix-dense (B3 × B4), puis tous les points de la critique (agents/critique_mix/critique.md) et les trois
    meilleures idées de mix-colore (« ta moitié » en pastille de verre, « Noter un paiement » orange plein au téléphone,
@@ -3197,7 +3199,7 @@ body.skin-melange #page-editlog .hl-sos-i svg{width:14px;height:14px}
 }
 @keyframes mel-monte{from{opacity:0;transform:translateY(6px) scale(.995)}to{opacity:1;transform:none}}
 
-/* (13/10, vu par André) Le rond de l'icône se centrait sur l'étiquette (sur deux lignes : « GARDÉ PAR
+/* (13/10, vu par le propriétaire) Le rond de l'icône se centrait sur l'étiquette (sur deux lignes : « GARDÉ PAR
  ONLYFANS » au téléphone) alors que l'icône restait en haut : le « % » sortait de son rond. Le rond
  se cale en haut, comme l'icône et comme les autres tuiles. */
 body.skin-melange #page-ca .kpi-dep-grid .kpi-label::before{align-self:flex-start}
@@ -3696,7 +3698,7 @@ body.skin-melange #haut-mois > #rappel-bilan{margin-top:6px}
 /* ── feat_chiffres v2 (Impôts à garder de côté : Paxum en information) ── */
 /* ══ chiffres v2 (14/10) : « Impôts à garder de côté ». Paxum n'est plus « à garder » : sa tuile devient
    une information, hachurée comme « Gardé par OnlyFans » (déjà pris, rien à payer) ; les deux gestes
-   d'André sont numérotés (pastilles ardoise, la couleur des impôts). ══ */
+   du propriétaire sont numérotés (pastilles ardoise, la couleur des impôts). ══ */
 body.skin-melange #impots-panel .ip-pax{background-color:transparent;
   background-image:repeating-linear-gradient(135deg,transparent 0 9px,var(--mx-hatch) 9px 10px);
   box-shadow:none;outline:1px dashed var(--line-2);outline-offset:-1px}
@@ -3730,7 +3732,7 @@ button,input,select,textarea{font-family:inherit}
 
 
 /* ── feat_chiffres v3 (règle du 14/10 : impôts payés en liquide, retrait −2 %) ── */
-/* ══ chiffres v3 (14/10) : les impôts se paient en LIQUIDE. La tuile ardoise dit ce qu'André GARDE en crypto
+/* ══ chiffres v3 (14/10) : les impôts se paient en LIQUIDE. La tuile ardoise dit ce que le propriétaire GARDE en crypto
    (1 % ÷ 0,98 : le retrait en liquide coûte 2 %) ; dessous, un petit relevé : les impôts à payer au bureau et
    leur coût réel (retrait et Paxum compris), avec le détail de l'addition. Paxum reste une information. ══ */
 body.skin-melange #impots-panel .ip-rel{display:grid;gap:6px;margin:14px 0 0;padding:12px 0 0;
@@ -4847,9 +4849,9 @@ body.montants-caches #impots-panel #lm-f-mt:not(:focus){filter:blur(6px)}
   #impots-panel .lm-f-a .lm-b{flex:1 1 100%}
 }
 
-/* ── feat7_mois (16/10 : correctifs du mois d’André, D1 D2 D3 D5 D6 D9 D10 D11 D12 D13 D14) ── */
-/* ══ feat7_mois (16/10) : correctifs du mois d'André — jetons du thème seulement, aucune couleur écrite en dur ══ */
-/* D6 · téléphone : le badge « 👤 Andre » coupait le nom du site (« NOCTRA … ») et l'état d'enregistrement
+/* ── feat7_mois (16/10 : correctifs du mois du propriétaire, D1 D2 D3 D5 D6 D9 D10 D11 D12 D13 D14) ── */
+/* ══ feat7_mois (16/10) : correctifs du mois du propriétaire — jetons du thème seulement, aucune couleur écrite en dur ══ */
+/* D6 · téléphone : le badge « 👤 Prénom » coupait le nom du site (« NOCTRA … ») et l'état d'enregistrement
    (« Tout est en… », « 1 non enre… »). Il quitte l'en-tête du téléphone ; le prénom est dans le menu « ⋯ ». */
 @media (max-width:640px){
   html body .dash > .topbar #role-badge{display:none!important}
@@ -4958,6 +4960,40 @@ body.skin-melange #impots-panel .ip-liq-det{margin-top:6px}
 @media (max-width:640px){
   #impots-panel .ip-suivi > .ip-sv-a .lm-b{flex:1 1 100%}
 }
+
+/* ── feat9_restes (17/10 : petits iPhone, copie de secours complète, liste du mois sans bilan) ── */
+/* ══ feat9_restes (17/10) : l'aperçu d'import (« Restaurer une copie… ») ══
+   Les cases étaient des éléments d'une colonne flexible de hauteur bornée (46 % de l'écran) : au lieu de faire défiler
+   la liste, le navigateur les ÉCRASAIT (jusqu'à 44 px) et leur texte débordait sur la case suivante (déjà visible avec
+   une seule longue case ; pire avec les cases de la copie complète). Chaque ligne garde sa hauteur ; la liste défile. */
+#bilan-dlg .bd-plus > *{flex-shrink:0}
+/* ══ feat9_restes (17/10) : au téléphone, la liste du mois et le haut de l'accueil se resserrent ══
+   Rien n'est caché : la ligne à faire garde son échéance, son montant, son détail et ses deux boutons de 44 px (sur une
+   ligne) ; seules les marges diminuent — dans la carte (intérieur, entre les lignes, au-dessus des boutons, interligne du
+   détail 19 → 18 px) et, QUAND LA CARTE EST LÀ, entre elle et la suite (titre « Résultat », bandeau du mois, bilan du
+   mois). Sans carte, l'accueil ne bouge pas. Ordinateur et tablette : rien ne change. */
+@media (max-width:640px){
+  body.skin-melange #haut-mois > #liste-mois{margin:8px 0 0}
+  #liste-mois{padding:10px 14px 0}
+  #liste-mois.lm-tout{padding-bottom:10px}
+  #liste-mois .lm-l{margin-top:6px}
+  #liste-mois .lm-i{padding:8px 0 10px}
+  #liste-mois .lm-n{line-height:18px}
+  #liste-mois .lm-a,#liste-mois .lm-f{margin-top:6px}
+  body.skin-melange #page-ca:has(> #haut-mois > #liste-mois:not([hidden])) > #haut-mois{margin-bottom:4px}
+  body.skin-melange #page-ca:has(> #haut-mois > #liste-mois:not([hidden])) > #empty-state + .kpi-sec{margin-top:10px;margin-bottom:6px}
+  body.skin-melange #page-ca:has(> #haut-mois > #liste-mois:not([hidden])) > #insights-banner{margin-bottom:8px!important}
+  body.skin-melange #page-ca:has(> #haut-mois > #liste-mois:not([hidden])) #ca-entry-panel.replie{padding-top:12px}
+  body.skin-melange #page-ca:has(> #haut-mois > #liste-mois:not([hidden])) #ca-entry-panel.replie > .saisie-bascule{margin-top:10px}
+}
+
+/* ── feat9_securite (17/10 : S-A identifiants, S-D' autres sessions, S-C sécurité de contenu, pastille) ── */
+/* (17/10) pastille d'identité de l'en-tête (ordinateur, tablette ; le téléphone la cache, D6) : icône au trait du site
+   (plus d'émoji), 12 px, encre --acc-txt sur --acc-12 — les jetons du thème, contraste mesuré ≥ 4,5:1 en clair et en
+   sombre (Chrome et Safari). Le style suit le badge « Lecture seule ». Jamais de display ici (le JS et D6 le gèrent). */
+.dash > .topbar #role-badge{align-items:center;gap:6px;font-size:12px;line-height:16px;font-weight:600;padding:4px 10px 4px 8px;
+  border-radius:999px;background:var(--acc-12);color:var(--acc-txt);border:1px solid var(--acc-45);white-space:nowrap}
+.dash > .topbar #role-badge svg{flex:none;width:14px;height:14px}
 </style>
 </head>
 <body class="skin-melange">
@@ -4971,8 +5007,8 @@ body.skin-melange #impots-panel .ip-liq-det{margin-top:6px}
   <div id="login-box">
     <div class="lg-f">
       <label class="lg-l" for="login-ident">Identifiant</label>
-      <div class="lg-c"><svg class="pg-i" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input id="login-ident" type="text" placeholder="ton pr&#233;nom" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter'){document.getElementById('login-input').focus();}"></div>
-      <div id="login-aide">Ton pr&#233;nom en minuscules. Une ancienne adresse e-mail marche aussi.</div>
+      <div class="lg-c"><svg class="pg-i" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><input id="login-ident" type="text" placeholder="ton identifiant" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter'){document.getElementById('login-input').focus();}"></div>
+      <div id="login-aide">Ton identifiant de connexion.</div>
     </div>
     <div class="lg-f">
       <label class="lg-l" for="login-input">Mot de passe</label>
@@ -5064,7 +5100,7 @@ body.skin-melange #impots-panel .ip-liq-det{margin-top:6px}
     <button onclick="openGSearch()" class="icon-btn" title="Recherche globale (Ctrl+Shift+F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
     <button onclick="openQuickAdd()" class="icon-btn" title="Ajout rapide (Ctrl+K)" style="color:var(--acc-txt)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
     <button onclick="toggleTheme()" id="theme-btn" class="icon-btn" title="Changer de thème" aria-label="Changer de thème"><svg class="ico-lune" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="ico-soleil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
-    <div id="role-badge" style="display:none;font-size:11.5px;padding:3px 8px;border-radius:5px;font-weight:600"></div>
+    <div id="role-badge" style="display:none"></div>
     <button onclick="doLogout()" class="icon-btn" title="Déconnexion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg></button>
   </div>
 </div>
@@ -5323,8 +5359,8 @@ body.skin-melange #impots-panel .ip-liq-det{margin-top:6px}
       <div id="sauv-mois-box" class="hl-snap"></div>
       <div class="hl-copie">
         <div class="hl-rec-h">Copie de secours</div>
-        <div class="hl-outil"><div class="hl-outil-t"><b>Télécharger une copie de secours</b><span>un fichier avec tous tes bilans et paiements, à garder de côté</span></div><button type="button" class="hl-btn" onclick="exportData()"><svg class="pg-i" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>Télécharger</button></div>
-        <div class="hl-outil hl-import"><div class="hl-outil-t"><b>Restaurer une copie…</b><span>remplace TOUTES tes données par celles du fichier choisi (une confirmation est demandée)</span></div><label class="hl-btn"><svg class="pg-i" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg>Choisir le fichier<input type="file" accept=".json" onchange="importData(event)" hidden></label></div>
+        <div class="hl-outil"><div class="hl-outil-t"><b>Télécharger une copie de secours</b><span>un fichier avec tous tes bilans, paiements, impôts et l’Historique (corbeille comprise), à garder de côté</span></div><button type="button" class="hl-btn" onclick="exportData()"><svg class="pg-i" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>Télécharger</button></div>
+        <div class="hl-outil hl-import"><div class="hl-outil-t"><b>Restaurer une copie…</b><span>reprend ce qui manque dans ta base ; un aperçu montre tout avant, rien n’est supprimé</span></div><label class="hl-btn"><svg class="pg-i" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg>Choisir le fichier<input type="file" accept=".json" onchange="importData(event)" hidden></label></div>
       </div>
       <div class="hl-danger"><button onclick="clearEditLog()"><svg class="pg-i" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg><span>Effacer tout l’historique…</span></button></div>
     </div>
@@ -5436,7 +5472,7 @@ function applyRoleUI(){
   _role=localStorage.getItem('ccn_role')||'owner';
   const badge=document.getElementById('role-badge');
   if(_role==='assoc'){
-    if(badge){badge.style.display='inline-flex';badge.textContent='🤝 Associé';badge.style.background='#221a2d';badge.style.color='#e879f9';badge.style.border='0.5px solid #e879f9';}
+    if(badge){badge.style.display='inline-flex';_badgeIdentite(badge,'asso','Associé');}
     // Associé : lecture seule sur le formulaire CA
     const form=document.querySelector('#page-ca .panel');
     if(form)form.style.display='none';
@@ -5982,9 +6018,9 @@ function avancesLigne(e, k){
 }
 function gai(){return afs.map(id=>({name:document.getElementById('an-'+id)?.value||'Dépense',val:parseFloat(document.getElementById('av-'+id)?.value)||0,paidBy:document.getElementById('ar-'+id)?.querySelector('[data-pb]')?.dataset.pb||'moi'})).filter(i=>i.val>0);}
 const _TAUX=0.80;   // part qui te reste apres commission plateforme
-// (12/10 ; circuit précisé par André le 14/10) RÈGLE D'ANDRÉ — sur l'argent ONLYFANS seulement
+// (12/10 ; circuit précisé par le propriétaire le 14/10) RÈGLE DU PROPRIÉTAIRE — sur l'argent ONLYFANS seulement
 //   (Telegram n'a aucun frais) : OnlyFans verse le net sur Paxum (0,25 $ fixe par virement :
-//   ignoré) ; André déclare aux impôts 1 % de ce qui arrive sur Paxum ; TOUT passe ensuite en
+//   ignoré) ; le propriétaire déclare aux impôts 1 % de ce qui arrive sur Paxum ; TOUT passe ensuite en
 //   crypto (Paxum prend 3,5 %) ; les impôts se paient EN LIQUIDE et retirer la crypto en liquide
 //   coûte 2 % : pour 100 $ d'impôts on garde 100 ÷ 0,98 = 102,04 $ en crypto (soit 105,74 $
 //   arrivés sur Paxum). Frais = net × 3,5 % + net × 1 % ÷ 0,98, retirés avant le partage
@@ -5996,7 +6032,7 @@ const _IMPOTS_OF=0.01, _PAXUM_OF=0.035, _RETRAIT_LIQUIDE=0.02;
 function fraisOF(netOF){ const n=Number(netOF)||0; return n*_PAXUM_OF+n*_IMPOTS_OF/(1-_RETRAIT_LIQUIDE); }
 function profitEntree(e){
   const n=(Number(e.brut)||0)*_TAUX;
-  // (15/10) AU CENTIME (André : « je veux voir même les centimes ») ; avant : au dollar (9 547,96 -> 9 548).
+  // (15/10) AU CENTIME (le propriétaire : « je veux voir même les centimes ») ; avant : au dollar (9 547,96 -> 9 548).
   // Comme la règle du 14/10 : recalculé à la lecture (entryFromDb) et à l'enregistrement, jamais réécrit en douce.
   const p=n-fraisOF(n)+(Number(e.tgNet)||0)-(Number(e.va)||0)-(Number(e.mo)||0)
     -(Number(e.ci)||0)-(Number(e.ch)||0)-(Number(e.alT)||0);
@@ -6627,7 +6663,7 @@ function renderForecast(){
 
 
 // ── Comparaison periode vs periode precedente (pastilles KPI) ──
-// (2e tour) Deux règles, décidées pour André (un bilan par mois) :
+// (2e tour) Deux règles, décidées pour le propriétaire (un bilan par mois) :
 //  - une période en MOIS ENTIERS (Ce mois-ci, Mois dernier, 3 mois, ou dates du 1er au
 //    dernier jour) se compare aux MÊMES mois civils juste avant. Avant : N jours glissants,
 //    et les 31 jours avant octobre contenaient DEUX bilans (août + septembre) -> « −68 % » ;
@@ -6802,7 +6838,7 @@ function uk(){
   // chaque ligne et le bandeau d'analyses. Avant, CETTE carte divisait par le
   // brut (« 58 % du CA ») pendant que le bandeau, juste dessous, divisait par
   // le net (« marge 72 % ») : deux marges differentes cote a cote. Et la regle
-  // d'Andre est claire : la commission OnlyFans n'est pas une perte de marge.
+  // du propriétaire est claire : la commission OnlyFans n'est pas une perte de marge.
   // Le bilan en cours de modification (ou un bilan neuf déjà rempli) compte dans le nombre :
   // il est dans les montants, il est dans le compteur (plus de « $6,800 · aucun bilan »).
   const _nbB=f.length+(_brouillon&&(_editingId||_brouillonRempli())?1:0);
@@ -6810,7 +6846,7 @@ function uk(){
   set('pva',_pp('va',va));set('pmo',_pp('mo',mo));set('pci',_pp('ci',ci));set('pch',_pp('ch',ch));
   set('pal',al&&net?fmtPct(_parts.al!=null?_parts.al:Math.round(al/net*100))+' · '+ac+' dépense'+(ac>1?'s':''):'—');set('pdep',pct(dep,net));set('pfr',fr?'1\u00a0% + retrait + 3,5\u00a0%':'—');set('ppr',net?fmtPct(Math.round(pr/net*100))+' de marge':'—');
   // « dont ta moitié » : la règle des 50 % que la Part de la modèle applique déjà
-  // ((bénéfice + paiements modèle notés dans les bilans) × 0,5), vue du côté d'André.
+  // ((bénéfice + paiements modèle notés dans les bilans) × 0,5), vue du côté du propriétaire.
   // Seulement si le bénéfice est positif.
   const _moiEl=document.getElementById('pmoitie');
   if(_moiEl){
@@ -7050,7 +7086,7 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 // Rien n'est plus publié, et l'usage quotidien ne change pas.
 function retenirMail(m){ try{ localStorage.setItem('ccn_mail', m); }catch(e){} }
 // ─────────────────────────────────────────────────────────────────────────
-// CONNEXION PAR IDENTIFIANT (30/09) — le prénom en minuscules, plus d'e-mail.
+// CONNEXION PAR IDENTIFIANT (30/09) — un identifiant, plus d'e-mail.
 // GoTrue, l'authentification de Supabase, ne sait se connecter qu'avec une
 // ADRESSE. On en garde donc une cote base, mais personne ne la tape : elle
 // est DERIVEE de l'identifiant.
@@ -7065,7 +7101,7 @@ const DOMAINE_IDENT = 'noctra.invalid';
 function identVersMail(v){
   const s = String(v || '').trim().toLowerCase().replace(/\s+/g, '');
   if (!s) return '';
-  // (15/10) « André », « ANDRÉ » : les comptes s'écrivent sans accent ; on retire les accents de l'IDENTIFIANT,
+  // (15/10) un identifiant tapé avec accent ou en majuscules (« Élodie », « ÉLODIE ») : les comptes s'écrivent sans accent ; on retire les accents de l'IDENTIFIANT,
   // jamais d'une adresse complète (gardée telle quelle).
   return s.includes('@') ? s : (s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') + '@' + DOMAINE_IDENT);
 }
@@ -7079,9 +7115,9 @@ function retenirIdent(v){ try{ const s=String(v||'').trim().toLowerCase();
 // maintenant qui a saisi.
 function nomAffiche(ident){
   const s = String(ident || '').split('@')[0].toLowerCase();
-  // Un prenom, pas n'importe quoi : une ancienne adresse complete donnait
+  // Un identifiant simple, pas n'importe quoi : une ancienne adresse complete donnait
   // le début de l'adresse comme signature d'entree. Tout ce qui n'est pas un
-  // prenom simple retombe sur l'ancien comportement.
+  // identifiant simple retombe sur l'ancien comportement.
   if (!/^[a-z\u00e0-\u00ff-]{2,12}$/.test(s)) return 'Moi';
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -7089,10 +7125,15 @@ function majBadgeIdentite(){
   const b = document.getElementById('role-badge');
   if (!b || !_currentUser || _currentUser === 'Moi') return;
   b.style.display = 'inline-flex';
-  b.textContent = '\ud83d\udc64 ' + _currentUser;
-  b.style.background = 'color-mix(in srgb, var(--acc) 12%, transparent)';
-  b.style.color = 'var(--acc)';
-  b.style.border = '0.5px solid color-mix(in srgb, var(--acc) 45%, transparent)';
+  _badgeIdentite(b, 'qui', _currentUser);
+}
+// (17/10) La pastille de l'en-tête (ordinateur, tablette) : l'icône au trait du site (plus d'émoji) + le nom, écrit
+// comme du TEXTE ; taille et couleurs : CSS « pastille d'identité » (jetons du thème, 12 px, contraste mesuré).
+function _badgeIdentite(b, ico, txt){
+  var p = ico === 'asso' ? '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' : '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>';
+  b.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + '</svg><span></span>';
+  b.lastChild.textContent = String(txt == null ? '' : txt);
+  b.style.background = ''; b.style.color = ''; b.style.border = '';
 }
 function prefillIdent(){
   const c = document.getElementById('login-ident');
@@ -7516,7 +7557,7 @@ function showSaveStatus(msg, color='var(--acc-txt)') {
     + _ic(_g[1] === '\u2713' ? 'valide' : (_g[1] === '\u23f3' ? 'horloge' : 'alerte')) + '</span>' + esc(String(msg).slice(_g[0].length));
   else el.textContent = msg;
   // L'enregistrement AUTOMATIQUE réussi ne fait plus surgir « ✓ Sauvegardé » : l'état de l'en-tête
-  // (« ✓ Enregistré à 10:12 ») le dit déjà, et après un bilan c'était la 3e confirmation (André).
+  // (« ✓ Enregistré à 10:12 ») le dit déjà, et après un bilan c'était la 3e confirmation (le propriétaire).
   el.style.color = (typeof _fmCouleur === 'function') ? _fmCouleur(color) : color; el.style.opacity = (msg === '✓ Sauvegardé') ? '0' : '1';
   const duree = estEchec ? 20000 : (/^✓ (Restauré|Copie restaurée)/.test(String(msg)) ? 8000 : 2500);   // un échec doit rester lisible
   setTimeout(() => {
@@ -7537,7 +7578,7 @@ function flashMsg(id, msg, color='var(--acc-txt)') {
   else el.textContent = msg;
   el.style.color = color; el.style.opacity = '1';
   clearTimeout(el._t);
-  // (16/10, écrans E1) Une ERREUR (« ⚠ … ») restait 2,2 s, souvent hors de l'écran : André croyait avoir
+  // (16/10, écrans E1) Une ERREUR (« ⚠ … ») restait 2,2 s, souvent hors de l'écran : le propriétaire croyait avoir
   // enregistré. Elle reste maintenant jusqu'à ce qu'il la touche ou corrige, près du champ fautif mis en
   // évidence et amené à l'écran (_fmMontrer, bloc « écrans »). Une réussite garde ses 2,2 s.
   if (typeof _fmMontrer === 'function' && _fmMontrer(el, id, msg)) return;
@@ -7992,6 +8033,9 @@ function checkGoalReached(profitBefore, profitAfter, goal) {
 
 // ── Export / Import JSON + CSV ──
 function exportData() {
+  // (17/10, feat9_restes) la copie COMPLÈTE : + journal (et corbeille), archives relues, objectif, pierres tombales ;
+  // jamais le webhook. Le corps ci-dessous reste le repli (un banc qui extrait cette fonction seule).
+  if (typeof _secoursComplete === 'function') return _secoursComplete();
   const d = { ents, vas, virements, modeles, impots_payes: (typeof impotsPayes !== 'undefined' ? impotsPayes : []), impots_retraits: (typeof impotsRetraits !== 'undefined' ? impotsRetraits : []), exportedAt: new Date().toISOString() };
   // (15/10, D-10) la copie dit d'où elle vient : un fichier d'un autre carnet est reconnu à l'import
   d.site = (typeof SITE_FINANCES !== 'undefined') ? SITE_FINANCES : 'noctra'; d.version = 2;
@@ -8019,7 +8063,7 @@ function exportCSV() {
 }
 
 function importData(e) {
-  if (ecritureInterdite('import : il ÉCRASE tout')) return;
+  if (ecritureInterdite('import d’une copie')) return;
   const file = e.target.files[0]; if (!file) return;
   const r = new FileReader();
   r.onload = async ev => {
@@ -9844,7 +9888,7 @@ function _brouillonRempli(){
   try{ mq.addEventListener('change', placer); }catch(e){ try{ mq.addListener(placer); }catch(_){} }
 })();
 // (13/10) La DERNIÈRE période choisie est retenue (stockage local, clé de CE site) : l'usage
-// d'André est « Ce mois-ci », chaque visite rouvrait « Depuis le début ».
+// du propriétaire est « Ce mois-ci », chaque visite rouvrait « Depuis le début ».
 var _periodeRestauree=false;
 function _memoPeriode(v){ try{ localStorage.setItem(cleLocale('periode'), v); }catch(e){} }
 function _restaurerPeriode(){
@@ -10316,7 +10360,7 @@ function renderRecords(){
 // OnlyFans → Paxum (1 % déclaré aux impôts) → tout passe en crypto (Paxum prend SES 3,5 % lui-même :
 // rien à garder pour Paxum) → partage 50/50 en crypto → les impôts se paient EN LIQUIDE, et retirer la
 // crypto en liquide coûte 2 %. Les impôts sont partagés moitié-moitié (déjà dans le bénéfice : sa moitié
-// est retirée de « Reste à envoyer ») et André les paie pour les deux.
+// est retirée de « Reste à envoyer ») et le propriétaire les paie pour les deux.
 // Parties, au centime AFFICHÉ (chaque addition tombe juste à l'écran) :
 //   imp     impôts à payer en liquide = 1 % du net OnlyFans
 //   garde   à garder en crypto = imp ÷ (1 − 2 %)                 retrait = garde − imp
@@ -10367,7 +10411,7 @@ function renderImpots(){
     return '<div class="ip-c ' + cls + '"><div class="ip-l">' + lbl + '</div><div class="ip-v">' + val + '</div>'
       + (sous ? '<div class="ip-s">' + sous + '</div>' : '') + (apres || '') + '</div>';
   };
-  // le relevé, dans la tuile : ce qu'André paiera au bureau, et ce que ça coûte vraiment
+  // le relevé, dans la tuile : ce que le propriétaire paiera au bureau, et ce que ça coûte vraiment
   var rel = '<dl class="ip-rel">'
     + '<div class="ip-r ip-r-imp"><dt>Impôts à payer, en liquide</dt><dd>' + fmtC(T.imp) + '</dd></div>'
     + '<div class="ip-r ip-r-cout"><dt>Coût réel des impôts</dt><dd>' + fmtC(T.cout) + '</dd></div>'
@@ -10737,7 +10781,7 @@ function renderChiffres(){
 
 // ── feat2_rappel (rappel de fin / début de mois, 14/10) ──
 // ══ RAPPEL DU BILAN (14/10) ══════════════════════════════════════════════════
-// André fait UN bilan par mois, qu'il met à jour au fil du mois. Le rappel, en haut de l'accueil :
+// Le propriétaire fait UN bilan par mois, qu'il met à jour au fil du mois. Le rappel, en haut de l'accueil :
 //  • les 3 derniers jours du mois : le bilan du mois n'existe pas, ou n'a pas été mis à jour depuis
 //    plus de 3 jours (jours de calendrier) → « Fin du mois : pense à mettre à jour le bilan d'octobre » ;
 //  • du 1er au 7 (la fenêtre de « Finaliser ») : le bilan du mois précédent n'a pas été mis à jour
@@ -11005,7 +11049,7 @@ function objFixer(){
 }
 
 // B2 · ANNEAU, en mieux : l'anneau à DROITE de la tuile (en bas, sur la ligne de la marge : il ne fait pas grandir
-// la tuile pour lui), la phrase d'André sous le chiffre ; le % (ou une coche) au centre ; la prévision en trait fin et
+// la tuile pour lui), la phrase du propriétaire sous le chiffre ; le % (ou une coche) au centre ; la prévision en trait fin et
 // léger ; au-delà de 100 %, un 2e tour par-dessus.
 OBJ_DESSINS.b2 = function(S){
   var dr = S.etat !== 'enroute' ? _objFait(S)
@@ -11048,7 +11092,7 @@ function annulerSaisie(){ return _apres(_abandonnerSiBesoin(), function(ok){ if(
 
 // ── feat3_annee ──
 // ══ feat3_annee (15/10) : « L'année » au Récap — AFFICHAGE SEULEMENT ══
-// André : « le Récap de l'année : le total de l'année, le meilleur trimestre, et la comparaison avec
+// Le propriétaire : « le Récap de l'année : le total de l'année, le meilleur trimestre, et la comparaison avec
 // l'an dernier une fois qu'il y aura 12 mois de bilans ». Aucune écriture, aucun stockage, aucune règle neuve :
 //  - tout vient de getMonthlyRecap(), les MÊMES agrégats par mois que le Récap ; une somme de mois est
 //    l'addition des lignes « Mois par mois » au centime (chaque mois tel qu'il est écrit), écrite par fmtC / _mS
@@ -11325,7 +11369,7 @@ function _rcBenefTel(){ try{ return !!(window.matchMedia && window.matchMedia('(
 // 1. « Changer mon mot de passe » : menu « ⋯ » au téléphone, clé de l'en-tête à l'ordinateur ; jamais en lecture
 //    seule. L'actuel est vérifié en se RECONNECTANT (signInWithPassword avec l'adresse de la SESSION : rien n'est
 //    tapé ni deviné), puis sb.auth.updateUser. Règles : 10 caractères au moins (72 au plus, limite de Supabase),
-//    différent de l'actuel, sans le prénom du compte, confirmation identique. Les espaces au début et à la fin
+//    différent de l'actuel, sans l'identifiant du compte, confirmation identique. Les espaces au début et à la fin
 //    sont retirés, comme sur l'écran de connexion (doLogin les retire : un mot de passe qui en garderait ne
 //    marcherait plus jamais).
 //    ⛔ Aucun mot de passe ne sort de la fenêtre : rien dans la console, le stockage du navigateur, l'Historique,
@@ -11462,7 +11506,7 @@ function _mdpConstruire(){
     +   _mdpChamp('md-actuel', 'Mot de passe actuel', 'current-password', 'next')
     +   _mdpChamp('md-nouveau', 'Nouveau mot de passe', 'new-password', 'next', 'md-regles')
     +   '<ul class="md-regles" id="md-regles">' + _mdpRegle('long', '10 caractères ou plus') + _mdpRegle('diff', 'Différent de l’actuel')
-    +     _mdpRegle('prenom', 'Sans ton prénom') + '</ul>'
+    +     _mdpRegle('prenom', 'Sans ton identifiant') + '</ul>'
     +   _mdpChamp('md-confirm', 'Confirme le nouveau mot de passe', 'new-password', 'done', 'md-pareil')
     +   '<ul class="md-regles md-pareil" id="md-pareil">' + _mdpRegle('pareil', 'Les deux sont identiques') + '</ul>'
     +   '<div class="md-msg" id="md-msg" role="alert" aria-live="assertive"></div>'
@@ -11470,6 +11514,7 @@ function _mdpConstruire(){
     + '<div class="md-fini" hidden><span class="md-fini-ico" aria-hidden="true">' + _mdpIco(_MDP_I.ok, 26) + '</span>'
     +   '<div class="md-fini-t">Mot de passe changé</div>'
     +   '<p class="md-fini-x">Il marche dès maintenant. Range-le dans un gestionnaire de mots de passe : ne l’écris dans aucun fichier ni aucun message.</p>'
+    +   '<p class="md-fini-x md-fini-autres" id="md-autres"></p>'
     +   '<p class="md-fini-x">Chaque compte a le sien : l’autre personne change le sien depuis sa propre session.</p></div>'
     + '<div class="md-btns"><button type="button" class="md-b md-annuler">Annuler</button>'
     +   '<button type="submit" class="md-b md-ok"><span class="md-ok-t">Changer le mot de passe</span></button>'
@@ -11626,6 +11671,33 @@ function _mdpErreur(e, etape, champ){
   _mdpMajRegles();
   return false;
 }
+// (17/10, S-D') Après un changement RÉUSSI : fermer les AUTRES sessions du compte (appareil perdu, session volée).
+// supabase-js 2.117.3 : signOut({ scope: 'others' }) = POST /auth/v1/logout?scope=others avec le jeton de CETTE
+// session, qui reste ouverte (vu dans la vraie bibliothèque : seule la portée « others » garde la session locale ;
+// « Se déconnecter » appelle signOut sans option = portée « global »). Rend true si c'est confirmé, false sinon
+// (refus, coupure, pas de réponse dans le délai) : le mot de passe, lui, reste changé. Ne lève jamais d'erreur.
+async function _mdpFermerAutres(client, delai){
+  var minuteur = null;
+  try {
+    if (!client || !client.auth || typeof client.auth.signOut !== 'function') return false;
+    var r = await Promise.race([
+      client.auth.signOut({ scope: 'others' }),
+      new Promise(function(ok){ minuteur = setTimeout(function(){ ok({ error: { message: 'pas de réponse' } }); }, delai || 10000); })
+    ]);
+    return !!r && !r.error;
+  } catch (e) { return false; }
+  finally { if (minuteur) clearTimeout(minuteur); }
+}
+// La phrase de la vue « Mot de passe changé ». duree = durée de vie d'un jeton d'accès (secondes) : une page déjà
+// ouverte ailleurs garde le sien jusqu'à son expiration, puis ne peut plus le renouveler.
+function _mdpTexteAutres(ok, duree){
+  if (!ok) return 'La déconnexion de tes autres appareils n’a pas pu être confirmée (connexion coupée ou pas de réponse). '
+    + 'Ton mot de passe est bien changé. Par précaution, touche « Se déconnecter » sur chacun de tes autres appareils.';
+  var m = Math.round((Number(duree) || 0) / 60);
+  var d = m === 60 ? 'une heure' : (m > 60 && m % 60 === 0 ? (m / 60) + ' heures' : (m === 1 ? '1 minute' : m + ' minutes'));
+  return 'Les autres appareils connectés à ton compte sont déconnectés : ils devront entrer le nouveau mot de passe'
+    + (m >= 1 ? ' (une page déjà ouverte peut encore marcher jusqu’à ' + d + ')' : '') + '.';
+}
 async function _mdpEnvoyer(ev){
   if (ev && ev.preventDefault) ev.preventDefault();
   if (_MDP.occupe) return false;
@@ -11645,7 +11717,7 @@ async function _mdpEnvoyer(ev){
   if (n.length < _MDP_MIN) return faute(cn, 'Le nouveau mot de passe doit faire au moins 10 caractères.');
   if (n.length > _MDP_MAX) return faute(cn, 'Le nouveau mot de passe est trop long (72 caractères au plus).');
   if (!R.diff) return faute(cn, 'Le nouveau doit être différent de l’actuel.');
-  if (!R.prenom) return faute(cn, 'Le nouveau ne doit pas contenir ton prénom : c’est la première chose qu’on essaie.');
+  if (!R.prenom) return faute(cn, 'Le nouveau ne doit pas contenir ton identifiant : c’est la première chose qu’on essaie.');
   if (!c) return faute(cc, 'Confirme le nouveau mot de passe.');
   if (!R.pareil) return faute(cc, 'La confirmation ne correspond pas au nouveau mot de passe.');
   if (!sb || !sb.auth) return faute(null, 'Connexion impossible, réessaie.');
@@ -11667,8 +11739,14 @@ async function _mdpEnvoyer(ev){
     _mdpOccupe(false);
     return _mdpErreur(e, etape, champ);
   }
-  _mdpOccupe(false);
+  // (17/10, S-D') Le mot de passe EST changé : les valeurs quittent la page tout de suite, puis les AUTRES sessions
+  // du compte sont fermées (celle-ci reste ouverte). Un échec ici ne défait rien : la vue de réussite le dit.
   _mdpVider();          // les valeurs quittent la page tout de suite
+  _mdpOccupe(true, 'Déconnexion de tes autres appareils…');
+  var autres = await _mdpFermerAutres(sb, 10000);
+  _mdpOccupe(false);
+  var pa = ov.querySelector('.md-fini-autres');
+  if (pa) pa.textContent = _mdpTexteAutres(autres, r1 && r1.data && r1.data.session && r1.data.session.expires_in);
   _mdpVue(true);
   setTimeout(function(){ try { ov.querySelector('.md-fermer').focus({ preventScroll: true }); } catch (e) {} }, 30);
   return true;
@@ -11754,7 +11832,7 @@ function evolutionPct(x, y){ x = Number(x) || 0; y = Number(y) || 0; return y !=
 var _donneesChargees;          // undefined avant le 1er chargement ; false pendant / après un échec ; true ensuite
 var _derniereLecture = 0;      // Date.now() de la dernière lecture complète réussie
 var _vuServeur = {};           // id -> copie du bilan tel qu'il est EN BASE (dernière lecture ou écriture)
-var _creeLe = {};              // id -> created_at lu en base (« créé par Manon à 15:37 »)
+var _creeLe = {};              // id -> created_at lu en base (« créé par l'associée à 15:37 »)
 var _baseEdition = null;       // {id, base} : le bilan tel qu'il était quand le formulaire s'est ouvert
 var _tombes = {};              // cle -> Set des identifiants supprimés (pierres tombales lues en base)
 var _seVerif = false, _qaVerif = false, _dernierEchec = 'reseau';
@@ -12586,7 +12664,9 @@ async function _restaurerAvecApercu(src){
   // 1. ce que la BASE contient maintenant (pas la copie de cet écran)
   var srvEnts, dist;
   var clesL = Object.keys(_LISTES).filter(function(k){ return Array.isArray(d[k]); });   // autres listes déclarées (ex. impôts payés)
-  try { var rr = await Promise.all([apiFetch('/api/entries'), apiFetch('/api/settings?cles=virements,virements_supprimes' + clesL.map(function(k){ return ',' + k + ',' + k + '_supprimes'; }).join(''))]); srvEnts = rr[0]; dist = rr[1] || {}; }
+  // (17/10, feat9_restes) une copie complète : journal, archives, objectif et pierres tombales relus aussi (ancienne copie : rien de plus)
+  var _clesPlus = (typeof _secoursPlusCles === 'function') ? _secoursPlusCles(d) : [], distPlus = {};
+  try { var rr = await Promise.all([apiFetch('/api/entries'), apiFetch('/api/settings?cles=virements,virements_supprimes' + clesL.map(function(k){ return ',' + k + ',' + k + '_supprimes'; }).join('')), _clesPlus.length ? apiFetch('/api/settings?cles=' + _clesPlus.join(',')) : null]); srvEnts = rr[0]; dist = rr[1] || {}; distPlus = rr[2] || {}; }
   catch (e) { showSaveStatus('⚠ Impossible de lire ta base pour préparer la restauration — rien n’a été changé. Réessaie.', '#ef4444'); return; }
   if (!Array.isArray(srvEnts)) srvEnts = [];
   var lireL = function(t){ try { var v = JSON.parse(t || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } };
@@ -12604,7 +12684,10 @@ async function _restaurerAvecApercu(src){
   valides.forEach(function(f){
     var s = null;
     if (f.id && parId[f.id]) s = parId[f.id];
-    else if (!f.id) {
+    // (17/10, feat9_restes) un identifiant INCONNU de la base (bilans recréés après une base effacée : la base leur donne de
+    // nouveaux identifiants) se reconnaît comme une ligne sans identifiant : même jour et mêmes chiffres = identique — jamais
+    // recréé en double ; même jour, chiffres différents = « remettre à la valeur de la copie » (case décochée)
+    else {
       var memes = srvEnts.filter(function(x){ return x && x.date === f.date && !pris[x.id]; });
       var egal = memes.find(function(x){ return _sigBilan(x) === _sigBilan(f); });
       if (egal) s = egal; else if (memes.length === 1) s = memes[0]; else if (memes.length > 1) { ambigus.push(f); return; }
@@ -12634,6 +12717,8 @@ async function _restaurerAvecApercu(src){
     d[k].forEach(function(x){ if (!x || typeof x !== 'object') return; var c = String(kd(x)); if (pres[c]) return; (tb[c] ? sup : ab).push(x); });
     return { cle: k, o: o, kd: kd, ab: ab, sup: sup, un: o.titre || 'élément', plusieurs: o.titres || ((o.titre || 'élément') + 's') };
   }).filter(function(a){ return a.ab.length || a.sup.length; });
+  // 3c. (17/10, feat9_restes) ce que la copie complète apporte en plus : journal (et corbeille), objectif, pierres tombales
+  var CP = (_clesPlus.length && typeof _secoursPlus === 'function') ? _secoursPlus(d, distPlus, dist, srvVir) : null, _okCP = true;
   // 4. modèles et VA (pages retirées) : comme avant
   var modAjoutes = [], modRemplaces = false, vasRemplaces = false;
   if (imp) { modRemplaces = Array.isArray(d.modeles) && _canon(d.modeles) !== _canon(modeles || []); vasRemplaces = Array.isArray(d.vas) && _canon(d.vas) !== _canon(vas || []); }
@@ -12647,7 +12732,7 @@ async function _restaurerAvecApercu(src){
   var quand = function(t){ var x = new Date(t); return dlA(_ymd(x)) + ' à ' + x.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}); };
   var nomCopie = imp ? 'la copie' + (okT ? ' du ' + quand(tCopie) : '') : 'la sauvegarde du ' + (okT ? quand(tCopie) : '?');
   var nomB = function(e){ return esc(dlA(e.date)); };
-  var rien = !absents.length && !modifies.length && !virAbsents.length && !virSupprimes.length && !modAjoutes.length && !modRemplaces && !vasRemplaces && !autres.length;
+  var rien = !absents.length && !modifies.length && !virAbsents.length && !virSupprimes.length && !modAjoutes.length && !modRemplaces && !vasRemplaces && !autres.length && !(CP && CP.quelqueChose);
   if (rien) {
     await _fenetre({ ico: 'valide', titre: 'Rien à restaurer', texte: 'Ta base contient déjà tout ce qui est dans ' + nomCopie + '.'
       + (identiques ? ' ' + _pl(identiques, 'bilan identique', 'bilans identiques') + '.' : '')
@@ -12680,6 +12765,7 @@ async function _restaurerAvecApercu(src){
     if (a.sup.length) L.push(_caseHtml('ls_' + a.cle, false, 'Remettre aussi ' + _pl(a.sup.length, esc(a.un) + ' supprimé', esc(a.plusieurs) + ' supprimés') + ' depuis la copie'
       + (a.sup.some(function(x){ return isFinite(Number(x.amount)); }) ? ' (' + fmtC(somme(a.sup)) + ')' : '') + '. Sans cette case, ' + (a.sup.length > 1 ? 'ils restent supprimés.' : 'il reste supprimé.')));
   });
+  if (CP) CP.apercu(L, ligne);
   if (modAjoutes.length || modRemplaces || vasRemplaces) ligne('bd-pl-doux', 'Les modèles et VA de la copie sont repris.');
   if (ambigus.length) ligne('bd-pl-avert', _pl(ambigus.length, 'bilan sans identifiant ignoré', 'bilans sans identifiant ignorés') + ' : plusieurs bilans le même jour dans ta base, impossible de savoir lequel ('
     + ambigus.slice(0, 4).map(nomB).join(', ') + ').');
@@ -12692,7 +12778,7 @@ async function _restaurerAvecApercu(src){
     boutons: [{ l: 'Annuler', v: 'non', cls: 'ghost' }, { l: imp ? 'Restaurer cette copie' : 'Restaurer', v: 'oui', cls: 'danger' }] },
     { html: L.join(''), requis: suspect ? 'sur' : null, bouton: 'danger',
       actif: function(c){ return !!(absents.length || modAjoutes.length || modRemplaces || vasRemplaces || (c.modif && modifies.length) || (c.vir && virAbsents.length) || (c.virsup && virSupprimes.length)
-        || autres.some(function(a){ return (c['l_' + a.cle] && a.ab.length) || (c['ls_' + a.cle] && a.sup.length); })); } });
+        || autres.some(function(a){ return (c['l_' + a.cle] && a.ab.length) || (c['ls_' + a.cle] && a.sup.length); }) || (CP && CP.actif(c))); } });
   if (!r || r.choix !== 'oui') return;
   var c = r.cases || {};
   if (suspect && !c.sur) return;
@@ -12701,6 +12787,7 @@ async function _restaurerAvecApercu(src){
   var virAjout = (c.vir ? virAbsents : []).concat(c.virsup ? virSupprimes : []);
   var _okRestore = true, ok = 0, okRemis = 0, ko = 0, i;
   if (remis.length && !(await _sauvegardeAvant(src.i))) { showSaveStatus('⚠ Sauvegarde de sécurité impossible — rien n’a été changé. Réessaie.', '#ef4444'); return; }
+  if (CP && CP.nT) _okCP = (await CP.appliquerTombes()) !== false && _okCP;   // (17/10, feat9_restes) les traces de suppression d'abord
   if (virAjout.length) {
     if (c.virsup && virSupprimes.length) _ressusciter('virements', virSupprimes.map(function(v){ return String(_cleVirement(v)); }).concat(virSupprimes.map(sigV), virSupprimes.map(_virSig)));
     virements = (virements || []).concat(virAjout);
@@ -12713,6 +12800,7 @@ async function _restaurerAvecApercu(src){
     try { a.o.ecrire((a.o.lire() || []).concat(aj)); } catch (e) {}
     _okRestore = (await _listeEcrire(a.cle)) !== false && _okRestore;
   }
+  if (CP) _okCP = (await CP.appliquer(c)) !== false && _okCP;   // (17/10, feat9_restes) journal (et corbeille), objectif
   if (modAjoutes.length) { modeles = modeles.concat(modAjoutes); _okRestore = (await _saveModeles()) !== false && _okRestore; }
   if (modRemplaces) { modeles = d.modeles; _okRestore = (await _saveModeles()) !== false && _okRestore; }
   if (vasRemplaces) { vas = d.vas; try { rv(); } catch (e) {} }
@@ -12722,11 +12810,13 @@ async function _restaurerAvecApercu(src){
   _rendreTout(); try { renderVirements(); renderModeles(); renderRecovery(); renderSnapshots(); } catch (e) {}
   try {
     if (imp) logEdit('Restauration copie', 'copie du ' + (okT ? quand(tCopie) : '?') + ' · ' + ([ok ? _pl(ok, 'bilan revenu', 'bilans revenus') : '', okRemis ? _pl(okRemis, 'bilan remis à sa valeur', 'bilans remis à leur valeur') : '',
-      virAjout.length ? _pl(virAjout.length, 'paiement ajouté', 'paiements ajoutés') : ''].filter(Boolean).join(', ') || 'modèles et VA'));
+      virAjout.length ? _pl(virAjout.length, 'paiement ajouté', 'paiements ajoutés') : '', CP && CP.fait.lignes ? _pl(CP.fait.lignes, 'ligne d’Historique', 'lignes d’Historique') : '', CP && CP.fait.objectif ? 'objectif du mois' : '', CP && CP.fait.tombes ? _pl(CP.fait.tombes, 'trace de suppression', 'traces de suppression') : ''].filter(Boolean).join(', ') || 'modèles et VA'));
     else logEdit('Restauration sauvegarde', tCopie.toLocaleDateString('fr-FR') + ' · ' + virAjout.length + ' virement(s), ' + ok + ' entrée(s)' + (okRemis ? ', ' + okRemis + ' remise(s) à sa valeur' : ''));
   } catch (e) {}
   if (!_okRestore) showSaveStatus('⚠ Restauration INCOMPLÈTE — paiements ou modèles NON enregistrés au serveur. Refais-la.', '#ef4444');
+  else if (!_okCP) showSaveStatus('⚠ Restauration INCOMPLÈTE — Historique, objectif ou traces de suppression NON enregistrés au serveur. Refais-la.', '#ef4444');
   else showSaveStatus((imp ? '✓ Copie restaurée : ' : '✓ Restauré : ') + _pl(virAjout.length, 'paiement', 'paiements') + ', ' + _pl(ok + okRemis, 'bilan', 'bilans')
+    + (CP && CP.fait.lignes ? ', ' + _pl(CP.fait.lignes, 'ligne d’Historique', 'lignes d’Historique') : '') + (CP && CP.fait.objectif ? ', objectif du mois' : '')
     + (ko ? ' · ' + _pl(ko, 'échec', 'échecs') : ''), ko ? 'var(--todo)' : 'var(--pos)');
 }
 // Au démarrage : l'en-tête dit déjà la vérité si une file attend (avant même le chargement).
@@ -12735,7 +12825,7 @@ try { _etatFile(); } catch (e) {}
 
 // ── feat3_liste (la liste du mois, 15/10) ──
 // ══ LA LISTE DU MOIS (15/10) — en haut de l'Accueil, sous le rappel ══════════════════════════════════════════════
-// André : « j'envoie le virement à la modèle le 1 du mois, donc j'envoie toujours l'argent généré du mois précédent » ;
+// Le propriétaire : « j'envoie le virement à la modèle le 1 du mois, donc j'envoie toujours l'argent généré du mois précédent » ;
 // « les impôts c'est tous les 15 du mois et je dois déclarer ce que la modèle a généré le mois précédent » (1 % du net
 // OnlyFans, payé EN LIQUIDE au bureau). Trois lignes pour le mois qui se termine (octobre : du 29 oct. au 27 nov.) :
 //   1. « Bilan d'octobre » : la règle du RAPPEL, telle quelle (_rappelBilan à la fin du mois, _bilanNonFinalise au début) ;
@@ -12743,7 +12833,7 @@ try { _etatFile(); } catch (e) {}
 //      (_partModele : le calcul SORTI de renderModelShare, le même pour les deux) ; cochée quand les paiements notés
 //      (« Noter un paiement envoyé ») la couvrent ;
 //   3. « 15 nov. : payer les impôts d'octobre » : 1 % du net OnlyFans d'octobre (_chFrais : le calcul du bloc « Impôts
-//      à garder de côté ») ; cochée quand André a noté ce paiement (« J'ai payé les impôts »).
+//      à garder de côté ») ; cochée quand le propriétaire a noté ce paiement (« J'ai payé les impôts »).
 // Aucune règle parallèle. Le SEUL stockage nouveau : la liste des impôts payés (réglage `impots_payes`).
 // ⚠️ BRANCHEMENT (16/10) sur LA fonction générale d'écriture des listes de feat4_donnees (`_saveVirements(cle, liste, o)`) :
 //   la liste est DÉCLARÉE (`_impDeclarer` → `_listeDeclarer('impots_payes', …)`) : relecture de la base juste avant
@@ -12780,7 +12870,7 @@ function _impCharger(brut){
 }
 // Un paiement qui COMPTE : lisible et positif (les autres lignes sont gardées, jamais comptées)
 function _impValide(p){ return !!p && !p.supprime && /^\d{4}-\d{2}$/.test(String(p.mois||'')) && isFinite(Number(p.amount)) && Number(p.amount)>0; }
-// Ce qu'André a noté pour un mois, en centimes
+// Ce que le propriétaire a noté pour un mois, en centimes
 function _impPayeCts(ym){
   return (impotsPayes||[]).filter(function(p){ return _impValide(p) && p.mois===ym; })
     .reduce(function(s,p){ return s+Math.round(Number(p.amount)*100); }, 0);
@@ -12950,12 +13040,15 @@ function _lmEtat(){
   if(!(ents||[]).length) return null;                                         // compte neuf : l'écran de bienvenue le dit
   if(_panneauOuvert()) return null;                                           // un bilan ouvert : on est en train de le faire
   var F=_lmFenetre();
-  if(!F.fin && !_bilansMois(F.ym).length) return null;                         // mois fini sans aucun bilan : rien à clore
-  var lignes=[_lmLigneBilan(F), _lmLigneModele(F), _lmLigneImpots(F)].filter(Boolean);
+  // (17/10, feat9_restes) mois fini sans aucun bilan : rien à clore… sauf des impôts dus : la carte ne garde que leur ligne
+  var sansBilan=!F.fin && !_bilansMois(F.ym).length;
+  if(sansBilan && typeof _lmImpotsSansBilan!=='function') return null;
+  var lignes=sansBilan ? (_lmImpotsSansBilan(F)||[]) : [_lmLigneBilan(F), _lmLigneModele(F), _lmLigneImpots(F)].filter(Boolean);
+  if(!lignes.length) return null;
   var faites=lignes.filter(function(l){ return l.fait; }).length, tout=faites===lignes.length;
   // (feat8, idée 10) tout est coché : la carte n'est plus cachée, elle devient UNE ligne de résumé du mois (_lmHtml),
   // gardée jusqu'à la fin de la fenêtre de la liste (le mois suivant prend alors la place)
-  return {F:F, lignes:lignes, faites:faites, tout:tout};
+  return {F:F, lignes:lignes, faites:faites, tout:tout, sansBilan:sansBilan};
 }
 
 // ── 5. Le dessin ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -13023,7 +13116,7 @@ function _lmHtml(E){
     return _chNb('<div class="lm-tete lm-resume"><span class="lm-ico" aria-hidden="true">'+_LM_I.coche+'</span>'
       +'<div class="lm-tx"><div class="lm-t" id="lm-t">'+_irResumeMois(E)+'</div></div></div>'+flash);
   }
-  var sous=F.fin ? _majuscule(_nomMois(F.ym))+' finit '+fin : 'pour clore '+_nomMois(F.ym);
+  var sous=F.fin ? _majuscule(_nomMois(F.ym))+' finit '+fin : (E.sansBilan ? 'aucun bilan en '+_nomMois(F.ym)+' : il reste les impôts' : 'pour clore '+_nomMois(F.ym));   // (17/10, feat9_restes)
   var faits=E.lignes.filter(function(l){ return l.fait; });
   var resume=faits.length ? _lmResumeHtml(faits) : '';                         // (16/10) téléphone seulement
   var tete='<div class="lm-tete"><span class="lm-ico" aria-hidden="true">'+_LM_I.liste+'</span>'
@@ -13274,13 +13367,13 @@ function _impDecorer(){
 
 // ── feat5_accueil (16/10, sur final21 : P1, P2, P5, P6, P14 de la relecture ; F4, F12, F16) ──
 // ══ feat5_accueil · P1 (15/10 ; 16/10 sur final21) : « Noter un paiement envoyé » s'ouvre DÉJÀ REMPLI ════════════════
-// André paie la modèle le 1er du mois pour le mois PRÉCÉDENT. À l'ouverture du formulaire, le montant proposé est
+// Le propriétaire paie la modèle le 1er du mois pour le mois PRÉCÉDENT. À l'ouverture du formulaire, le montant proposé est
 // EXACTEMENT la ligne « mois terminés » de la Part de la modèle : _partModele().fin — le MÊME appel que la tuile
 // (renderModelShare) et le même chiffre que la ligne 2 de « La liste du mois » (_partModele du mois suivant celui de la
 // liste, c'est-à-dire du mois en cours, hors des 3 derniers jours). AUCUN calcul ici : on lit ce calcul partagé.
 // Règle au centime (F6, comme la tuile et la liste du mois) : proposé dès 0,005 $. Le mois concerné va dans la note.
 // Le montant reste visible et modifiable ; RIEN n'est enregistré : seul « Enregistrer » (addModelPayment, inchangé, avec la
-// file d'attente et la relecture de feat4_donnees) écrit, exactement comme si André avait tapé le montant.
+// file d'attente et la relecture de feat4_donnees) écrit, exactement comme si le propriétaire avait tapé le montant.
 //   - rien de dû pour les mois terminés (à jour, trop envoyé, perte) : champ vide, comme avant ; si la tuile dit quand même
 //     « Reste à envoyer » (c'est la part du mois en cours), une phrase le dit ;
 //   - le mois d'avant est « à finaliser » (règle du rappel, _moisAFinaliser) : le montant est proposé (c'est celui de la
@@ -13337,7 +13430,7 @@ function _msRemplir(){
   var a = document.getElementById('mp-amount'), n = document.getElementById('mp-note'); if(!a) return;
   var P = _msProposition();
   var pA = a.getAttribute('data-propose'), pN = n ? n.getAttribute('data-propose') : null;
-  // on ne remplace JAMAIS ce qu'André a tapé : seulement un champ vide, ou notre proposition d'avant restée telle quelle
+  // on ne remplace JAMAIS ce que le propriétaire a tapé : seulement un champ vide, ou notre proposition d'avant restée telle quelle
   var aLibre = a.value === '' || (pA !== null && a.value === pA);
   var nLibre = aLibre && !!n && (n.value === '' || (pN !== null && n.value === pN));   // la note suit le montant
   if(aLibre){
@@ -13403,11 +13496,11 @@ function _accApresPrevision(){
 
 // ══ feat5_accueil · P6 (15/10) : « Tes bilans » se lit comme le Récap ════════════════════════════════════════════
 // Affichage seulement (aucun montant, aucune écriture ; le geste « Mettre à jour » reste window.editEntry(ri)) :
-//  - un bilan SEUL dans son mois (le rythme d'André : un bilan par mois) porte le nom du mois, « Octobre 2026 » (le nom
+//  - un bilan SEUL dans son mois (le rythme du propriétaire : un bilan par mois) porte le nom du mois, « Octobre 2026 » (le nom
 //    du Récap, _rcMois) ; sa date exacte passe dans le détail (« Daté du 1er oct. 2026 »). Deux bilans ou plus dans le
 //    même mois (saisie au jour) : la date reste le titre, comme avant ;
 //  - « Mettre à jour » en toutes lettres sur le bilan du mois en cours (et sur celui du mois « à finaliser », règle du
-//    rappel : c'est celui qu'André doit rouvrir) ; un crayon discret, avec son nom pour les lecteurs d'écran, sur les autres.
+//    rappel : c'est celui que le propriétaire doit rouvrir) ; un crayon discret, avec son nom pour les lecteurs d'écran, sur les autres.
 function _txUnSeul(e){
   var k = String(e && e.date || '').slice(0, 7); if(!k) return false;
   var n = 0; (ents || []).forEach(function(x){ if(String(x.date || '').slice(0, 7) === k) n++; });
@@ -13579,10 +13672,10 @@ function _fmCouleur(c){
 // ── E1 : une ERREUR d'enregistrement se VOIT ──
 // Avant (mesuré, 9 cas sur 9, Chrome et Safari) : « Enregistrer » est collé en bas de l'écran, le message
 // s'écrivait tout en bas du formulaire (~1 000 px plus bas, hors de l'écran) ou sous la barre d'onglets,
-// puis s'effaçait au bout de 2,2 s : André croyait avoir enregistré.
+// puis s'effaçait au bout de 2,2 s : le propriétaire croyait avoir enregistré.
 // Maintenant : 1) le message va juste sous le champ fautif (ou reste près du bouton s'il n'y a pas de
 // champ), 2) le champ est entouré de rouge (aria-invalid) et amené à l'écran, au-dessus de la barre
-// d'onglets, du bouton collé et du clavier, 3) le message RESTE jusqu'à ce qu'André le touche ou
+// d'onglets, du bouton collé et du clavier, 3) le message RESTE jusqu'à ce que le propriétaire le touche ou
 // corrige le champ (ou replie le formulaire). Un message de réussite garde ses 2,2 s.
 var _fmChampNote = null;          // le champ refusé par verifierMontants (noté par lui, lu ici)
 var _fmToucher = null;            // le dernier bouton touché (pour placer un message près de lui)
@@ -13745,7 +13838,7 @@ function _fmMontrer(el, id, msg, o){
         if (!champ.getAttribute('aria-describedby')) champ.setAttribute('aria-describedby', el.id);
         el._fmChamp = champ;
       }
-      // corrigé = André retape dans le champ fautif (ou, sans champ, dans le même formulaire)
+      // corrigé = le propriétaire retape dans le champ fautif (ou, sans champ, dans le même formulaire)
       el._fmFin = function(ev){
         if (!el.isConnected){ _fmEteindre(el, true); return; }   // formulaire redessiné ou fermé : on se retire
         var c = el._fmChamp;
@@ -14484,7 +14577,7 @@ function _dbTextes(s, r, horsLigne){
 
 // ── feat8_corbeille (16/10 : la corbeille des bilans + une sauvegarde par mois, idée 3) ──
 // ══ feat8_corbeille (16/10) : LA CORBEILLE DES BILANS + UNE SAUVEGARDE PAR MOIS (relecture du 16/10, O2) ═══════════
-// André : « un bilan supprimé par erreur peut être remis, même des mois après ». Avant : perdu au bout de 7 jours (les 7
+// Le propriétaire : « un bilan supprimé par erreur peut être remis, même des mois après ». Avant : perdu au bout de 7 jours (les 7
 // sauvegardes automatiques tournent) et le journal ne gardait que « 30 sept. 2026 · net $12,080.00 ».
 //
 // 1. SUPPRIMER garde le bilan ENTIER dans SA ligne du journal : logEdit('Suppression entrée', <le MÊME détail>, {par,
@@ -14567,7 +14660,7 @@ function _corbLignes(){
 }
 // La corbeille : un élément par bilan supprimé — le MÊME bilan (même identifiant, mêmes chiffres) supprimé sur deux
 // appareils n'apparaît qu'UNE fois ; deux versions différentes du même bilan restent deux éléments (rien n'est choisi à
-// la place d'André). Un élément est dans la corbeille tant que le DERNIER événement de son histoire (suppression,
+// la place du propriétaire). Un élément est dans la corbeille tant que le DERNIER événement de son histoire (suppression,
 // « Bilan remis », « Remise annulée ») n'est pas « Bilan remis ».
 function _corbeille(){
   var lignes = _corbLignes(), groupes = {}, groupeDe = {};
@@ -15362,20 +15455,273 @@ function _irAttenteVoir(){
 })();
 // ══ fin feat8 · IMPÔTS RÉELS ══
 
-// ── feat7_mois (16/10 : correctifs du mois d’André, D1 D2 D3 D5 D6 D9 D10 D11 D12 D13 D14) ──
-// ══ feat7_mois (16/10) : les correctifs du mois d'André (relecture « le mois vécu au téléphone », défauts 1, 2, 3, 5, 6,
+// ── feat9_restes (17/10 : copie de secours complète, liste du mois sans bilan) ──
+// ══ feat9_restes (17/10) : la copie de secours COMPLÈTE (O3) · la liste du mois quand le mois n'a aucun bilan ═══════
+// 2. LA COPIE DE SECOURS COMPLÈTE. « Télécharger une copie de secours » mettait dans le fichier les bilans, les paiements,
+//    les modèles, les impôts payés et les retraits, mais PAS le journal (l'Historique, donc la corbeille : ses lignes
+//    « Suppression entrée » gardent le bilan entier), ni ses archives, ni l'objectif du mois, ni les pierres tombales
+//    (relecture du 16/10, O3) : si la base était effacée, la copie ne rendait pas tout. Maintenant le fichier contient
+//    AUSSI : `editlog` (ce que cet appareil voit), `editlog_archive` et les morceaux par année (`editlog_archives_annees`,
+//    RELUS en base au moment du téléchargement ; sans réseau : ceux lus à l'ouverture, et un message le dit),
+//    `monthly_goal`, et les pierres tombales `virements_supprimes`, `<liste déclarée>_supprimes` (impôts payés, retraits),
+//    `editlog_supprimes`, `editlog_archive_supprimes`. JAMAIS le webhook Discord (un fichier partagé par erreur ne doit pas
+//    donner accès au salon), jamais les sauvegardes (des copies elles-mêmes) : seules les clés listées ici sont lues.
+//    L'import (« Restaurer une copie… », _restaurerAvecApercu) les reprend par FUSION, avec l'aperçu habituel :
+//      - le journal ligne par ligne (clé ts|action|detail, celle de _optsJournal) : une ligne absente de la base (journal,
+//        archive, morceaux) revient à sa place (journal, archive ou morceau de son année ; plus loin dans l'archive si
+//        cette place est déjà « rangée » dans la base) ; une ligne plus ancienne qu'un « Effacer l'historique » de la base
+//        ne revient pas (effacée exprès, comme un paiement supprimé) et l'aperçu le dit ; case « Ajouter N lignes… »
+//        cochée ;
+//      - l'objectif : repris s'il n'y en a pas (case cochée) ; s'il est différent, case DÉCOCHÉE (rien n'est remplacé
+//        sans le vouloir) ;
+//      - les pierres tombales : une seule règle, aucune ne peut effacer quoi que ce soit — une trace de suppression de la
+//        copie n'est reprise que si ce qu'elle désigne n'est NI en base, NI sur cet appareil, NI dans la copie elle-même ;
+//        un repère « avant » du journal seulement s'il ne cache aucune ligne de la base. Elles servent à ce qu'un appareil
+//        resté ouvert ne remette pas ce qui avait été supprimé.
+//    Une ANCIENNE copie (sans ces clés) s'importe exactement comme avant : aucune lecture en plus, aucun changement.
+var _SECOURS_ANNEE = /^editlog_archive_(\d{4}|sans_date)$/;
+function _secoursL(v){
+  if (Array.isArray(v)) return v;
+  if (v == null || v === '') return [];
+  try { var x = (typeof v === 'string') ? JSON.parse(v) : v; return Array.isArray(x) ? x : []; } catch (e) { return []; }
+}
+// les pierres tombales copiées : paiements, chaque liste déclarée (impôts payés, retraits…), journal et archive
+function _secoursClesTombes(){
+  var l = ['virements_supprimes'];
+  try { Object.keys(_LISTES || {}).forEach(function(k){ l.push(k + '_supprimes'); }); } catch (e) {}
+  l.push('editlog_supprimes', 'editlog_archive_supprimes');
+  return l.filter(function(k, i){ return l.indexOf(k) === i; });
+}
+function _secoursObjectif(v){ var n = Number(v); return (v !== null && v !== '' && isFinite(n) && n > 0) ? n : null; }
+// les morceaux par année d'une copie (seulement des clés « editlog_archive_<année> » : rien d'autre n'est jamais écrit)
+function _secoursAnnees(d){
+  var o = {}, a = d && d.editlog_archives_annees;
+  if (a && typeof a === 'object' && !Array.isArray(a)) Object.keys(a).forEach(function(k){ if (_SECOURS_ANNEE.test(k) && Array.isArray(a[k])) o[k] = a[k]; });
+  return o;
+}
+function _secoursTelecharger(d){
+  var b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'noctra-finance-copie-de-secours-' + ts() + '.json';
+  a.click();
+}
+// « Télécharger une copie de secours » (appelée par exportData)
+async function _secoursComplete(){
+  if (_secoursComplete._p) return _secoursComplete._p;            // double toucher : une seule copie
+  var p = (async function(){
+    var d = { ents: ents, vas: vas, virements: virements, modeles: modeles,
+      impots_payes: (typeof impotsPayes !== 'undefined' ? impotsPayes : []),
+      impots_retraits: (typeof impotsRetraits !== 'undefined' ? impotsRetraits : []),
+      exportedAt: new Date().toISOString() };
+    d.site = (typeof SITE_FINANCES !== 'undefined') ? SITE_FINANCES : 'noctra'; d.version = 3;
+    d.editlog = (typeof editLog !== 'undefined' && Array.isArray(editLog)) ? editLog : [];
+    var annees = (typeof _clesArchiveAnnees === 'function') ? _clesArchiveAnnees() : [];
+    var tombes = _secoursClesTombes();
+    var cles = ['editlog_archive'].concat(annees, tombes, ['monthly_goal']);
+    // relues MAINTENANT (l'archive grandit pendant la session) ; au plus 5 s d'attente, puis la copie part quand même
+    var src = null;
+    if (typeof _apiConnected !== 'undefined' && _apiConnected && navigator.onLine !== false && typeof apiFetch === 'function') {
+      try { src = await Promise.race([apiFetch('/api/settings?cles=' + cles.join(',')), new Promise(function(r){ setTimeout(function(){ r(null); }, 5000); })]); }
+      catch (e) { src = null; }
+    }
+    var relu = !!(src && typeof src === 'object');
+    var cs = relu ? src : ((typeof _settingsCache !== 'undefined' && _settingsCache) || {});
+    d.editlog_archive = _secoursL(cs.editlog_archive);
+    d.editlog_archives_annees = {};
+    annees.forEach(function(k){ var l = _secoursL(cs[k]); if (l.length) d.editlog_archives_annees[k] = l; });
+    tombes.forEach(function(k){ d[k] = _secoursL(cs[k]); });
+    // l'objectif enregistré (celui de cette session s'il a été changé ici, sinon celui de la base)
+    var g = (typeof _objEnregistre !== 'undefined' && _objEnregistre != null) ? _objEnregistre : cs.monthly_goal;
+    d.monthly_goal = _secoursObjectif(g);
+    d.archives = relu ? 'relues' : 'appareil';
+    _secoursTelecharger(d);
+    if (!relu) { try { showSaveStatus('⚠ Copie de secours faite avec l’archive de l’Historique lue à l’ouverture : la base n’a pas pu être relue.', 'var(--todo)'); } catch (e) {} }
+    return d;
+  })();
+  _secoursComplete._p = p;
+  try { return await p; } finally { _secoursComplete._p = null; }
+}
+
+// L'aperçu d'import disait « Ajouter 2 paiement d’impôtss absents de ta base » (pluriel fabriqué en ajoutant « s » au
+// titre) : la liste déclarée des impôts payés reçoit son vrai pluriel (seulement s'il manque ; rien d'autre ne change).
+try { if (_LISTES.impots_payes && !_LISTES.impots_payes.titres) _LISTES.impots_payes.titres = 'paiements d’impôts'; } catch (e) {}
+
+// ── l'import : les clés en plus d'une copie complète ────────────────────────────────────────────────────────────────
+// Les clés à relire en base AVANT l'aperçu ; [] pour une ancienne copie (ou une sauvegarde) : rien de plus n'est lu.
+function _secoursPlusCles(d){
+  if (!d || typeof d !== 'object') return [];
+  var neuve = Array.isArray(d.editlog) || Array.isArray(d.editlog_archive) || Object.keys(_secoursAnnees(d)).length > 0
+    || _secoursObjectif(d.monthly_goal) != null || _secoursClesTombes().some(function(k){ return Array.isArray(d[k]); });
+  if (!neuve) return [];
+  var l = ['editlog', 'editlog_supprimes', 'editlog_archive', 'editlog_archive_supprimes', 'monthly_goal']
+    .concat((typeof _clesArchiveAnnees === 'function') ? _clesArchiveAnnees() : [], Object.keys(_secoursAnnees(d)), ['virements', 'virements_supprimes']);
+  try { Object.keys(_LISTES || {}).forEach(function(k){ l.push(k, k + '_supprimes'); }); } catch (e) {}
+  return l.filter(function(k, i){ return l.indexOf(k) === i; });
+}
+// Ce que la copie apporte en plus (journal, objectif, pierres tombales), comparé à la base relue (P) : un objet pour
+// l'aperçu (lignes, cases) et l'écriture. Rien n'est écrit ici.
+function _secoursPlus(d, P, dist, srvVir){
+  P = P || {}; dist = dist || {};
+  var o = _optsJournal(), cle = function(l){ return String(o.cleDe(l)); }, date = o.dateDe;
+  var lire = function(c){ return _secoursL((c in P) ? P[c] : dist[c]); };
+  // 1. le journal : ce qui est déjà en base (journal, archive, morceaux) ou sur cet appareil
+  var present = {};
+  Object.keys(P).forEach(function(c){ if (c === 'editlog' || c === 'editlog_archive' || _SECOURS_ANNEE.test(c)) _secoursL(P[c]).forEach(function(l){ if (l && typeof l === 'object') present[cle(l)] = 1; }); });
+  (typeof editLog !== 'undefined' && Array.isArray(editLog) ? editLog : []).forEach(function(l){ if (l && typeof l === 'object') present[cle(l)] = 1; });
+  var coupe = function(l){ var c = 0, r = ''; l.forEach(function(t){ if (t && t.avant) { var a = new Date(t.avant).getTime(); if (isFinite(a) && a > c) { c = a; r = String(t.raison || ''); } } }); return { t: c, raison: r }; };
+  var cE = coupe(lire('editlog_supprimes')), cA = coupe(lire('editlog_archive_supprimes'));
+  var aj = {}, vus = {}, n = 0, corb = 0, effacees = 0;
+  var voir = function(place, liste){
+    liste.forEach(function(l){
+      if (!l || typeof l !== 'object' || Array.isArray(l)) return;
+      var c = cle(l); if (vus[c] || present[c]) return; vus[c] = 1;
+      var t = date(l), pl = place;
+      if (pl === 'editlog' && cE.t && t <= cE.t) { if (cE.raison === 'vide') { effacees++; return; } pl = 'editlog_archive'; }
+      if (pl === 'editlog_archive' && cA.t && t <= cA.t) pl = o.archiveSuite(l);
+      (aj[pl] = aj[pl] || []).push(l); n++;
+      if (typeof _corbUtile === 'function' && _corbUtile(l) && /^Suppression entr/.test(String(l.action || ''))) corb++;
+    });
+  };
+  voir('editlog', _secoursL(d.editlog));
+  voir('editlog_archive', _secoursL(d.editlog_archive));
+  var an = _secoursAnnees(d); Object.keys(an).forEach(function(c){ voir(c, an[c]); });
+  // 2. l'objectif du mois (celui qui attend d'être envoyé depuis cet appareil compte comme l'actuel)
+  var attente = false; try { attente = _fileLire().some(function(x){ return x.t === 'reglage' && x.cle === 'monthly_goal'; }); } catch (e) {}
+  var gB = _secoursObjectif((attente && typeof _objEnregistre !== 'undefined' && _objEnregistre != null) ? _objEnregistre : P.monthly_goal);
+  var gC = _secoursObjectif(d.monthly_goal);
+  var obj = (gC != null && gC !== gB) ? { copie: gC, base: gB } : null;
+  // 3. les pierres tombales : jamais une trace pour ce qui est en base, sur cet appareil ou dans la copie elle-même
+  var tombes = [], nT = 0;
+  _secoursClesTombes().forEach(function(cT){
+    var liste = _secoursL(d[cT]); if (!liste.length) return;
+    var cl = cT.replace(/_supprimes$/, ''), deja = {}, srvT = lire(cT), cMax = coupe(srvT).t;
+    srvT.forEach(function(t){ if (t && t.k != null) deja[String(t.k)] = 1; });
+    var cleDe, lignes, sigs = {};
+    if (cl === 'virements') {
+      cleDe = function(x){ return String(_cleVirement(x)); };
+      lignes = (srvVir || []).concat(typeof virements !== 'undefined' && Array.isArray(virements) ? virements : []);
+      if (typeof _virSig === 'function') lignes.concat(_secoursL(d.virements)).forEach(function(x){ if (x && typeof x === 'object') sigs[_virSig(x)] = 1; });
+    } else if (cl === 'editlog' || cl === 'editlog_archive') {
+      cleDe = cle;
+      lignes = lire(cl).concat(cl === 'editlog' ? ((typeof editLog !== 'undefined' && Array.isArray(editLog)) ? editLog : []) : [], aj[cl] || []);
+    } else if (_LISTES[cl]) {
+      var Ld = _LISTES[cl];
+      cleDe = function(x){ return String(Ld.cleDe ? Ld.cleDe(x) : (x && x.id)); };
+      var loc = []; try { loc = (Ld.lire && Ld.lire()) || []; } catch (e) {}
+      lignes = lire(cl).concat(loc);
+    } else return;
+    var pres = {}, plusVieille = Infinity;
+    lignes.concat(_secoursL(d[cl])).forEach(function(x){ if (x && typeof x === 'object') { pres[cleDe(x)] = 1; } });
+    if (cl === 'editlog' || cl === 'editlog_archive') lignes.forEach(function(x){ var t = date(x); if (t < plusVieille) plusVieille = t; });
+    var ajouts = [];
+    liste.forEach(function(t){
+      if (!t || typeof t !== 'object') return;
+      if (t.k != null) {
+        var k = String(t.k);
+        if (deja[k] || pres[k]) return;
+        if (cl === 'virements' && typeof _virVieilleCle === 'function' && _virVieilleCle(k)) {
+          if (t.ok != null) { if (pres[String(t.ok)]) return; }
+          else if (sigs[k]) return;
+        }
+        ajouts.push(t);
+      } else if (t.avant && (cl === 'editlog' || cl === 'editlog_archive')) {
+        var a = new Date(t.avant).getTime();
+        if (!isFinite(a) || a <= cMax || plusVieille <= a) return;      // il cacherait une ligne de la base : pas repris
+        ajouts.push(t);
+      }
+    });
+    if (ajouts.length) { tombes.push({ cle: cT, l: ajouts }); nT += ajouts.length; }
+  });
+  var CP = { n: n, corb: corb, effacees: effacees, aj: aj, obj: obj, tombes: tombes, nT: nT, fait: { lignes: 0, objectif: false, tombes: 0 } };
+  CP.quelqueChose = n > 0 || !!obj || nT > 0;
+  CP.apercu = function(L, ligne){
+    if (n) L.push(_caseHtml('journal', true, 'Ajouter ' + _pl(n, 'ligne de l’Historique absente de ta base', 'lignes de l’Historique absentes de ta base')
+      + (corb ? ' (dont ' + _pl(corb, 'bilan', 'bilans') + ' de la corbeille)' : '') + '.'));
+    if (effacees) ligne('bd-pl-doux', _pl(effacees, 'ligne effacée exprès de l’Historique (« Effacer l’historique ») ne revient pas', 'lignes effacées exprès de l’Historique (« Effacer l’historique ») ne reviennent pas') + '.');
+    if (obj) L.push(obj.base == null ? _caseHtml('objectif', true, 'Reprendre l’objectif du mois de la copie : ' + fmtC(obj.copie) + '.')
+      : _caseHtml('objectif', false, 'Remettre l’objectif du mois de la copie : ' + fmtC(obj.base) + ' → ' + fmtC(obj.copie) + '. Sans cette case, il garde sa valeur actuelle.'));
+    if (nT) ligne('bd-pl-doux', 'Les traces de ' + _pl(nT, 'suppression', 'suppressions') + ' sont reprises : ce que tu avais supprimé ne reviendra pas depuis un autre appareil.');
+  };
+  CP.actif = function(c){ return !!((c.journal && n) || (c.objectif && obj) || nT); };
+  // les traces de suppression d'abord (comme la fonction générale : la pierre tombale avant la liste)
+  CP.appliquerTombes = async function(){
+    var ok = true;
+    for (var i = 0; i < tombes.length; i++) {
+      var r = await _saveVirements(tombes[i].cle, tombes[i].l, { cleDe: function(t){ return (t && t.k != null) ? 'k|' + t.k : 'avant|' + (t && t.avant); }, dateDe: function(){ return 0; } });
+      if (r !== false) CP.fait.tombes += tombes[i].l.length; else ok = false;
+    }
+    return ok;
+  };
+  CP.appliquer = async function(c){
+    var ok = true;
+    if (c.journal && n) {
+      var places = Object.keys(aj).filter(function(p){ return aj[p] && aj[p].length; });
+      var ordre = places.filter(function(p){ return _SECOURS_ANNEE.test(p); })                  // les plus anciennes d'abord
+        .concat(places.indexOf('editlog_archive') >= 0 ? ['editlog_archive'] : [], places.indexOf('editlog') >= 0 ? ['editlog'] : []);
+      for (var i = 0; i < ordre.length; i++) {
+        var p = ordre[i], l = aj[p], r;
+        if (p === 'editlog') {
+          // dans le journal de la page, puis l'écriture fusionnée du journal (relue, vérifiée ; un échec est dit à la fin :
+          // « Restauration INCOMPLÈTE … Refais-la » — les lignes restent dans la page et partent à la prochaine écriture)
+          editLog = (Array.isArray(editLog) ? editLog : []).concat(l).sort(o.trier);
+          r = await _saveEditLog();
+        } else if (p === 'editlog_archive') r = await _saveVirements(p, l, { cleDe: o.cleDe, dateDe: o.dateDe, trier: o.trier, devant: true, limite: o.archiveMax || 3000, marge: o.archiveMarge || 0, archive: o.archiveSuite });
+        else r = await _saveVirements(p, l, { cleDe: o.cleDe, dateDe: o.dateDe, trier: o.trier, devant: true });
+        if (r !== false) CP.fait.lignes += l.length; else ok = false;
+      }
+      try { renderEditLog(); } catch (e) {}
+      try { if (typeof _corbRelireArchives === 'function') _corbRelireArchives(true); } catch (e) {}
+    }
+    if (c.objectif && obj) {
+      var v = obj.copie, okG = true;
+      if (typeof _objEnregistre !== 'undefined') _objEnregistre = v;
+      try { var gi = document.getElementById('monthly-goal'); if (gi) gi.value = String(v); } catch (e) {}
+      try { await apiFetch('/api/settings', { method: 'POST', body: JSON.stringify({ key: 'monthly_goal', value: v }) }); if (typeof _fileReglageFait === 'function') _fileReglageFait('monthly_goal'); }
+      catch (e) { okG = false; try { if (typeof _fileReglageNoter === 'function') _fileReglageNoter('monthly_goal', v); } catch (x) {} }
+      try { if (typeof _settingsCache !== 'undefined' && _settingsCache) _settingsCache.monthly_goal = v; } catch (e) {}
+      try { uk(); } catch (e) {}
+      CP.fait.objectif = true; ok = okG && ok;
+    }
+    return ok;
+  };
+  return CP;
+}
+
+// ── 3. LA LISTE DU MOIS QUAND LE MOIS FINI N'A AUCUN BILAN ──────────────────────────────────────────────────────────
+// Avant : « mois fini sans aucun bilan : rien à clore », la carte n'apparaissait pas, même si des impôts des mois
+// d'avant restaient à payer (feat8_impots_reels, « décision pour le propriétaire »). Règle choisie : la carte est RÉDUITE à ce
+// qui se fait vraiment — la seule ligne des impôts (calculée par _lmLigneImpots, la même que d'habitude : aucun chiffre
+// nouveau), et seulement s'il en reste à payer ; aucune ligne « bilan » (il n'y a rien à clore, aucun bilan n'est
+// inventé), aucune ligne « part de la modèle » (sa part d'un mois sans bilan n'existe pas ; ce qui reste des mois d'avant
+// est dit dans « Part de la modèle »). Une fois tout payé, le résumé du mois (« Novembre : impôts payés $X ✓ ») reste
+// jusqu'à la fin de la fenêtre de la liste seulement si ce paiement a été noté depuis la fin du mois (le geste vient
+// d'être fait) ; sinon, rien à faire, rien à montrer (comme avant).
+function _lmImpotsSansBilan(F){
+  var L = _lmLigneImpots(F);
+  if (!L) return null;
+  if (!L.fait) return [L];
+  if (L.court === 'Impôts payés') {
+    var dep = _lmJour(_lmSuivant(F.ym), 1);
+    if ((impotsPayes || []).some(function(p){ return (_impValide(p) || (typeof _impGlobal === 'function' && _impGlobal(p))) && String(p.date || '') >= dep; })) return [L];
+  }
+  return null;
+}
+
+// ── feat7_mois (16/10 : correctifs du mois du propriétaire, D1 D2 D3 D5 D6 D9 D10 D11 D12 D13 D14) ──
+// ══ feat7_mois (16/10) : les correctifs du mois du propriétaire (relecture « le mois vécu au téléphone », défauts 1, 2, 3, 5, 6,
 //    9, 10, 11, 12, 13, 14). AFFICHAGE et GESTES seulement : aucun calcul d'argent nouveau, aucune écriture nouvelle, aucun
 //    stockage nouveau. Les montants affichés viennent tous des calculs existants (_partModele, renderDepensesParMois…).
 //    Tout ce qui suit est déclaré au niveau du script (fonctions « hissées ») : les lignes remplacées plus haut dans la page
 //    les appellent toujours derrière un « typeof … === 'function' ».
 
-// ── D1 · la période RETENUE (prochaine visite) = un choix d'André, jamais un changement fait par le site ──────────────
+// ── D1 · la période RETENUE (prochaine visite) = un choix du propriétaire, jamais un changement fait par le site ──────────────
 // Avant : « Finaliser » (ou « Mettre à jour ce bilan » depuis le Récap, la loupe…) changeait la période pour montrer le
 // bilan ouvert, ET la retenait : le site se rouvrait ensuite sur « Mois dernier » / « Depuis le début » tout le mois.
-// Maintenant : seul un toucher d'André sur une des quatre périodes est retenu. Quand le site change la période pour
+// Maintenant : seul un toucher du propriétaire sur une des quatre périodes est retenu. Quand le site change la période pour
 // ouvrir un bilan, rien n'est retenu ; s'il referme sans enregistrer (« Replier », « Annuler »), la période d'avant
 // revient ; après « Enregistrer », l'écran reste sur le mois du bilan (il y voit son résultat) sans le retenir.
-var _f7ChoixT = 0;          // dernier toucher d'André sur une période (horodatage)
+var _f7ChoixT = 0;          // dernier toucher du propriétaire sur une période (horodatage)
 var _f7ChoixEnCours = false; // vrai pendant le toucher lui-même (le clic qui appelle spMois / spAll)
 var _f7Ouv = null;           // {etat, t} : la période juste avant que le site la change pour ouvrir un bilan
 var _f7DansSe = false;       // vrai pendant « Enregistrer » (se) : le panneau se replie après un enregistrement
@@ -15403,7 +15749,7 @@ function _f7PerRemettre(E){
 function _f7RevenirPeriode(){
   var O = _f7Ouv; _f7Ouv = null;
   if (!O || _f7DansSe) return;                 // après « Enregistrer » : on reste sur le mois du bilan
-  if (_f7ChoixT > O.t) return;                 // André a touché une période entre-temps : c'est la sienne
+  if (_f7ChoixT > O.t) return;                 // Le propriétaire a touché une période entre-temps : c'est la sienne
   if (_f7PerSig() === O.etat.sig) return;      // la période n'avait pas changé
   try { _f7PerRemettre(O.etat); } catch (e) { console.warn('période', e); }
 }
@@ -15544,9 +15890,9 @@ function _f7AmenerFormulaire(f){
   requestAnimationFrame(function(){ requestAnimationFrame(faire); });
 }
 
-// ── D10 · un mois en PERTE n'est plus raconté comme un « trop envoyé » d'André ─────────────────────────────────────────
+// ── D10 · un mois en PERTE n'est plus raconté comme un « trop envoyé » du propriétaire ─────────────────────────────────────────
 // Règle (aucun montant nouveau : seuls des MOTS changent) : l'écart négatif vient d'une perte quand, à la fin d'un mois,
-// sa part cumulée (saMoitie du bénéfice cumulé, la règle de _partModele) a couvert TOUT ce qui avait été envoyé : André
+// sa part cumulée (saMoitie du bénéfice cumulé, la règle de _partModele) a couvert TOUT ce qui avait été envoyé : le propriétaire
 // n'a jamais envoyé plus que sa part ; c'est un mois en perte venu ensuite qui l'a fait baisser. Sinon (il a envoyé plus
 // que sa part n'a jamais été), « Trop envoyé » reste le bon mot. P = _partModele(…) (le calcul partagé, tel quel).
 function _f7CausePerte(P, avecCourant){
@@ -15598,7 +15944,7 @@ function _f7SousPerte(P, X){
 
 // ── D11 · un bilan jamais finalisé n'a plus la coche verte « Bilan à jour » (à partir du 8) ────────────────────────────
 // La règle du rappel est gardée : à partir du 8, le site compte le mois TEL QUEL (la ligne compte comme faite, rien ne
-// relance André, pas de rouge). Mais elle dit la vérité : « pas finalisé », avec un signe neutre (un trait), pas une coche.
+// relance le propriétaire, pas de rouge). Mais elle dit la vérité : « pas finalisé », avec un signe neutre (un trait), pas une coche.
 var _F7_NEUTRE = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M7 12h10"/></svg>';
 
 // ── D12 · Récap « / an à ce rythme » : les mois TERMINÉS qui ont un bilan, ni le mois en cours, ni le mois « à finaliser »
@@ -15643,7 +15989,7 @@ function _f7NoteGraf(type, points, cleDe){
 
 // ── Les branchements (les fonctions d'origine sont appelées telles quelles) ────────────────────────────────────────────
 (function(){
-  // D1 : un toucher sur une période = un choix d'André (le clic arrive avant l'appel de spMois / spAll)
+  // D1 : un toucher sur une période = un choix du propriétaire (le clic arrive avant l'appel de spMois / spAll)
   document.addEventListener('click', function(ev){
     if (!(ev.target && ev.target.closest && ev.target.closest('#page-ca .pbtn'))) return;
     _f7ChoixT = Date.now(); _f7ChoixEnCours = true;
@@ -15766,7 +16112,7 @@ function _f7NoteGraf(type, points, cleDe){
 
 // ── D6 · en-tête du téléphone : le prénom passe dans le menu « ⋯ » (le badge coupait « NOCTRA … » et « Tout est en… ») ──
 // Le badge reste tel quel à la tablette et à l'ordinateur ; au téléphone il est caché (CSS) et le menu « ⋯ » dit
-// « Connecté : Andre », juste avant « Changer mon mot de passe » / « Se déconnecter ». Le badge garde son nom en
+// « Connecté : Prénom », juste avant « Changer mon mot de passe » / « Se déconnecter ». Le badge garde son nom en
 // infobulle et pour les lecteurs d'écran.
 (function(){
   var menu = document.querySelector('.topbar .export-menu'), badge = document.getElementById('role-badge');

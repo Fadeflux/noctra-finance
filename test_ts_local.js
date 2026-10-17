@@ -1,7 +1,7 @@
 // « AUJOURD'HUI » = LA DATE LOCALE DE L'APPAREIL, À TOUTE HEURE (15/10, F7).
 //
 // ⚠️ Aucune connexion : ts() est extraite du VRAI index.html et tourne ici avec une horloge et un fuseau SIMULÉS
-// (Europe/Paris, celui d'André), chaque cas dans un processus à part (TZ fixé au démarrage).
+// (Europe/Paris, celui du propriétaire), chaque cas dans un processus à part (TZ fixé au démarrage).
 //
 // LE DÉFAUT (F7, équipe du 15/10). ts() faisait new Date().toISOString() : l'heure UTC. Entre minuit et 1 h (l'hiver)
 // ou 2 h (l'été), « aujourd'hui » était encore la VEILLE : le 1er novembre à 0 h 30, « Ce mois-ci » parlait d'octobre
@@ -55,7 +55,7 @@ function enfant(instant) {
   const env = Object.assign({}, process.env, { TZ: 'Europe/Paris', __TS_INSTANT: instant });
   return JSON.parse(execFileSync(process.execPath, [__filename, CIBLE], { env, encoding: 'utf8' }));
 }
-// [ce que voit André (heure de Paris), instant UTC correspondant, date locale attendue, heure locale attendue]
+// [ce que voit le propriétaire (heure de Paris), instant UTC correspondant, date locale attendue, heure locale attendue]
 const CAS = [
   ['16 oct. 2026, 0 h 30 (heure d\'été)', '2026-10-15T22:30:00Z', '2026-10-16', '00:30'],
   ['16 oct. 2026, 1 h 59', '2026-10-15T23:59:00Z', '2026-10-16', '01:59'],

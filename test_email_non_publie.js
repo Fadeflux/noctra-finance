@@ -8,7 +8,7 @@
 // n'importe qui et tous les chiffres.
 //
 // ⚠️ 30/09 — LE DESSIN A CHANGÉ, LA PROPRIÉTÉ NON.
-// On ne tape plus une adresse mais un IDENTIFIANT (son prénom) ;
+// On ne tape plus une adresse mais un IDENTIFIANT ;
 // l'adresse est DÉRIVÉE à l'exécution. Ce banc était rouge parce qu'il décrivait
 // l'ancien écran, pas parce que le produit avait cassé. Il a donc été réécrit
 // pour tester la même chose sur le nouvel écran — et non supprimé : ce qu'il
@@ -74,9 +74,17 @@ V('... et se termine par un suffixe reserve',
   mDom ? 'domaine trouve : ' + mDom[1] + ' -- un domaine reel ouvre un vol de compte par mot de passe oublie' : '');
 
 console.log('\n-- on DIT quoi mettre, au lieu de laisser deviner --');
-V('une aide sous le champ explique quoi taper',
-  /id="login-aide"/.test(SRC) && /pr&#233;nom|prénom/.test(SRC),
-  'un champ sans explication passe pour une panne');
+// (17/10, S-A) L'aide dit QUOI taper (« Ton identifiant de connexion »), pas CE QU'EST l'identifiant : écrire
+// « ton prénom en minuscules » sur une page publique, c'était donner la moitié de la réponse à qui connaît les
+// prénoms ; « une ancienne adresse e-mail marche aussi » désignait un ancien compte à essayer.
+const aide = ((SRC.match(/<div id="login-aide"[^>]*>([\s\S]*?)<\/div>/) || [])[1] || '').replace(/<[^>]+>/g, '').trim();
+const champ = (SRC.match(/<input id="login-ident"[^>]*>/) || [''])[0];
+const DIT_CE_QUE_C_EST = /pr(&#233;|é|e)nom|minuscule|adresse|e-?mail|courriel/i;
+V('une aide sous le champ explique quoi taper (« identifiant »)',
+  aide.length >= 10 && /identifiant/i.test(aide),
+  'un champ sans explication passe pour une panne : « ' + aide + ' »');
+V('... sans dire ce qu’est l’identifiant (ni prénom, ni minuscules, ni ancienne adresse)', !DIT_CE_QUE_C_EST.test(aide), aide);
+V('... et l’exemple grisé du champ non plus', !DIT_CE_QUE_C_EST.test((/placeholder="([^"]*)"/.exec(champ) || [])[1] || ''), champ.slice(0, 120));
 V('le refus ne dit PAS lequel des deux est faux',
   /Identifiant ou mot de passe incorrect/.test(SRC),
   'distinguer les deux apprendrait a un inconnu quels comptes existent');
@@ -102,6 +110,8 @@ console.log('\n-- les controles savent echouer --');
     !/\.(invalid|test|example|localhost)$/.test('noctra.app'));
   V('un champ identifiant cache serait attrape',
     /id="login-ident"[^>]*display:\s*none/.test('<input id="login-ident" style="display:none">'));
+  V('l aide d avant serait attrapee (elle disait ce qu est l identifiant)',
+    DIT_CE_QUE_C_EST.test('Ton pr&#233;nom en minuscules. Une ancienne adresse e-mail marche aussi.') && DIT_CE_QUE_C_EST.test('ton prénom'));
 }
 
 console.log('\n' + (ko ? ko + ' ECHEC(S)' : 'TOUT PASSE') + '\n');
