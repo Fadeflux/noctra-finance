@@ -1,3 +1,7 @@
+// (ADAPTÉ le 16/10 par feat8_impots_reels — original : bancs_final/test_impots_repli.js. La règle de CE banc ne change pas :
+//  la ligne repliée dit les chiffres du bloc, pris aux MÊMES variables. Ce qui change : le geste ② est écrit par _irGeste2(S)
+//  (le même S) ; avec de l'argent déjà retiré en liquide, la ligne le dit (fmtC(S.liquide / 100)) et ne garde en crypto que
+//  le reste (fmtC(S.crypto / 100)) ; trois cas « liquide de côté » sont ajoutés au §3.)
 // « IMPÔTS À GARDER DE CÔTÉ » REPLIÉ AU TÉLÉPHONE (P4, 16/10) : la ligne repliée dit EXACTEMENT les chiffres du bloc,
 // pris aux MÊMES variables, et « Voir le calcul » ne recalcule rien. Prouvé sur le VRAI code de index.html.
 //
@@ -100,7 +104,8 @@ function charger() {
   const espions = 'function renderImpots(){ M.dessins++; } function uk(){ M.dessins++; } function renderChiffres(){ M.dessins++; } function _impRedessiner(){ M.dessins++; }\n';
   // « var _ipCalcEtat; » comme dans la page : chaque chargement part d'un état neuf (une page rouverte)
   return new Function('document', 'localStorage', 'M', 'console',
-    CODE_CALC + '\nvar ICO = {chev: "<svg></svg>", recu: "<svg></svg>"};\nvar _ipCalcEtat;\n' + espions + CODE_P4 + '\n' +
+    CODE_CALC + '\nvar ICO = {chev: "<svg></svg>", recu: "<svg></svg>"};\nvar _ipCalcEtat;\n' + espions +
+    'function _irEcheance(r){ return (r && r.length) ? {fen: "2026-11"} : null; } function _irFenTxt(w){ return "du 1er au 15 novembre"; }\n' + CODE_P4 + '\n' +
     'return { html: _ipRepliHtml, suivi: _ipRepliSuivi, appliquer: _ipRepliAppliquer, basculer: ipCalcBasculer, frais: _chFrais, fmtC: fmtC,' +
     ' ouvert: _ipCalcOuvert, remettre: function(){ _ipCalcEtat = undefined; } };')(document, localStorage, M, { warn() {} });
 }
@@ -116,8 +121,9 @@ const brancheVide = (R_IMP.split("el.innerHTML = _chNb(tete + '<div class=\"ip-v
 V(brancheVide !== '' && !/_ipRepliHtml/.test(brancheVide), 'sans OnlyFans (« Aucun impôt à garder ») : ni ligne ni bouton');
 V(/\nvar _ipCalcEtat;/.test(SRC), 'l’état ouvert / fermé est une variable de la page, lue sur l’appareil au premier besoin');
 const iIns = R_DEC.indexOf("el.insertBefore(d, el.querySelector('.ip-per') || note || null);"), iSuivi = R_DEC.indexOf('_ipRepliSuivi(el, S)');
-V(iIns > 0 && iSuivi > iIns && /var S=_impSuivi\(\)/.test(R_DEC) && /fmtC\(S\.garde\)/.test(R_DEC) && /fmtC\(S\.reste\/100\)/.test(R_DEC),
-  '_impDecorer : le geste ② écrit fmtC(S.garde) / fmtC(S.reste/100), et la ligne reçoit CE S, après le suivi');
+const G2 = (() => { try { return extraire('_irGeste2'); } catch (e) { return ''; } })();
+V(iIns > 0 && iSuivi > iIns && /var S=_impSuivi\(\)/.test(R_DEC) && /li\.innerHTML=_chNb\(_irGeste2\(S\)\)/.test(R_DEC) && /fmtC\(S\.garde\)/.test(G2) && /fmtC\(S\.reste \/ 100\)/.test(G2),
+  '_impDecorer : le geste ② (_irGeste2) écrit fmtC(S.garde) / fmtC(S.reste / 100) du MÊME S, et la ligne reçoit CE S, après le suivi');
 V(/try\{ _ipRepliSuivi\(el, S\); \}catch\(e\)/.test(R_DEC), '_impDecorer : une faute de la ligne ne peut pas casser le suivi (try/catch)');
 
 // ── 2. Aucun calcul parallèle ───────────────────────────────────────────────────────────────────────────────────
@@ -127,8 +133,8 @@ const interdits = ['_TAUX', '_IMPOTS_OF', '_RETRAIT_LIQUIDE', '_PAXUM_OF', '0.98
 const trouves = interdits.filter((x) => sansCommentaires.includes(x));
 V(!trouves.length, 'aucun taux, arrondi ni calcul d’impôts dans les fonctions P4 (seulement fmtC(T.…) / fmtC(S.…))', trouves.join(', '));
 const montantsP4 = (sansCommentaires.match(/fmtC\([^)]*\)/g) || []).sort();
-V(JSON.stringify(montantsP4) === JSON.stringify(['fmtC(S.garde)', 'fmtC(S.reste / 100)', 'fmtC(T.garde)', 'fmtC(T.moitie)']),
-  'les SEULS montants écrits : fmtC(T.garde), fmtC(T.moitie), fmtC(S.garde), fmtC(S.reste / 100)', montantsP4.join(' '));
+V(JSON.stringify([...new Set(montantsP4)]) === JSON.stringify(['fmtC(S.crypto / 100)', 'fmtC(S.garde)', 'fmtC(S.liquide / 100)', 'fmtC(S.reste / 100)', 'fmtC(T.garde)', 'fmtC(T.moitie)']),
+  'les SEULS montants écrits : fmtC(T.garde), fmtC(T.moitie), fmtC(S.garde), fmtC(S.reste / 100), fmtC(S.liquide / 100), fmtC(S.crypto / 100)', montantsP4.join(' '));
 const bascule = extraire('ipCalcBasculer');
 V(!/renderImpots|uk\(|renderChiffres|_impRedessiner|innerHTML|fmtC/.test(bascule), '« Voir le calcul » ne redessine rien et n’écrit aucun montant');
 
@@ -156,12 +162,19 @@ for (const bruts of JEUX) {
 W = monde();
 V(F.html({ imp: 0, garde: 0, moitie: 0 }) === '' && F.html(null) === '', 'pas d’impôts (ou rien) : pas de ligne');
 W = monde();
-F.suivi(W.el, { reste: 12400, garde: 12400 / 100 / 0.98 });
+F.suivi(W.el, { reste: 12400, garde: 12400 / 100 / 0.98, liquide: 0, crypto: 12400, rows: [] });
 V(texte(W.l.html) === 'Garde ' + F.fmtC(124 / 0.98) + ' en crypto pour les ' + F.fmtC(124) + ' d’impôts qu’il reste à payer', 'suivi : « ' + texte(W.l.html) + ' »');
-F.suivi(W.el, { reste: 0, garde: 0 });
+F.suivi(W.el, { reste: 0, garde: 0, liquide: 0, crypto: 0, rows: [] });
 V(texte(W.l.html) === 'Rien à garder pour les impôts en ce moment : tout ce qui est dû est payé', 'suivi, tout payé : « ' + texte(W.l.html) + ' »');
 F.suivi(W.el, null);
 V(texte(W.l.html) === 'Rien à garder pour les impôts en ce moment : tout ce qui est dû est payé', 'sans suivi : la ligne n’est pas touchée');
+// (feat8) l'argent déjà retiré en liquide : dit à la place de « garde … en crypto », pour sa part
+F.suivi(W.el, { reste: 49400, garde: 0, liquide: 49400, crypto: 0, rows: [{ reste: 49400 }] });
+V(texte(W.l.html) === 'En liquide, de côté : $494 · à payer au bureau du 1er au 15 novembre', 'tout retiré : « ' + texte(W.l.html) + ' »');
+F.suivi(W.el, { reste: 49400, garde: 19400 / 100 / 0.98, liquide: 30000, crypto: 19400, rows: [{ reste: 49400 }] });
+V(texte(W.l.html) === 'En liquide, de côté : $300 · garde ' + F.fmtC(194 / 0.98) + ' en crypto pour les $194 qui restent', 'retiré en partie : « ' + texte(W.l.html) + ' »');
+F.suivi(W.el, { reste: 0, garde: 0, liquide: 600, crypto: 0, rows: [] });
+V(texte(W.l.html) === 'Rien à garder pour les impôts en ce moment : tout ce qui est dû est payé · $6 en liquide, de côté', 'tout payé, du liquide reste : « ' + texte(W.l.html) + ' »');
 
 // ── 4. « Voir le calcul » ───────────────────────────────────────────────────────────────────────────────────────
 console.log('\n-- 4. « Voir le calcul » : une classe, rien d’autre --');

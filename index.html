@@ -4897,6 +4897,67 @@ body.readonly [onclick*="corbRemettre"],body.readonly [onclick*="restaurerSauveg
   #page-editlog .hl-corb-r{flex-wrap:wrap}
   #page-editlog .hl-corb-r .hl-btn{width:100%}
 }
+
+/* ── feat8_impots_reels (16/10 : impôts réels — suivi depuis le début, paiement global, retrait en liquide, doublon, résumé du mois) ── */
+/* ══ feat8_impots_reels (16/10) : les impôts tels qu'ils sont vraiment payés. Jetons du thème seulement (aucune couleur
+   écrite en dur), dans les deux thèmes ; cibles de 44 px au téléphone. ══ */
+
+/* la liste du mois : deux gestes côte à côte (payer, retirer) ; au téléphone, leurs titres courts sur UNE rangée
+   (la carte ne grandit pas : le bouton du mois reste où il était) */
+#liste-mois .lm-bc{display:none}
+@media (max-width:640px){
+  #liste-mois .lm-a2{flex-wrap:nowrap}
+  #liste-mois .lm-a2 .lm-b{flex:1 1 0;min-width:0;padding:0 10px}
+  #liste-mois .lm-a2 .lm-bl{display:none}
+  #liste-mois .lm-a2 .lm-bc{display:inline}
+}
+
+/* « J'ai payé les impôts » : le choix « Tout ce qui est dû » / « Un autre montant » (liste ET suivi) */
+#liste-mois .lm-f-ch,#impots-panel .lm-f-ch{display:grid;gap:6px;margin:0 0 10px}
+/* (le bouton rond lui-même couvre TOUT le choix, invisible : la cible fait la taille du choix, ≥ 44 px ; le rond dessiné
+   à côté dit l'état) */
+#liste-mois .lm-ch,#impots-panel .lm-ch{position:relative;display:flex;align-items:center;gap:10px;min-height:44px;margin:0;padding:8px 12px;border-radius:12px;
+  border:1px solid var(--line-1);background:var(--surf-1);cursor:pointer;font-size:14px;line-height:1.35;font-weight:500;color:var(--ink-1)}
+#liste-mois .lm-ch input,#impots-panel .lm-ch input{position:absolute;top:-1px;left:-1px;width:calc(100% + 2px);height:calc(100% + 2px);margin:0;opacity:0;cursor:pointer;font-size:16px}
+#liste-mois .lm-ch-o,#impots-panel .lm-ch-o{flex:none;width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line-3);background:var(--surf-2)}
+#liste-mois .lm-ch input:checked + .lm-ch-o,#impots-panel .lm-ch input:checked + .lm-ch-o{background:var(--surf-1);box-shadow:inset 0 0 0 5px var(--acc)}
+#liste-mois .lm-ch:has(input:checked),#impots-panel .lm-ch:has(input:checked){border-color:var(--acc-45);background:var(--acc-12)}
+#liste-mois .lm-ch:has(input:focus-visible),#impots-panel .lm-ch:has(input:focus-visible){outline:2px solid var(--acc);outline-offset:2px}
+#liste-mois .lm-ch-t,#impots-panel .lm-ch-t{min-width:0}
+#liste-mois .lm-ch b,#impots-panel .lm-ch b{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+#liste-mois .lm-ch small,#impots-panel .lm-ch small{display:block;margin-top:1px;font-size:12px;line-height:1.3;font-weight:400;color:var(--ink-3)}
+
+/* (idée 10) tout est fait : UNE ligne de résumé du mois */
+#liste-mois .lm-tete.lm-resume{display:flex;align-items:center;gap:14px}
+#liste-mois .lm-resume .lm-tx{display:block;flex:1 1 auto;min-width:0}
+#liste-mois .lm-resume .lm-t{font-size:14px;line-height:21px;font-weight:600;letter-spacing:0;color:var(--ink-2)}
+#liste-mois .lm-resume .lm-t b{font-weight:700;color:var(--ink-1);white-space:nowrap;font-variant-numeric:tabular-nums}
+#liste-mois .lm-seg{white-space:nowrap}
+#liste-mois .lm-fin-ok{display:inline-flex;vertical-align:-2px;margin-left:6px;color:var(--pos)}
+#liste-mois .lm-fin-ok svg{width:14px;height:14px}
+@media (max-width:640px){
+  #liste-mois .lm-tete.lm-resume{gap:12px}
+  #liste-mois .lm-resume .lm-t{font-size:13.5px;line-height:20px}
+}
+
+/* le bloc « Impôts à garder de côté » : le liquide de côté dans la tuile ardoise, sous la pastille */
+body.skin-melange #impots-panel .ip-liq{margin-top:10px;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.45;color:var(--bc-fr-on);
+  background-color:color-mix(in srgb,var(--bc-fr-v) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bc-fr-on) 18%,transparent);overflow-wrap:break-word}
+body.skin-melange #impots-panel .ip-liq b{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+body.skin-melange #impots-panel .ip-liq-det{margin-top:6px}
+
+/* le suivi : le liquide de côté, les paiements « tout ce qui est dû », les gestes */
+#impots-panel .ip-sv-liq,#impots-panel .ip-sv-g{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--surf-1);border:1px solid var(--line-1)}
+#impots-panel .ip-sv-liq-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+#impots-panel .ip-sv-gt{font-size:12px;font-weight:600;line-height:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+#impots-panel .ip-sv-liq-h b{font-size:16px;font-weight:700;line-height:20px;color:var(--ink-1);font-variant-numeric:tabular-nums;white-space:nowrap}
+#impots-panel .ip-sv-liq-s{margin-top:2px;font-size:13px;line-height:19px;color:var(--ink-3)}
+#impots-panel .ip-sv-g .ip-sv-ps{margin-top:6px}
+#impots-panel .ip-suivi > .ip-sv-a{margin-top:12px}
+#impots-panel .ip-suivi > .lm-f{max-width:560px}
+@media (max-width:640px){
+  #impots-panel .ip-suivi > .ip-sv-a .lm-b{flex:1 1 100%}
+}
 </style>
 </head>
 <body class="skin-melange">
@@ -7243,6 +7304,8 @@ async function loadData() {
       try{ editLog = apiSettings?.editlog ? (JSON.parse(apiSettings.editlog)||[]) : []; }catch(_e){ editLog=[]; }
       // (15/10) impôts payés notés (liste du mois) : lus comme les paiements à la modèle
       if (typeof _impCharger === 'function') _impCharger(apiSettings && apiSettings.impots_payes);
+      // (feat8) l'argent des impôts déjà retiré en liquide : lu comme les impôts payés
+      if (typeof _irCharger === 'function') _irCharger(apiSettings && apiSettings.impots_retraits);
       // Merge wallet data into VA objects
       if (Array.isArray(apiWallets)) {
         apiWallets.forEach(w => {
@@ -7306,6 +7369,7 @@ async function loadLocal() {
     if (mod) modeles = JSON.parse(mod.value) || [];
     if (log) editLog = JSON.parse(log.value) || [];
     if (typeof _impCharger === 'function'){ const _ip = window.storage.get(cleLocale('impots_payes')); if (_ip) _impCharger(_ip.value); }
+    if (typeof _irCharger === 'function'){ const _ir = window.storage.get(cleLocale('impots_retraits')); if (_ir) _irCharger(_ir.value); }
   } catch {}
 }
 
@@ -7320,6 +7384,7 @@ async function saveData() {
     await window.storage.set(cleLocale('editlog'), JSON.stringify(editLog));
     // (sans « await » : window.storage est synchrone, et l'ordre des écritures de la page ne bouge pas d'un battement)
     if (typeof impotsPayes !== 'undefined') window.storage.set(cleLocale('impots_payes'), JSON.stringify(impotsPayes));
+    if (typeof impotsRetraits !== 'undefined') window.storage.set(cleLocale('impots_retraits'), JSON.stringify(impotsRetraits));
   } catch {}
   // On ne renvoie au cloud que les listes REELLEMENT modifiees dans cette session,
   // sinon une simple saisie de CA ecrasait les virements ajoutes par l autre associe.
@@ -7927,7 +7992,7 @@ function checkGoalReached(profitBefore, profitAfter, goal) {
 
 // ── Export / Import JSON + CSV ──
 function exportData() {
-  const d = { ents, vas, virements, modeles, impots_payes: (typeof impotsPayes !== 'undefined' ? impotsPayes : []), exportedAt: new Date().toISOString() };
+  const d = { ents, vas, virements, modeles, impots_payes: (typeof impotsPayes !== 'undefined' ? impotsPayes : []), impots_retraits: (typeof impotsRetraits !== 'undefined' ? impotsRetraits : []), exportedAt: new Date().toISOString() };
   // (15/10, D-10) la copie dit d'où elle vient : un fichier d'un autre carnet est reconnu à l'import
   d.site = (typeof SITE_FINANCES !== 'undefined') ? SITE_FINANCES : 'noctra'; d.version = 2;
   const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
@@ -11304,7 +11369,7 @@ async function _attendreCalme(){
 // ── Déconnexion (S-5) ──
 // Copies des COMPTES gardées par ce navigateur (cleLocale) et traces de session : effacées.
 // (16/10) + 'impots_payes' : la copie locale des impôts payés notés (montants, dates), écrite par saveData.
-var _CLES_COPIES = ['ents', 'vas', 'virements', 'modeles', 'editlog', 'snapshot_local', 'impots_payes'];
+var _CLES_COPIES = ['ents', 'vas', 'virements', 'modeles', 'editlog', 'snapshot_local', 'impots_payes', 'impots_retraits'];
 var _CLES_SESSION = ['ccn_token', 'ccn_mail', 'ccn_user', 'ccn_role'];
 // GARDÉES : ccn_theme, ccn_tab, ccn_ro (le garde-fou de lecture seule de cet appareil), ccn_ident (pré-remplir
 // l'identifiant), cleLocale('masque' | 'periode' | 'recap_vue' | 'rappel_bilan' | 'pb_defaults') : du confort, aucun
@@ -12820,31 +12885,52 @@ function _lmLigneModele(F){
 // 3) Impôts : Y = 1 % du net OnlyFans du mois (le calcul du bloc impôts), au centime affiché ; cochée quand les
 //    paiements notés pour ce mois le couvrent.
 function _lmLigneImpots(F){
-  var fr=_chFrais(_bilansMois(F.ym)), du=_chCtsAff(fr.imp), paye=_impPayeCts(F.ym);
-  var ech=_lmJour(_lmSuivant(F.ym),15), auj=_aujLocal();
-  var L={cle:'impots', date:ech, montant:null, du:du, paye:paye, ym:F.ym};
-  if(paye>0 && paye>=du){
-    var l=(impotsPayes||[]).filter(function(p){ return _impValide(p) && p.mois===F.ym; })
-      .sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
-    L.fait=true; L.titre='Impôts '+_deMois(F.ym)+' payés'; L.montant=paye/100; L.date=''; L.court='Impôts payés';
-    L.sous='payé le '+l.map(function(p){ return _jourCourt(p.date); }).filter(function(x,i,t){ return t.indexOf(x)===i; }).join(' et le ')
-      +(paye>du ? ' · <b>'+fmtC((paye-du)/100)+'</b> de plus que l’impôt'+(du>0 ? ' ('+'<b>'+fmtC(du/100)+'</b>)' : '') : '');
-    return L;
-  }
-  if(du===0){
+  // (feat8, 16/10) Les impôts DUS DEPUIS LE DÉBUT jusqu'au mois de la liste : ce qui se paie au bureau, du 1er au 15
+  // du mois suivant, en une fois s'il le faut (et non plus le seul mois d'avant). Le calcul est celui du bloc
+  // « Impôts à garder de côté » (_impSuivi : l'impôt de chaque mois = _chFrais de ses bilans, au centime affiché ; un
+  // paiement couvre du plus ancien au plus récent) : aucun chiffre nouveau. Un mois passé son 15 est dit sobrement
+  // (« prévu le 15 oct. »), sans rouge : payer plusieurs mois d'un coup est un choix, pas une alerte.
+  var fr=_chFrais(_bilansMois(F.ym)), S=_impSuivi(true), cour=_ymLocal();
+  var L={cle:'impots', date:'', montant:null, ym:F.ym, du:0, paye:0, reste:0};
+  var asc=S ? S.rows.slice().reverse().filter(function(r){ return r.ym<=F.ym; }) : [];
+  asc.forEach(function(r){ L.du+=r.du; L.paye+=r.couvert; L.reste+=r.reste; });
+  if(L.du===0 && _chCtsAff(fr.imp)===0){
     L.fait=true; L.titre='Pas d’impôts '+_deMois(F.ym); L.date=''; L.court='Pas d’impôts';
     L.sous=F.fin ? 'pour l’instant : aucun net OnlyFans ce mois-ci' : 'aucun net OnlyFans en '+_nomMois(F.ym);
     return L;
   }
-  var reste=du-paye;
-  L.fait=false; L.montant=reste/100;
-  L.titre=(paye>0 ? 'Payer le reste des impôts ' : 'Payer les impôts ')+_deMois(F.ym);
-  var garde=paye>0 ? reste/100/(1-_RETRAIT_LIQUIDE) : fr.garde;      // à garder en crypto : ÷ 0,98 (retrait de 2 %)
-  L.sous=(F.fin ? 'à ce jour · ' : '')
-    +(paye>0 ? 'déjà payé <b>'+fmtC(paye/100)+'</b> sur <b>'+fmtC(du/100)+'</b> · ' : '')
-    +'à garder en crypto : <b>'+fmtC(garde)+'</b> (retrait de 2 %)';
-  L.retard=!F.fin && auj>ech; L.aujourdhui=!F.fin && auj===ech;
-  if(!F.fin) L.action={l:paye>0 ? 'J’ai payé le reste' : 'J’ai payé les impôts', f:'listeImpotsOuvrir()', form:true};
+  var parDate=function(a,b){ return String(a.date||'').localeCompare(String(b.date||'')); };
+  if(L.reste<=0){
+    // tout ce qui est dû jusqu'à ce mois est payé : les paiements faits depuis la fin du mois (sinon le dernier noté)
+    var dep=_lmJour(_lmSuivant(F.ym),1), tous=(impotsPayes||[]).filter(function(p){ return _impValide(p) || _impGlobal(p); });
+    var vus=tous.filter(function(p){ return String(p.date||'')>=dep; }).sort(parDate);
+    if(!vus.length && tous.length) vus=[tous.slice().sort(parDate)[tous.length-1]];
+    var jours=vus.map(function(p){ return _jourCourt(p.date); }).filter(function(x,i,t){ return t.indexOf(x)===i; });
+    L.fait=true; L.titre='Impôts payés jusqu’à '+_nomMois(F.ym); L.court='Impôts payés';
+    L.montant=vus.length ? vus.reduce(function(s,p){ return s+Math.round(Number(p.amount)*100); },0)/100 : null;
+    L.sous=(jours.length ? 'payé le '+jours.join(' et le ') : 'tout ce qui est dû est payé')
+      +(S && S.avance>0 ? ' · <b>'+fmtC(S.avance/100)+'</b> d’avance, pour les mois suivants' : '')
+      +(S && S.liquide>0 ? ' · <b>'+fmtC(S.liquide/100)+'</b> en liquide, de côté' : '');
+    return L;
+  }
+  var E=_irEcheance(asc), auj=_aujLocal(), liq=S ? S.liquide : 0;
+  L.fait=false; L.montant=L.reste/100;
+  L.titre=L.paye>0 ? 'Reste des impôts' : 'Impôts dus';
+  L.date=E.fen+'-15'; L.fenetre=E.fen; L.aujourdhui=(auj===L.date); L.retard=false;   // jamais le rouge « en retard »
+  var tousEnRetard=E.retard.length>0 && E.retard.length===E.dus.length, n=E.dus.length, morceaux=[];
+  if(F.fin) morceaux.push('à ce jour');
+  morceaux.push((n>1 ? 'tout ce qui est dû depuis '+_nomMois(E.dus[0].ym) : 'l’impôt '+_deMois(E.dus[0].ym))
+    +(tousEnRetard ? ', '+(n>1 ? 'chacun prévu le 15 du mois suivant' : 'prévu le '+_jourCourt(E.dus[0].ech)) : ''));
+  if(E.retard.length && !tousEnRetard) morceaux.push(_irRetardTxt(E.retard));
+  if(L.paye>0) morceaux.push('déjà payé <b>'+fmtC(L.paye/100)+'</b> sur <b>'+fmtC(L.du/100)+'</b>');
+  if(liq>0) morceaux.push('<b>'+fmtC(liq/100)+'</b> déjà en liquide, de côté');
+  L.sous=morceaux.join(' · ');
+  // les gestes : « J'ai payé les impôts » (tout ce qui est dû des mois TERMINÉS), « J'ai déjà retiré l'argent » (s'il reste
+  // quelque chose en crypto). (17/10) PAS en fin de mois (les 3 derniers jours, jour du rappel) : comme avant, la liste sert
+  // alors à clore le mois, la fenêtre de paiement n'est pas ouverte, et la carte ne grandit pas ; les deux gestes restent
+  // dans le bloc impôts (suivi), à tout moment.
+  if(!F.fin && _irDuAvant(S).cts>0) L.action={l:'J’ai payé les impôts', court:'J’ai payé', f:'listeImpotsOuvrir()', form:true};
+  if(!F.fin && S && S.crypto>0) L.action2={l:'J’ai déjà retiré l’argent', court:'J’ai retiré', f:'ipRetraitOuvrir()', form:true, retrait:true};
   return L;
 }
 
@@ -12867,7 +12953,8 @@ function _lmEtat(){
   if(!F.fin && !_bilansMois(F.ym).length) return null;                         // mois fini sans aucun bilan : rien à clore
   var lignes=[_lmLigneBilan(F), _lmLigneModele(F), _lmLigneImpots(F)].filter(Boolean);
   var faites=lignes.filter(function(l){ return l.fait; }).length, tout=faites===lignes.length;
-  if(tout && !_lmFaitAujourdhui(F) && !(_lmFlash && _lmFlashOu!=='suivi')) return null;   // (16/10, O4) message écrit dans le suivi                 // tout est coché : la carte disparaît
+  // (feat8, idée 10) tout est coché : la carte n'est plus cachée, elle devient UNE ligne de résumé du mois (_lmHtml),
+  // gardée jusqu'à la fin de la fenêtre de la liste (le mois suivant prend alors la place)
   return {F:F, lignes:lignes, faites:faites, tout:tout};
 }
 
@@ -12883,16 +12970,19 @@ var _LM_I=(function(){
 function _lmLi(L){
   var cls='lm-i lm-'+L.cle+(L.fait ? ' lm-fait' : ' lm-afaire')+(L.retard ? ' lm-retard' : '')+(L.aujourdhui ? ' lm-auj' : '');
   var etatSr=L.fait ? 'fait' : (L.retard ? 'en retard' : 'à faire');
-  // l'échéance (seulement pour ce qui reste à faire) : « 15 nov. », « aujourd'hui », « 15 nov. · en retard »
-  var chip=(L.date && !L.fait) ? '<span class="lm-j">'+(L.aujourdhui ? 'aujourd’hui · '+esc(_jourCourt(L.date)) : esc(_jourCourt(L.date))+(L.retard ? ' · en retard' : ''))+'</span>' : '';
+  // l'échéance (seulement pour ce qui reste à faire) : « 15 nov. », « aujourd'hui », « 15 nov. · en retard » ; (feat8) les
+  // impôts : la fenêtre de paiement, « du 1er au 15 nov. » / « jusqu'au 15 nov. »
+  var chip=(L.date && !L.fait) ? '<span class="lm-j">'+(L.fenetre ? esc(_irPuce(L)) : (L.aujourdhui ? 'aujourd’hui · '+esc(_jourCourt(L.date)) : esc(_jourCourt(L.date))+(L.retard ? ' · en retard' : '')))+'</span>' : '';
   var droite=L.montant!=null ? '<b class="lm-m">'+fmtC(L.montant)+'</b>'
     : (L.etat ? '<span class="lm-e">'+esc(L.etat)+'</span>' : '');
   var act='';
-  if(L.action){
-    var ouvert=!!(L.action.form && _lmForm && _lmForm.ym===L.ym && _lmForm.ou!=='suivi');   // (16/10, O4) ouvert dans le suivi : pas ici
-    act=ouvert ? _lmFormHtml(L)
-      : '<div class="lm-a"><button type="button" class="lm-b'+(L.action.form ? ' lm-b-pri' : '')+'" id="lm-b-'+L.cle+'" onclick="'+L.action.f+'"'
-        +(L.action.form ? ' aria-expanded="false" aria-controls="lm-f"' : '')+'>'+(L.action.form ? _LM_I.recu : _LM_I.envoi)+'<span>'+esc(L.action.l)+'</span></button></div>';
+  if(L.action || L.action2){
+    // (feat8) un formulaire ouvert DANS la carte (pas dans le suivi) : celui du paiement OU celui du retrait
+    var fo=(_lmForm && _lmForm.ou!=='suivi') ? _lmForm : null;
+    if(fo && fo.genre==='retrait' && L.action2) act=_irFormRetraitHtml();
+    else if(fo && fo.genre!=='retrait' && L.action && L.action.form && fo.ym===L.ym) act=_lmFormHtml(L);
+    else act='<div class="lm-a'+(L.action && L.action2 ? ' lm-a2' : '')+'">'+(L.action ? _lmBouton(L, L.action, 'lm-b-'+L.cle) : '')
+      +(L.action2 ? _lmBouton(L, L.action2, 'lm-b-retrait') : '')+'</div>';
   }
   // grille de la ligne : rond | échéance + titre | montant ; dessous, le détail puis l'action, sur toute la largeur
   return '<li class="'+cls+'"><span class="lm-c" aria-hidden="true">'+(L.fait ? _LM_I.coche : (L.retard ? _LM_I.alerte : ''))+'</span>'
@@ -12901,30 +12991,45 @@ function _lmLi(L){
 }
 function _lmMontantChamp(cts){ var v=Math.round(cts)/100; return (Math.round(cts)%100===0) ? String(Math.round(v)) : v.toFixed(2); }
 function _lmFormHtml(L){
-  var propose=L.du-L.paye;
+  // (feat8, 16/10) « J'ai payé les impôts » : un paiement couvre les mois du plus ANCIEN au plus récent ; ce qui dépasse
+  // passe au mois suivant. Proposé : TOUT ce qui est dû jusqu'au mois dernier (un choix) ; un autre montant reste possible.
+  var D=_irDuAvant(), mois=D.de ? (D.de===D.a ? _nomMois(D.de) : _nomMois(D.de)+' à '+_nomMois(D.a)) : '';
+  var choix=function(v, txt, on){
+    return '<label class="lm-ch"><input type="radio" name="lm-f-choix" id="lm-f-'+v+'" value="'+v+'"'+(on ? ' checked' : '')
+      +' onchange="ipChoix(this.value)"><span class="lm-ch-o" aria-hidden="true"></span><span class="lm-ch-t">'+txt+'</span></label>';
+  };
   return '<div class="lm-f" id="lm-f" role="group" aria-labelledby="lm-f-t">'
-    +'<div class="lm-f-t" id="lm-f-t">'+esc('Impôts '+_deMois(L.ym)+' payés au bureau')+'</div>'
+    +'<div class="lm-f-t" id="lm-f-t">Impôts payés au bureau</div>'
+    +'<div class="lm-f-ch" role="radiogroup" aria-label="Montant payé">'
+    +choix('tout', 'Tout ce qui est dû : <b>'+fmtC(D.cts/100)+'</b>'+(mois ? '<small>'+esc(mois)+'</small>' : ''), true)
+    +choix('libre', 'Un autre montant', false)
+    +'</div>'
     +'<div class="lm-f-r">'
-    +'<label class="lm-ff lm-ff-mt"><span class="ilbl">Montant payé ($)</span><input class="ifield" type="number" inputmode="decimal" step="0.01" min="0" id="lm-f-mt" autocomplete="off" value="'+_lmMontantChamp(propose)+'"></label>'
+    +'<label class="lm-ff lm-ff-mt"><span class="ilbl">Montant payé ($)</span><input class="ifield" type="number" inputmode="decimal" step="0.01" min="0" id="lm-f-mt" autocomplete="off" value="'+_lmMontantChamp(D.cts)+'" oninput="ipChoixSuivre()"></label>'
     +'<label class="lm-ff lm-ff-d"><span class="ilbl">Payé le</span><input class="ifield" type="date" id="lm-f-date" value="'+_aujLocal()+'"></label>'
     +'</div>'
-    +'<div class="lm-f-n">'+(L.paye>0 ? 'Proposé : le reste de l’impôt ' : 'Proposé : l’impôt ')+esc(_deMois(L.ym))+', <b>'+fmtC(propose/100)+'</b>. Change-le si tu as payé autre chose : rien n’est enregistré avant « Enregistrer ».</div>'
+    +'<div class="lm-f-n">Un paiement couvre les mois du plus ancien au plus récent ; s’il dépasse, le reste passe au mois suivant. Rien n’est enregistré avant « Enregistrer ».</div>'
     +'<div class="lm-f-a"><button type="button" class="lm-b lm-annuler" onclick="listeImpotsFermer()">Annuler</button>'
-    +'<button type="button" class="lm-b lm-b-pri lm-ok" id="lm-f-ok" onclick="listeImpotsEnregistrer()">'+_LM_I.coche+'<span>Enregistrer</span></button></div>'
+    +'<button type="button" class="lm-b lm-b-pri lm-ok" id="lm-f-ok" onclick="ipPaieEnregistrer()">'+_LM_I.coche+'<span>Enregistrer</span></button></div>'
     +'<div class="lm-f-msg" id="lm-f-msg" role="status"></div></div>';
 }
 function _lmHtml(E){
   var F=E.F, n=E.lignes.length;
   var fin=F.reste===0 ? 'ce soir' : (F.reste===1 ? 'demain' : 'dans '+F.reste+' jours');
-  var sous=E.tout ? 'tout est fait' : (F.fin ? _majuscule(_nomMois(F.ym))+' finit '+fin : 'pour clore '+_nomMois(F.ym));
   var flash=(_lmFlash && _lmFlashOu!=='suivi') ? '<div class="lm-flash lm-flash-'+_lmFlash.cls+'" role="status">'+(_lmFlash.cls==='ok' ? _LM_I.coche : (_lmFlash.cls==='ko' ? _LM_I.alerte : ''))+'<span>'+_lmFlash.t+'</span></div>' : '';
-  var faits=E.tout ? [] : E.lignes.filter(function(l){ return l.fait; });
+  if(E.tout){
+    // (feat8, idée 10) tout est fait : la carte devient UNE ligne de résumé du mois (montants déjà affichés ailleurs),
+    // gardée jusqu'à la fin de la fenêtre de la liste
+    return _chNb('<div class="lm-tete lm-resume"><span class="lm-ico" aria-hidden="true">'+_LM_I.coche+'</span>'
+      +'<div class="lm-tx"><div class="lm-t" id="lm-t">'+_irResumeMois(E)+'</div></div></div>'+flash);
+  }
+  var sous=F.fin ? _majuscule(_nomMois(F.ym))+' finit '+fin : 'pour clore '+_nomMois(F.ym);
+  var faits=E.lignes.filter(function(l){ return l.fait; });
   var resume=faits.length ? _lmResumeHtml(faits) : '';                         // (16/10) téléphone seulement
-  var tete='<div class="lm-tete"><span class="lm-ico" aria-hidden="true">'+(E.tout ? _LM_I.coche : _LM_I.liste)+'</span>'
+  var tete='<div class="lm-tete"><span class="lm-ico" aria-hidden="true">'+_LM_I.liste+'</span>'
     +'<div class="lm-tx"><div class="lm-t" id="lm-t">'+esc('La liste '+_deMois(F.ym))+'</div>'
     +'<div class="lm-s'+(resume && !F.fin ? ' lm-s-redite' : '')+'">'+esc(sous)+'</div>'+resume+'</div>'
     +'<span class="lm-compte" role="img" aria-label="'+E.faites+' sur '+n+' faites">'+E.faites+'<span>/'+n+'</span></span></div>';
-  if(E.tout) return _chNb(tete+flash);
   return _chNb(tete+flash+'<ol class="lm-l" id="lm-l">'+E.lignes.map(_lmLi).join('')+'</ol>');
 }
 function _majListe(){
@@ -12956,7 +13061,7 @@ function _impRedessiner(){
 function listeNoterEnvoi(){ try{ msNoterPaiement(true); }catch(e){} }
 function listeImpotsOuvrir(){
   if(document.body.classList.contains('readonly')) return;
-  var F=_lmFenetre(); if(F.fin) return;
+  var F=_lmFenetre(); if(F.fin) return;            // (feat8) fin du mois : pas de formulaire dans la liste (le bloc impôts l'a)
   _lmForm={ym:F.ym}; _lmFlash=null;
   _majListe();
   var mt=document.getElementById('lm-f-mt');
@@ -12975,6 +13080,7 @@ function _lmMsg(t){ var el=document.getElementById('lm-f-msg'); if(el) el.innerH
 // mois fixé par la liste, date du jour proposée. Rien n'est annoncé avant la réponse du serveur.
 async function listeImpotsEnregistrer(){
   if(_lmEnCours) return;                                                       // double toucher : un seul paiement
+  if(_lmForm && _lmForm.genre==='retrait') return;                              // (feat8) le formulaire ouvert est celui du retrait
   if(ecritureInterdite('impôts payés')) return;
   var ym=_lmForm && _lmForm.ym;
   if(!/^\d{4}-\d{2}$/.test(String(ym||''))) return;
@@ -12987,11 +13093,14 @@ async function listeImpotsEnregistrer(){
   if(_impIllisible){ _lmMsg('La liste des impôts payés du cloud est illisible : rien n’a été enregistré (recharge la page).'); return; }
   _lmEnCours=true;
   var b=document.getElementById('lm-f-ok'); if(b) b.disabled=true;
-  var p={id:_nouvelIdImpot(), mois:ym, date:date, amount:Math.round(lu.valeur*100)/100, le:new Date().toISOString()};
+  // (feat8) un paiement « tout ce qui est dû » (global) : il couvre les mois du plus ancien au plus récent (_impSuivi) ;
+  // il n'a pas de mois (une page plus ancienne le garde sans le compter, jamais sur un mauvais mois)
+  var D=_irDuAvant();
+  var p={id:_nouvelIdImpot(), global:true, date:date, amount:Math.round(lu.valeur*100)/100, le:new Date().toISOString()};
   impotsPayes.push(p);
   try{ if(typeof _attenteNoter==='function') _attenteNoter('impots_payes', 'aj', p); }catch(e){}   // gardé sur l'appareil tant qu'il n'est pas VU en base
   var envoi=_ecrireImpotsPayes();
-  try{ logEdit('Ajout paiement impots', dl(date)+' - '+fmtC(p.amount)+' - impôts '+_lmDeComplet(ym)); }catch(e){ try{ saveData(); }catch(_){} }
+  try{ logEdit('Ajout paiement impots', dl(date)+' - '+fmtC(p.amount)+' - impôts dus depuis le début'+(D.a ? ' (jusqu’à '+_lmNomComplet(D.a)+')' : '')); }catch(e){ try{ saveData(); }catch(_){} }
   _lmForm=null;
   _lmFlash={cls:'en-cours', t:'Enregistrement…'};
   _impRedessiner();
@@ -12999,23 +13108,24 @@ async function listeImpotsEnregistrer(){
   _lmEnCours=false;
   _lmFlash=ok===false
     ? {cls:'ko', t:'Paiement d’impôts pas encore enregistré dans le cloud : il est gardé sur cet appareil et sera renvoyé tout seul dès que le réseau revient. Ne le note pas une deuxième fois.', fin:Date.now()+20000}
-    : {cls:'ok', t:'Impôts '+esc(_deMois(ym))+' notés : <b>'+fmtC(p.amount)+'</b> payés le '+esc(_jourCourt(date)), fin:Date.now()+6000};
+    : {cls:'ok', t:_irNote(p), fin:Date.now()+6000};
   _impRedessiner();
   setTimeout(function(){ if(_lmFlash && Date.now()>=_lmFlash.fin-50){ _lmFlash=null; _impRedessiner(); } }, Math.max(0,_lmFlash.fin-Date.now())+60);
 }
 // Supprimer un paiement d'impôts noté (le bloc impôts) : même fenêtre que la suppression d'un paiement à la modèle.
 async function supprimerImpotPaye(cle){
-  var p=(impotsPayes||[]).find(function(x){ return _impValide(x) && _cleImpot(x)===cle; });
+  var p=(impotsPayes||[]).find(function(x){ return (_impValide(x) || _impGlobal(x)) && _cleImpot(x)===cle; });   // (feat8) aussi un paiement « tout ce qui est dû »
   var changee=function(){ _impRedessiner(); showSaveStatus('⚠ La liste a changé entre-temps — rien supprimé. Vérifie la ligne et recommence.','#f87171'); };
   if(!p){ changee(); return; }
   if(ecritureInterdite('impôts payés')) return;
-  var mtx=fmtC(p.amount);
+  var mtx=fmtC(p.amount), glob=_impGlobal(p);
   if(!await showConfirm({ico:'del', ton:'danger',
-    titre:'Supprimer le paiement d’impôts du '+_jourCourt(p.date).replace(/ /g,' ')+' ('+mtx+', impôts '+_deMois(p.mois)+') ?',
-    texte:'Les impôts '+_deMois(p.mois)+' redeviendront « à payer » de '+mtx+'. Cette suppression est irréversible.',
+    titre:'Supprimer le paiement d’impôts du '+_jourCourt(p.date).replace(/ /g,' ')+' ('+mtx+(glob ? '' : ', impôts '+_deMois(p.mois))+') ?',
+    texte:glob ? 'Les mois qu’il couvrait redeviendront « à payer ». Cette suppression est irréversible.'
+      : 'Les impôts '+_deMois(p.mois)+' redeviendront « à payer » de '+mtx+'. Cette suppression est irréversible.',
     boutons:[{l:'Annuler',v:'non'},{l:'Supprimer',v:'oui',cls:'danger'}]})) return;
   var i=impotsPayes.indexOf(p); if(i<0){ changee(); return; }                 // la liste a pu bouger pendant la question
-  try{ logEdit('Suppression paiement impots', dl(p.date)+' - '+fmtC(p.amount)+' - impôts '+_lmDeComplet(p.mois)); }catch(e){}
+  try{ logEdit('Suppression paiement impots', dl(p.date)+' - '+fmtC(p.amount)+' - '+(glob ? 'impôts dus depuis le début' : 'impôts '+_lmDeComplet(p.mois))); }catch(e){}
   // pierre tombale PARTAGÉE (écrite par la fonction générale avant la liste) : aucun appareil ne la ressuscitera
   _IMPOTS_SUPPRIMES.add(_cleImpot(p));
   impotsPayes=impotsPayes.filter(function(x){ return _cleImpot(x)!==_cleImpot(p); });
@@ -13030,43 +13140,108 @@ async function supprimerImpotPaye(cle){
 // Le suivi commence au PREMIER mois noté (les mois d'avant ont été payés avant que le site sache les noter) et va
 // jusqu'au mois en cours (ses impôts « à ce jour » sont à garder aussi). Par mois : l'impôt (1 % du net OnlyFans, le
 // calcul du bloc), ce qui a été noté, le reste. Reste à payer = somme des restes ; à garder en crypto = reste ÷ 0,98.
-function _impSuivi(){
-  var l=(impotsPayes||[]).filter(_impValide); if(!l.length) return null;
-  var m0=l.reduce(function(m,p){ return p.mois<m ? p.mois : m; }, l[0].mois);
-  var mx=l.reduce(function(m,p){ return p.mois>m ? p.mois : m; }, l[0].mois);
-  var cour=_ymLocal(), fin=cour>mx ? cour : mx, mois=[];
-  for(var k=m0, garde=0; k<=fin && garde<600; k=_lmSuivant(k), garde++) mois.push(k);
-  var rows=mois.map(function(ym){
-    var du=_chCtsAff(_chFrais(_bilansMois(ym)).imp), pa=_impPayeCts(ym);
-    return {ym:ym, du:du, pa:pa, reste:Math.max(0,du-pa), cours:ym===cour, ech:_lmJour(_lmSuivant(ym),15),
-      l:l.filter(function(p){ return p.mois===ym; }).sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); })};
-  }).filter(function(r){ return r.du>0 || r.pa>0; }).reverse();
-  var paye=rows.reduce(function(s,r){ return s+r.pa; },0), reste=rows.reduce(function(s,r){ return s+r.reste; },0);
-  return {m0:m0, rows:rows, paye:paye, reste:reste, garde:reste/100/(1-_RETRAIT_LIQUIDE)};
+function _impSuivi(tout){
+  // (feat8, 16/10) Les impôts tels qu'ils sont VRAIMENT payés, suivis DEPUIS LE PREMIER BILAN (« depuis le début
+  // d'OnlyFans » : plus aucun mois « compté comme payé ») jusqu'au mois en cours (ses impôts « à ce jour »). Par mois :
+  // l'impôt (1 % du net OnlyFans, le calcul du bloc, au centime affiché), ce qui le couvre, le reste.
+  //  1. un paiement noté POUR UN MOIS (l'ancienne forme, toujours valable) couvre son mois ; ce qui dépasse passe au
+  //     mois suivant (règle « report ») ;
+  //  2. un paiement « tout ce qui est dû » (global) couvre les mois du plus ANCIEN au plus récent, dans l'ordre des
+  //     paiements ; ce qui reste après le dernier mois est « d'avance » (il passera aux mois suivants) ;
+  //  3. l'argent déjà retiré en liquide (« J'ai déjà retiré l'argent ») : chaque retrait ajoute au liquide de côté, chaque
+  //     paiement fait ensuite le diminue d'autant (jamais sous zéro ; le même jour, le retrait passe avant) ;
+  //  4. à garder en crypto = (reste − liquide de côté) ÷ 0,98, jamais moins de zéro.
+  // Rien de noté (ni paiement ni retrait) : null, et le bloc reste celui d'avant ; `tout` : les mêmes chiffres quand même
+  // (la liste du mois en a besoin avant tout paiement).
+  var cts=function(v){ return Math.round(Number(v)*100); };
+  var parDate=function(a,b){ var x=String(a.date||''), y=String(b.date||''), u=String(a.le||''), v=String(b.le||'');
+    return x<y ? -1 : (x>y ? 1 : (u<v ? -1 : (u>v ? 1 : 0))); };
+  var pays=(impotsPayes||[]).filter(function(p){ return _impValide(p) || _impGlobal(p); });
+  var rets=(typeof _irRetraits==='function') ? _irRetraits() : [];
+  if(!tout && !pays.length && !rets.length) return null;
+  var mens=pays.filter(function(p){ return !_impGlobal(p); }), glob=pays.filter(_impGlobal).sort(parDate);
+  var cour=_ymLocal(), m0=null, fin=cour;
+  (ents||[]).forEach(function(e){ var k=String(e.date||'').slice(0,7); if(/^\d{4}-\d{2}$/.test(k) && (!m0 || k<m0)) m0=k; });
+  mens.forEach(function(p){ if(!m0 || p.mois<m0) m0=p.mois; if(p.mois>fin) fin=p.mois; });
+  if(!m0) return null;
+  var rows=[];
+  for(var k=m0, g=0; k<=fin && g<600; k=_lmSuivant(k), g++){
+    var du=_chCtsAff(_chFrais(_bilansMois(k)).imp), l=mens.filter(function(p){ return p.mois===k; }).sort(parDate);
+    var pa=l.reduce(function(s,p){ return s+cts(p.amount); },0);
+    if(du>0 || pa>0) rows.push({ym:k, du:du, pa:pa, cours:k===cour, ech:_lmJour(_lmSuivant(k),15), l:l, par:[], parGlobal:0});
+  }
+  // 1. les paiements pour un mois, et ce qui dépasse, mois après mois
+  var rep=0;
+  rows.forEach(function(r){ var d=r.pa+rep; r.recu=rep; r.parMois=Math.min(r.du,d); rep=d-r.parMois; r.passe=rep; });
+  // 2. les paiements « tout ce qui est dû » : du plus ancien mois au plus récent, paiement après paiement
+  var globaux=glob.map(function(p){
+    var reste=cts(p.amount), mois=[];
+    rows.forEach(function(r){ var b=r.du-r.parMois-r.parGlobal; if(reste<=0 || b<=0) return; var t=Math.min(b,reste); r.parGlobal+=t; r.par.push({p:p, cts:t}); mois.push(r.ym); reste-=t; });
+    return {p:p, cts:cts(p.amount), mois:mois, avance:reste};
+  });
+  rows.forEach(function(r){ r.couvert=r.parMois+r.parGlobal; r.reste=r.du-r.couvert; });
+  var avance=rep+globaux.reduce(function(s,G){ return s+G.avance; },0);
+  // 3. le liquide de côté : les retraits, moins les paiements faits ensuite
+  var ev=rets.map(function(x){ return {d:String(x.date||''), k:0, v:cts(x.amount), le:String(x.le||'')}; })
+    .concat(pays.map(function(p){ return {d:String(p.date||''), k:1, v:cts(p.amount), le:String(p.le||'')}; }))
+    .sort(function(a,b){ return a.d<b.d ? -1 : (a.d>b.d ? 1 : (a.k-b.k || (a.le<b.le ? -1 : (a.le>b.le ? 1 : 0)))); });
+  var liq=0; ev.forEach(function(e){ if(e.k===0) liq+=e.v; else liq-=Math.min(liq, e.v); });
+  var paye=pays.reduce(function(s,p){ return s+cts(p.amount); },0), reste=rows.reduce(function(s,r){ return s+r.reste; },0);
+  var crypto=Math.max(0, reste-liq);
+  return {m0:rows.length ? rows[0].ym : m0, rows:rows.slice().reverse(), paye:paye, reste:reste, avance:avance, liquide:liq,
+    crypto:crypto, garde:crypto/100/(1-_RETRAIT_LIQUIDE), globaux:globaux, retraits:rets.slice().sort(parDate), cour:cour};
 }
 function _impSuiviHtml(S){
-  var auj=_aujLocal();
+  // (feat8, 16/10) suivis DEPUIS LE DÉBUT : chaque mois dit son impôt, ce qui le couvre et le reste ; les paiements « tout
+  // ce qui est dû » et l'argent déjà retiré en liquide sont listés à part, chacun avec son ✕ ; UN jeu de gestes (« J'ai
+  // payé les impôts », « J'ai déjà retiré l'argent ») au lieu d'un bouton par mois. Pas de rouge : un mois passé son
+  // 15 dit seulement « prévu le 15 oct. ».
+  var asc=S.rows.slice().reverse(), E=_irEcheance(asc), auj=_aujLocal();
+  var croix=function(fn, cle, lbl){
+    return '<button type="button" class="ip-sv-x" onclick="'+fn+'(\''+esc(cle).replace(/'/g,'&#39;')+'\')" title="'+esc(lbl)+'" aria-label="'+esc(lbl)+'">'+_LM_I.x+'</button>';
+  };
   var ligne=function(r){
-    var etat, cls;
-    if(r.pa>0 && r.pa>=r.du){ etat='payé'; cls='ok'; }
+    var etat, cls, tard=!r.cours && r.reste>0 && auj>r.ech;
+    if(r.reste<=0){ etat='payé'; cls='ok'; }
     else if(r.cours){ etat='en cours'; cls='cours'; }
-    else if(auj>r.ech){ etat='en retard'; cls='retard'; }
-    else { etat='à payer le '+_jourCourt(r.ech); cls='du'; }
+    else { etat='à payer'; cls='du'; }
     var det='impôts '+(r.cours ? 'à ce jour ' : '')+'<b>'+fmtC(r.du/100)+'</b>'
-      +(r.pa>0 ? ' · payé <b>'+fmtC(r.pa/100)+'</b>' : '')
-      +(r.reste>0 && r.pa>0 ? ' · reste <b>'+fmtC(r.reste/100)+'</b>' : '')
-      +(r.pa>r.du ? ' · <b>'+fmtC((r.pa-r.du)/100)+'</b> de plus' : '');
+      +(r.couvert>0 ? ' · payé <b>'+fmtC(r.couvert/100)+'</b>' : '')
+      +(r.reste>0 && r.couvert>0 ? ' · reste <b>'+fmtC(r.reste/100)+'</b>' : '')
+      +(r.passe>0 && (r.pa>0 || r.recu>0) ? ' · <b>'+fmtC(r.passe/100)+'</b> passés au mois suivant' : '')
+      +(tard ? ' · prévu le '+esc(_jourCourt(r.ech)) : '');
     var pays=r.l.map(function(p){
       return '<span class="ip-sv-p"><span>'+esc(_jourCourt(p.date))+' · <b>'+fmtC(p.amount)+'</b></span>'
-        +'<button type="button" class="ip-sv-x" onclick="supprimerImpotPaye(\''+esc(_cleImpot(p)).replace(/'/g,'&#39;')+'\')" title="Supprimer ce paiement d’impôts" aria-label="'+esc('Supprimer le paiement d’impôts du '+dlA(p.date)+' ('+_lmNomComplet(p.mois)+')')+'">'+_LM_I.x+'</button></span>';
+        +croix('supprimerImpotPaye', _cleImpot(p), 'Supprimer le paiement d’impôts du '+dlA(p.date)+' ('+_lmNomComplet(p.mois)+')')+'</span>';
     }).join('');
     return '<div class="ip-sv-r ip-sv-'+cls+'"><div class="ip-sv-h"><span class="ip-sv-m">'+esc(grafCap(_nomMois(r.ym)))+'</span><span class="ip-sv-e">'+esc(etat)+'</span></div>'
-      +'<div class="ip-sv-d">'+det+'</div>'+(pays ? '<div class="ip-sv-ps">'+pays+'</div>' : '')+_ipSvAction(r, cls)+'</div>';
+      +'<div class="ip-sv-d">'+det+'</div>'+(pays ? '<div class="ip-sv-ps">'+pays+'</div>' : '')+'</div>';
   };
-  return '<div class="ip-sv-tete"><span class="ip-sv-t">Impôts payés</span><span class="ip-sv-s">'+esc('suivis depuis '+_lmNomComplet(S.m0))+'</span></div>'
+  var glob=S.globaux.map(function(G){
+    var m=G.mois.length ? (G.mois.length>1 ? _nomMois(G.mois[0])+' à '+_nomMois(G.mois[G.mois.length-1]) : _nomMois(G.mois[0])) : '';
+    return '<span class="ip-sv-p"><span>'+esc(_jourCourt(G.p.date))+' · <b>'+fmtC(G.p.amount)+'</b>'+(m ? ' · '+esc(m) : '')
+      +(G.avance>0 ? ' · <b>'+fmtC(G.avance/100)+'</b> d’avance' : '')+'</span>'
+      +croix('supprimerImpotPaye', _cleImpot(G.p), 'Supprimer le paiement d’impôts du '+dlA(G.p.date)+' (tout ce qui était dû)')+'</span>';
+  }).join('');
+  var rets=S.retraits.map(function(x){
+    return '<span class="ip-sv-p"><span>'+esc(_jourCourt(x.date))+' · <b>'+fmtC(x.amount)+'</b> retirés</span>'
+      +croix('supprimerImpotRetrait', _irCle(x), 'Supprimer le retrait du '+dlA(x.date))+'</span>';
+  }).join('');
+  var resume=S.reste>0
+    ? (E && !(S.liquide>0) ? 'à payer au bureau '+esc(_irFenTxt(E.fen))+' · ' : '')
+      +(S.crypto>0 ? 'à garder en crypto pour '+(S.liquide>0 ? 'ce qui n’est pas encore retiré' : 'ce reste')+' : <b>'+fmtC(S.garde)+'</b> (retrait de 2 %)'
+        : 'rien de plus à garder en crypto : tout est déjà retiré en liquide')
+    : 'rien à garder : tout ce qui est dû est payé'+(S.avance>0 ? ' · <b>'+fmtC(S.avance/100)+'</b> d’avance, pour les mois suivants' : '');
+  var liquide=(S.liquide>0 || rets) ? '<div class="ip-sv-liq"><div class="ip-sv-liq-h"><span class="ip-sv-gt">En liquide, de côté</span><b>'+fmtC(S.liquide/100)+'</b></div>'
+    +'<div class="ip-sv-liq-s">'+(S.liquide>0 ? (S.reste>0 && E ? 'à payer au bureau '+esc(_irFenTxt(E.fen)) : 'rien à payer pour l’instant : il reste pour les prochains impôts') : 'tout a servi à payer les impôts')+'</div>'
+    +(rets ? '<div class="ip-sv-ps">'+rets+'</div>' : '')+'</div>' : '';
+  return '<div class="ip-sv-tete"><span class="ip-sv-t">Impôts payés</span><span class="ip-sv-s">'+esc('suivis depuis le début ('+_lmNomComplet(S.m0)+')')+'</span></div>'
     +'<dl class="ip-rel ip-sv-rel"><div class="ip-r"><dt>Déjà payé</dt><dd>'+fmtC(S.paye/100)+'</dd></div>'
     +'<div class="ip-r ip-sv-reste"><dt>Reste à payer</dt><dd>'+fmtC(S.reste/100)+'</dd></div></dl>'
-    +'<div class="ip-cout-det">'+(S.reste>0 ? 'à garder en crypto pour ce reste : <b>'+fmtC(S.garde)+'</b> (retrait de 2 %)' : 'rien à garder : tout ce qui est dû est payé')+'</div>'
+    +'<div class="ip-cout-det">'+resume+'</div>'
+    +liquide
+    +(glob ? '<div class="ip-sv-g"><span class="ip-sv-gt">Paiements pour tout ce qui était dû</span><div class="ip-sv-ps">'+glob+'</div></div>' : '')
+    +_irSvGestes(S)
     +'<div class="ip-sv-l">'+S.rows.map(ligne).join('')+'</div>';
 }
 function _impDecorer(){
@@ -13074,14 +13249,12 @@ function _impDecorer(){
   var S=_impSuivi(), note=el.querySelector('.ip-note');
   el.classList.toggle('ip-suivi-on', !!S && !el.classList.contains('ip-0'));
   if(note) note.innerHTML=_chNb(S
-    ? '« Impôts depuis le début » compte tout, depuis ton premier bilan. Les paiements sont suivis depuis '+esc(_lmNomComplet(S.m0))+', ton premier paiement noté : « déjà payés » et le reste à payer ne comptent pas les mois d’avant.'
+    ? '« Impôts depuis le début » compte tout, depuis ton premier bilan. Un paiement couvre les mois du plus ancien au plus récent ; s’il dépasse, le reste passe au mois suivant.'
     : 'Note chaque paiement d’impôts avec « J’ai payé les impôts », dans la liste du mois en haut de l’Accueil : ce qui reste à payer s’affichera ici. Ce total compte tout, depuis ton premier bilan.');
   if(!S || el.classList.contains('ip-0')) return;
-  // le geste ② dit ce qu'il reste VRAIMENT à garder (les impôts déjà payés ne sont plus à garder)
+  // le geste ② dit ce qu'il reste VRAIMENT à garder : ni ce qui est payé, ni ce qui est déjà retiré en liquide (feat8)
   var li=el.querySelector('.ip-etapes li:nth-child(2)');
-  if(li) li.innerHTML=_chNb(S.reste>0
-    ? '<b>Garde <span class="ip-mt">'+fmtC(S.garde)+'</span> sur le compte crypto</b> : retirés en liquide (−2 %), ils font les <span class="ip-mt">'+fmtC(S.reste/100)+'</span> d’impôts qu’il reste à payer, pour vous deux.'
-    : '<b>Rien à garder pour les impôts en ce moment</b> : tout ce qui est dû est payé.');
+  if(li) li.innerHTML=_chNb(_irGeste2(S));
   var d=document.createElement('div'); d.className='ip-suivi'; d.id='ip-suivi';
   d.innerHTML=_chNb(_impSuiviHtml(S));
   el.insertBefore(d, el.querySelector('.ip-per') || note || null);
@@ -13330,9 +13503,16 @@ function _ipRepliHtml(T){
 // la ligne, suivi commencé : le chiffre du geste ② (S.garde, pour S.reste d'impôts qu'il reste à payer)
 function _ipRepliSuivi(el, S){
   var l = el && el.querySelector('#ip-repli-l'); if(!l || !S) return;
-  l.innerHTML = _chNb(S.reste > 0
-    ? 'Garde <b class="ip-mt">' + fmtC(S.garde) + '</b> en crypto pour les <b class="ip-mt">' + fmtC(S.reste / 100) + '</b> d’impôts qu’il reste à payer'
-    : '<b>Rien à garder pour les impôts en ce moment</b> : tout ce qui est dû est payé');
+  // (feat8) l'argent déjà retiré en liquide est dit à la place de « garde … en crypto », pour sa part
+  var liq = Math.min(S.liquide, S.reste), E = (typeof _irEcheance === 'function') ? _irEcheance(S.rows.slice().reverse()) : null;
+  l.innerHTML = _chNb(!(S.reste > 0)
+    ? '<b>Rien à garder pour les impôts en ce moment</b> : tout ce qui est dû est payé'
+      + (S.liquide > 0 ? ' · <b class="ip-mt">' + fmtC(S.liquide / 100) + '</b> en liquide, de côté' : '')
+    : (liq > 0
+      ? 'En liquide, de côté : <b class="ip-mt">' + fmtC(S.liquide / 100) + '</b>'
+        + (S.crypto > 0 ? ' · garde <b class="ip-mt">' + fmtC(S.garde) + '</b> en crypto pour les <b class="ip-mt">' + fmtC(S.crypto / 100) + '</b> qui restent'
+          : ' · à payer au bureau ' + (E ? _irFenTxt(E.fen) : ''))
+      : 'Garde <b class="ip-mt">' + fmtC(S.garde) + '</b> en crypto pour les <b class="ip-mt">' + fmtC(S.reste / 100) + '</b> d’impôts qu’il reste à payer'));
   l.classList.add('ip-repli-suivi');
   _ipRepliControles(el);
 }
@@ -13416,7 +13596,7 @@ function _fmPortee(el){
 // Le champ visé par un refus du formulaire « J'ai payé les impôts » (liste du mois), d'après le texte du refus
 function _fmChampListe(msg){
   var s = String(msg || '');
-  if (/jour du paiement/i.test(s)) return document.getElementById('lm-f-date');
+  if (/jour du (paiement|retrait)/i.test(s)) return document.getElementById('lm-f-date');
   if (/montant|d[ée]cimale/i.test(s)) return document.getElementById('lm-f-mt');
   return null;
 }
@@ -13910,30 +14090,31 @@ function _clesArchiveAnnees(){
 // Tout est préparé AVANT d'écrire dans la page : une faute ne laisse jamais une tuile à moitié réécrite.
 function _ipVeriteHtml(T, S, P){
   if(!T || !S || !(T.imp > 0)) return null;
-  // le compte, en centimes AFFICHÉS (ceux que T et S écrivent déjà) : total = avant + déjà payés − trop-payé + reste
+  // (feat8) le compte, en centimes AFFICHÉS (ceux que T et S écrivent déjà) : total = déjà payés − payé d'avance + reste
+  // (+ l'arrondi au centime, mois par mois). Le suivi part du premier bilan : plus de « mois d'avant comptés comme payés ».
   var total = _chCtsAff(T.imp);                                                   // « Impôts depuis le début », au centime affiché
   var dusSuivis = S.rows.reduce(function(s, r){ return s + r.du; }, 0);          // les impôts des mois du suivi (ses lignes)
-  var avant = total - dusSuivis;                                                  // les mois d'avant le suivi (comptés comme payés)
-  var trop = S.paye - (dusSuivis - S.reste);                                      // ce qui dépasse l'impôt de son mois (pas reporté)
-  var m0 = esc(_lmNomComplet(S.m0));
-  var ofAvant = (ents || []).some(function(e){ return String(e.date || '').slice(0, 7) < S.m0 && (Number(e.brut) || 0) > 0; });
-  var moisTrop = S.rows.filter(function(r){ return r.pa > r.du; }).map(function(r){ return _nomMois(r.ym); }).reverse();
+  var arrondi = total - dusSuivis;                                                // un centime ou deux : l'arrondi, mois par mois
+  var avance = S.avance;                                                          // payé au-delà de tout ce qui est dû : passe au mois suivant
+  var liq = Math.min(S.liquide, S.reste);
+  var E = (typeof _irEcheance === 'function') ? _irEcheance(S.rows.slice().reverse()) : null;
   var ligne = function(cls, dt, dd){ return '<div class="ip-r ' + cls + '"><dt>' + dt + '</dt><dd>' + dd + '</dd></div>'; };
   return {
     valeur: fmtC(S.garde),
-    pastille: S.reste > 0
+    pastille: S.crypto > 0
       ? '<span class="ip-moitie">dont sa moitié : <b>' + fmtC(saMoitie(S.garde)) + '</b></span>'
-      : '<span class="ip-moitie ip-moitie-ok">tout ce qui est dû est payé</span>',
-    releve: '<dl class="ip-rel ip-rel-sv">'
+      : '<span class="ip-moitie ip-moitie-ok">' + (S.reste > 0 ? 'tout est déjà retiré en liquide' : 'tout ce qui est dû est payé') + '</span>',
+    releve: (S.liquide > 0 ? '<div class="ip-liq">En liquide, de côté : <b>' + fmtC(S.liquide / 100) + '</b>'
+        + (S.reste > 0 ? ' · à payer au bureau ' + esc(E ? _irFenTxt(E.fen) : '') : ' · rien à payer pour l’instant') + '</div>' : '')
+      + '<dl class="ip-rel ip-rel-sv">'
       + ligne('ip-r-depuis', 'Impôts depuis le début', fmtC(T.imp))
-      + (avant !== 0 ? ligne('ip-r-avant', (avant > 0 && ofAvant)
-          ? 'dont avant le suivi <span class="ip-r-q">(avant ' + m0 + ')</span>, comptés comme payés'
-          : 'dont arrondi au centime, mois par mois', _mtS(avant / 100)) : '')
-      + ligne('ip-r-payes', 'dont déjà payés depuis ' + m0, fmtC(S.paye / 100))
-      + (trop > 0 ? ligne('ip-r-trop', 'moins le trop-payé <span class="ip-r-q">(' + esc(moisTrop.join(', ')) + ')</span>, pas déduit du reste',
-          _mtS(-trop / 100)) : '')
+      + (arrondi !== 0 ? ligne('ip-r-avant', 'dont arrondi au centime, mois par mois', _mtS(arrondi / 100)) : '')
+      + ligne('ip-r-payes', 'dont déjà payés', fmtC(S.paye / 100))
+      + (avance > 0 ? ligne('ip-r-trop', 'moins payé d’avance <span class="ip-r-q">(passe au mois suivant)</span>', _mtS(-avance / 100)) : '')
       + ligne('ip-r-reste', 'dont reste à payer, en liquide', fmtC(S.reste / 100))
-      + '</dl>',
+      + '</dl>'
+      + (liq > 0 ? '<div class="ip-cout-det ip-liq-det">sur ce reste : <b>' + fmtC(liq / 100) + '</b> déjà retirés en liquide'
+        + (S.crypto > 0 ? ', <b>' + fmtC(S.crypto / 100) + '</b> encore en crypto' : '') + '</div>' : ''),
     periode: (P && P.imp > 0) ? 'impôts : <b>' + fmtC(P.imp) + '</b>' : null
   };
 }
@@ -14658,6 +14839,529 @@ async function restaurerSauvegardeMois(cle){
 })();
 // ══ fin feat8_corbeille ══
 
+// ── feat8_impots_reels (16/10 : impôts réels — suivi depuis le début, paiement global, retrait en liquide, doublon, résumé du mois) ──
+// ══ feat8_impots_reels (16/10) : les impôts tels qu'ils sont VRAIMENT payés ══════════════════════════════════════════
+// Ce qui a été expliqué le 16/10 : aucun impôt n'a encore été payé ; TOUT ce qui est dû depuis le début d'OnlyFans se paiera
+// en une fois, au bureau, du 1er au 15 du mois suivant ; ensuite, chaque mois du 1er au 15 pour le(s) mois d'avant ; et
+// l'argent des impôts a DÉJÀ été retiré en liquide ce mois-ci.
+//   1. Suivi depuis le premier bilan : tous les mois sont dus tant qu'ils ne sont pas payés (_impSuivi). Sans rien de
+//      noté, le bloc « Impôts à garder de côté » reste celui d'avant (mêmes chiffres, mêmes mots).
+//   2. « J'ai payé les impôts » : « Tout ce qui est dû : $X » (jusqu'au mois dernier) ou un autre montant ; un paiement
+//      couvre du plus ancien mois au plus récent, ce qui dépasse passe au mois suivant (règle « report ») ; les paiements
+//      notés « pour un mois » restent valables. Stockage : le réglage `impots_payes` (ligne sans mois, `global: true`).
+//   3. La liste du mois : la ligne des impôts dit le total dû et la fenêtre de paiement, le retard sobrement.
+//   4. « J'ai déjà retiré l'argent » : le liquide de côté (réglage `impots_retraits`, liste déclarée : fusion deux
+//      appareils, pierres tombales, file d'attente, copie de secours, sauvegardes, déconnexion).
+//   5. Un paiement (ou un retrait) du même montant déjà noté dans les 48 h : on demande avant d'écrire.
+//   6. (idée 10) Tout est fait : la carte devient UNE ligne de résumé du mois.
+// AUCUNE règle de bénéfice touchée : les impôts du mois restent ceux de _chFrais (1 % du net OnlyFans) et « à garder en
+// crypto » reste ÷ 0,98 ; tout ce qui suit LIT ces chiffres (et les paiements / retraits notés), sans rien recalculer.
+
+// ── les icônes (trait du site) ──────────────────────────────────────────────────────────────────────────────────────
+var _IR_I = (function(){
+  var s = function(p, t){ return '<svg viewBox="0 0 24 24" width="' + t + '" height="' + t + '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + '</svg>'; };
+  return { liquide: s('<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>', 16) };
+})();
+
+// ── 1. un paiement « tout ce qui est dû » (global) ──────────────────────────────────────────────────────────────────
+// Lisible, daté, positif, sans mois : il couvre du plus ancien mois au plus récent (_impSuivi).
+function _impGlobal(p){
+  return !!p && !p.supprime && p.global === true && /^\d{4}-\d{2}-\d{2}$/.test(String(p.date || '')) && isFinite(Number(p.amount)) && Number(p.amount) > 0;
+}
+// le total dû des mois TERMINÉS (avant le mois en cours), et ses mois : ce que propose « Tout ce qui est dû »
+function _irDuAvant(S){
+  S = S || _impSuivi(true);
+  var cour = _ymLocal(), l = S ? S.rows.slice().reverse().filter(function(r){ return r.ym < cour && r.reste > 0; }) : [];
+  return { cts: l.reduce(function(s, r){ return s + r.reste; }, 0), de: l.length ? l[0].ym : null, a: l.length ? l[l.length - 1].ym : null, n: l.length };
+}
+// La fenêtre de paiement (du 1er au 15 d'un mois) pour des mois (ordre croissant) qui ont un reste : le mois qui suit le
+// plus ancien, mais jamais une fenêtre déjà passée (après le 15, c'est celle du mois prochain).
+function _irEcheance(rowsAsc){
+  var dus = (rowsAsc || []).filter(function(r){ return r.reste > 0; }); if(!dus.length) return null;
+  var auj = _aujLocal(), cour = _ymLocal(), proch = (+auj.slice(8, 10) <= 15) ? cour : _lmSuivant(cour);
+  var w = _lmSuivant(dus[0].ym); if(w < proch) w = proch;
+  return { fen: w, dus: dus, retard: dus.filter(function(r){ return auj > r.ech; }), ouverte: w === cour };
+}
+function _irFenTxt(w){ return 'du 1er au 15 ' + _nomMois(w); }                                  // « du 1er au 15 novembre »
+// la pastille de la ligne des impôts : « du 1er au 15 nov. », « jusqu'au 15 nov. » (fenêtre ouverte), « aujourd'hui · 15 nov. »
+function _irPuce(L){
+  var j = _jourCourt(L.date);
+  if(L.aujourdhui) return 'aujourd’hui · ' + j;
+  return (L.fenetre === _ymLocal() ? 'jusqu’au ' : 'du 1er au ') + j;
+}
+// les mois passés leur 15 (ordre croissant), dits sobrement : « dont septembre, prévu le 15 oct. »
+function _irRetardTxt(l){
+  var n = l.length; if(!n) return '';
+  if(n === 1) return 'dont ' + _nomMois(l[0].ym) + ', prévu le ' + _jourCourt(l[0].ech);
+  var suite = true; for(var i = 1; i < n; i++) if(_lmSuivant(l[i - 1].ym) !== l[i].ym) suite = false;
+  var noms = (suite && n > 2) ? _nomMois(l[0].ym) + ' à ' + _nomMois(l[n - 1].ym)
+    : l.slice(0, -1).map(function(r){ return _nomMois(r.ym); }).join(', ') + ' et ' + _nomMois(l[n - 1].ym);
+  return 'dont ' + noms + ', prévus le 15 du mois suivant';
+}
+// les mois couverts par un paiement global (et son avance), d'après _impSuivi
+function _irCouvre(p){
+  var S = null; try{ S = _impSuivi(true); }catch(e){ S = null; }
+  var G = S ? S.globaux.filter(function(x){ return _cleImpot(x.p) === _cleImpot(p); })[0] : null;
+  if(!G || !G.mois.length) return '';
+  return (G.mois.length > 1 ? _nomMois(G.mois[0]) + ' à ' + _nomMois(G.mois[G.mois.length - 1]) : _nomMois(G.mois[0]))
+    + (G.avance > 0 ? ' (+ ' + fmtC(G.avance / 100) + ' d’avance)' : '');
+}
+// le message après « Enregistrer » (et après un renvoi tout seul de la file d'attente)
+function _irNote(p){
+  if(!p) return '';
+  if(_impGlobal(p)){ var c = _irCouvre(p); return 'Paiement d’impôts noté : <b>' + fmtC(p.amount) + '</b> payés le ' + esc(_jourCourt(p.date)) + (c ? ', pour ' + esc(c) : ''); }
+  return 'Impôts ' + esc(_deMois(p.mois)) + ' notés : <b>' + fmtC(p.amount) + '</b> payés le ' + esc(_jourCourt(p.date));
+}
+
+// ── 2. l'argent des impôts déjà retiré en liquide : la donnée ───────────────────────────────────────────────────────
+// Une ligne = {id, date:'AAAA-MM-JJ' (jour du retrait), amount (le liquide reçu, au centime), le: horodatage de la saisie}.
+// `var` + garde : déclarées en fin de script, elles ne doivent jamais écraser une lecture faite avant.
+var impotsRetraits; if(!Array.isArray(impotsRetraits)) impotsRetraits = [];
+var _IR_SUPPRIMES; if(!(_IR_SUPPRIMES instanceof Set)) _IR_SUPPRIMES = new Set();   // suppressions faites ICI
+var _irIllisible = false;
+function _irCle(x){ return (x && x.id) ? String(x.id) : [x && x.date, x && x.amount].join('|'); }
+function _irNouvelId(){ return 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+function _irValide(x){ return !!x && !x.supprime && /^\d{4}-\d{2}-\d{2}$/.test(String(x.date || '')) && isFinite(Number(x.amount)) && Number(x.amount) > 0; }
+function _irRetraits(){ return (Array.isArray(impotsRetraits) ? impotsRetraits : []).filter(_irValide); }
+// LA LECTURE : appelée par loadData (cloud) et loadLocal (copie de cet appareil). Rien n'est filtré à la lecture.
+function _irCharger(brut){
+  var l = (typeof _impLire === 'function') ? _impLire(brut) : null;
+  if(l === null){ impotsRetraits = []; _irIllisible = true; console.warn('[Retraits des impôts] réglage illisible : rien ne sera écrit par-dessus'); }
+  else { impotsRetraits = l; _irIllisible = false; }
+}
+// La déclaration à la fonction générale des listes (fusion deux appareils, pierres tombales `impots_retraits_supprimes`,
+// file d'attente, import et restauration avec aperçu)
+function _irDeclarer(){
+  if(typeof _listeDeclarer !== 'function') return false;
+  _listeDeclarer('impots_retraits', {
+    lire: function(){ return _irIllisible ? [] : (Array.isArray(impotsRetraits) ? impotsRetraits : []); },
+    ecrire: function(l){ impotsRetraits = l; try{ _impRedessiner(); }catch(e){} },
+    cleDe: function(x){ return _irCle(x); },
+    supprimes: _IR_SUPPRIMES,
+    titre: 'retrait des impôts', titres: 'retraits des impôts'
+  });
+  return true;
+}
+_irDeclarer();
+// L'ÉCRITURE : la fonction générale (rend true seulement quand le changement est VU dans la base)
+function _ecrireImpotsRetraits(){
+  if(_irIllisible || typeof _listeEcrire !== 'function') return Promise.resolve(false);
+  return _listeEcrire('impots_retraits');
+}
+
+// ── 3. la liste du mois : les boutons, le résumé du mois ────────────────────────────────────────────────────────────
+// Un bouton de la ligne. Deux boutons côte à côte (payer, retirer) : au téléphone, leur titre court (le nom lu reste le long).
+function _lmBouton(L, A, id){
+  var deux = !!(L.action && L.action2 && A.court);
+  var ico = A.retrait ? _IR_I.liquide : (A.form ? _LM_I.recu : _LM_I.envoi);
+  return '<button type="button" class="lm-b' + (A.form && !A.retrait ? ' lm-b-pri' : '') + '" id="' + id + '" onclick="' + A.f + '"'
+    + (A.form ? ' aria-expanded="false" aria-controls="lm-f"' : '') + (deux ? ' aria-label="' + esc(A.l) + '"' : '') + '>' + ico
+    + (deux ? '<span class="lm-bl">' + esc(A.l) + '</span><span class="lm-bc" aria-hidden="true">' + esc(A.court) + '</span>' : '<span>' + esc(A.l) + '</span>')
+    + '</button>';
+}
+// (idée 10) « Octobre : bénéfice $X · part envoyée $Y · impôts payés $Z ✓ » : les montants que la page affiche déjà
+// (le bénéfice du mois au Récap, les paiements notés depuis le 1er, ceux de la ligne des impôts)
+function _irResumeMois(E){
+  var F = E.F, ligne = function(c){ return E.lignes.filter(function(l){ return l.cle === c; })[0] || null; }, morceaux = [];
+  var r = null; try{ r = getMonthlyRecap().filter(function(x){ return x.key === F.ym; })[0] || null; }catch(e){ r = null; }
+  if(r) morceaux.push('bénéfice <b>' + _mtS(r.profit) + '</b>');
+  var M = ligne('modele');
+  if(M){
+    if(M.court === 'Part envoyée'){
+      var dep = _lmJour(_lmSuivant(F.ym), 1);
+      var env = (virements || []).filter(function(v){ return String(v.date || '') >= dep; }).reduce(function(s, v){ return s + (v.amount || 0); }, 0);
+      morceaux.push(env > 0 ? 'part envoyée <b>' + fmtC(env) + '</b>' : 'part envoyée');
+    } else morceaux.push('rien à envoyer');
+  }
+  var I = ligne('impots');
+  if(I) morceaux.push(I.court === 'Pas d’impôts' ? 'pas d’impôts' : (I.montant != null ? 'impôts payés <b>' + fmtC(I.montant) + '</b>' : 'impôts payés'));
+  // (chaque morceau d'un tenant : la ligne ne se coupe qu'aux « · » ; la coche reste collée au dernier)
+  var n = morceaux.length;
+  return '<span class="lm-seg">' + esc(_majuscule(_nomMois(F.ym))) + ' :</span> ' + morceaux.map(function(m, i){
+    return '<span class="lm-seg">' + m + (i === n - 1 ? '<span class="lm-fin-ok" aria-hidden="true">' + _LM_I.coche + '</span>' : '') + '</span>';
+  }).join(' · ') + '<span class="lm-sr"> (tout est fait)</span>';
+}
+
+// ── 4. le bloc « Impôts à garder de côté » quand quelque chose est noté ────────────────────────────────────────────
+// le geste ② : ce qu'il reste VRAIMENT à garder (sans liquide : mot pour mot le texte d'avant)
+function _irGeste2(S){
+  var liq = Math.min(S.liquide, S.reste), E = _irEcheance(S.rows.slice().reverse()), paie = 'à payer au bureau ' + (E ? _irFenTxt(E.fen) : '');
+  if(!(S.reste > 0)) return '<b>Rien à garder pour les impôts en ce moment</b> : tout ce qui est dû est payé.'
+    + (S.liquide > 0 ? ' <span class="ip-mt">' + fmtC(S.liquide / 100) + '</span> restent en liquide, de côté.' : '');
+  if(!(liq > 0)) return '<b>Garde <span class="ip-mt">' + fmtC(S.garde) + '</span> sur le compte crypto</b> : retirés en liquide (−2 %), ils font les <span class="ip-mt">'
+    + fmtC(S.reste / 100) + '</span> d’impôts qu’il reste à payer, pour vous deux.';
+  if(!(S.crypto > 0)) return '<b><span class="ip-mt">' + fmtC(S.liquide / 100) + '</span> en liquide, de côté</b> : ' + paie + ', pour vous deux. Rien de plus à garder en crypto.';
+  return '<b>Garde <span class="ip-mt">' + fmtC(S.garde) + '</span> sur le compte crypto</b> : retirés en liquide (−2 %), ils font les <span class="ip-mt">'
+    + fmtC(S.crypto / 100) + '</span> d’impôts pas encore retirés ; <span class="ip-mt">' + fmtC(liq / 100) + '</span> sont déjà en liquide, de côté, ' + paie + '.';
+}
+// le message après « Enregistrer », quand le formulaire était dans le suivi
+function _irSvFlash(){
+  if(!_lmFlash || _lmFlashOu !== 'suivi') return '';
+  var ico = _lmFlash.cls === 'ok' ? _LM_I.coche : (_lmFlash.cls === 'ko' ? _LM_I.alerte : '');
+  return '<div class="ip-sv-flash ip-sv-flash-' + esc(_lmFlash.cls) + '" role="status">' + ico + '<span>' + _lmFlash.t + '</span></div>';
+}
+// les gestes du suivi : « J'ai payé les impôts » (s'il reste des mois terminés à payer), « J'ai déjà retiré l'argent »
+// (s'il reste quelque chose en crypto) ; ou le formulaire ouvert ici. Lecture seule, associé : aucun geste.
+function _irSvGestes(S){
+  var flash = _irSvFlash();
+  if(document.body.classList.contains('readonly')) return flash;
+  try{ if(typeof _role !== 'undefined' && _role === 'assoc') return flash; }catch(e){}
+  var fo = (_lmForm && _lmForm.ou === 'suivi') ? _lmForm : null;
+  if(fo) return flash + (fo.genre === 'retrait' ? _irFormRetraitHtml() : _lmFormHtml({ym: fo.ym}));
+  var b = '';
+  if(_irDuAvant(S).cts > 0) b += '<button type="button" class="lm-b lm-b-pri ip-sv-noter" id="ip-sv-b-' + esc(S.cour) + '" onclick="ipSuiviPayer()" aria-expanded="false" aria-controls="lm-f">'
+    + _LM_I.recu + '<span>J’ai payé les impôts</span></button>';
+  if(S.crypto > 0) b += '<button type="button" class="lm-b ip-sv-retirer" id="ip-sv-r-' + esc(S.cour) + '" onclick="ipRetraitOuvrir(\'suivi\')" aria-expanded="false" aria-controls="lm-f">'
+    + _IR_I.liquide + '<span>J’ai déjà retiré l’argent</span></button>';
+  return flash + (b ? '<div class="ip-sv-a">' + b + '</div>' : '');
+}
+
+// ── 5. les formulaires ──────────────────────────────────────────────────────────────────────────────────────────────
+// « J'ai déjà retiré l'argent » : le liquide reçu (proposé : ce qui reste à payer, moins le liquide déjà de côté) et le jour.
+// Mêmes identifiants que le formulaire du paiement (un seul ouvert à la fois) : les refus s'affichent comme partout (E1).
+function _irFormRetraitHtml(){
+  var S = null; try{ S = _impSuivi(true); }catch(e){ S = null; }
+  var prop = S ? S.crypto : 0;
+  return '<div class="lm-f lm-f-ret" id="lm-f" role="group" aria-labelledby="lm-f-t">'
+    + '<div class="lm-f-t" id="lm-f-t">Argent des impôts retiré en liquide</div>'
+    + '<div class="lm-f-r">'
+    + '<label class="lm-ff lm-ff-mt"><span class="ilbl">Reçu en liquide ($)</span><input class="ifield" type="number" inputmode="decimal" step="0.01" min="0" id="lm-f-mt" autocomplete="off" value="' + _lmMontantChamp(prop) + '"></label>'
+    + '<label class="lm-ff lm-ff-d"><span class="ilbl">Retiré le</span><input class="ifield" type="date" id="lm-f-date" value="' + _aujLocal() + '"></label>'
+    + '</div>'
+    + '<div class="lm-f-n">Proposé : ce qui reste à payer' + (S && S.liquide > 0 ? ', moins le liquide déjà de côté' : '') + ', <b>' + fmtC(prop / 100)
+    + '</b>. Change-le si tu as reçu autre chose : rien n’est enregistré avant « Enregistrer ».</div>'
+    + '<div class="lm-f-a"><button type="button" class="lm-b lm-annuler" onclick="ipRetraitFermer()">Annuler</button>'
+    + '<button type="button" class="lm-b lm-b-pri lm-ok" id="lm-f-ok" onclick="ipRetraitEnregistrer()">' + _LM_I.coche + '<span>Enregistrer</span></button></div>'
+    + '<div class="lm-f-msg" id="lm-f-msg" role="status"></div></div>';
+}
+// le choix « Tout ce qui est dû » / « Un autre montant » et le champ du montant se suivent
+function ipChoix(v){
+  var mt = document.getElementById('lm-f-mt'); if(!mt) return;
+  if(v === 'tout'){ mt.value = _lmMontantChamp(_irDuAvant().cts); try{ mt.dispatchEvent(new Event('input', {bubbles: true})); }catch(e){} }
+  else { try{ mt.focus({preventScroll: true}); mt.select(); }catch(e){} }
+}
+function ipChoixSuivre(){
+  var mt = document.getElementById('lm-f-mt'), t = document.getElementById('lm-f-tout'), a = document.getElementById('lm-f-libre');
+  if(!mt || !t || !a) return;
+  var lu = lireMontant(mt.value), egal = lu.ok && Math.round(lu.valeur * 100) === _irDuAvant().cts;
+  t.checked = egal; a.checked = !egal;
+}
+// ouvrir / fermer : un seul formulaire à la fois (liste OU suivi, paiement OU retrait), fermé d'abord (sans quoi ce qui
+// était tapé passerait d'un formulaire à l'autre), puis ouvert, le curseur sur le montant
+function _irOuvrirForm(f){
+  if(_lmForm){ _lmForm = null; try{ _impRedessiner(); }catch(e){} }
+  _lmForm = f; _lmFlash = null;
+  _impRedessiner();
+  var mt = document.getElementById('lm-f-mt');
+  if(mt){ try{ mt.focus({preventScroll: true}); }catch(e){ mt.focus(); } try{ mt.select(); }catch(e){} }
+  var fm = document.getElementById('lm-f');
+  if(fm){ try{ requestAnimationFrame(function(){ if(typeof _fmAmener === 'function') _fmAmener(fm); else fm.scrollIntoView({block: 'nearest'}); }); }catch(e){} }
+}
+function ipSuiviPayer(){
+  if(document.body.classList.contains('readonly')) return;
+  if(!(_irDuAvant().cts > 0)) return;
+  _irOuvrirForm({ym: _ymLocal(), ou: 'suivi'});
+}
+function ipRetraitOuvrir(ou){
+  if(document.body.classList.contains('readonly')) return;
+  var S = null; try{ S = _impSuivi(true); }catch(e){ S = null; }
+  if(!S || !(S.crypto > 0)) return;
+  if(ou !== 'suivi' && _lmFenetre().fin) return;      // (fin du mois : pas de geste dans la liste, le bloc impôts l'a)
+  _irOuvrirForm(ou === 'suivi' ? {ym: _ymLocal(), ou: 'suivi', genre: 'retrait'} : {ym: _lmFenetre().ym, ou: '', genre: 'retrait'});
+}
+function ipRetraitFermer(){
+  var ou = _lmForm && _lmForm.ou;
+  _lmForm = null; _impRedessiner();
+  var b = document.getElementById(ou === 'suivi' ? 'ip-sv-r-' + _ymLocal() : 'lm-b-retrait');
+  if(b){ try{ b.focus({preventScroll: true}); }catch(e){} }
+}
+
+// ── 6. le même montant déjà noté dans les 48 h : on demande avant d'écrire ─────────────────────────────────────────
+// (17/10) La même question, avec les mêmes boutons, que pour les paiements à la modèle (feat8_doublon, en ligne) :
+//   « Annuler » = le choix par défaut (bouton mis en avant et sélectionné, Échap, toucher à côté) : RIEN n'est écrit, le
+//   formulaire garde ce qui est tapé ; « Oui, le noter » enregistre exactement comme sans question (pour un paiement :
+//   LA fonction de la liste, listeImpotsEnregistrer, et ses enveloppes ; rien n'est réaffecté ici).
+// Comparé à la base RELUE juste avant (l'autre appareil : le propriétaire et son associée peuvent noter le même paiement chacun de
+// son côté), à la mémoire de cette page et à sa file d'attente ; une ligne supprimée (pierre tombale) ne compte pas.
+// « Noté dans les 48 h » = l'HEURE DE SAISIE (champ `le`, sinon l'identifiant), pas le jour choisi dans le formulaire ;
+// une ligne sans heure : sa date compte, toute la journée. Hors ligne (ou base muette 6 s) : ce que l'appareil connaît et
+// sa file, et la fenêtre le dit. Rien n'est écrit pendant la question. Une panne de cette vérification ne bloque jamais
+// l'enregistrement (elle ne fait que ne pas poser la question).
+var _IR_FENETRE = 48 * 3600 * 1000, _IR_ATTENTE = 6000;
+var _irQuestion = false;           // vérification ou question en cours : un 2e toucher d'« Enregistrer » est ignoré
+var _irMiens = {};                 // identifiants notés par cette page (pour dire « sur cet appareil »)
+function _irListeCle(genre){ return genre === 'retrait' ? 'impots_retraits' : 'impots_payes'; }
+// Relit la liste EN BASE et ses pierres tombales (lecture seule) ; null si hors ligne, refusé ou trop lent.
+function _irLireBase(genre){
+  if(typeof apiFetch !== 'function') return Promise.resolve(null);
+  if(typeof navigator !== 'undefined' && navigator.onLine === false) return Promise.resolve(null);
+  var cle = _irListeCle(genre);
+  return new Promise(function(fin){
+    var fait = false;
+    var t = setTimeout(function(){ if(!fait){ fait = true; fin(null); } }, _IR_ATTENTE);
+    Promise.resolve().then(function(){ return apiFetch('/api/settings?cles=' + cle + ',' + cle + '_supprimes'); }).then(
+      function(d){ if(fait) return; fait = true; clearTimeout(t); fin((d && typeof d === 'object') ? d : null); },
+      function(){ if(fait) return; fait = true; clearTimeout(t); fin(null); });
+  });
+}
+// Heure de saisie : le champ `le` ; sinon l'identifiant (« i » ou « r » + millisecondes en base 36) ; null si inconnue.
+function _irHeureSaisie(x){
+  var t = new Date(String((x && x.le) || '')).getTime();
+  if(!(isFinite(t) && t > 0)){
+    var m = /^[ir]([0-9a-z]{8})[0-9a-z]{0,8}$/.exec(String((x && x.id) || ''));
+    t = m ? parseInt(m[1], 36) : NaN;
+  }
+  return (isFinite(t) && t >= Date.UTC(2025, 0, 1) && t <= Date.now() + 864e5) ? t : null;
+}
+// Le même montant (au centime) noté dans les 48 h, s'il y en a un (le plus récent) : { x, quand, ou, attente, n } ou null.
+function _irChercher(genre, cts, base){
+  if(!(cts > 0)) return null;
+  var cle = _irListeCle(genre), retrait = genre === 'retrait';
+  var cleDe = function(x){ return String(retrait ? _irCle(x) : _cleImpot(x)); };
+  var compte = function(x){ return retrait ? _irValide(x) : (_impValide(x) || _impGlobal(x)); };
+  var lireL = function(v){ try{ var l = (typeof v === 'string') ? JSON.parse(v || '[]') : v; return Array.isArray(l) ? l : []; }catch(e){ return []; } };
+  var now = Date.now(), morts = {}, coupe = 0, enBase = null, liste = [];
+  if(base){
+    lireL(base[cle + '_supprimes']).forEach(function(tb){
+      if(!tb) return;
+      if(tb.avant){ var a = new Date(tb.avant).getTime(); if(a > coupe) coupe = a; }
+      else if(tb.k != null) morts[String(tb.k)] = 1;
+    });
+    enBase = {};
+    lireL(base[cle]).forEach(function(x){ if(x && typeof x === 'object'){ enBase[cleDe(x)] = 1; liste.push({ x: x, ou: 'base' }); } });
+  }
+  try{ (retrait ? _IR_SUPPRIMES : _IMPOTS_SUPPRIMES).forEach(function(k){ morts[String(k)] = 1; }); }catch(e){}
+  try{
+    if(typeof _fileLire === 'function') _fileLire().forEach(function(op){
+      if(!op || op.t !== 'liste' || op.cle !== cle) return;
+      (op.sup || []).forEach(function(x){ if(x) morts[cleDe(x)] = 1; });
+      (op.aj || []).forEach(function(x){ if(x && typeof x === 'object') liste.push({ x: x, ou: x._vu ? 'fileVu' : 'file' }); });
+    });
+  }catch(e){}
+  ((retrait ? impotsRetraits : impotsPayes) || []).forEach(function(x){ if(x && typeof x === 'object') liste.push({ x: x, ou: 'memoire' }); });
+  var vus = {}, cands = [];
+  liste.forEach(function(o){
+    var k = cleDe(o.x);
+    if(morts[k] || !compte(o.x)) return;
+    if(coupe){ var dd = new Date(o.x.ts || o.x.date).getTime(); if(isFinite(dd) && dd <= coupe) return; }
+    var c = vus[k]; if(!c){ c = vus[k] = { x: o.x, k: k }; cands.push(c); }
+    c[o.ou] = true;
+  });
+  var res = [];
+  cands.forEach(function(c){
+    if(Math.round(Number(c.x.amount) * 100) !== cts) return;
+    var q = _irHeureSaisie(c.x), recent, j = null;
+    if(q != null) recent = q >= now - _IR_FENETRE && q <= now + 864e5;
+    else { j = new Date(String(c.x.date || '').slice(0, 10) + 'T00:00:00').getTime(); recent = isFinite(j) && j + 864e5 > now - _IR_FENETRE && j <= now + 864e5; }
+    if(!recent) return;
+    // qui / où : noté par cette page (ou en attente dans sa file) ; vu SEULEMENT dans la base relue = noté ailleurs depuis
+    // le chargement (un autre appareil, ou un autre onglet) ; sinon on ne sait pas (la ligne ne garde pas son auteur)
+    var ici = !!(_irMiens[c.k] || c.file || c.fileVu);
+    var ou = ici ? 'ici' : ((enBase && c.base && !c.memoire) ? 'ailleurs' : '');
+    res.push({ x: c.x, quand: q, ou: ou, attente: !!(c.file && !c.base), tri: q != null ? q : j });
+  });
+  if(!res.length) return null;
+  res.sort(function(a, b){ return b.tri - a.tri; });
+  var r = res[0]; r.n = res.length;
+  return r;
+}
+// « aujourd'hui à 10:42 », « hier à 21:05 », « le 14 oct. à 09:12 » (comme la question des paiements à la modèle)
+function _irQuand(t){
+  var d = new Date(t), h = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  var j0 = new Date(); j0.setHours(0, 0, 0, 0);
+  var j = new Date(d.getTime()); j.setHours(0, 0, 0, 0);
+  var ecart = Math.round((j0.getTime() - j.getTime()) / 864e5);
+  return (ecart === 0 ? 'aujourd’hui' : ecart === 1 ? 'hier' : 'le ' + _jourCourt(_ymd(d))) + ' à ' + h;
+}
+// Une ligne : « payé le 10 nov. · tout ce qui est dû », « payé le 15 oct. · pour septembre », « retiré le 16 oct. »
+function _irQuoi(genre, x){
+  var jour = /^\d{4}-\d{2}-\d{2}/.test(String((x && x.date) || '')) ? (genre === 'retrait' ? 'retiré le ' : 'payé le ') + _jourCourt(x.date) : 'date inconnue';
+  if(genre === 'retrait') return jour;
+  return jour + ' · ' + ((x && x.global === true) ? 'tout ce qui est dû' : (x && /^\d{4}-\d{2}$/.test(String(x.mois || '')) ? 'pour ' + _nomMois(x.mois) : 'sans mois'));
+}
+function _irTextes(genre, s, r, horsLigne){
+  var nb = ' ', paie = genre !== 'retrait', mt = fmtC(s.amount);
+  var quoi = paie ? 'Un paiement d’impôts de ' : 'Un retrait de ';
+  var qui = r.ou === 'ici' ? 'sur cet appareil' : r.ou === 'ailleurs' ? 'sur un autre appareil' : '';
+  var titre = (r.quand != null
+      ? quoi + mt + ' a déjà été noté ' + _irQuand(r.quand)
+      : quoi + mt + ' daté du ' + _jourCourt(r.x.date) + ' est déjà noté')
+    + (qui ? ' (' + qui + ')' : '') + ' — c’est un autre ' + (paie ? 'paiement' : 'retrait') + nb + '?';
+  var texte = (horsLigne ? 'Pas de réseau' + nb + ': l’autre appareil n’a pas pu être vérifié, seulement ce que celui-ci connaît. ' : '')
+    + 'Si c’est le même, choisis «' + nb + 'Annuler' + nb + '»' + nb + ': rien ne sera noté.';
+  var detail = 'Déjà noté' + nb + ': ' + _irQuoi(genre, r.x) + (r.attente ? ' · pas encore dans le cloud' : '')
+    + '\nCelui-ci' + nb + ': ' + _irQuoi(genre, { date: s.date, global: true })
+    + (r.n > 1 ? '\n' + r.n + (paie ? ' paiements' : ' retraits') + ' de ' + mt + ' notés en 48' + nb + 'h' : '');
+  return { titre: titre, texte: texte, detail: detail };
+}
+// La vérification d'« Enregistrer » : true = enregistrer, false = ne rien noter (« Annuler », Échap, toucher à côté).
+// Une panne AVANT la question : true (enregistré comme sans question).
+async function _irVerifier(genre, s){
+  var lent = null, decide = false, sp = null;
+  _irQuestion = true;
+  try{
+    // réseau lent : le bouton le dit (rien n'est encore noté)
+    lent = setTimeout(function(){
+      try{
+        var b = document.getElementById('lm-f-ok'); if(!b || !_irQuestion) return;
+        b.disabled = true; b.setAttribute('aria-busy', 'true');
+        sp = b.querySelector('span'); if(sp){ sp._ir = sp.textContent; sp.textContent = 'Vérification…'; }
+      }catch(e){}
+    }, 800);
+    var base = null;
+    try{ base = await _irLireBase(genre); }catch(e){ base = null; }
+    clearTimeout(lent); lent = null;
+    var r = null;
+    try{ r = _irChercher(genre, Math.round(Number(s.amount) * 100), base); }
+    catch(e){ try{ console.warn('[doublon impôts] comparaison impossible : enregistré comme sans question', e); }catch(x){} r = null; }
+    if(sp && sp._ir != null){ sp.textContent = sp._ir; sp._ir = null; }
+    if(!r || typeof _fenetre !== 'function') return true;
+    var o = _irTextes(genre, s, r, !base), rep = null;
+    decide = true;                                    // la question est posée : seule la réponse décide
+    try{
+      rep = await _fenetre({ ico: 'alerte', ton: 'avert', titre: o.titre, texte: o.texte, detail: o.detail,
+        // ordinateur : « Annuler » à droite, en avant ; téléphone (boutons empilés à l'envers) : « Annuler » en haut
+        boutons: [{ l: 'Oui, le noter', v: 'oui' }, { l: 'Annuler', v: 'annuler', cls: 'pri' }] });
+    }catch(e){ rep = { choix: 'oui', panne: true }; try{ console.warn('[doublon impôts] fenêtre en panne : enregistré comme sans question', e); }catch(x){} }
+    return !!(rep && rep.choix === 'oui');
+  }catch(e){
+    try{ console.warn('[doublon impôts]', e); }catch(x){}
+    return !decide;
+  }finally{
+    if(lent) clearTimeout(lent);
+    _irQuestion = false;
+    try{
+      if(sp && sp._ir != null){ sp.textContent = sp._ir; sp._ir = null; }
+      var b = document.getElementById('lm-f-ok'); if(b && b.getAttribute('aria-busy')){ b.disabled = false; b.removeAttribute('aria-busy'); }
+    }catch(e){}
+  }
+}
+// (ce qui a été vérifié est ce qui est noté : un champ changé pendant la relecture reprend la valeur vérifiée)
+function _irRemettre(mt, dt, s){
+  try{ if(mt && mt.value !== s.champMt) mt.value = s.champMt; if(dt && dt.value !== s.date) dt.value = s.date; }catch(e){}
+}
+// « Enregistrer » du paiement : la vérification d'abord, puis LA fonction de la liste (et ses enveloppes)
+async function ipPaieEnregistrer(){
+  if(_lmEnCours || _irQuestion) return;
+  var mt = document.getElementById('lm-f-mt'), dt = document.getElementById('lm-f-date');
+  var lu = lireMontant(mt ? mt.value : ''), date = String((dt && dt.value) || '');
+  if(_lmForm && _lmForm.genre !== 'retrait' && !document.body.classList.contains('readonly') && lu.ok && lu.valeur > 0 && /^\d{4}-\d{2}-\d{2}$/.test(date)){
+    var s = { amount: Math.round(lu.valeur * 100) / 100, date: date, champMt: mt ? mt.value : '' };
+    if(!await _irVerifier('paie', s)) return;         // « Annuler » : rien n'est noté, le formulaire garde ce qui est tapé
+    if(!_lmForm || _lmForm.genre === 'retrait' || _lmEnCours) return;   // (formulaire fermé pendant la vérification)
+    _irRemettre(document.getElementById('lm-f-mt'), document.getElementById('lm-f-date'), s);
+  }
+  var avant = {};
+  try{ (impotsPayes || []).forEach(function(p){ if(p && p.id) avant[String(p.id)] = 1; }); }catch(e){}
+  var r = await listeImpotsEnregistrer();
+  try{ (impotsPayes || []).forEach(function(p){ if(p && p.id && !avant[String(p.id)]) _irMiens[String(p.id)] = 1; }); }catch(e){}
+  return r;
+}
+// « Enregistrer » du retrait : la SEULE écriture du liquide de côté
+var _irEnCours = false, _irAtt = null;
+function _irNoteRetrait(x){ return 'Retrait noté : <b>' + fmtC(x.amount) + '</b> en liquide, retirés le ' + esc(_jourCourt(x.date)); }
+async function ipRetraitEnregistrer(){
+  if(_irEnCours || _lmEnCours || _irQuestion) return;
+  if(!_lmForm || _lmForm.genre !== 'retrait') return;
+  if(ecritureInterdite('retrait des impôts')) return;
+  var mt = document.getElementById('lm-f-mt'), dt = document.getElementById('lm-f-date');
+  var lu = lireMontant(mt ? mt.value : '');
+  if(!lu.ok){ _lmMsg(lu.erreur.replace(/\*\*/g, '')); return; }
+  if(!(lu.valeur > 0)){ _lmMsg('Entre le montant reçu en liquide. Rien n’a été enregistré.'); return; }
+  var date = String((dt && dt.value) || '');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(new Date(date + 'T00:00:00').getTime())){ _lmMsg('Choisis le jour du retrait. Rien n’a été enregistré.'); return; }
+  if(_irIllisible){ _lmMsg('La liste des retraits du cloud est illisible : rien n’a été enregistré (recharge la page).'); return; }
+  var ou = _lmForm.ou === 'suivi' ? 'suivi' : '';
+  var s = { amount: Math.round(lu.valeur * 100) / 100, date: date, champMt: mt ? mt.value : '' };
+  if(!await _irVerifier('retrait', s)) return;        // « Annuler » : rien n'est noté, le formulaire garde ce qui est tapé
+  if(!_lmForm || _lmForm.genre !== 'retrait' || _irEnCours || _lmEnCours) return;   // (formulaire fermé pendant la vérification)
+  _irRemettre(document.getElementById('lm-f-mt'), document.getElementById('lm-f-date'), s);
+  _irEnCours = true;
+  var b = document.getElementById('lm-f-ok'); if(b) b.disabled = true;
+  var x = { id: _irNouvelId(), date: date, amount: Math.round(lu.valeur * 100) / 100, le: new Date().toISOString() };
+  _irMiens[String(x.id)] = 1;
+  if(!Array.isArray(impotsRetraits)) impotsRetraits = [];
+  impotsRetraits.push(x);
+  try{ if(typeof _attenteNoter === 'function') _attenteNoter('impots_retraits', 'aj', x); }catch(e){}   // gardé sur l'appareil tant qu'il n'est pas VU en base
+  var envoi = _ecrireImpotsRetraits();
+  try{ logEdit('Ajout retrait impots', dl(date) + ' - ' + fmtC(x.amount) + ' - argent des impôts retiré en liquide'); }catch(e){ try{ saveData(); }catch(_){} }
+  _lmForm = null; _lmFlashOu = ou; if(ou === 'suivi') _ipSvFlashYm = _ymLocal();
+  _lmFlash = { cls: 'en-cours', t: 'Enregistrement…' };
+  _impRedessiner();
+  var ok = await Promise.resolve(envoi);
+  _irEnCours = false;
+  _lmFlash = ok === false
+    ? { cls: 'ko', ir: true, t: 'Retrait pas encore enregistré dans le cloud : il est gardé sur cet appareil et sera renvoyé tout seul dès que le réseau revient. Ne le note pas une deuxième fois.', fin: Date.now() + 20000 }
+    : { cls: 'ok', t: _irNoteRetrait(x), fin: Date.now() + 6000 };
+  _irAtt = ok === false ? { ids: [String(x.id)], x: x } : null;
+  _lmFlashOu = ou;
+  _impRedessiner();
+  if(ou === 'suivi' && typeof _ipSvAmener === 'function') _ipSvAmener();
+  setTimeout(function(){ if(_lmFlash && Date.now() >= _lmFlash.fin - 50){ _lmFlash = null; _impRedessiner(); } }, Math.max(0, _lmFlash.fin - Date.now()) + 60);
+}
+// Supprimer un retrait noté (le suivi du bloc impôts) : même fenêtre que les autres suppressions, pierre tombale partagée
+async function supprimerImpotRetrait(cle){
+  var x = _irRetraits().filter(function(r){ return _irCle(r) === cle; })[0];
+  var changee = function(){ _impRedessiner(); showSaveStatus('⚠ La liste a changé entre-temps — rien supprimé. Vérifie la ligne et recommence.', 'var(--neg)'); };
+  if(!x){ changee(); return; }
+  if(ecritureInterdite('retrait des impôts')) return;
+  var mtx = fmtC(x.amount);
+  if(!await showConfirm({ ico: 'del', ton: 'danger',
+    titre: 'Supprimer le retrait du ' + _jourCourt(x.date).replace(/ /g, ' ') + ' (' + mtx + ') ?',
+    texte: 'Ces ' + mtx + ' ne compteront plus comme du liquide de côté pour les impôts. Cette suppression est irréversible.',
+    boutons: [{ l: 'Annuler', v: 'non' }, { l: 'Supprimer', v: 'oui', cls: 'danger' }] })) return;
+  if((impotsRetraits || []).indexOf(x) < 0){ changee(); return; }
+  try{ logEdit('Suppression retrait impots', dl(x.date) + ' - ' + fmtC(x.amount) + ' - argent des impôts retiré en liquide'); }catch(e){}
+  _IR_SUPPRIMES.add(_irCle(x));
+  impotsRetraits = impotsRetraits.filter(function(r){ return _irCle(r) !== _irCle(x); });
+  try{ if(typeof _attenteNoter === 'function') _attenteNoter('impots_retraits', 'sup', x); }catch(e){}
+  _impRedessiner();
+  var ok = await _ecrireImpotsRetraits();
+  _impRedessiner();
+  if(ok === false) showSaveStatus('⚠ Suppression du retrait pas encore enregistrée — gardée sur cet appareil, renvoyée toute seule dès que le réseau revient.', 'var(--neg)');
+}
+// un retrait gardé sur l'appareil puis renvoyé tout seul : le message le dit (comme pour les paiements)
+function _irAttenteVoir(){
+  if(!_irAtt) return;
+  var q = (typeof _fileLire === 'function') ? _fileLire() : [], o = q.filter(function(z){ return z && z.t === 'liste' && z.cle === 'impots_retraits'; })[0], nv = {};
+  if(o && typeof _nonVus === 'function') _nonVus(o.aj).forEach(function(z){ if(z && z.id != null) nv[String(z.id)] = 1; });
+  var A = _irAtt;
+  if(A.ids.some(function(id){ return nv[id]; })) return;              // pas encore vu en base
+  _irAtt = null;
+  if(!_lmFlash || _lmFlash.cls !== 'ko' || !_lmFlash.ir) return;       // le message à l'écran n'est plus celui du retrait
+  if(!_irRetraits().some(function(z){ return A.ids.indexOf(String(z.id)) >= 0; })) return;
+  var h = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  _lmFlash = { cls: 'ok', t: _irNoteRetrait(A.x) + ' — renvoyé tout seul à ' + h + ', dès le retour du réseau', fin: Date.now() + 10000 };
+  try{ _impRedessiner(); }catch(e){}
+  setTimeout(function(){ if(_lmFlash && Date.now() >= _lmFlash.fin - 50){ _lmFlash = null; try{ _impRedessiner(); }catch(e){} } }, 10060);
+}
+
+// ── 7. les branchements (les fonctions d'origine sont appelées telles quelles) ─────────────────────────────────────
+(function(){
+  // chaque sauvegarde datée garde aussi les retraits (l'aperçu de restauration reprend les listes déclarées)
+  if(typeof _snapContenu === 'function'){
+    var _scIr = _snapContenu;
+    _snapContenu = function(){ var c = _scIr.apply(this, arguments); try{ if(c && typeof c === 'object') c.impots_retraits = (Array.isArray(impotsRetraits) ? impotsRetraits : []); }catch(e){} return c; };
+  }
+  // l'Historique le dit en français clair
+  if(typeof _hlTitre === 'function'){
+    var _hlIr = _hlTitre;
+    _hlTitre = function(l){
+      var a = String((l && l.action) || '');
+      if(/^ajout retrait imp/i.test(a)) return 'Argent des impôts retiré (liquide)';
+      if(/^suppression retrait imp/i.test(a)) return 'Retrait des impôts supprimé';
+      return _hlIr.apply(this, arguments);
+    };
+  }
+  // chaque changement de la file d'attente : un retrait renvoyé tout seul ?
+  if(typeof _etatFile === 'function'){
+    var _efIr = _etatFile;
+    _etatFile = function(){ var r = _efIr.apply(this, arguments); try{ if(_irAtt) setTimeout(function(){ try{ _irAttenteVoir(); }catch(e){} }, 0); }catch(e){} return r; };
+  }
+  try{ _impRedessiner(); }catch(e){}
+})();
+// ══ fin feat8 · IMPÔTS RÉELS ══
+
 // ── feat7_mois (16/10 : correctifs du mois d’André, D1 D2 D3 D5 D6 D9 D10 D11 D12 D13 D14) ──
 // ══ feat7_mois (16/10) : les correctifs du mois d'André (relecture « le mois vécu au téléphone », défauts 1, 2, 3, 5, 6,
 //    9, 10, 11, 12, 13, 14). AFFICHAGE et GESTES seulement : aucun calcul d'argent nouveau, aucune écriture nouvelle, aucun
@@ -14762,12 +15466,12 @@ function _f7Attentes(){
     }
   }
   // 2. impôts payés (la réponse de « La liste du mois »)
-  if (_f7AttImpot && typeof _lmFlash !== 'undefined' && _lmFlash && _lmFlash.cls === 'ko'){
+  if (_f7AttImpot && typeof _lmFlash !== 'undefined' && _lmFlash && _lmFlash.cls === 'ko' && !_lmFlash.ir){
     var A = _f7AttImpot, ni = _f7NonVus(q, 'impots_payes');
     if (!A.ids.some(function(id){ return ni[String(id)]; })){
       _f7AttImpot = null;
       if ((impotsPayes || []).some(function(x){ return x && A.ids.indexOf(x.id) >= 0; })){
-        _lmFlash = { cls: 'ok', t: 'Impôts ' + esc(_deMois(A.ym)) + ' notés : <b>' + fmtC(A.p.amount) + '</b> payés le ' + esc(_jourCourt(A.p.date)) + ' — renvoyé tout seul à ' + h + ', dès le retour du réseau', fin: Date.now() + 10000 };
+        _lmFlash = { cls: 'ok', t: ((typeof _irNote === 'function') ? _irNote(A.p) : 'Impôts ' + esc(_deMois(A.ym)) + ' notés : <b>' + fmtC(A.p.amount) + '</b> payés le ' + esc(_jourCourt(A.p.date))) + ' — renvoyé tout seul à ' + h + ', dès le retour du réseau', fin: Date.now() + 10000 };
         try { _impRedessiner(); } catch (e) {}
         setTimeout(function(){ if (_lmFlash && Date.now() >= _lmFlash.fin - 50){ _lmFlash = null; try { _impRedessiner(); } catch (e) {} } }, 10060);
       }

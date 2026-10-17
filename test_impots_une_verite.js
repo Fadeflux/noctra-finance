@@ -1,3 +1,9 @@
+// (ADAPTÉ le 16/10 par feat8_impots_reels — original : bancs_final/test_impots_une_verite.js. La règle de CE banc ne change
+//  pas : une seule vérité, le relevé ferme le compte au centime, aucun impôt recalculé. Ce qui change avec les impôts réels :
+//  le suivi part du PREMIER BILAN (plus de « dont avant le suivi, comptés comme payés » : seul un écart d'arrondi mois par
+//  mois peut rester) ; un paiement « tout ce qui est dû » couvre du plus ancien au plus récent et ce qui dépasse passe au
+//  mois suivant (« moins payé d'avance », au lieu du trop-payé « pas déduit du reste ») ; l'argent déjà retiré en liquide
+//  est dit dans la tuile ; l'attendu (§2) est recalculé ICI avec ces règles.)
 // « IMPÔTS À GARDER DE CÔTÉ » : UNE SEULE VÉRITÉ (O1, relecture du 16/10). Dès qu'un paiement d'impôts est noté (le
 // suivi a commencé), la grande tuile « À garder en crypto » dit ce qu'il reste à garder pour ce qui reste à payer — le
 // MÊME chiffre que le geste ② et la ligne repliée du téléphone — et plus le total « depuis le début » (déjà payés
@@ -57,7 +63,8 @@ try {
     extraire('_mtS'), extraire('_nomMois'),
     extraire('_ymd'), extraire('_aujLocal'), extraire('_ymLocal'), extraire('_lmSuivant'), extraire('_lmJour'), extraire('_lmNomComplet'),
     extraire('_bilansMois'), extraire('_chNb'), extraire('_chCtsAff'), extraire('centimesBilan'), extraire('centimesBilans'), extraire('_chFrais'),
-    extraire('saMoitie'), extraire('_impValide'), extraire('_impPayeCts'), extraire('_impSuivi'), R_VERH, R_VER].join('\n');
+    extraire('saMoitie'), extraire('_impValide'), extraire('_impPayeCts'), extraire('_impGlobal'), extraire('_irValide'), extraire('_irRetraits'),
+    extraire('_impSuivi'), extraire('_irEcheance'), extraire('_irFenTxt'), R_VERH, R_VER].join('\n');
 } catch (e) {
   console.error('  KO  une seule vérité : fonction absente de la page -> ' + e.message);
   console.log('\n1 ECHEC');
@@ -77,14 +84,15 @@ const interdits = ['_TAUX', '_IMPOTS_OF', '_RETRAIT_LIQUIDE', '_PAXUM_OF', '0.98
 const trouves = interdits.filter((x) => sansCom.includes(x));
 V(!trouves.length, 'aucun taux, arrondi ni calcul d’impôts dans _ipVerite / _ipVeriteHtml', trouves.join(', '));
 const montants = (sansCom.match(/fmtC\((?:[^()]|\([^()]*\))*\)/g) || []).sort();
-V(JSON.stringify(montants) === JSON.stringify(['fmtC(P.imp)', 'fmtC(S.garde)', 'fmtC(S.paye / 100)', 'fmtC(S.reste / 100)', 'fmtC(T.imp)', 'fmtC(saMoitie(S.garde))']),
-  'les SEULS montants écrits par fmtC : fmtC(S.garde), fmtC(saMoitie(S.garde)), fmtC(T.imp), fmtC(S.paye / 100), fmtC(S.reste / 100), fmtC(P.imp)', montants.join(' '));
+V(JSON.stringify(montants) === JSON.stringify(['fmtC(P.imp)', 'fmtC(S.crypto / 100)', 'fmtC(S.garde)', 'fmtC(S.liquide / 100)', 'fmtC(S.paye / 100)', 'fmtC(S.reste / 100)', 'fmtC(T.imp)', 'fmtC(liq / 100)', 'fmtC(saMoitie(S.garde))']),
+  'les SEULS montants écrits par fmtC : fmtC(S.garde), fmtC(saMoitie(S.garde)), fmtC(S.liquide / 100), fmtC(T.imp), fmtC(S.paye / 100), fmtC(S.reste / 100), fmtC(liq / 100), fmtC(S.crypto / 100), fmtC(P.imp)', montants.join(' '));
 // (17/10) les deux lignes qui ferment le compte : écrites par _mtS (le signe du site), tirées des MÊMES T et S
 const signes = (sansCom.match(/_mtS\([^)]*\)/g) || []).sort();
-V(JSON.stringify(signes) === JSON.stringify(['_mtS(-trop / 100)', '_mtS(avant / 100)']), 'les lignes « avant le suivi » et « trop-payé » : _mtS(avant / 100), _mtS(-trop / 100)', signes.join(' '));
+V(JSON.stringify(signes) === JSON.stringify(['_mtS(-avance / 100)', '_mtS(arrondi / 100)']), 'les lignes « arrondi » et « payé d’avance » : _mtS(arrondi / 100), _mtS(-avance / 100)', signes.join(' '));
 V(/var total = _chCtsAff\(T\.imp\);/.test(R_VERH) && /var dusSuivis = S\.rows\.reduce\(function\(s, r\)\{ return s \+ r\.du; \}, 0\);/.test(R_VERH)
-  && /var avant = total - dusSuivis;/.test(R_VERH) && /var trop = S\.paye - \(dusSuivis - S\.reste\);/.test(R_VERH),
-  'avant le suivi = le total affiché − les impôts des lignes du suivi ; trop-payé = S.paye − (impôts suivis − S.reste) : aucun impôt recalculé');
+  && /var arrondi = total - dusSuivis;/.test(R_VERH) && /var avance = S\.avance;/.test(R_VERH),
+  'arrondi = le total affiché − les impôts des lignes du suivi ; payé d’avance = S.avance (celui du suivi) : aucun impôt recalculé');
+V(!/avant le suivi|comptés comme payés|pas déduit du reste/.test(sansCom), 'plus de « avant le suivi, comptés comme payés » ni de trop-payé « pas déduit du reste »');
 V(!/Le total du haut compte tout/.test(R_DEC) && /« Impôts depuis le début » compte tout/.test(R_DEC),
   'la note du bas (suivi commencé) ne parle plus d’un « total du haut » qui compterait tout');
 V(!/à garder|à payer/.test((R_VERH.match(/periode:[^\n]*/) || [''])[0]), 'la ligne de période (suivi commencé) ne dit plus « à payer / à garder »');
@@ -96,16 +104,41 @@ function charger(maintenant, ents, impots, doc) {
   const NOW = new RealDate(maintenant).getTime();
   function FauxDate(...a) { return a.length ? new RealDate(...a) : new RealDate(NOW); }
   FauxDate.now = () => NOW; FauxDate.prototype = RealDate.prototype;
-  return new Function('Date', 'ents', 'impotsPayes', 'document', 'console',
+  return new Function('Date', 'ents', 'impotsPayes', 'impotsRetraits', 'document', 'console',
     CODE + '\nfunction profitEntree(){ return 0; }\n' +
-    'return { frais: _chFrais, suivi: _impSuivi, html: _ipVeriteHtml, verite: _ipVerite, fmtC: fmtC, bilansMois: _bilansMois };')(
-    FauxDate, ents, impots, doc || { body: { classList: { contains: () => false } } }, { warn() {} });
+    'return { frais: _chFrais, suivi: function(){ return _impSuivi(); }, html: _ipVeriteHtml, verite: _ipVerite, fmtC: fmtC, bilansMois: _bilansMois };')(
+    FauxDate, ents, impots, charger.retraits || [], doc || { body: { classList: { contains: () => false } } }, { warn() {} });
 }
 function bilan(date, netOF) { return { date: date, brut: netOF / 0.8, tgNet: 0, va: 0, mo: 0, ci: 0, ch: 0, alT: 0, profit: netOF * 0.95 }; }
 function ip(mois, date, amount) { return { id: 'x' + mois + date + amount, mois: mois, date: date, amount: amount }; }
 // l'attendu, à part : impôts d'un mois = 1 % du net OnlyFans au centime ; reste = somme des (impôt − payé) positifs
 // depuis le 1er mois noté jusqu'au mois en cours ; à garder = reste ÷ 0,98 ; sa moitié : le demi-centime monte
-function attendu(ents, impots, ymCour) {
+function attendu(ents, impots, ymCour, retraits) {
+  // (feat8) le suivi part du PREMIER BILAN ; « pour un mois » : son mois, ce qui dépasse passe au suivant ; « tout ce qui est
+  // dû » : du plus ancien au plus récent ; ce qui reste après le dernier mois = d'avance ; liquide = retraits − paiements faits ensuite
+  const parMois = {}; let tot = 0;
+  ents.forEach((e) => { const k = e.date.slice(0, 7); const n = e.brut * 0.8; parMois[k] = (parMois[k] || 0) + n; tot += n; });
+  const mens = impots.filter((p) => p.amount > 0 && !p.global), glob = impots.filter((p) => p.amount > 0 && p.global).sort((a, b) => (a.date + (a.le || '')).localeCompare(b.date + (b.le || '')));
+  const suiv = (k) => { const a = +k.slice(0, 4), m = +k.slice(5, 7); return m === 12 ? (a + 1) + '-01' : a + '-' + String(m + 1).padStart(2, '0'); };
+  const cts = (v) => Math.round(v * 100);
+  const m0 = ents.map((e) => e.date.slice(0, 7)).concat(mens.map((p) => p.mois)).sort()[0];
+  let fin = ymCour; mens.forEach((p) => { if (p.mois > fin) fin = p.mois; });
+  const rows = [];
+  for (let k = m0; k <= fin; k = suiv(k)) {
+    const du = Math.round((parMois[k] || 0) * 0.01 * 100), pa = mens.filter((p) => p.mois === k).reduce((s, p) => s + cts(p.amount), 0);
+    if (du > 0 || pa > 0) rows.push({ k, du, pa, pg: 0 });
+  }
+  let rep = 0;
+  rows.forEach((r) => { const d = r.pa + rep; r.pm = Math.min(r.du, d); rep = d - r.pm; });
+  let avanceG = 0;
+  glob.forEach((p) => { let reste = cts(p.amount); rows.forEach((r) => { const b = r.du - r.pm - r.pg; if (reste <= 0 || b <= 0) return; const t = Math.min(b, reste); r.pg += t; reste -= t; }); avanceG += reste; });
+  const reste = rows.reduce((s, r) => s + (r.du - r.pm - r.pg), 0), paye = impots.filter((p) => p.amount > 0).reduce((s, p) => s + cts(p.amount), 0);
+  const ev = (retraits || []).map((x) => [x.date, 0, cts(x.amount)]).concat(impots.filter((p) => p.amount > 0).map((p) => [p.date, 1, cts(p.amount)])).sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]));
+  let liq = 0; ev.forEach((e) => { if (e[1] === 0) liq += e[2]; else liq -= Math.min(liq, e[2]); });
+  const crypto = Math.max(0, reste - liq), gardeCts = Math.round(crypto / 0.98), imp = Math.round(tot * 0.01 * 100);
+  return { imp, paye, reste, garde: gardeCts, moitie: Math.round(gardeCts / 2), m0, arrondi: imp - rows.reduce((s, r) => s + r.du, 0), avance: rep + avanceG, liq, crypto };
+}
+function attenduVieux(ents, impots, ymCour) {
   const parMois = {}; let tot = 0;
   ents.forEach((e) => { const k = e.date.slice(0, 7); const n = e.brut * 0.8; parMois[k] = (parMois[k] || 0) + n; tot += n; });
   const valides = impots.filter((p) => p.amount > 0);
@@ -128,11 +161,13 @@ const $s = (c) => (c < 0 ? '−' : '') + $(c);
 const NOM = (ym) => ({ '07': 'juillet', '08': 'août', '09': 'septembre', '10': 'octobre' }[ym.slice(5, 7)]) + ' ' + ym.slice(0, 4);
 // (17/10) le relevé attendu, écrit ICI : il ferme le compte (total = avant + déjà payés − trop-payé + reste)
 function releveAttendu(A) {
-  return 'Impôts depuis le début' + $(A.imp)
-    + (A.avant !== 0 ? ((A.avant > 0 && A.ofAvant) ? 'dont avant le suivi (avant ' + NOM(A.m0) + '), comptés comme payés' : 'dont arrondi au centime, mois par mois') + $s(A.avant) : '')
-    + 'dont déjà payés depuis ' + NOM(A.m0) + $(A.paye)
-    + (A.trop > 0 ? 'moins le trop-payé (' + A.moisTrop.join(', ') + '), pas déduit du reste' + $s(-A.trop) : '')
-    + 'dont reste à payer, en liquide' + $(A.reste);
+  return (A.liq > 0 ? 'En liquide, de côté : ' + $(A.liq) + (A.reste > 0 ? ' · à payer au bureau ' + A.fen : ' · rien à payer pour l’instant') : '')
+    + 'Impôts depuis le début' + $(A.imp)
+    + (A.arrondi !== 0 ? 'dont arrondi au centime, mois par mois' + $s(A.arrondi) : '')
+    + 'dont déjà payés' + $(A.paye)
+    + (A.avance > 0 ? 'moins payé d’avance (passe au mois suivant)' + $s(-A.avance) : '')
+    + 'dont reste à payer, en liquide' + $(A.reste)
+    + (Math.min(A.liq, A.reste) > 0 ? 'sur ce reste : ' + $(Math.min(A.liq, A.reste)) + ' déjà retirés en liquide' + (A.crypto > 0 ? ', ' + $(A.crypto) + ' encore en crypto' : '') : '');
 }
 // les montants du relevé, signés, en centimes : le premier (le total) = la somme des suivants ?
 function ferme(html) {
@@ -142,50 +177,64 @@ function ferme(html) {
 const texte = (h) => String(h).replace(/<[^>]+>/g, '').replace(/&#39;/g, "'").replace(/[  ]/g, ' ').replace(/\s+/g, ' ').trim();
 
 const ENTS = [bilan('2026-07-31', 7900), bilan('2026-08-31', 9400), bilan('2026-09-30', 11200), bilan('2026-10-01', 6800)];
+const tg = (date, amount, le) => ({ id: 'g' + date + amount, global: true, date: date, amount: amount, le: le || date + 'T09:00:00.000Z' });
+const rt = (date, amount) => ({ id: 'r' + date + amount, date: date, amount: amount, le: date + 'T08:00:00.000Z' });
 const JEUX = [
-  ['payé en partie (août, puis 60 sur septembre)', '2026-10-16T10:00:00', [ip('2026-08', '2026-09-15', 94), ip('2026-09', '2026-10-15', 60)]],
-  ['tout payé (octobre d’avance)', '2026-10-16T18:00:00', [ip('2026-08', '2026-09-15', 94), ip('2026-09', '2026-10-15', 112), ip('2026-10', '2026-10-16', 68)]],
-  ['payé en trop un mois (pas reporté : question J3)', '2026-10-16T10:00:00', [ip('2026-08', '2026-09-14', 200), ip('2026-10', '2026-10-10', 100)]],
+  ['payé en partie (août, puis 60 sur septembre ; juillet reste dû : suivi depuis le premier bilan)', '2026-10-16T10:00:00', [ip('2026-08', '2026-09-15', 94), ip('2026-09', '2026-10-15', 60)]],
+  ['tout payé « pour un mois », juillet compris', '2026-10-16T18:00:00', [ip('2026-07', '2026-08-15', 79), ip('2026-08', '2026-09-15', 94), ip('2026-09', '2026-10-15', 112), ip('2026-10', '2026-10-16', 68)]],
+  ['payé en trop un mois (report : août 200 couvre août, puis septembre)', '2026-10-16T10:00:00', [ip('2026-08', '2026-09-14', 200), ip('2026-10', '2026-10-10', 100)]],
   ['deux mois en retard (20 nov.)', '2026-11-20T10:00:00', [ip('2026-08', '2026-09-15', 94)]],
   ['à garder au centime impair (sa moitié monte)', '2026-10-16T10:00:00', [ip('2026-09', '2026-10-15', 100.02)]],
+  ['« tout ce qui est dû » exact (353)', '2026-11-10T18:00:00', [tg('2026-11-10', 353)]],
+  ['« tout ce qui est dû » en partie (200 : juillet, août, 27 sur septembre)', '2026-11-10T18:00:00', [tg('2026-11-10', 200)]],
+  ['« tout ce qui est dû » avec surplus (380 : 27 d’avance)', '2026-11-10T18:00:00', [tg('2026-11-10', 380)]],
+  ['« pour un mois » ancien + « tout ce qui est dû »', '2026-11-10T18:00:00', [ip('2026-08', '2026-09-15', 94), tg('2026-11-10', 100)]],
+  ['retrait en liquide de tout (353), rien payé', '2026-10-16T18:00:00', [], [rt('2026-10-16', 353)]],
+  ['retrait en partie (200), rien payé', '2026-11-02T10:00:00', [], [rt('2026-10-16', 200)]],
+  ['retrait (353), puis payé (353)', '2026-11-10T18:00:00', [tg('2026-11-10', 353)], [rt('2026-10-16', 353)]],
 ];
-for (const [nom, quand, imps] of JEUX) {
+for (const [nom, quand, imps, rets] of JEUX) {
+  charger.retraits = rets || [];
   const F = charger(quand, ENTS, imps);
   const T = F.frais(ENTS), S = F.suivi(), P = F.frais(F.bilansMois(quand.slice(0, 7)));
-  const A = attendu(ENTS, imps, quand.slice(0, 7));
+  const A = attendu(ENTS, imps, quand.slice(0, 7), rets);
+  A.fen = 'du 1er au 15 novembre';
   const H = F.html(T, S, P);
   V(!!H, nom + ' : le bloc a quelque chose à dire');
   if (!H) continue;
-  V(H.valeur === $(A.garde), nom + ' : tuile « À garder en crypto » = reste ÷ 0,98 = ' + $(A.garde), H.valeur);
-  const pAtt = A.reste > 0 ? 'dont sa moitié : ' + $(A.moitie) : 'tout ce qui est dû est payé';
+  V(H.valeur === $(A.garde), nom + ' : tuile « À garder en crypto » = (reste − liquide) ÷ 0,98 = ' + $(A.garde), H.valeur);
+  const pAtt = A.crypto > 0 ? 'dont sa moitié : ' + $(A.moitie) : (A.reste > 0 ? 'tout est déjà retiré en liquide' : 'tout ce qui est dû est payé');
   V(texte(H.pastille) === pAtt, nom + ' : « ' + pAtt + ' »', texte(H.pastille));
   const rAtt = releveAttendu(A);
-  V(texte(H.releve).replace(/ /g, '') === rAtt.replace(/ /g, ''), nom + ' : relevé « depuis le début ' + $(A.imp) + ' = avant ' + $s(A.avant) + ' + déjà payés ' + $(A.paye)
-    + (A.trop ? ' − trop-payé ' + $(A.trop) : '') + ' + reste ' + $(A.reste) + ' »', texte(H.releve));
+  V(texte(H.releve).replace(/[ \u00a0]/g, '') === rAtt.replace(/[ \u00a0]/g, ''), nom + ' : relevé « depuis le début ' + $(A.imp) + ' = arrondi ' + $s(A.arrondi) + ' + déjà payés ' + $(A.paye)
+    + (A.avance ? ' − payé d’avance ' + $(A.avance) : '') + ' + reste ' + $(A.reste) + ' »' + (A.liq ? ' (liquide ' + $(A.liq) + ')' : ''), texte(H.releve) + ' / attendu ' + rAtt);
   const f = ferme(H.releve);
   V(f === true, nom + ' : le relevé ferme le compte, au centime (total = somme signée des lignes)', f);
   const nP = ENTS.filter((e) => e.date.slice(0, 7) === quand.slice(0, 7)).reduce((s, e) => s + e.brut * 0.8, 0);
   if (nP > 0) V(texte(H.periode) === 'impôts : ' + $(Math.round(nP * 0.01 * 100)), nom + ' : période « impôts : ' + $(Math.round(nP * 0.01 * 100)) + ' », ni « à payer » ni « à garder »', texte(H.periode));
   else V(H.periode === null, nom + ' : période sans OnlyFans : la ligne de période n’est pas touchée', H.periode);
   V(H.valeur === F.fmtC(S.garde) && H.releve.includes(F.fmtC(S.reste / 100)), nom + ' : = les MÊMES S.garde / S.reste que le geste ② et la ligne repliée');
+  V(S.paye - S.avance === S.rows.reduce((s, r) => s + r.couvert, 0), nom + ' : rien ne se perd : payé − d’avance = ce qui couvre les mois', [S.paye, S.avance]);
 }
 {
   // (17/10) aucun bilan avant le suivi, des impôts d'un tiers de centime par mois : le total arrondi ($24.01) et les
   // trois mois arrondis ($8 chacun) diffèrent d'un centime -> « dont arrondi au centime, mois par mois : $0.01 »
   const E2 = [bilan('2026-08-31', 800.40), bilan('2026-09-30', 800.40), bilan('2026-10-10', 800.40)];
   const imps = [ip('2026-08', '2026-09-15', 8)];
+  charger.retraits = [];
   const F = charger('2026-10-16T10:00:00', E2, imps);
   const T = F.frais(E2), S = F.suivi(), P = F.frais(F.bilansMois('2026-10'));
   const A = attendu(E2, imps, '2026-10'), H = F.html(T, S, P);
-  V(A.avant === 1 && !A.ofAvant, 'jeu « arrondi » : 1 centime d’écart, aucun bilan avant le suivi (contrôle du banc)', A.avant);
+  V(A.arrondi === 1, 'jeu « arrondi » : 1 centime d’écart entre le total arrondi et les mois arrondis (contrôle du banc)', A.arrondi);
   V(texte(H.releve).replace(/ /g, '') === releveAttendu(A).replace(/ /g, ''), 'sans bilan avant le suivi : « dont arrondi au centime, mois par mois $0.01 »', texte(H.releve));
   const f = ferme(H.releve);
   V(f === true, 'sans bilan avant le suivi : le relevé ferme quand même le compte, au centime', f);
 }
 {
+  charger.retraits = [];
   const F = charger('2026-10-16T10:00:00', ENTS, []);
   const T = F.frais(ENTS);
-  V(F.suivi() === null && F.html(T, null, null) === null, 'aucun paiement noté : pas de suivi, rien à réécrire');
+  V(F.suivi() === null && F.html(T, null, null) === null, 'aucun paiement ni retrait noté : pas de suivi, rien à réécrire (le bloc d’avant, tel quel)');
   const F0 = charger('2026-10-16T10:00:00', [{ date: '2026-09-30', brut: 0, tgNet: 3000, va: 0, mo: 0, ci: 0, ch: 0, alT: 0, profit: 3000 }], [ip('2026-09', '2026-10-15', 20)]);
   V(F0.html(F0.frais([]), F0.suivi(), null) === null, 'aucun OnlyFans (bloc « Aucun impôt à garder ») : rien à réécrire');
 }
@@ -214,6 +263,7 @@ function monde() {
 }
 {
   const imps = [ip('2026-08', '2026-09-15', 94), ip('2026-09', '2026-10-15', 60)];
+  charger.retraits = [];
   const F = charger('2026-10-16T10:00:00', ENTS, imps);
   const T = F.frais(ENTS), S = F.suivi(), P = F.frais(F.bilansMois('2026-10'));
   let W = monde(); W.el._ipI = { total: T, periode: P };
